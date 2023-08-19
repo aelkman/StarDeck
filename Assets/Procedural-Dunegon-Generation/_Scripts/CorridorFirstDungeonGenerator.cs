@@ -35,8 +35,17 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         floorPositions.UnionWith(roomPositions);
 
         tilemapVisualizer.PaintFloorTiles(floorPositions);
-        WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        HashSet<Vector2Int> allWallPositions = WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
 
+        // verified this isn't the problem, the walls are not part of the floor map
+        // foreach(Room room in Rooms) {
+        //     foreach(Vector2Int position in room.FloorTiles) {
+        //         if(allWallPositions.Contains(position)) {
+        //             Debug.Log("removing wall at position " + position + " from the floormap");
+        //             room.FloorTiles.Remove(position);
+        //         }
+        //     }
+        // }
     }
 
     private void CreateRoomsAtDeadEnd(List<Vector2Int> deadEnds, HashSet<Vector2Int> roomFloors)
@@ -47,7 +56,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
             {
                 var room = RunRandomWalk(randomWalkParameters, position);
                 roomFloors.UnionWith(room);
-                DeadEndRooms.Add(new Room(position, room));
+                DeadEndRooms.Add(new Room(position, roomFloors));
             }
         }
         Debug.Log("Dead End Rooms: " + DeadEndRooms.Count);
@@ -82,7 +91,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         {
             var roomFloor = RunRandomWalk(randomWalkParameters, roomPosition);
             roomPositions.UnionWith(roomFloor);
-            Rooms.Add(new Room(roomPosition, roomFloor));
+            Rooms.Add(new Room(roomPosition, roomPositions));
         }
 
         Debug.Log("Rooms: " + Rooms.Count);

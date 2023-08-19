@@ -58,7 +58,8 @@ public class AgentPlacer : MonoBehaviour
             // {
             //     PlaceEnemies(room, roomEnemiesCount[i]);
             // }
-            Debug.Log("placing room " + i + "enemies");
+            Debug.Log("placing room " + i + " enemies");
+            Debug.Log("room size: " + room.FloorTiles.Count);
             PlaceEnemies(room, roomEnemiesCount);
 
 
@@ -90,10 +91,26 @@ public class AgentPlacer : MonoBehaviour
             // }
             GameObject enemy = Instantiate(enemyPrefab);
             int randomIndex = UnityEngine.Random.Range(0, room.FloorTiles.Count);
-            Vector2 proposedLocation = room.FloorTiles.ToList()[randomIndex];
+            Vector2Int proposedLocation = room.FloorTiles.ToList()[randomIndex];
+
+            // now make sure that the floor position isnt on the edge of the wall
+            List<Vector2Int> neighbourPositions = new List<Vector2Int>();
+
+            for(int i = 0; i < Direction2D.eightDirectionsList.Count; i++) {
+            // foreach(Vector2Int direction in Direction2D.eightDirectionsList) {
+                if (!room.FloorTiles.Contains(proposedLocation + Direction2D.eightDirectionsList[i])) {
+                    // genreate new proposed location, restart the loop
+                    randomIndex = UnityEngine.Random.Range(0, room.FloorTiles.Count);
+                    proposedLocation = room.FloorTiles.ToList()[randomIndex];
+                    i = -1;
+                }
+                else {  // do nothing, we're good
+                }
+            }
 
             // this will break if we don't check if the room is full, but whatever
             foreach(GameObject roomEnemy in room.EnemiesInTheRoom) {
+
                 while (roomEnemy.transform.localPosition == new Vector3(proposedLocation.x, proposedLocation.y, 0)) {
                     randomIndex = UnityEngine.Random.Range(0, room.FloorTiles.Count);
                     proposedLocation = room.FloorTiles.ToList()[randomIndex];
