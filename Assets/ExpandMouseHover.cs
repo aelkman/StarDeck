@@ -25,6 +25,7 @@ public class ExpandMouseHover : MonoBehaviour
         expandedScale = new Vector3(3.74f, 4.81f, 0.00f);
         coroutineAllowed = true;
         originalScale = transform.localScale;
+        Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
     }
 
