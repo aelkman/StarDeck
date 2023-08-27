@@ -8,6 +8,10 @@ public class ExpandMouseHover : MonoBehaviour
 {
     public float expandSize;
     private bool coroutineAllowed;
+    private float xRot;
+    private float yRot;
+    private float zRot;
+    private Quaternion originalRotation;
     private Vector3 originalScale;
     private Vector3 originalPosition;
     private Vector3 raisedPosition;
@@ -22,33 +26,40 @@ public class ExpandMouseHover : MonoBehaviour
     {
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
-        expandedScale = new Vector3(3.74f, 4.81f, 0.00f);
+        expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
         coroutineAllowed = true;
         originalScale = transform.localScale;
+        originalRotation = transform.rotation;
+        Debug.Log("original rotation: " + originalRotation);
         Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
     }
 
     private void OnMouseExit() {
         transform.SetSiblingIndex(siblingIndexOriginal);
-        if (start != null) StopCoroutine(start);
+        if (start != null) {
+            StopCoroutine(start);
+            start = null;
+        }
         Debug.Log("exit routine starting");
         stop = StartCoroutine(ExitShrink());
     }
 
     private void OnMouseEnter() {
 
-        if (stop != null) StopCoroutine(stop);
-        if (coroutineAllowed) {
+        if (stop != null) {
+            StopCoroutine(stop);
+            stop = null;
+        }
+        // if (coroutineAllowed) {
             originalPosition = transform.localPosition;
+            originalRotation = transform.rotation;
             // float up a bit for hover
-            raisedPosition = new Vector3(transform.localPosition.x, 75, 0);
-            // Debug.Log(transform.GetSiblingIndex());
-            transform.SetSiblingIndex(10);
-            transform.localPosition = raisedPosition;
+            // raisedPosition = new Vector3(transform.localPosition.x, 75, 0);
+            // transform.localPosition = raisedPosition;
             Debug.Log("hover routine starting");
             start = StartCoroutine(HoverPulse());
-        }
+        // }
     }
 
     private void OnMouseDrag() {
@@ -69,26 +80,45 @@ public class ExpandMouseHover : MonoBehaviour
         // transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
     }
 
+    private static float WrapAngle(float angle)
+    {
+        angle%=360;
+        if(angle >180)
+            return angle - 360;
+
+        return angle;
+    }
+
     private IEnumerator HoverPulse() {
+        transform.SetSiblingIndex(10);
         coroutineAllowed = false;
         Vector3 newScale = originalScale;
+        // transform.rotation = Quaternion.identity;
 
         // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
+            raisedPosition = new Vector3(originalPosition.x, 75, 0);
+            transform.localPosition = new Vector3(originalPosition.x, Mathf.Lerp(originalPosition.y, 75, Mathf.SmoothStep(0, 1, i)), 0);
+
             transform.localScale = new Vector3(
                 (Mathf.Lerp(newScale.x, newScale.x + expandSize, Mathf.SmoothStep(0f, 1f, i))),
                 (Mathf.Lerp(newScale.y, newScale.y + expandSize, Mathf.SmoothStep(0f, 1f, i))),
                 0
             );
+            Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), 0f, Mathf.SmoothStep(0, 1, i)));
+            transform.eulerAngles = currentAngle;
             // Debug.Log(transform.localScale);
             newScale = transform.localScale;
             yield return new WaitForSeconds(0.015f);
         }
+        expandedScale = transform.localScale;
         Debug.Log("finalScale: " + transform.localScale);
     }
 
     private IEnumerator ExitShrink() {
         transform.localScale = expandedScale;
+        transform.rotation = originalRotation;
+        Debug.Log("rotation reset: " + originalRotation);
         transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
         // Debug.Log("expandedScale: " +  expandedScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
