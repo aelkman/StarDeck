@@ -55,7 +55,17 @@ public class ExpandMouseHover : MonoBehaviour
         Debug.Log("transform postiion: " +  transform.localPosition);
         Debug.Log(Input.mousePosition);
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        transform.position = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+        Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+        // if (translatedWorldPosition.y > 320) {
+        //     translatedWorldPosition.y = 320;
+        // }
+        transform.position = translatedWorldPosition;
+        if (transform.localPosition.y > 200) {
+            transform.localPosition = new Vector2(0, 200);
+        }
+        // else if (transform.localPosition.y > 320) {
+        //     transform.localPosition = new Vector2(transform.localPosition.x, 320);
+        // }
         // transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
     }
 

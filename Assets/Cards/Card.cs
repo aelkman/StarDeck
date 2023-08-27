@@ -13,6 +13,7 @@ public class Card : ScriptableObject
     public int health;
     public int defense;
     public string description;
+    public bool isTarget;
     // private CardType type;
     // Start is called before the first frame update
     // public Card() {
