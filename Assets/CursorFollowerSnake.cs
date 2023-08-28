@@ -43,7 +43,9 @@ public class CursorFollowerSnake : MonoBehaviour
     void Update() {
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
-        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, originalPosition.x + translatedWorldPosition.x));
+        float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f + 0.5f;
+        Debug.Log("calculation: " + calculation);
+        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
         transform.eulerAngles = currentAngle;
     }
     // private void OnMouseExit() {

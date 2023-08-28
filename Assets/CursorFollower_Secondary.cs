@@ -9,6 +9,7 @@ public class CursorFollower_Secondary : MonoBehaviour
     public float expandSize;
     public float timeUnit = 1f;
     public float totTime = 10f;
+    public float sizeMultiplier = 0.005f;
 
     private bool coroutineAllowed;
     private float xRot;
@@ -17,9 +18,11 @@ public class CursorFollower_Secondary : MonoBehaviour
     private Quaternion originalRotation;
     private Vector3 originalScale;
     private Vector3 originalPosition;
+    private Vector3 originalWorldPosition;
     private Vector3 raisedPosition;
     private Vector3 expandedScale;
     private int siblingIndexOriginal;
+    private bool isScaled = false;
 
     Coroutine start;
     Coroutine stop;
@@ -35,6 +38,8 @@ public class CursorFollower_Secondary : MonoBehaviour
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
         originalPosition = transform.localPosition;
+        originalWorldPosition = transform.position;
+        Debug.Log("original postiion: " + originalPosition);
         Debug.Log("original rotation: " + originalRotation);
         Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
@@ -69,6 +74,12 @@ public class CursorFollower_Secondary : MonoBehaviour
         return end * (value) * value * ((s + 1) * value - s) + start;
     }
 
+    public static float EaseInCubic(float start, float end, float value)
+    {
+        end -= start;
+        return end * value * value * value + start;
+    }
+
     void Update() {
 
         GameObject someObject = transform.parent.gameObject.transform.GetChild(0).gameObject;
@@ -79,20 +90,34 @@ public class CursorFollower_Secondary : MonoBehaviour
         // Debug.Log("followPosition: " + positionFollow);
         // Debug.Log("siblingIndex: " + transform.GetSiblingIndex());
         float fractionalPlace = ((float)transform.GetSiblingIndex() - 1) / (float)childCount;
+        
 
         // float fractionalPlace = 1f / ((float)transform.GetSiblingIndex());
         // Debug.Log("fractionalPlace: " + fractionalPlace);
+        float fractionalPlace2 = ((float)transform.GetSiblingIndex()) / (float)childCount;
+
+        if(!isScaled) {
+            transform.localScale = new Vector3(
+                transform.localScale.x + transform.GetSiblingIndex() * sizeMultiplier, 
+                transform.localScale.y + transform.GetSiblingIndex() * sizeMultiplier, 
+                transform.localScale.z + transform.GetSiblingIndex() * sizeMultiplier
+            );
+
+            isScaled = true;
+        }
 
         transform.localPosition = new Vector3(
             // Mathf.Lerp(originalPosition.x, positionFollow.x, Coserp(fractionalPlace)),
-            EaseInCirc(originalPosition.x, positionFollow.x, fractionalPlace),
-            Mathf.Lerp(originalPosition.y, positionFollow.y, fractionalPlace * fractionalPlace),
+            EaseInCubic(originalPosition.x, positionFollow.x, fractionalPlace),
+            Mathf.Lerp(originalPosition.y, positionFollow.y, fractionalPlace),
             originalPosition.z
         );
 
-        Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
-        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, originalPosition.x + translatedWorldPosition.x));
+        Vector3 mousePos = Mouse.current.position.ReadValue();   
+        mousePos.z=Camera.main.nearClipPlane;
+        Vector3 Worldpos=Camera.main.ScreenToWorldPoint(mousePos);
+        Debug.Log(Worldpos);
+        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (Worldpos.x+1.778f)/3.556f));
         transform.eulerAngles = currentAngle;
     }
 

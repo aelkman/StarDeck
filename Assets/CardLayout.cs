@@ -51,7 +51,7 @@ public class CardLayout : MonoBehaviour
         
         cardPrefab.transform.localPosition = new Vector3(0,0,0);
         cardPrefab.transform.SetParent(this.transform);
-                cardPrefab.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
+        cardPrefab.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
         Debug.Log(cardPrefab.transform.parent);
         
         // cardPrefab.card = currentCard;
