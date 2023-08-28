@@ -44,7 +44,7 @@ public class CursorFollowerSnake : MonoBehaviour
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
         float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f + 0.5f;
-        Debug.Log("calculation: " + calculation);
+        // Debug.Log("calculation: " + calculation);
         Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
         transform.eulerAngles = currentAngle;
     }
@@ -76,8 +76,8 @@ public class CursorFollowerSnake : MonoBehaviour
     // }
 
     private void OnMouseOver() {
-        Debug.Log("transform postiion: " +  transform.localPosition);
-        Debug.Log(Input.mousePosition);
+        // Debug.Log("transform postiion: " +  transform.localPosition);
+        // Debug.Log(Input.mousePosition);
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
         // if (translatedWorldPosition.y > 320) {
@@ -88,8 +88,6 @@ public class CursorFollowerSnake : MonoBehaviour
         //     transform.localPosition = new Vector2(0, 200);
         // }
         // originalPosition = transform.localPosition;
-
-        Debug.Log("drag coroutine SNAKE!");
 
         // if (stop != null) {
         //     StopCoroutine(stop);

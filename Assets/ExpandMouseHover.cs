@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 
 public class ExpandMouseHover : MonoBehaviour
 {
-    public GameObject cursorFollower2;
+    public GameObject cursorFollowerPrefab;
+    private GameObject cursorFollowerInstance;
     public float expandSize;
     private GameObject cursorFollower;
     private Quaternion originalRotation;
@@ -18,6 +19,7 @@ public class ExpandMouseHover : MonoBehaviour
     private bool isSelected = false;
     private bool isFollowerPlaced = false;
     private bool isTarget;
+    private bool followerCreated = false;
 
     Coroutine start;
     Coroutine stop;
@@ -49,7 +51,7 @@ public class ExpandMouseHover : MonoBehaviour
     if (Input.GetMouseButtonDown(1)) {
         if (isSelected) {
             Debug.Log("cancelling action (right click)");
-            cursorFollower2.SetActive(false);
+            cursorFollowerInstance.SetActive(false);
             isSelected = false;
             // now shrink card back to where it was
             ExitResetSequence();
@@ -80,10 +82,17 @@ public class ExpandMouseHover : MonoBehaviour
 
             // if it's a Target, instantiate the CursorFollower prefab
             if(isTarget) {
-                cursorFollower2 = Instantiate(cursorFollower2);
-                cursorFollower2.SetActive(false);
-                cursorFollower2.transform.parent = transform.parent;
-                cursorFollower2.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+                if(followerCreated) {
+                    Destroy(cursorFollowerInstance);
+                    followerCreated = false;
+                }
+                if(!followerCreated) {
+                    cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
+                    cursorFollowerInstance.SetActive(false);
+                    cursorFollowerInstance.transform.parent = transform.parent;
+                    cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+                    followerCreated = true;
+                }
             }
 
             if (stop != null) {
@@ -106,9 +115,9 @@ public class ExpandMouseHover : MonoBehaviour
         Debug.Log(Input.mousePosition);
 
         if(isTarget) {
-            cursorFollower2.SetActive(true);
             if(!isFollowerPlaced) {
-                cursorFollower2.transform.localPosition = transform.localPosition;
+                cursorFollowerInstance.SetActive(true);
+                cursorFollowerInstance.transform.localPosition = transform.localPosition;
                 isFollowerPlaced = true;
             }
         }

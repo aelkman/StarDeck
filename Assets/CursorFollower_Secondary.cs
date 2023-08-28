@@ -116,7 +116,7 @@ public class CursorFollower_Secondary : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();   
         mousePos.z=Camera.main.nearClipPlane;
         Vector3 Worldpos=Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log(Worldpos);
+        // Debug.Log(Worldpos);
         Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (Worldpos.x+1.778f)/3.556f));
         transform.eulerAngles = currentAngle;
     }
