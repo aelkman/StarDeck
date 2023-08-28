@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class ExpandMouseHover : MonoBehaviour
 {
+    public GameObject cursorFollower2;
     public float expandSize;
     private GameObject cursorFollower;
     private Quaternion originalRotation;
@@ -38,23 +39,52 @@ public class ExpandMouseHover : MonoBehaviour
             Debug.Log("drag exit");
 
             isSelected = false;
-            isFollowerPlaced = false;
+
+            // perform actions for Target cards exit sequence
+            if (isFollowerPlaced) {
+                isFollowerPlaced = false;
+            }
         }
-        // This will be executed when the mouse button was released.
+    }
+    if (Input.GetMouseButtonDown(1)) {
+        if (isSelected) {
+            Debug.Log("cancelling action (right click)");
+            cursorFollower2.SetActive(false);
+            isSelected = false;
+            // now shrink card back to where it was
+            ExitResetSequence();
+        }
+
     }
 }
 
+    private void ExitResetSequence() {
+        transform.SetSiblingIndex(siblingIndexOriginal);
+        if (start != null) {
+            StopCoroutine(start);
+            start = null;
+        }
+        Debug.Log("exit routine starting");
+        stop = StartCoroutine(ExitShrink());
+    }
+
     private void OnMouseExit() {
-            transform.SetSiblingIndex(siblingIndexOriginal);
-            if (start != null) {
-                StopCoroutine(start);
-                start = null;
-            }
-            Debug.Log("exit routine starting");
-            stop = StartCoroutine(ExitShrink());
+        ExitResetSequence();
     }
 
     private void OnMouseEnter() {
+            // check if it's a Target card first
+            CardDisplay refScript = GetComponent<CardDisplay>();
+            isTarget = refScript.card.isTarget;
+            Debug.Log("isTarget: " + isTarget);
+
+            // if it's a Target, instantiate the CursorFollower prefab
+            if(isTarget) {
+                cursorFollower2 = Instantiate(cursorFollower2);
+                cursorFollower2.SetActive(false);
+                cursorFollower2.transform.parent = transform.parent;
+                cursorFollower2.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+            }
 
             if (stop != null) {
                 StopCoroutine(stop);
@@ -72,19 +102,13 @@ public class ExpandMouseHover : MonoBehaviour
     private void OnMouseDrag() {
         isSelected = true;
 
-        cursorFollower = GameObject.Find("CursorSelector");
-
-        CardDisplay refScript = GetComponent<CardDisplay>();
-        isTarget = refScript.card.isTarget;
-        Debug.Log("isTarget: " + isTarget);
-
         Debug.Log("transform postiion: " +  transform.localPosition);
         Debug.Log(Input.mousePosition);
 
         if(isTarget) {
-            cursorFollower.SetActive(true);
+            cursorFollower2.SetActive(true);
             if(!isFollowerPlaced) {
-                cursorFollower.transform.localPosition = transform.localPosition;
+                cursorFollower2.transform.localPosition = transform.localPosition;
                 isFollowerPlaced = true;
             }
         }

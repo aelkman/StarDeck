@@ -75,7 +75,7 @@ public class CursorFollowerSnake : MonoBehaviour
     //     // }
     // }
 
-    private void OnMouseDrag() {
+    private void OnMouseOver() {
         Debug.Log("transform postiion: " +  transform.localPosition);
         Debug.Log(Input.mousePosition);
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
