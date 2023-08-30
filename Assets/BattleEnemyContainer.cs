@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBattle : MonoBehaviour
+public class BattleEnemyContainer : MonoBehaviour
 {
+    public BattleEnemy battleEnemy;
     private Material material;
     private float fade = 0;
     private bool isGlowUp = true;
+    private float maxHealth;
+    private float health;
+    private Sprite sprite;
+    private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
+
     void Start()
     {
-        material = GetComponent<SpriteRenderer>().material;
     }
     
     void OnTriggerEnter2D(Collider2D other) {
@@ -34,12 +39,20 @@ public class EnemyBattle : MonoBehaviour
         else if (fade <= 0f) {
             isGlowUp = true;
         }
-        material.SetFloat("_Transparency", fade);
+        spriteRenderer.material.SetFloat("_Transparency", fade);
     }
 
     private void OnMouseExit() {
         fade = 0f;
-        material.SetFloat("_Transparency", fade);
+        spriteRenderer.material.SetFloat("_Transparency", fade);
+    }
+
+    public void Setup() {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = battleEnemy.sprite;
+        spriteRenderer.material = battleEnemy.material;
+        maxHealth = battleEnemy.maxHealth;
+        health = battleEnemy.health;
     }
 
     // Update is called once per frame
