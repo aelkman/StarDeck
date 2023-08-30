@@ -9,6 +9,7 @@ public class CursorFollowerSnake : MonoBehaviour
     public float expandSize;
     public float timeUnit = 1f;
     public float totTime = 10f;
+    public float forceAmount = 2000;
 
     private bool coroutineAllowed;
     private float xRot;
@@ -20,6 +21,7 @@ public class CursorFollowerSnake : MonoBehaviour
     private Vector3 raisedPosition;
     private Vector3 expandedScale;
     private int siblingIndexOriginal;
+    private Rigidbody2D rigidBody;
 
     Coroutine start;
     Coroutine stop;
@@ -27,6 +29,7 @@ public class CursorFollowerSnake : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rigidBody = GetComponent<Rigidbody2D>();
         Debug.Log("index: " + transform.GetSiblingIndex());
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
@@ -38,11 +41,13 @@ public class CursorFollowerSnake : MonoBehaviour
         Debug.Log("original rotation: " + originalRotation);
         Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
+
     }
 
     void Update() {
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+        transform.position = translatedWorldPosition;
         float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f + 0.5f;
         // Debug.Log("calculation: " + calculation);
         Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
@@ -75,29 +80,20 @@ public class CursorFollowerSnake : MonoBehaviour
     //     // }
     // }
 
-    private void OnMouseOver() {
-        // Debug.Log("transform postiion: " +  transform.localPosition);
-        // Debug.Log(Input.mousePosition);
-        Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
-        // if (translatedWorldPosition.y > 320) {
-        //     translatedWorldPosition.y = 320;
-        // }
-        transform.position = translatedWorldPosition;
-        // if (transform.localPosition.y > 200) {
-        //     transform.localPosition = new Vector2(0, 200);
-        // }
-        // originalPosition = transform.localPosition;
+    void OnTriggerEnter2D(Collider2D collider) {
+        Debug.Log("hovered enemy!");
+    }
 
-        // if (stop != null) {
-        //     StopCoroutine(stop);
-        //     stop = null;
-        // }
-        // start = StartCoroutine(DragCoroutine());
-        // else if (transform.localPosition.y > 320) {
-        //     transform.localPosition = new Vector2(transform.localPosition.x, 320);
-        // }
-        // transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+    void OnCollisionEnter2D(Collision2D other) {
+        Debug.Log("hovered enemy!");
+    }
+
+    private void OnMouseOver() {
+
+        // Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        // Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+
+        // transform.position = translatedWorldPosition;
     }
 
     private static float WrapAngle(float angle)

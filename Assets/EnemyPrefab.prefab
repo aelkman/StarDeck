@@ -180,7 +180,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a292e0da0d505964a8a5dd9ad82a5b7d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -201,9 +201,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9ba9fec0b930a3347b0f089d145867b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3259b54e6225d494faed07491b4fa19b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.24, y: 0.24}
@@ -246,8 +246,8 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0.37690818, y: -2.7122033}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    border: {x: 1.39, y: 1.25, z: 0.87, w: 0.90999997}
+    pivot: {x: 0.5422775, y: 0.5153004}
     oldSize: {x: 8, y: 10}
     newSize: {x: 0.24, y: 0.24}
     adaptiveTilingThreshold: 0.5

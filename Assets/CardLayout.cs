@@ -22,24 +22,30 @@ public class CardLayout : MonoBehaviour
     }
 
 
-    public void drawCards(int cardCount) {
+    public void DrawCards(int cardCount) {
         for(int i = 0; i < cardCount; i++) {
             Card currentCard = deck.cardStack.Pop();
 
             prefab.card = currentCard;
-            CardDisplay cardPrefab = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-            cardList.Add(cardPrefab);
+            CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            SetCardDefaultScalePos(cardInstance);
+            cardList.Add(cardInstance);
         }
         Debug.Log(cardList);
-        sortCards();
+        SortCards();
     }
 
     void Update() {
-        // sortCards();
+        // SortCards();
     }
 
-    public void addCard() {
+    private void SetCardDefaultScalePos(CardDisplay cardInstance) {
+        cardInstance.transform.localPosition = new Vector3(0,0,0);
+        cardInstance.transform.SetParent(this.transform);
+        cardInstance.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
+    }
+
+    public void AddCard() {
         Card currentCard = deck.cardStack.Pop();
         
 
@@ -47,26 +53,23 @@ public class CardLayout : MonoBehaviour
         // newCard.card = currentCard;
 
         prefab.card = currentCard;
-        CardDisplay cardPrefab = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-        
-        cardPrefab.transform.localPosition = new Vector3(0,0,0);
-        cardPrefab.transform.SetParent(this.transform);
-        cardPrefab.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
-        Debug.Log(cardPrefab.transform.parent);
+        CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        SetCardDefaultScalePos(cardInstance);
+        Debug.Log(cardInstance.transform.parent);
         
         // cardPrefab.card = currentCard;
-        Debug.Log(cardPrefab);
-        cardList.Add(cardPrefab);
-        sortCards();
+        Debug.Log(cardInstance);
+        cardList.Add(cardInstance);
+        SortCards();
     }
 
     // inverse of y = x²(3-2x)
-    float inverse_smoothstep( float x )
+    float InverseSmoothstep( float x )
     {
         return 0.5f-(float)Math.Sin(Math.Asin(1.0f-2.0f*x)/3.0f);
     }
 
-    private void sortCards() {
+    private void SortCards() {
 
         for(int i = 0; i < cardList.Count; i++) {
             if (cardList.Count > 1) {
@@ -80,7 +83,7 @@ public class CardLayout : MonoBehaviour
                 cardList[i].transform.Rotate(0.0f, 0.0f, Mathf.Lerp((cardList.Count-1) * zRot, (cardList.Count-1) * -zRot, alignResult), Space.Self);
                 // newPosition.x = ((rectTransform.rect.width + this.transform.position.x) * alignResult) - rectTransform.rect.width/2;
                 newPosition.x = Mathf.Lerp(-xOffset/2 * (cardList.Count-1), xOffset/2 * (cardList.Count-1), alignResult);
-                newPosition.y = -Mathf.Abs(Mathf.Lerp((cardList.Count-1) * -yOffset, (cardList.Count-1) * yOffset, inverse_smoothstep(alignResult)));
+                newPosition.y = -Mathf.Abs(Mathf.Lerp((cardList.Count-1) * -yOffset, (cardList.Count-1) * yOffset, InverseSmoothstep(alignResult)));
                 // newPosition.z = i;
                 Debug.Log("y position: " + newPosition.y);
                 cardList[i].transform.localPosition = newPosition;

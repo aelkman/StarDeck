@@ -44,6 +44,7 @@ public class ExpandMouseHover : MonoBehaviour
 
             // perform actions for Target cards exit sequence
             if (isFollowerPlaced) {
+                cursorFollowerInstance.SetActive(false);
                 isFollowerPlaced = false;
             }
         }
