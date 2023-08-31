@@ -5,9 +5,12 @@ using UnityEngine;
 public class BattleEnemyContainer : MonoBehaviour
 {
     public BattleEnemy battleEnemy;
+    private GameObject singleTargetManagerGO;
+    private SingleTargetManager singleTargetManager;
     private Material material;
     private float fade = 0;
     private bool isGlowUp = true;
+    private bool isTargeted = false;
     private float maxHealth;
     private float health;
     private Sprite sprite;
@@ -16,6 +19,11 @@ public class BattleEnemyContainer : MonoBehaviour
 
     void Start()
     {
+        singleTargetManagerGO = GameObject.Find("SingleTargetManager");
+        singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
+    }
+
+    void Update () {
     }
     
     void OnTriggerEnter2D(Collider2D other) {
@@ -26,7 +34,14 @@ public class BattleEnemyContainer : MonoBehaviour
         Debug.Log("hovered enemy!");
     }
 
+    private void OnMouseEnter() {
+        // add target to STM
+        singleTargetManager.SetTarget(this);
+        Debug.Log("set target to SingleTargetManager!");
+    }
+
     private void OnMouseOver() {
+        
         if (isGlowUp) {
             fade += Time.deltaTime * 2f;
         }
@@ -43,6 +58,10 @@ public class BattleEnemyContainer : MonoBehaviour
     }
 
     private void OnMouseExit() {
+        // remove target from STM
+        singleTargetManager.ClearTarget();
+        Debug.Log("cleared target to SingleTargetManager!");
+        
         fade = 0f;
         spriteRenderer.material.SetFloat("_Transparency", fade);
     }
@@ -53,11 +72,5 @@ public class BattleEnemyContainer : MonoBehaviour
         spriteRenderer.material = battleEnemy.material;
         maxHealth = battleEnemy.maxHealth;
         health = battleEnemy.health;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

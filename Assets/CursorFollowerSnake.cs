@@ -80,13 +80,13 @@ public class CursorFollowerSnake : MonoBehaviour
     //     // }
     // }
 
-    void OnTriggerEnter2D(Collider2D collider) {
-        Debug.Log("hovered enemy!");
-    }
+    // void OnTriggerEnter2D(Collider2D collider) {
+    //     Debug.Log("hovered enemy!");
+    // }
 
-    void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log("hovered enemy!");
-    }
+    // void OnCollisionEnter2D(Collision2D other) {
+    //     Debug.Log("hovered enemy!");
+    // }
 
     private void OnMouseOver() {
 

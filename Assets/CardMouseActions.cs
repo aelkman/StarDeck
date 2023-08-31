@@ -2,10 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ExpandMouseHover : MonoBehaviour
+public class CardMouseActions : MonoBehaviour
 {
     public GameObject cursorFollowerPrefab;
     private GameObject cursorFollowerInstance;
+    private SingleTargetManager singleTargetManager;
     public float expandSize;
     private GameObject cursorFollower;
     private Quaternion originalRotation;
@@ -20,6 +21,7 @@ public class ExpandMouseHover : MonoBehaviour
     private bool isFollowerPlaced = false;
     private bool isTarget;
     private bool followerCreated = false;
+    private bool isHardReset = false;
 
     Coroutine start;
     Coroutine stop;
@@ -27,6 +29,7 @@ public class ExpandMouseHover : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+        singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
         originalPosition = transform.localPosition;
         originalRotation = transform.rotation;
         // originalScale = transform.localScale;
@@ -36,29 +39,41 @@ public class ExpandMouseHover : MonoBehaviour
     }
 
     void Update () {
-    if (Input.GetMouseButtonUp (0)) {
-        if (isSelected) {
-            Debug.Log("drag exit");
-
-            isSelected = false;
-
-            // perform actions for Target cards exit sequence
-            if (isFollowerPlaced) {
+        if (Input.GetMouseButtonDown(1)) {
+            if (isSelected) {
+                Debug.Log("cancelling action (right click)");
                 cursorFollowerInstance.SetActive(false);
+                isSelected = false;
+                isHardReset = true;
+                // now shrink card back to where it was
+                ExitResetSequence();
+            }
+        }
+        if (Input.GetMouseButtonUp (0)) {
+            if (isSelected && !isHardReset) {
+                Debug.Log("drag exit");
+
+                isSelected = false;
+
+                Debug.Log("isFollowerPlaced: " + isFollowerPlaced);
+                // perform actions for Target cards exit sequence
+                if (isFollowerPlaced) {
+                        singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
+                    // if there is an existing target, perform the action
+                    if (singleTargetManager.GetTarget() != null) {
+                        Debug.Log("performing card action!");
+                    }
+                    cursorFollowerInstance.SetActive(false);
+                    isFollowerPlaced = false;
+                }
+            }
+            else if (isHardReset) {
+                isSelected = false;
+                isHardReset = false;
                 isFollowerPlaced = false;
             }
         }
-    }
-    if (Input.GetMouseButtonDown(1)) {
-        if (isSelected) {
-            Debug.Log("cancelling action (right click)");
-            cursorFollowerInstance.SetActive(false);
-            isSelected = false;
-            // now shrink card back to where it was
-            ExitResetSequence();
-        }
 
-    }
 }
 
     private void ExitResetSequence() {
@@ -112,8 +127,8 @@ public class ExpandMouseHover : MonoBehaviour
     private void OnMouseDrag() {
         isSelected = true;
 
-        Debug.Log("transform postiion: " +  transform.localPosition);
-        Debug.Log(Input.mousePosition);
+        // Debug.Log("transform postiion: " +  transform.localPosition);
+        // Debug.Log(Input.mousePosition);
 
         if(isTarget) {
             if(!isFollowerPlaced) {
