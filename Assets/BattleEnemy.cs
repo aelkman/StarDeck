@@ -7,8 +7,8 @@ public class BattleEnemy : ScriptableObject
 {
     public new string name;
     public Sprite sprite;
-    public float maxHealth;
-    public float health;
+    public int maxHealth;
+    public int health;
     public float xOffset;
     public Material material;
     public Vector3 scale;

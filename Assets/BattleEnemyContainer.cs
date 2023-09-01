@@ -8,19 +8,34 @@ public class BattleEnemyContainer : MonoBehaviour
     private GameObject singleTargetManagerGO;
     private SingleTargetManager singleTargetManager;
     private Material material;
+    public GameObject healthBarPrefab;
+    private GameObject healthBarGO;
+    private HealthBar healthBar;
     private float fade = 0;
     private bool isGlowUp = true;
     private bool isTargeted = false;
-    private float maxHealth;
-    private float health;
+    private int maxHealth;
+    private int health;
     private Sprite sprite;
     private SpriteRenderer spriteRenderer;
+    private bool isDead = false;
     // Start is called before the first frame update
 
     void Start()
     {
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
+        healthBarGO = Instantiate(healthBarPrefab);
+        healthBarGO.transform.SetParent(this.transform, false);
+        // healthBarGO.transform.localPosition = new Vector3(0,-3.57f,0);
+        healthBar = healthBarGO.GetComponent<HealthBar>();
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = battleEnemy.sprite;
+        spriteRenderer.material = battleEnemy.material;
+        maxHealth = battleEnemy.maxHealth;
+        health = battleEnemy.health;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     void Update () {
@@ -67,10 +82,22 @@ public class BattleEnemyContainer : MonoBehaviour
     }
 
     public void Setup() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = battleEnemy.sprite;
-        spriteRenderer.material = battleEnemy.material;
-        maxHealth = battleEnemy.maxHealth;
-        health = battleEnemy.health;
+
+    }
+
+    public void TakeDamage(int damage) {
+        health -= damage;
+        healthBar.SetHealth(health);
+        if (health <= 0) {
+            isDead = true;
+        }
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

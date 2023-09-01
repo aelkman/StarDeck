@@ -42,7 +42,8 @@ public class GameDataManager : MonoBehaviour
         File.WriteAllText(saveFile, jsonString);
     }
 
-    public void takeDamage(int damage) {
-        gameData.health -= damage;
-    }
+    // moved to PlayerStats
+    // public void takeDamage(int damage) {
+    //     gameData.health -= damage;
+    // }
 }

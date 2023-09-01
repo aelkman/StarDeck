@@ -4,9 +4,11 @@ using UnityEngine.InputSystem;
 
 public class CardMouseActions : MonoBehaviour
 {
+    private BattleManager battleManager;
     public GameObject cursorFollowerPrefab;
     private GameObject cursorFollowerInstance;
     private SingleTargetManager singleTargetManager;
+    private Card card;
     public float expandSize;
     private GameObject cursorFollower;
     private Quaternion originalRotation;
@@ -30,6 +32,7 @@ public class CardMouseActions : MonoBehaviour
     void Start()
     {   
         singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
+        battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         originalPosition = transform.localPosition;
         originalRotation = transform.rotation;
         // originalScale = transform.localScale;
@@ -61,7 +64,8 @@ public class CardMouseActions : MonoBehaviour
                         singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
                     // if there is an existing target, perform the action
                     if (singleTargetManager.GetTarget() != null) {
-                        Debug.Log("performing card action!");
+                        Debug.Log("CardMouseActions: performing card action!");
+                        battleManager.TargetCardAction(card);
                     }
                     cursorFollowerInstance.SetActive(false);
                     isFollowerPlaced = false;
@@ -92,8 +96,8 @@ public class CardMouseActions : MonoBehaviour
 
     private void OnMouseEnter() {
             // check if it's a Target card first
-            CardDisplay refScript = GetComponent<CardDisplay>();
-            isTarget = refScript.card.isTarget;
+            card = GetComponent<CardDisplay>().card;
+            isTarget = card.isTarget;
             Debug.Log("isTarget: " + isTarget);
 
             // if it's a Target, instantiate the CursorFollower prefab
