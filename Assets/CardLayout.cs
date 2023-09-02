@@ -18,7 +18,6 @@ public class CardLayout : MonoBehaviour
     void Start()
     {
         cardList = new List<CardDisplay>();
-
     }
 
 

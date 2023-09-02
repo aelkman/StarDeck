@@ -11,7 +11,7 @@ public class DeckScript : MonoBehaviour
     {
         cardStack = new Stack<Card>();
         for(int i = 0; i < 10; i++) {
-            Card attackBasic =  Resources.Load<Card>("StartingDeck/Attack");
+            Card attackBasic =  Resources.Load<Card>("StartingDeck/Laser Pistol/Laser Shot");
             cardStack.Push(attackBasic);
         }
         for(int i = 0; i < 10; i++) {

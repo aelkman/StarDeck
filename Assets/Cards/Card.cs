@@ -1,71 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
-public class Card : ScriptableObject
+public class Card : ScriptableObject, ISerializationCallbackReceiver
 {
     public new string name;
     public Sprite artwork;
-    public string typeString;
     public int manaCost;
-    public int attack;
-    public int health;
-    public int defense;
+    public List<string> actionKeys;
+    public List<string> actionValues;
+    public Dictionary<string,string> actions;
     public string description;
     public bool isTarget;
-    // private CardType type;
-    // Start is called before the first frame update
-    // public Card() {
-        
-    // }
 
-    // Update is called once per frame
-    // private void generateRandomCard() {
-    //     type = new CardType("attack");
-    //     // type.getRandomType();
-    // }
+    public void OnBeforeSerialize()
+    {
+        // actionKeys.Clear();
+        // actionValues.Clear();
 
-    // private void Start() {
-    //     this.type = new CardType();
-    //     // generateRandomCard();
-    // }
-}
-
-[System.Serializable]
-public class CardType {
-
-    public Dictionary<string, bool> types = new Dictionary<string, bool>();
-    // public bool isAttack;
-    // public bool isCast;
-    // public bool isConsumeable;
-    // public bool isDefend;
-
-    private string attack = "attack";
-    private string cast = "cast";
-    private string consumeable = "consumeable";
-    private string defend = "defend";
-
-    // private List<string> typesList = ["attack", "cast", "consumeable", "defend"];
-
-    // default constructor
-    public CardType() {
-        types[attack] = false;
-        types[cast] = false;
-        types[consumeable] = false;
-        types[defend] = false;
+        // foreach (var kvp in actions)
+        // {
+        //     actionKeys.Add(kvp.Key);
+        //     actionValues.Add(kvp.Value);
+        // }
     }
 
-    public CardType(string type) {
-        types[type] = true;
+    public void OnAfterDeserialize()
+    {
+        actions = new Dictionary<string, string>();
+
+        for (int i = 0; i != Math.Min(actionKeys.Count, actionValues.Count); i++)
+            actions.Add(actionKeys[i], actionValues[i]);
     }
 
-    // public void getRandomType() {
-    //     // List<string> typeList = types.ToList();
-    //     List<string> keyList = new List<string>(types.Keys);
-    //     types[keyList[Random.Range(0,keyList.Count)]] = true;
-
-    //     // types[types.ElementAt(rand.Next(0, types.Count)).Value] = true;
-    // }
-
+    void OnGUI()
+    {
+        foreach (var kvp in actions)
+            GUILayout.Label("Key: " + kvp.Key + " value: " + kvp.Value);
+    }
 }

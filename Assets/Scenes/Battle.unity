@@ -450,6 +450,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetManager: {fileID: 5164014304915221596}
+  hand: {fileID: 47920934}
+  battleEnemyManager: {fileID: 1498668073}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &805897856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -829,7 +831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &831788355
 RectTransform:
   m_ObjectHideFlags: 0

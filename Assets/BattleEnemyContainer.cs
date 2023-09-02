@@ -18,7 +18,7 @@ public class BattleEnemyContainer : MonoBehaviour
     private int health;
     private Sprite sprite;
     private SpriteRenderer spriteRenderer;
-    private bool isDead = false;
+    public bool isDead = false;
     // Start is called before the first frame update
 
     void Start()
@@ -41,13 +41,13 @@ public class BattleEnemyContainer : MonoBehaviour
     void Update () {
     }
     
-    void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("hovered enemy!");
-    }
+    // void OnTriggerEnter2D(Collider2D other) {
+    //     Debug.Log("hovered enemy!");
+    // }
 
-    void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log("hovered enemy!");
-    }
+    // void OnCollisionEnter2D(Collision2D other) {
+    //     Debug.Log("hovered enemy!");
+    // }
 
     private void OnMouseEnter() {
         // add target to STM

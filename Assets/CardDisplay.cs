@@ -21,7 +21,17 @@ public class CardDisplay : MonoBehaviour
         descriptionText.text = card.description;
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
-        attackText.text = card.attack.ToString();
-        defendText.text = card.defense.ToString();
+        if (card.actions.ContainsKey("ATK")) {
+            attackText.text = card.actions["ATK"];
+        }
+        else {
+            attackText.text = "";
+        }
+        if (card.actions.ContainsKey("DEF")) {
+            defendText.text = card.actions["DEF"];
+        }
+        else {
+            defendText.text = "";
+        }
     }
 }

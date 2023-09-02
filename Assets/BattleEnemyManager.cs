@@ -27,12 +27,17 @@ public class BattleEnemyManager : MonoBehaviour
                 battleEnemyContainer.transform.localPosition = new Vector3(newXPos, battleEnemyContainer.transform.localPosition.y, battleEnemyContainer.transform.localPosition.z);
             }
             battleEnemyContainer.Setup();
+            battleEnemies.Add(battleEnemyContainer);
             // battleEnemyContainer.rectTransform.localScale = new Vector3(0.21334f, 0.21334f, 0.21334f);
             // battleEnemyContainer
 
         }
 
         // try to get enemyNames from GameManager, if it doesn't exist then use a default for testing
+    }
+
+    public List<BattleEnemyContainer> GetEnemies() {
+        return battleEnemies;
     }
 
     // Update is called once per frame
