@@ -5,12 +5,14 @@ using UnityEngine;
 public class BattleEnemyContainer : MonoBehaviour
 {
     public BattleEnemy battleEnemy;
+    public NextActionText nextActionText;
     private GameObject singleTargetManagerGO;
     private SingleTargetManager singleTargetManager;
     private Material material;
     public GameObject healthBarPrefab;
     private GameObject healthBarGO;
     private HealthBar healthBar;
+    private Object[] actions;
     private float fade = 0;
     private bool isGlowUp = true;
     private bool isTargeted = false;
@@ -23,6 +25,7 @@ public class BattleEnemyContainer : MonoBehaviour
 
     void Start()
     {
+        actions = Resources.LoadAll("BattleEnemies/" + battleEnemy.name + "/Actions");
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
         healthBarGO = Instantiate(healthBarPrefab);
@@ -99,5 +102,15 @@ public class BattleEnemyContainer : MonoBehaviour
 
     public int getHealth() {
         return health;
+    }
+
+    public Card RandomAction() {
+        // Random.seed = System.DateTime.Now.Millisecond;
+        // Random.Range with ints is (inclusive, exclusive)
+        return (Card)actions[Random.Range(0, actions.Length)];
+    }
+
+    public void SetNextActionText(string text) {
+        nextActionText.SetText(text);
     }
 }
