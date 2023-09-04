@@ -11,7 +11,7 @@ public class BattleManager : MonoBehaviour
     public GameObject battleEnemyManager;
     public PlayerStats playerStats;
     private SingleTargetManager STM;
-    private CardLayout cardLayout;
+    private HandManager handManager;
     private BattleEnemyManager BEM;
     private List<Tuple<BattleEnemyContainer, Card>> enemyActions;
     private bool areEnemyActionsDecided = false;
@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
         BEM = battleEnemyManager.GetComponent<BattleEnemyManager>();
-        cardLayout = hand.GetComponent<CardLayout>();
+        handManager = hand.GetComponent<HandManager>();
         isPlayerTurn = true;
     }
 
@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour
                 areEnemyActionsDecided = true;
             }
             if (!isHandDealt) {
-                cardLayout.DrawCards(5);
+                handManager.DrawCards(5);
                 isHandDealt = true;
             }
         }
@@ -54,11 +54,47 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void TargetCardAction(Card card) {
+    private bool CheckCanAct(Card card) {
+        if(playerStats.stats.mana >= card.manaCost) {
+            return true;
+        }
+        else return false;
+    }
+
+    public void TargetCardAction(CardDisplay cardDisplay) {
         Debug.Log("battlemanager TargetCardAcion");
-        int attackDmg = Int32.Parse(card.actions["ATK"]);
-        if(attackDmg > 0) {
-            STM.GetTarget().TakeDamage(attackDmg);
+        bool canAct = CheckCanAct(cardDisplay.card);
+        Debug.Log("canAct: " + canAct);
+        if(canAct) {
+            // now tell the HandManager to play and remove the card
+            int attackDmg = Int32.Parse(cardDisplay.card.actions["ATK"]);
+            playerStats.useMana(cardDisplay.card.manaCost);
+            if(attackDmg > 0) {
+                STM.GetTarget().TakeDamage(attackDmg);
+            }
+            handManager.PlayCard(cardDisplay);
+        }
+        else {
+            Debug.Log("card could not be played, not enough mana!");
+        }
+    }
+
+    public void CardAction(CardDisplay cardDisplay) {
+        Debug.Log("battleManager CardAction");
+        bool canAct = CheckCanAct(cardDisplay.card);
+        Debug.Log("canAct: " + canAct);
+        if(canAct) {
+            playerStats.useMana(cardDisplay.card.manaCost);
+            foreach(var item in cardDisplay.card.actions) {
+                switch(item.Key) {
+                    case "DEF":
+                        playerStats.addBlock(Int32.Parse(item.Value));
+                        handManager.PlayCard(cardDisplay);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 
@@ -79,6 +115,7 @@ public class BattleManager : MonoBehaviour
         foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
 
             Card randomAction = enemyActionPair.Item2;
+            BattleEnemyContainer battleEnemy = enemyActionPair.Item1;
 
             if(randomAction.actions.ContainsKey("ATK_RND")) {
                 // parse ATK_RND params
@@ -90,6 +127,17 @@ public class BattleManager : MonoBehaviour
                 else {
                     int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1]);
                     Debug.Log("attack action: " + atkDmg);
+                    battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                    if(playerStats.hasBlock()) {
+                        if(playerStats.getBlock() <= atkDmg) {
+                            atkDmg = atkDmg - playerStats.getBlock();
+                            playerStats.setBlock(0);
+                        }
+                        else {
+                            playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                            atkDmg = 0;
+                        }
+                    }
                     playerStats.takeDamage(atkDmg);
                 }
             }
@@ -111,5 +159,9 @@ public class BattleManager : MonoBehaviour
     public void EndTurn() {
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         areEnemyActionsDecided = false;
+        handManager.DiscardHand();
+        handManager.DrawCards(5);
+        playerStats.resetMana();
+        playerStats.resetBlock();
     }
 }

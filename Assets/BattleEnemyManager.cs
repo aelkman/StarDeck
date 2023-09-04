@@ -5,6 +5,7 @@ using UnityEngine;
 public class BattleEnemyManager : MonoBehaviour
 {
     public BattleEnemyContainer prefab;
+    public GameObject animatorPrefab;
     public List<string> enemyNames;
     private List<BattleEnemyContainer> battleEnemies;
     private List<GameObject> enemyInstances;
@@ -16,8 +17,11 @@ public class BattleEnemyManager : MonoBehaviour
         // create enemy grid based on count of enemies
         for (int i = 0; i < enemyNames.Count; i++) {
             string enemyName = enemyNames[i];
-            BattleEnemyContainer battleEnemyContainer = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-            battleEnemyContainer.transform.SetParent(this.transform, false);
+            GameObject newAnimator = Instantiate(animatorPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newAnimator.transform.SetParent(this.transform, false);
+            // BattleEnemyContainer battleEnemyContainer = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            BattleEnemyContainer battleEnemyContainer = newAnimator.GetComponentInChildren<BattleEnemyContainer>();
+            // battleEnemyContainer.transform.SetParent(this.transform, false);
             // get size of the enemy
             BattleEnemy battleEnemy =  Resources.Load<BattleEnemy>("BattleEnemies/" + enemyName);
             battleEnemyContainer.battleEnemy = battleEnemy;

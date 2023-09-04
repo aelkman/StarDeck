@@ -8,11 +8,15 @@ public class Stats {
 
     public int health;
     public int maxHealth;
+    public int mana;
+    public int maxMana;
 
     public Stats() {
         BaseStats baseStats = new BaseStats();
         Debug.Log("baseStatsHealth: " + baseStats.health);
         health = baseStats.health;
         maxHealth = baseStats.maxHealth;
+        mana = baseStats.mana;
+        maxMana = baseStats.mana;
     }
 }

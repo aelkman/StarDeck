@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,7 +9,7 @@ public class CardMouseActions : MonoBehaviour
     public GameObject cursorFollowerPrefab;
     private GameObject cursorFollowerInstance;
     private SingleTargetManager singleTargetManager;
-    private Card card;
+    private CardDisplay cardDisplay;
     public float expandSize;
     private GameObject cursorFollower;
     private Quaternion originalRotation;
@@ -24,6 +25,7 @@ public class CardMouseActions : MonoBehaviour
     private bool isTarget;
     private bool followerCreated = false;
     private bool isHardReset = false;
+    private bool isCancelled = false;
 
     Coroutine start;
     Coroutine stop;
@@ -43,9 +45,16 @@ public class CardMouseActions : MonoBehaviour
 
     void Update () {
         if (Input.GetMouseButtonDown(1)) {
+            isCancelled = true;
             if (isSelected) {
                 Debug.Log("cancelling action (right click)");
-                cursorFollowerInstance.SetActive(false);
+                if(cursorFollowerInstance != null) {
+                    cursorFollowerInstance.SetActive(false);
+                }
+                if(!isTarget) {
+                    // for cards that are not target cards, move it back
+                    transform.localPosition = originalPosition;
+                }
                 isSelected = false;
                 isHardReset = true;
                 // now shrink card back to where it was
@@ -65,10 +74,17 @@ public class CardMouseActions : MonoBehaviour
                     // if there is an existing target, perform the action
                     if (singleTargetManager.GetTarget() != null) {
                         Debug.Log("CardMouseActions: performing card action!");
-                        battleManager.TargetCardAction(card);
+                        battleManager.TargetCardAction(cardDisplay);
+                    }
+                    else {
+                        // do nothing here
                     }
                     cursorFollowerInstance.SetActive(false);
                     isFollowerPlaced = false;
+                }
+                else if (!isCancelled) {
+                    // play non target cards here
+                    battleManager.CardAction(cardDisplay);
                 }
             }
             else if (isHardReset) {
@@ -76,6 +92,7 @@ public class CardMouseActions : MonoBehaviour
                 isHardReset = false;
                 isFollowerPlaced = false;
             }
+            isCancelled = false;
         }
 
 }
@@ -96,8 +113,8 @@ public class CardMouseActions : MonoBehaviour
 
     private void OnMouseEnter() {
             // check if it's a Target card first
-            card = GetComponent<CardDisplay>().card;
-            isTarget = card.isTarget;
+            cardDisplay = GetComponent<CardDisplay>();
+            isTarget = cardDisplay.card.isTarget;
             Debug.Log("isTarget: " + isTarget);
 
             // if it's a Target, instantiate the CursorFollower prefab
@@ -141,7 +158,7 @@ public class CardMouseActions : MonoBehaviour
                 isFollowerPlaced = true;
             }
         }
-        else {
+        else if(!isTarget && !isCancelled) {
             Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
             transform.position = translatedWorldPosition;
