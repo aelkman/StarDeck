@@ -65,26 +65,37 @@ public class CardMouseActions : MonoBehaviour
             if (isSelected && !isHardReset) {
                 Debug.Log("drag exit");
 
-                isSelected = false;
-
-                Debug.Log("isFollowerPlaced: " + isFollowerPlaced);
-                // perform actions for Target cards exit sequence
-                if (isFollowerPlaced) {
-                        singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
-                    // if there is an existing target, perform the action
-                    if (singleTargetManager.GetTarget() != null) {
-                        Debug.Log("CardMouseActions: performing card action!");
-                        battleManager.TargetCardAction(cardDisplay);
-                    }
-                    else {
-                        // do nothing here
-                    }
-                    cursorFollowerInstance.SetActive(false);
+                if(!battleManager.CheckCanAct(cardDisplay.card)) {
+                    isSelected = false;
                     isFollowerPlaced = false;
+                    if(cursorFollowerInstance != null) {
+                        cursorFollowerInstance.SetActive(false);
+                    }
+                    ExitResetSequence();
                 }
-                else if (!isCancelled) {
-                    // play non target cards here
-                    battleManager.CardAction(cardDisplay);
+                else{
+
+                    isSelected = false;
+
+                    Debug.Log("isFollowerPlaced: " + isFollowerPlaced);
+                    // perform actions for Target cards exit sequence
+                    if (isFollowerPlaced) {
+                            singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
+                        // if there is an existing target, perform the action
+                        if (singleTargetManager.GetTarget() != null) {
+                            Debug.Log("CardMouseActions: performing card action!");
+                            battleManager.TargetCardAction(cardDisplay);
+                        }
+                        else {
+                            // do nothing here
+                        }
+                        cursorFollowerInstance.SetActive(false);
+                        isFollowerPlaced = false;
+                    }
+                    else if (!isCancelled) {
+                        // play non target cards here
+                        battleManager.CardAction(cardDisplay);
+                    }
                 }
             }
             else if (isHardReset) {

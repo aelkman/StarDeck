@@ -10,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public GameObject hand;
     public GameObject battleEnemyManager;
     public PlayerStats playerStats;
+    public PlayerHUD playerHUD;
     private SingleTargetManager STM;
     private HandManager handManager;
     private BattleEnemyManager BEM;
@@ -54,7 +55,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private bool CheckCanAct(Card card) {
+    public bool CheckCanAct(Card card) {
         if(playerStats.stats.mana >= card.manaCost) {
             return true;
         }
@@ -71,8 +72,10 @@ public class BattleManager : MonoBehaviour
             playerStats.useMana(cardDisplay.card.manaCost);
             if(attackDmg > 0) {
                 STM.GetTarget().TakeDamage(attackDmg);
+                STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
             }
             handManager.PlayCard(cardDisplay);
+            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
         }
         else {
             Debug.Log("card could not be played, not enough mana!");
@@ -89,6 +92,8 @@ public class BattleManager : MonoBehaviour
                 switch(item.Key) {
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
+                        playerHUD.ActivateBlockUI();
+                        playerHUD.blockText.BlockAnimation();
                         handManager.PlayCard(cardDisplay);
                         break;
                     default:
@@ -113,6 +118,8 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator ProcessEnemyAction(List<BattleEnemyContainer> battleEnemies) {
         foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
+     
+            yield return new WaitForSecondsRealtime(0.75f);
 
             Card randomAction = enemyActionPair.Item2;
             BattleEnemyContainer battleEnemy = enemyActionPair.Item1;
@@ -126,6 +133,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else {
                     int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1]);
+                    atkDmg += battleEnemy.getAtkMod();
                     Debug.Log("attack action: " + atkDmg);
                     battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
                     if(playerStats.hasBlock()) {
@@ -139,13 +147,17 @@ public class BattleManager : MonoBehaviour
                         }
                     }
                     playerStats.takeDamage(atkDmg);
+                    playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                 }
             }
             if(randomAction.actions.ContainsKey("ATK_MOD")) {
-                Debug.Log("attack mod: ");
+                int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
+                Debug.Log("attack mod: " + atkMod.ToString());
+                battleEnemy.modifyAtk(atkMod);
+                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
             }
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSecondsRealtime(0.75f);
 
         }
 

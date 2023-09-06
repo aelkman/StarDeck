@@ -18,13 +18,13 @@ public class DeckScript : MonoBehaviour
             Card attackBasic =  Resources.Load<Card>("StartingDeck/Defend");
             cardStack.Push(attackBasic);
         }
-        List<Card> cardList = cardStack.ToList();
-        cardList = Shuffle(cardList);
-        cardStack = new Stack<Card>(cardList);
+        Shuffle();
         Debug.Log("you have " + cardStack.Count + " cards in the deck");
     }
 
-    private List<Card> Shuffle(List<Card> cardList) {
+    public void Shuffle() {
+        List<Card> cardList = cardStack.ToList();
+
         for (var i = cardList.Count - 1; i > 0; i--)
         {
             var temp = cardList[i];
@@ -32,7 +32,7 @@ public class DeckScript : MonoBehaviour
             cardList[i] = cardList[index];
             cardList[index] = temp;
         }
-        return cardList;
+        cardStack = new Stack<Card>(cardList);
     }
 
     // Update is called once per frame

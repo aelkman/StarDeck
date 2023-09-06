@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerStats : MonoBehaviour
     public GameDataManager gdm;
     public HealthBar healthBar;
     public ManaBar manaBar;
+    public GameObject damageText;
     private int block = 0;
     private bool isDead = false;
     // Start is called before the first frame update
@@ -38,6 +40,8 @@ public class PlayerStats : MonoBehaviour
     public void takeDamage(int damage) {
         stats.health -= damage;
         healthBar.SetHealth(stats.health);
+        GameObject damageTextInstance = Instantiate(damageText, transform);
+        damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (stats.health <= 0) {
             isDead = true;
         }

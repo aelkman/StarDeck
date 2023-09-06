@@ -26,6 +26,15 @@ public class HandManager : MonoBehaviour
 
     public void DrawCards(int cardCount) {
         for(int i = 0; i < cardCount; i++) {
+            if(deck.cardStack.Count < 1) {
+                for (int j = 0; j < discardCards.Count; j = 0) {
+                    CardDisplay cardDisplay = discardCards[j];
+                    deck.cardStack.Push(cardDisplay.card);
+                    discardCards.Remove(cardDisplay);
+                }
+                deck.Shuffle();
+            }
+
             Card currentCard = deck.cardStack.Pop();
 
             prefab.card = currentCard;
@@ -33,7 +42,6 @@ public class HandManager : MonoBehaviour
             SetCardDefaultScalePos(cardInstance);
             handCards.Add(cardInstance);
         }
-        Debug.Log(handCards);
         SortCards();
     }
 

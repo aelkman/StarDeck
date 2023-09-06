@@ -21,4 +21,13 @@ public class EnemyAnimator : MonoBehaviour
         Debug.Log("attack animation trigger!");
         animator.SetTrigger("Attack");
     }
+
+    public void CastAnimation() {
+        Debug.Log("enemy cast animation trigger!");
+        animator.SetTrigger("Cast");
+    }
+
+    public void TakeDamageAnimation() {
+        animator.SetTrigger("TakeDamage");
+    }
 }

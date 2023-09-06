@@ -13,6 +13,7 @@ public class BattleEnemyContainer : MonoBehaviour
     private GameObject healthBarGO;
     private HealthBar healthBar;
     private Object[] actions;
+    private int atkMod;
     private float fade = 0;
     private bool isGlowUp = true;
     private bool isTargeted = false;
@@ -84,10 +85,6 @@ public class BattleEnemyContainer : MonoBehaviour
         spriteRenderer.material.SetFloat("_Transparency", fade);
     }
 
-    public void Setup() {
-
-    }
-
     public void TakeDamage(int damage) {
         health -= damage;
         healthBar.SetHealth(health);
@@ -112,5 +109,14 @@ public class BattleEnemyContainer : MonoBehaviour
 
     public void SetNextActionText(string text) {
         nextActionText.SetText(text);
+    }
+
+    public void modifyAtk(int mod) {
+        atkMod += mod;
+        Debug.Log("atkMod modified: " + atkMod);
+    }
+
+    public int getAtkMod() {
+        return atkMod;
     }
 }
