@@ -9,6 +9,7 @@ public class PlayerStats : MonoBehaviour
     public GameDataManager gdm;
     public HealthBar healthBar;
     public ManaBar manaBar;
+    public ParticleSystem particleSystem;
     public GameObject damageText;
     private int block = 0;
     private bool isDead = false;
@@ -39,12 +40,18 @@ public class PlayerStats : MonoBehaviour
 
     public void takeDamage(int damage) {
         stats.health -= damage;
+        StartCoroutine(particleDelay(.2f));
         healthBar.SetHealth(stats.health);
         GameObject damageTextInstance = Instantiate(damageText, transform);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (stats.health <= 0) {
             isDead = true;
         }
+    }
+
+    public IEnumerator particleDelay(float time) {
+        yield return new WaitForSeconds(time);
+        particleSystem.Play();
     }
 
     public void addBlock(int block) {

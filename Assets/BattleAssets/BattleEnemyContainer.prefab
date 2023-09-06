@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2189599233396894979}
   - component: {fileID: 1433280820440521139}
   - component: {fileID: 8322291291705324111}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: BattleEnemyContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 2022564723838931683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.21334, y: 0.21333998, z: 0.21334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4539780892961978632}
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 4419981876448407803}
+  damagePrefab: {fileID: 871277677732801584, guid: 2def9773aa7dcf14291daa47082c9099, type: 3}
   healthBarPrefab: {fileID: 3871538406946561560, guid: 9b0b7e59abe6afb4891de8cd73e8c982, type: 3}
   isDead: 0
 --- !u!61 &8322291291705324111
@@ -164,7 +165,7 @@ GameObject:
   - component: {fileID: 5245207803137174684}
   - component: {fileID: 6662995411494209401}
   - component: {fileID: 4419981876448407803}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Next Action
   m_TagString: Untagged
   m_Icon: {fileID: 0}

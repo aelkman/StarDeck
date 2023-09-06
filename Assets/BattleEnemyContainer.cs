@@ -1,26 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BattleEnemyContainer : MonoBehaviour
 {
     public BattleEnemy battleEnemy;
     public NextActionText nextActionText;
+    public GameObject damagePrefab;
+    public ParticleSystem particleSystem;
     private GameObject singleTargetManagerGO;
-    private SingleTargetManager singleTargetManager;
+    public SingleTargetManager singleTargetManager;
+    public EnemySprite enemySprite;
     private Material material;
-    public GameObject healthBarPrefab;
-    private GameObject healthBarGO;
-    private HealthBar healthBar;
+    public HealthBar healthBar;
     private Object[] actions;
     private int atkMod;
-    private float fade = 0;
-    private bool isGlowUp = true;
     private bool isTargeted = false;
     private int maxHealth;
     private int health;
-    private Sprite sprite;
-    private SpriteRenderer spriteRenderer;
+
     public bool isDead = false;
     // Start is called before the first frame update
 
@@ -29,14 +28,12 @@ public class BattleEnemyContainer : MonoBehaviour
         actions = Resources.LoadAll("BattleEnemies/" + battleEnemy.name + "/Actions");
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
-        healthBarGO = Instantiate(healthBarPrefab);
-        healthBarGO.transform.SetParent(this.transform, false);
+        // healthBarGO = Instantiate(healthBarPrefab);
+        // healthBarGO.transform.SetParent(this.transform, false);
         // healthBarGO.transform.localPosition = new Vector3(0,-3.57f,0);
-        healthBar = healthBarGO.GetComponent<HealthBar>();
+        // healthBar = healthBarGO.GetComponent<HealthBar>();
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = battleEnemy.sprite;
-        spriteRenderer.material = battleEnemy.material;
+
         maxHealth = battleEnemy.maxHealth;
         health = battleEnemy.health;
         healthBar.SetMaxHealth(maxHealth);
@@ -53,44 +50,20 @@ public class BattleEnemyContainer : MonoBehaviour
     //     Debug.Log("hovered enemy!");
     // }
 
-    private void OnMouseEnter() {
-        // add target to STM
-        singleTargetManager.SetTarget(this);
-        Debug.Log("set target to SingleTargetManager!");
-    }
-
-    private void OnMouseOver() {
-        
-        if (isGlowUp) {
-            fade += Time.deltaTime * 2f;
-        }
-        else {
-            fade -= Time.deltaTime * 2f;
-        }
-        if (fade >= 1f) { 
-            isGlowUp = false;
-        }
-        else if (fade <= 0f) {
-            isGlowUp = true;
-        }
-        spriteRenderer.material.SetFloat("_Transparency", fade);
-    }
-
-    private void OnMouseExit() {
-        // remove target from STM
-        singleTargetManager.ClearTarget();
-        Debug.Log("cleared target to SingleTargetManager!");
-        
-        fade = 0f;
-        spriteRenderer.material.SetFloat("_Transparency", fade);
-    }
-
     public void TakeDamage(int damage) {
         health -= damage;
+        StartCoroutine(particleDelay(0.2f));
         healthBar.SetHealth(health);
+        GameObject damageTextInstance = Instantiate(damagePrefab, transform);
+        damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (health <= 0) {
             isDead = true;
         }
+    }
+
+    public IEnumerator particleDelay(float time) {
+        yield return new WaitForSeconds(time);
+        particleSystem.Play();
     }
 
     public int getMaxHealth() {
