@@ -142,6 +142,8 @@ public class BattleManager : MonoBehaviour
                 switch(item.Key) {
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
+                        playerStats.StartForceField();
+                        playerStats.transform.parent.GetComponent<PlayerAnimator>().ForceFieldOn();
                         playerHUD.ActivateBlockUI();
                         playerHUD.blockText.BlockAnimation();
                         handManager.PlayCard(cardDisplay);
@@ -202,6 +204,7 @@ public class BattleManager : MonoBehaviour
                                     if(playerStats.getBlock() <= atkDmg) {
                                         atkDmg = atkDmg - playerStats.getBlock();
                                         playerStats.setBlock(0);
+                                        playerStats.StopForceField();
                                     }
                                     else {
                                         playerStats.setBlock(playerStats.getBlock() - atkDmg);

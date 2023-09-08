@@ -11,6 +11,7 @@ public class PlayerStats : MonoBehaviour
     public BattleManager battleManager;
     public ManaBar manaBar;
     public ParticleSystem particleSystem;
+    public GameObject forceField;
     public GameObject damageText;
     private int block = 0;
     private bool isDead = false;
@@ -18,6 +19,7 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         // for now, gameData is ONLY the Stats object
+        forceField.SetActive(false);
         stats = gdm.gameData;
         healthBar.SetMaxHealth(stats.maxHealth);
         manaBar.SetMana(stats.maxMana, stats.mana);
@@ -62,6 +64,14 @@ public class PlayerStats : MonoBehaviour
         particleSystem.Play();
     }
 
+    public void StartForceField() {
+        forceField.SetActive(true);
+    }
+
+    public void StopForceField() {
+        StartCoroutine(ForceFieldOff());
+    }
+
     public void addBlock(int block) {
         this.block += block;
         Debug.Log("block is: " + this.block);
@@ -78,6 +88,13 @@ public class PlayerStats : MonoBehaviour
 
     public void resetBlock() {
         block = 0;
+        StartCoroutine(ForceFieldOff());
+    }
+
+    private IEnumerator ForceFieldOff() {
+        transform.parent.GetComponent<PlayerAnimator>().ForceFieldOff();
+        yield return new WaitForSeconds(0.5f);
+        forceField.SetActive(false);
     }
 
     public bool hasBlock() {

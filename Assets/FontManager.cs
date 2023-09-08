@@ -23,4 +23,7 @@ public class FontManager : MonoBehaviour
     public TMP_FontAsset GetAsset() {
         return fontAsset;
     }
+
+    void Update() {
+    }
 }
