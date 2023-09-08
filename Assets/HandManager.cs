@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class HandManager : MonoBehaviour
 {
     public CardDisplay prefab;
+    public GameObject animatorPrefab;
     public DeckScript deck;
     private List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
@@ -38,7 +39,10 @@ public class HandManager : MonoBehaviour
             Card currentCard = deck.cardStack.Pop();
 
             prefab.card = currentCard;
-            CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            // GameObject animatorInstance = Instantiate(animatorPrefab, transform);
+            // animatorInstance.transform.GetChild(0).GetComponent<CardDisplay>().card = currentCard;
+            // CardDisplay cardInstance = animatorInstance.transform.GetChild(0).GetComponent<CardDisplay>();
+            CardDisplay cardInstance = Instantiate(prefab, transform);
             SetCardDefaultScalePos(cardInstance);
             handCards.Add(cardInstance);
         }
@@ -51,7 +55,7 @@ public class HandManager : MonoBehaviour
 
     private void SetCardDefaultScalePos(CardDisplay cardInstance) {
         cardInstance.transform.localPosition = new Vector3(0,0,0);
-        cardInstance.transform.SetParent(this.transform);
+        // cardInstance.transform.SetParent(this.transform);
         cardInstance.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
     }
 

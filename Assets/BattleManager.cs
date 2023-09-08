@@ -9,6 +9,7 @@ public class BattleManager : MonoBehaviour
     public GameObject targetManager;
     public GameObject hand;
     public GameObject battleEnemyManager;
+    public GameObject discardDeck;
     public GameOver gameOver;
     public BattleWon battleWon;
     public PlayerStats playerStats;

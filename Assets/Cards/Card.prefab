@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1225,6 +1225,7 @@ MonoBehaviour:
   nameText: {fileID: 107548890259919085}
   descriptionText: {fileID: 8438397898398758896}
   artworkImage: {fileID: 1426499380258694309}
+  cardBase: {fileID: 7759752635199266923}
   manaText: {fileID: 1854359182441760642}
   attackText: {fileID: 1032414715799037401}
   defendText: {fileID: 9036545539750760212}
@@ -1242,6 +1243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorFollowerPrefab: {fileID: 6828184117593541162, guid: 9b1bb8feb7ae6a247b8aacef9dde20c9, type: 3}
   expandSize: 1.8
+  cardAnimator: {fileID: 0}
 --- !u!61 &1791222834148064427
 BoxCollider2D:
   m_ObjectHideFlags: 0

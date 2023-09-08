@@ -13,9 +13,9 @@ public class CardMouseActions : MonoBehaviour
     public float expandSize;
     private Quaternion originalRotation;
     private Vector3 originalScale = new Vector3(2.39f, 3.46f, 0.00f);
-
     private Vector3 originalPosition;
     private Vector3 expandedScale;
+    public CardAnimator cardAnimator;
     private int siblingIndexOriginal;
     private bool allowStart = true;
     private bool allowEnd = false;
@@ -25,6 +25,8 @@ public class CardMouseActions : MonoBehaviour
     private bool followerCreated = false;
     private bool isHardReset = false;
     private bool isCancelled = false;
+    private bool isCardPlayed = false;
+
 
     Coroutine start;
     Coroutine stop;
@@ -32,6 +34,7 @@ public class CardMouseActions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+
         singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         originalPosition = transform.localPosition;
@@ -56,6 +59,7 @@ public class CardMouseActions : MonoBehaviour
                 }
                 isSelected = false;
                 isHardReset = true;
+                isCardPlayed = false;
                 // now shrink card back to where it was
                 ExitResetSequence();
             }
@@ -75,36 +79,142 @@ public class CardMouseActions : MonoBehaviour
                 else{
 
                     isSelected = false;
+                    isCardPlayed = true;
+                    if (cursorFollowerInstance != null) {
+                        cursorFollowerInstance.SetActive(false);
+                    }
+                    // add card play animation here
+                    StartCoroutine(CardPlayAnimation(0.05f));
 
                     Debug.Log("isFollowerPlaced: " + isFollowerPlaced);
-                    // perform actions for Target cards exit sequence
-                    if (isFollowerPlaced) {
-                            singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
-                        // if there is an existing target, perform the action
-                        if (singleTargetManager.GetTarget() != null) {
-                            Debug.Log("CardMouseActions: performing card action!");
-                            battleManager.TargetCardAction(cardDisplay);
-                        }
-                        else {
-                            // do nothing here
-                        }
-                        cursorFollowerInstance.SetActive(false);
-                        isFollowerPlaced = false;
-                    }
-                    else if (!isCancelled) {
-                        // play non target cards here
-                        battleManager.CardAction(cardDisplay);
-                    }
+                    StartCoroutine(CardPlayDelaySequence(1.5f));
+
+
                 }
             }
             else if (isHardReset) {
                 isSelected = false;
                 isHardReset = false;
                 isFollowerPlaced = false;
+                isCardPlayed = false;
             }
             isCancelled = false;
         }
 
+    }
+
+    private IEnumerator CardPlayDelaySequence(float time) {
+        yield return new WaitForSeconds(time);
+        // perform actions for Target cards exit sequence
+        if (isFollowerPlaced) {
+                singleTargetManager = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
+            // if there is an existing target, perform the action
+            if (singleTargetManager.GetTarget() != null) {
+                Debug.Log("CardMouseActions: performing card action!");
+                battleManager.TargetCardAction(cardDisplay);
+            }
+            else {
+                // do nothing here
+            }
+            isFollowerPlaced = false;
+        }
+        else if (!isCancelled) {
+            // play non target cards here
+            battleManager.CardAction(cardDisplay);
+        }
+        isCardPlayed = false;
+    }
+
+    private IEnumerator CardPlayAnimation(float timeInterval) {
+        Vector3 startingPosition = transform.position;
+        Debug.Log("startingPos: " + startingPosition);
+        transform.rotation = Quaternion.identity;
+        Vector3 startingScale = transform.localScale;
+        for (float i = 0f; i <= 1f; i+= timeInterval) {
+
+            // if it's not a target, shrink the scale back to original as well
+            if (!isTarget) {
+                transform.localScale = new Vector3(
+                    (Mathf.Lerp(startingScale.x, originalScale.x, Mathf.SmoothStep(0f, 1f, i))),
+                    (Mathf.Lerp(startingScale.y, originalScale.y, Mathf.SmoothStep(0f, 1f, i))),
+                    0
+                );
+            }
+
+            transform.position = new Vector3(
+                (Mathf.Lerp(startingPosition.x, 0f, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(startingPosition.y, 0f, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        // first half flip
+        startingScale = transform.localScale;
+        float flipSpeed = 0.1f;
+        for (float i = 0f; i <= 1f; i+= flipSpeed) {
+            transform.eulerAngles = new Vector3(
+                0f,
+                (Mathf.Lerp(0f, 90f, Mathf.SmoothStep(0f, 1f, i))),
+                0f
+            );
+            transform.localScale = new Vector3(
+                (Mathf.Lerp(startingScale.x, startingScale.x * 0.6f, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(startingScale.y, startingScale.y * 0.6f, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+        // change card sprite
+        cardDisplay.BaseToBack();
+        // second half flip
+        startingScale = transform.localScale;
+        for (float i = 0f; i <= 1f; i+= flipSpeed) {
+            transform.eulerAngles = new Vector3(
+                0f,
+                (Mathf.Lerp(90f, 180f, Mathf.SmoothStep(0f, 1f, i))),
+                0f
+            );
+            transform.localScale = new Vector3(
+                (Mathf.Lerp(startingScale.x, startingScale.x * 0.6f, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(startingScale.y, startingScale.y * 0.6f, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+        // move card to discard pile
+        Vector3 currentPosition = transform.position;
+        Vector3 discardPosition = battleManager.discardDeck.transform.position;
+        for (float i = 0f; i <= 1f; i+= timeInterval) {
+            transform.eulerAngles = new Vector3(
+                0f,
+                0f,
+                (Mathf.Lerp(0f, 45f, Mathf.SmoothStep(0f, 1f, i)))
+            );
+            transform.position = new Vector3(
+                (Mathf.Lerp(currentPosition.x, discardPosition.x, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(currentPosition.y, discardPosition.y, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+        // fade card
+        for (float i = 0f; i <= 1f; i+= 0.1f) {
+            cardDisplay.cardBase.color = new Color32(
+                255,
+                255,
+                255,
+                (byte) (Mathf.Lerp(1, 0, Mathf.SmoothStep(0f, 1f, i)) * 255)
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    private IEnumerator FlipAnimationSequence() {
+        cardAnimator.FlipAnimation1();
+        yield return new WaitForSeconds(cardAnimator.flipTime1);
+        cardDisplay.BaseToBack();
+        cardAnimator.FlipAnimation2();
     }
 
     public GameObject GetCursorFollowerInstance() {
@@ -113,13 +223,15 @@ public class CardMouseActions : MonoBehaviour
 
 
     private void ExitResetSequence() {
-        transform.SetSiblingIndex(siblingIndexOriginal);
-        if (start != null) {
-            StopCoroutine(start);
-            start = null;
+        if (!isCardPlayed) {
+            transform.SetSiblingIndex(siblingIndexOriginal);
+            if (start != null) {
+                StopCoroutine(start);
+                start = null;
+            }
+            Debug.Log("exit routine starting");
+            stop = StartCoroutine(ExitShrink());
         }
-        Debug.Log("exit routine starting");
-        stop = StartCoroutine(ExitShrink());
     }
 
     private void OnMouseExit() {
@@ -127,37 +239,40 @@ public class CardMouseActions : MonoBehaviour
     }
 
     private void OnMouseEnter() {
-            // check if it's a Target card first
-            cardDisplay = GetComponent<CardDisplay>();
-            isTarget = cardDisplay.card.isTarget;
-            Debug.Log("isTarget: " + isTarget);
 
-            // if it's a Target, instantiate the CursorFollower prefab
-            if(isTarget) {
-                if(followerCreated) {
-                    Destroy(cursorFollowerInstance);
-                    followerCreated = false;
+            if (!isCardPlayed) {
+                // check if it's a Target card first
+                cardDisplay = GetComponent<CardDisplay>();
+                isTarget = cardDisplay.card.isTarget;
+                Debug.Log("isTarget: " + isTarget);
+
+                // if it's a Target, instantiate the CursorFollower prefab
+                if(isTarget) {
+                    if(followerCreated) {
+                        Destroy(cursorFollowerInstance);
+                        followerCreated = false;
+                    }
+                    if(!followerCreated) {
+                        cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
+                        cursorFollowerInstance.SetActive(false);
+                        cursorFollowerInstance.transform.parent = transform.parent;
+                        cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+                        followerCreated = true;
+                    }
                 }
-                if(!followerCreated) {
-                    cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
-                    cursorFollowerInstance.SetActive(false);
-                    cursorFollowerInstance.transform.parent = transform.parent;
-                    cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
-                    followerCreated = true;
+
+                if (stop != null) {
+                    StopCoroutine(stop);
+                    stop = null;
                 }
-            }
+                originalPosition = transform.localPosition;
+                originalRotation = transform.rotation;
+                // originalScale = transform.localScale;
+                expandedScale = new Vector3(4.14f, 5.21f, 0.00f);
 
-            if (stop != null) {
-                StopCoroutine(stop);
-                stop = null;
+                Debug.Log("hover routine starting");
+                start = StartCoroutine(HoverPulse());
             }
-            originalPosition = transform.localPosition;
-            originalRotation = transform.rotation;
-            // originalScale = transform.localScale;
-            expandedScale = new Vector3(4.14f, 5.21f, 0.00f);
-
-            Debug.Log("hover routine starting");
-            start = StartCoroutine(HoverPulse());
     }
 
     private void OnMouseDrag() {

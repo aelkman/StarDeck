@@ -11,6 +11,7 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
     public Image artworkImage;
+    public Image cardBase;
     public TextMeshProUGUI manaText;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defendText;
@@ -33,5 +34,14 @@ public class CardDisplay : MonoBehaviour
         else {
             defendText.text = "";
         }
+    }
+
+    public void BaseToBack() {
+        var sprite  = Resources.Load<Sprite>("Card Back");
+        descriptionText.gameObject.SetActive(false);
+        manaText.gameObject.SetActive(false);
+        nameText.gameObject.SetActive(false);
+        artworkImage.gameObject.SetActive(false);
+        cardBase.sprite = sprite;
     }
 }

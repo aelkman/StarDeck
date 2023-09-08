@@ -64,14 +64,6 @@ public class PlayerStats : MonoBehaviour
         particleSystem.Play();
     }
 
-    public void StartForceField() {
-        forceField.SetActive(true);
-    }
-
-    public void StopForceField() {
-        StartCoroutine(ForceFieldOff());
-    }
-
     public void addBlock(int block) {
         this.block += block;
         Debug.Log("block is: " + this.block);
@@ -86,9 +78,21 @@ public class PlayerStats : MonoBehaviour
         return block;
     }
 
+    public void StartForceField() {
+        forceField.SetActive(true);
+    }
+
+    public void StopForceField() {
+        if (forceField.activeSelf) {
+            StartCoroutine(ForceFieldOff());
+        }
+    }
+
     public void resetBlock() {
         block = 0;
-        StartCoroutine(ForceFieldOff());
+        if (forceField.activeSelf) {
+            StartCoroutine(ForceFieldOff());
+        }
     }
 
     private IEnumerator ForceFieldOff() {
