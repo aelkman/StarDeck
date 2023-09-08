@@ -7,6 +7,7 @@ public class BattleEnemyManager : MonoBehaviour
     public BattleEnemyContainer prefab;
     public GameObject animatorPrefab;
     public List<string> enemyNames;
+    public BattleManager battleManager;
     private List<BattleEnemyContainer> battleEnemies;
     private List<GameObject> enemyInstances;
     // Start is called before the first frame update
@@ -42,6 +43,22 @@ public class BattleEnemyManager : MonoBehaviour
 
     public List<BattleEnemyContainer> GetEnemies() {
         return battleEnemies;
+    }
+
+    public void EnemyDeath(BattleEnemyContainer battleEnemy) {
+        battleEnemies.Remove(battleEnemy);
+        if(battleEnemies.Count == 0) {
+            StartCoroutine(DelayWin(2.0f));
+        }
+        else {
+            // if battle isn't over, remove the pending actions from the dead enemy
+            battleManager.RemoveEnemyActions(battleEnemy);
+        }
+    }
+
+    private IEnumerator DelayWin(float time) {
+        yield return new WaitForSeconds(time);
+        battleManager.BattleWin();
     }
 
     // Update is called once per frame

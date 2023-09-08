@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
     public Stats stats;
     public GameDataManager gdm;
     public HealthBar healthBar;
+    public BattleManager battleManager;
     public ManaBar manaBar;
     public ParticleSystem particleSystem;
     public GameObject damageText;
@@ -46,7 +47,14 @@ public class PlayerStats : MonoBehaviour
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (stats.health <= 0) {
             isDead = true;
+            transform.parent.GetComponent<PlayerAnimator>().DeathAnimation();
+            StartCoroutine(DelayGameOver(2.0f));
         }
+    }
+
+    private IEnumerator DelayGameOver(float time) {
+        yield return new WaitForSeconds(time);
+        battleManager.GameOver();
     }
 
     public IEnumerator particleDelay(float time) {

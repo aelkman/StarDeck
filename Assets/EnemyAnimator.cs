@@ -30,4 +30,8 @@ public class EnemyAnimator : MonoBehaviour
     public void TakeDamageAnimation() {
         animator.SetTrigger("TakeDamage");
     }
+
+    public void DeathAnimation() {
+        animator.SetTrigger("Death");
+    }
 }

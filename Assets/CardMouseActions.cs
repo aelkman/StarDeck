@@ -11,7 +11,6 @@ public class CardMouseActions : MonoBehaviour
     private SingleTargetManager singleTargetManager;
     private CardDisplay cardDisplay;
     public float expandSize;
-    private GameObject cursorFollower;
     private Quaternion originalRotation;
     private Vector3 originalScale = new Vector3(2.39f, 3.46f, 0.00f);
 
@@ -106,7 +105,12 @@ public class CardMouseActions : MonoBehaviour
             isCancelled = false;
         }
 
-}
+    }
+
+    public GameObject GetCursorFollowerInstance() {
+        return cursorFollowerInstance;
+    }
+
 
     private void ExitResetSequence() {
         transform.SetSiblingIndex(siblingIndexOriginal);

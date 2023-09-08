@@ -9,6 +9,8 @@ public class BattleManager : MonoBehaviour
     public GameObject targetManager;
     public GameObject hand;
     public GameObject battleEnemyManager;
+    public GameOver gameOver;
+    public BattleWon battleWon;
     public PlayerStats playerStats;
     public PlayerHUD playerHUD;
     private SingleTargetManager STM;
@@ -19,6 +21,8 @@ public class BattleManager : MonoBehaviour
     private List<BattleEnemyContainer> battleEnemies;
     private bool isPlayerTurn;
     private bool isHandDealt = false;
+    private bool isGameOver = false;
+    private bool isBattleWon = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,25 +38,37 @@ public class BattleManager : MonoBehaviour
     {
         battleEnemies = BEM.GetEnemies();
 
-        if(isPlayerTurn) {
-            // enable the TargetManager
-            // possibly use TargetManager prefab and SetActive(true)? 
-            // then disable TargetManager otherwise
-            if(!areEnemyActionsDecided) {
-                GenerateEnemyActions(battleEnemies);
-                areEnemyActionsDecided = true;
+        if(!isBattleWon) {
+            if(isPlayerTurn) {
+                // enable the TargetManager
+                // possibly use TargetManager prefab and SetActive(true)? 
+                // then disable TargetManager otherwise
+                if(!areEnemyActionsDecided) {
+                    GenerateEnemyActions(battleEnemies);
+                    areEnemyActionsDecided = true;
+                }
+                if (!isHandDealt) {
+                    handManager.DrawCards(5);
+                    isHandDealt = true;
+                }
             }
-            if (!isHandDealt) {
-                handManager.DrawCards(5);
-                isHandDealt = true;
+            else {
+                // enemy turn
+                // make GetEnemies filter out dead enemies
+                StartCoroutine(ProcessEnemyAction(battleEnemies));
+                isPlayerTurn = true;
             }
         }
-        else {
-            // enemy turn
-            // make GetEnemies filter out dead enemies
-            StartCoroutine(ProcessEnemyAction(battleEnemies));
-            isPlayerTurn = true;
-        }
+    }
+
+    public void GameOver() {
+        isGameOver = true;
+        gameOver.Initiate();
+    }
+
+    public void BattleWin() {
+        isBattleWon = true;
+        battleWon.Initiate();
     }
 
     public bool CheckCanAct(Card card) {
@@ -67,18 +83,52 @@ public class BattleManager : MonoBehaviour
         bool canAct = CheckCanAct(cardDisplay.card);
         Debug.Log("canAct: " + canAct);
         if(canAct) {
-            // now tell the HandManager to play and remove the card
-            int attackDmg = Int32.Parse(cardDisplay.card.actions["ATK"]);
+            // first, consume card mana
             playerStats.useMana(cardDisplay.card.manaCost);
-            if(attackDmg > 0) {
-                STM.GetTarget().TakeDamage(attackDmg);
-                STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
+
+            foreach(var item in cardDisplay.card.actions) {
+                switch(item.Key) {
+                    case "ATK":
+                        // now tell the HandManager to play and remove the card
+                        int attackDmg = Int32.Parse(cardDisplay.card.actions["ATK"]);
+                        if(attackDmg > 0) {
+                            STM.GetTarget().TakeDamage(attackDmg);
+                            STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
+                        }
+                        handManager.PlayCard(cardDisplay);
+                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                        break;
+                    case "ATK_MLT":
+                        List<int> multiAttack = cardDisplay.card.actions["ATK_MLT"].Split(',').Select(int.Parse).ToList();
+
+                        if (multiAttack.Count != 2) {
+                            throw new Exception("Invalid ATK_MLT attributes! Must be 2 ints comma separated.");
+                        }
+
+                        handManager.PlayCard(cardDisplay);
+
+                        // perform multi attack
+                        StartCoroutine(MultiAttack(0.5f, multiAttack));
+                        break;
+                    default:
+                        break;
+                }
             }
-            handManager.PlayCard(cardDisplay);
-            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
         }
         else {
             Debug.Log("card could not be played, not enough mana!");
+        }
+    }
+
+    private IEnumerator MultiAttack(float time, List<int> multiAttack) {
+        for (int i = 0; i < multiAttack[1]; i++) {
+            bool isLast = i == (multiAttack[1] - 1);
+            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+            STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
+            STM.GetTarget().TakeDamage(multiAttack[0]);
+            if (!isLast) {
+                yield return new WaitForSeconds(time);
+            }
         }
     }
 
@@ -116,49 +166,80 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void RemoveEnemyActions(BattleEnemyContainer battleEnemy) {
+        for (int i = 0; i < enemyActions.Count; i++) {
+        // foreach(Tuple<BattleEnemyContainer,Card> tuple in enemyActions) {
+            if(enemyActions[i].Item1 == battleEnemy) {
+                enemyActions.RemoveAt(i);
+                i--;
+            }
+        }
+    }
+
     private IEnumerator ProcessEnemyAction(List<BattleEnemyContainer> battleEnemies) {
         foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
-     
-            yield return new WaitForSecondsRealtime(0.75f);
+            if (!isGameOver) {
 
-            Card randomAction = enemyActionPair.Item2;
-            BattleEnemyContainer battleEnemy = enemyActionPair.Item1;
+                yield return new WaitForSecondsRealtime(0.75f);
 
-            if(randomAction.actions.ContainsKey("ATK_RND")) {
-                // parse ATK_RND params
-                List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
+                Card randomAction = enemyActionPair.Item2;
+                BattleEnemyContainer battleEnemy = enemyActionPair.Item1;
 
-                if (randAttack.Count != 2) {
-                    throw new Exception("Invalid ATK_RND attributes! Must be 2 ints comma separated.");
-                }
-                else {
-                    int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1]);
-                    atkDmg += battleEnemy.getAtkMod();
-                    Debug.Log("attack action: " + atkDmg);
-                    battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
-                    if(playerStats.hasBlock()) {
-                        if(playerStats.getBlock() <= atkDmg) {
-                            atkDmg = atkDmg - playerStats.getBlock();
-                            playerStats.setBlock(0);
-                        }
-                        else {
-                            playerStats.setBlock(playerStats.getBlock() - atkDmg);
-                            atkDmg = 0;
-                        }
+                foreach(var item in randomAction.actions) {
+                    switch(item.Key) {
+                        case "ATK_RND":
+                            List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
+
+                            if (randAttack.Count != 2) {
+                                throw new Exception("Invalid ATK_RND attributes! Must be 2 ints comma separated.");
+                            }
+                            else {
+                                int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
+                                atkDmg += battleEnemy.getAtkMod();
+                                Debug.Log("attack action: " + atkDmg);
+                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                if(playerStats.hasBlock()) {
+                                    if(playerStats.getBlock() <= atkDmg) {
+                                        atkDmg = atkDmg - playerStats.getBlock();
+                                        playerStats.setBlock(0);
+                                    }
+                                    else {
+                                        playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                        atkDmg = 0;
+                                    }
+                                }
+                                playerStats.takeDamage(atkDmg);
+                                playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                            }
+                            break;
+                        case "DEF_RND":
+                            List<int> randBlock = randomAction.actions["DEF_RND"].Split(',').Select(int.Parse).ToList();
+
+                            if (randBlock.Count != 2) {
+                                throw new Exception("Invalid DEF_RND attributes! Must be 2 ints comma separated.");
+                            }
+                            else {
+                                int block = UnityEngine.Random.Range(randBlock[0] - randBlock[1], randBlock[0] + randBlock[1] + 1);
+                                // to-do, defMod bonus
+                                // block += etc
+                                Debug.Log("block action: " + block);
+                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                battleEnemy.block += block;
+                            }
+                            break;
+                        case "ATK_MOD":
+                            int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
+                            Debug.Log("attack mod: " + atkMod.ToString());
+                            battleEnemy.modifyAtk(atkMod);
+                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
+                            break;
+                        default:
+                            break;
                     }
-                    playerStats.takeDamage(atkDmg);
-                    playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                 }
-            }
-            if(randomAction.actions.ContainsKey("ATK_MOD")) {
-                int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
-                Debug.Log("attack mod: " + atkMod.ToString());
-                battleEnemy.modifyAtk(atkMod);
-                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
-            }
 
-            yield return new WaitForSecondsRealtime(0.75f);
-
+                yield return new WaitForSecondsRealtime(0.75f);
+            }
         }
 
         EndTurn();

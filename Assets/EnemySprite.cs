@@ -51,8 +51,8 @@ public class EnemySprite : MonoBehaviour
 
     private void OnMouseExit() {
         // remove target from STM
-        STM.ClearTarget();
-        Debug.Log("cleared target to SingleTargetManager!");
+        // STM.ClearTarget();
+        // Debug.Log("cleared target to SingleTargetManager!");
         
         fade = 0f;
         spriteRenderer.material.SetFloat("_Transparency", fade);

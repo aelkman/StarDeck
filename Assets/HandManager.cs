@@ -88,7 +88,8 @@ public class HandManager : MonoBehaviour
         discardCards.Add(cardDisplay);
         // next, need to remove GO from the Hand
         cardDisplay.gameObject.SetActive(false);
-        Destroy(cardDisplay);
+        Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
+        Destroy(cardDisplay.gameObject);
         SortCards();
     }
 
@@ -98,7 +99,8 @@ public class HandManager : MonoBehaviour
             handCards.Remove(cardDisplay);
             discardCards.Add(cardDisplay);
             cardDisplay.gameObject.SetActive(false);
-            Destroy(cardDisplay);
+            Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
+            Destroy(cardDisplay.gameObject);
         }
     }
 
