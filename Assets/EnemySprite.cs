@@ -27,9 +27,12 @@ public class EnemySprite : MonoBehaviour
     }
 
     private void OnMouseEnter() {
-        // add target to STM
-        STM.SetTarget(transform.parent.GetComponent<BattleEnemyContainer>());
-        Debug.Log("set target to SingleTargetManager!");
+        Debug.Log("targetLocked: " + STM.targetLocked);
+        if(!STM.targetLocked) {
+            // add target to STM
+            STM.SetTarget(transform.parent.GetComponent<BattleEnemyContainer>());
+            Debug.Log("set target to SingleTargetManager!");
+        }
     }
 
     private void OnMouseOver() {
@@ -53,7 +56,9 @@ public class EnemySprite : MonoBehaviour
         // remove target from STM
         // STM.ClearTarget();
         // Debug.Log("cleared target to SingleTargetManager!");
-        
+        if(!STM.targetLocked) {
+            STM.SetTarget(null);
+        }
         fade = 0f;
         spriteRenderer.material.SetFloat("_Transparency", fade);
     }

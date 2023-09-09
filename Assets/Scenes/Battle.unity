@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 47920935}
   - component: {fileID: 47920936}
   m_Layer: 5
-  m_Name: Hand
+  m_Name: HandManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,6 +556,7 @@ MonoBehaviour:
   prefab: {fileID: 1885395679662133533, guid: e9c1999de121e3c4ca0e354d45fd2869, type: 3}
   animatorPrefab: {fileID: 6284634172651462950, guid: 8b14b945b99f23841b88eae9ba2f85da, type: 3}
   deck: {fileID: 1353751091}
+  handCards: []
 --- !u!1 &48762803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,6 +1212,8 @@ MonoBehaviour:
     maxHealth: 50
     mana: 3
     maxMana: 3
+    weapons:
+    - Blaster
 --- !u!4 &102014372
 Transform:
   m_ObjectHideFlags: 0
@@ -1414,6 +1417,8 @@ MonoBehaviour:
   hand: {fileID: 47920934}
   battleEnemyManager: {fileID: 1498668073}
   discardDeck: {fileID: 495656849}
+  laserAttack: {fileID: 1010244423109056898, guid: 3dcafbde17907e14e9a516136689db69, type: 3}
+  characterSpace: {fileID: 957436258}
   gameOver: {fileID: 806448428}
   battleWon: {fileID: 2076378929}
   playerStats: {fileID: 1019438604}
@@ -2346,6 +2351,8 @@ MonoBehaviour:
     maxHealth: 50
     mana: 3
     maxMana: 3
+    weapons:
+    - Blaster
   gdm: {fileID: 102014371}
   healthBar: {fileID: 162870887}
   shieldAnimator: {fileID: 1131601222}
@@ -2353,6 +2360,7 @@ MonoBehaviour:
   manaBar: {fileID: 1523617649}
   particleSystem: {fileID: 461871593}
   forceField: {fileID: 1131601218}
+  weapons: []
   damageText: {fileID: 6726857980285676640, guid: 4ca69269c11975b45991ead62eee9783, type: 3}
 --- !u!1 &1023457834
 GameObject:
@@ -8613,7 +8621,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 459, y: -68}
+  m_AnchoredPosition: {x: 459, y: -78}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1498668075

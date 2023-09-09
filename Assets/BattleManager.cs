@@ -10,6 +10,8 @@ public class BattleManager : MonoBehaviour
     public GameObject hand;
     public GameObject battleEnemyManager;
     public GameObject discardDeck;
+    public GameObject laserAttack;
+    public GameObject characterSpace;
     public GameOver gameOver;
     public BattleWon battleWon;
     public PlayerStats playerStats;
@@ -73,6 +75,9 @@ public class BattleManager : MonoBehaviour
     }
 
     public bool CheckCanAct(Card card) {
+        if(STM.GetTarget() == null && card.isTarget) {
+            return false;
+        }
         if(playerStats.stats.mana >= card.manaCost) {
             return true;
         }
@@ -90,31 +95,21 @@ public class BattleManager : MonoBehaviour
             foreach(var item in cardDisplay.card.actions) {
                 switch(item.Key) {
                     case "ATK":
-                        // now tell the HandManager to play and remove the card
-                        int attackDmg = Int32.Parse(cardDisplay.card.actions["ATK"]);
-                        if(attackDmg > 0) {
-                            STM.GetTarget().TakeDamage(attackDmg);
-                            STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
-                        }
-                        StartCoroutine(DelayCardDeletion(cardDisplay));
-                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-                        break;
-                    case "ATK_MLT":
-                        List<int> multiAttack = cardDisplay.card.actions["ATK_MLT"].Split(',').Select(int.Parse).ToList();
+                        List<int> multiAttack = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList();
 
                         if (multiAttack.Count != 2) {
-                            throw new Exception("Invalid ATK_MLT attributes! Must be 2 ints comma separated.");
+                            throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
                         }
 
                         StartCoroutine(DelayCardDeletion(cardDisplay));
 
                         // perform multi attack
-                        StartCoroutine(MultiAttack(0.5f, multiAttack));
+                        StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
                         break;
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
                         playerStats.StartForceField();
-                        playerStats.shieldAnimator.ShieldOn();
+                        // playerStats.shieldAnimator.ShieldOn();
                         playerHUD.ActivateBlockUI();
                         playerHUD.blockText.BlockAnimation();
                         StartCoroutine(DelayCardDeletion(cardDisplay));
@@ -129,16 +124,42 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private IEnumerator MultiAttack(float time, List<int> multiAttack) {
+    private IEnumerator LaserAttack(float timeInterval) {
+        Vector3 startingPosition = playerStats.transform.position;
+        Vector3 endPosition = STM.GetTarget().transform.position;
+        GameObject newLaser = Instantiate(laserAttack, startingPosition, Quaternion.identity, characterSpace.transform);
+        for (float i = 0; i < 1; i+=timeInterval){
+            newLaser.transform.position = new Vector3(
+                (Mathf.Lerp(startingPosition.x, endPosition.x, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(startingPosition.y, endPosition.y, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+        Destroy(newLaser);
+    }
+
+    private IEnumerator MultiAttack(float time, List<int> multiAttack, string cardType) {
         for (int i = 0; i < multiAttack[1]; i++) {
             bool isLast = i == (multiAttack[1] - 1);
             playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+            // weapon animations here
+            switch(cardType) {
+                case "Blaster":
+                    StartCoroutine(LaserAttack(0.1f));
+                    break;
+                default:
+                    break;
+            }
             STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
             STM.GetTarget().TakeDamage(multiAttack[0]);
             if (!isLast) {
                 yield return new WaitForSeconds(time);
             }
         }
+        // unlock the target
+        STM.SetTarget(null);
+        STM.targetLocked = false;
     }
 
     private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {

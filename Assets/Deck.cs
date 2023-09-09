@@ -11,11 +11,11 @@ public class DeckScript : MonoBehaviour
     {
         cardStack = new Stack<Card>();
         for(int i = 0; i < 5; i++) {
-            Card attackBasic =  Resources.Load<Card>("StartingDeck/Laser Pistol/Laser Shot");
+            Card attackBasic =  Resources.Load<Card>("StartingDeck/Blaster/Laser Shot");
             cardStack.Push(attackBasic);
         }
         for(int i = 0; i < 2; i++) {
-            Card doubleShot =  Resources.Load<Card>("StartingDeck/Laser Pistol/Double Shot");
+            Card doubleShot =  Resources.Load<Card>("StartingDeck/Blaster/Double Shot");
             cardStack.Push(doubleShot);
         }
         for(int i = 0; i < 5; i++) {

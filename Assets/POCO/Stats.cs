@@ -10,8 +10,11 @@ public class Stats {
     public int maxHealth;
     public int mana;
     public int maxMana;
+    public List<string> weapons;
 
     public Stats() {
+        weapons = new List<string>();
+        weapons.Add("Blaster");
         BaseStats baseStats = new BaseStats();
         Debug.Log("baseStatsHealth: " + baseStats.health);
         health = baseStats.health;

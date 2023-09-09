@@ -13,6 +13,8 @@ public class PlayerStats : MonoBehaviour
     public ManaBar manaBar;
     public ParticleSystem particleSystem;
     public GameObject forceField;
+    public List<string> weapons;
+    private ParticleSystem shieldSystem;
     public GameObject damageText;
     private int block = 0;
     private bool isDead = false;
@@ -20,7 +22,9 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         // for now, gameData is ONLY the Stats object
-        forceField.SetActive(false);
+        weapons = new List<string>();
+        shieldSystem = forceField.GetComponent<ParticleSystem>();
+        shieldSystem.Pause();
         stats = gdm.gameData;
         healthBar.SetMaxHealth(stats.maxHealth);
         manaBar.SetMana(stats.maxMana, stats.mana);
@@ -80,18 +84,21 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void StartForceField() {
-        forceField.SetActive(true);
+        if(shieldSystem.isPaused) {
+            shieldSystem.Play();
+            shieldAnimator.ShieldOn();
+        }
     }
 
     public void StopForceField() {
-        if (forceField.activeSelf) {
+        if (!shieldSystem.isPaused) {
             StartCoroutine(ShieldOff());
         }
     }
 
     public void resetBlock() {
         block = 0;
-        if (forceField.activeSelf) {
+        if (!shieldSystem.isPaused) {
             StartCoroutine(ShieldOff());
         }
     }
@@ -99,7 +106,7 @@ public class PlayerStats : MonoBehaviour
     private IEnumerator ShieldOff() {
         shieldAnimator.ShieldOff();
         yield return new WaitForSeconds(0.5f);
-        forceField.SetActive(false);
+        shieldSystem.Pause();
     }
 
     public bool hasBlock() {

@@ -10,7 +10,7 @@ public class HandManager : MonoBehaviour
     public CardDisplay prefab;
     public GameObject animatorPrefab;
     public DeckScript deck;
-    private List<CardDisplay> handCards;
+    public List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
     private CardDisplay currentCard;
     private RectTransform rectTransform;
@@ -103,8 +103,8 @@ public class HandManager : MonoBehaviour
             handCards.Remove(cardDisplay);
             discardCards.Add(cardDisplay);
             cardDisplay.gameObject.SetActive(false);
-            Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
-            Destroy(cardDisplay.gameObject);
+            DestroyImmediate(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
+            DestroyImmediate(cardDisplay.gameObject);
         }
     }
 
