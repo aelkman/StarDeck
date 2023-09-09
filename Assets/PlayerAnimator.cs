@@ -28,12 +28,4 @@ public class PlayerAnimator : MonoBehaviour
     public void DeathAnimation() {
         animator.SetTrigger("Death");
     }
-
-    public void ForceFieldOn() {
-        animator.SetTrigger("ForceFieldOn");
-    }
-
-    public void ForceFieldOff() {
-        animator.SetTrigger("ForceFieldOff");
-    }
 }

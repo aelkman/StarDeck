@@ -79,7 +79,7 @@ public class BattleManager : MonoBehaviour
         else return false;
     }
 
-    public void TargetCardAction(CardDisplay cardDisplay) {
+    public void CardAction(CardDisplay cardDisplay) {
         Debug.Log("battlemanager TargetCardAcion");
         bool canAct = CheckCanAct(cardDisplay.card);
         Debug.Log("canAct: " + canAct);
@@ -96,7 +96,7 @@ public class BattleManager : MonoBehaviour
                             STM.GetTarget().TakeDamage(attackDmg);
                             STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
                         }
-                        handManager.PlayCard(cardDisplay);
+                        StartCoroutine(DelayCardDeletion(cardDisplay));
                         playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                         break;
                     case "ATK_MLT":
@@ -106,10 +106,18 @@ public class BattleManager : MonoBehaviour
                             throw new Exception("Invalid ATK_MLT attributes! Must be 2 ints comma separated.");
                         }
 
-                        handManager.PlayCard(cardDisplay);
+                        StartCoroutine(DelayCardDeletion(cardDisplay));
 
                         // perform multi attack
                         StartCoroutine(MultiAttack(0.5f, multiAttack));
+                        break;
+                    case "DEF":
+                        playerStats.addBlock(Int32.Parse(item.Value));
+                        playerStats.StartForceField();
+                        playerStats.shieldAnimator.ShieldOn();
+                        playerHUD.ActivateBlockUI();
+                        playerHUD.blockText.BlockAnimation();
+                        StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
                     default:
                         break;
@@ -133,27 +141,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void CardAction(CardDisplay cardDisplay) {
-        Debug.Log("battleManager CardAction");
-        bool canAct = CheckCanAct(cardDisplay.card);
-        Debug.Log("canAct: " + canAct);
-        if(canAct) {
-            playerStats.useMana(cardDisplay.card.manaCost);
-            foreach(var item in cardDisplay.card.actions) {
-                switch(item.Key) {
-                    case "DEF":
-                        playerStats.addBlock(Int32.Parse(item.Value));
-                        playerStats.StartForceField();
-                        playerStats.transform.parent.GetComponent<PlayerAnimator>().ForceFieldOn();
-                        playerHUD.ActivateBlockUI();
-                        playerHUD.blockText.BlockAnimation();
-                        handManager.PlayCard(cardDisplay);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+    private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {
+        yield return new WaitForSeconds(1.5f);
+        handManager.PlayCard(cardDisplay);
     }
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {

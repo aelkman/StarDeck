@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
     public Stats stats;
     public GameDataManager gdm;
     public HealthBar healthBar;
+    public ShieldAnimator shieldAnimator;
     public BattleManager battleManager;
     public ManaBar manaBar;
     public ParticleSystem particleSystem;
@@ -84,19 +85,19 @@ public class PlayerStats : MonoBehaviour
 
     public void StopForceField() {
         if (forceField.activeSelf) {
-            StartCoroutine(ForceFieldOff());
+            StartCoroutine(ShieldOff());
         }
     }
 
     public void resetBlock() {
         block = 0;
         if (forceField.activeSelf) {
-            StartCoroutine(ForceFieldOff());
+            StartCoroutine(ShieldOff());
         }
     }
 
-    private IEnumerator ForceFieldOff() {
-        transform.parent.GetComponent<PlayerAnimator>().ForceFieldOff();
+    private IEnumerator ShieldOff() {
+        shieldAnimator.ShieldOff();
         yield return new WaitForSeconds(0.5f);
         forceField.SetActive(false);
     }

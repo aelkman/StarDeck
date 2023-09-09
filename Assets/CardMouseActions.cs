@@ -85,11 +85,7 @@ public class CardMouseActions : MonoBehaviour
                     }
                     // add card play animation here
                     StartCoroutine(CardPlayAnimation(0.05f));
-
-                    Debug.Log("isFollowerPlaced: " + isFollowerPlaced);
-                    StartCoroutine(CardPlayDelaySequence(1.5f));
-
-
+                    StartCoroutine(CardPlayDelaySequence(0.2f));
                 }
             }
             else if (isHardReset) {
@@ -111,7 +107,7 @@ public class CardMouseActions : MonoBehaviour
             // if there is an existing target, perform the action
             if (singleTargetManager.GetTarget() != null) {
                 Debug.Log("CardMouseActions: performing card action!");
-                battleManager.TargetCardAction(cardDisplay);
+                battleManager.CardAction(cardDisplay);
             }
             else {
                 // do nothing here
@@ -122,6 +118,7 @@ public class CardMouseActions : MonoBehaviour
             // play non target cards here
             battleManager.CardAction(cardDisplay);
         }
+        yield return new WaitForSeconds(1.3f);
         isCardPlayed = false;
     }
 
