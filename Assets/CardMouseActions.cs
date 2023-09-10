@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
-public class CardMouseActions : MonoBehaviour
+public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private HandManager handManager;
     private BattleManager battleManager;
@@ -13,7 +15,7 @@ public class CardMouseActions : MonoBehaviour
     private CardDisplay cardDisplay;
     public float expandSize;
     private Quaternion originalRotation;
-    private Vector3 originalScale = new Vector3(2.39f, 3.46f, 0.00f);
+    private Vector3 originalScale;
     private Vector3 originalPosition;
     private Vector3 expandedScale;
     public CardAnimator cardAnimator;
@@ -27,6 +29,9 @@ public class CardMouseActions : MonoBehaviour
     private bool isHardReset = false;
     private bool isCancelled = false;
     private bool isCardPlayed = false;
+    private bool isFirstEnter = true;
+    private bool expandAllowed = true;
+    private bool contractAllowed = true;
 
     Coroutine start;
     Coroutine stop;
@@ -37,11 +42,6 @@ public class CardMouseActions : MonoBehaviour
         handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
         STM = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-        originalPosition = transform.localPosition;
-        originalRotation = transform.rotation;
-        // originalScale = transform.localScale;
-        expandedScale = new Vector3(4.14f, 5.21f, 0.00f);
-
         siblingIndexOriginal = transform.GetSiblingIndex();
     }
 
@@ -246,46 +246,98 @@ public class CardMouseActions : MonoBehaviour
         }
     }
 
-    private void OnMouseExit() {
+    public void OnPointerEnter(PointerEventData pointerEventData)
+    {
+        if (!isCardPlayed) {
+            // check if it's a Target card first
+            cardDisplay = GetComponent<CardDisplay>();
+            isTarget = cardDisplay.card.isTarget;
+            // Debug.Log("isTarget: " + isTarget);
+
+            // if it's a Target, instantiate the CursorFollower prefab
+            if(isTarget) {
+                if(followerCreated) {
+                    Destroy(cursorFollowerInstance);
+                    followerCreated = false;
+                }
+                if(!followerCreated) {
+                    cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
+                    cursorFollowerInstance.SetActive(false);
+                    cursorFollowerInstance.transform.parent = transform.parent;
+                    cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+                    followerCreated = true;
+                }
+            }
+
+            if (stop != null) {
+                StopCoroutine(stop);
+                stop = null;
+            }
+            if (isFirstEnter) {
+                originalPosition = transform.localPosition;
+                originalRotation = transform.rotation;
+                originalScale = transform.localScale;
+                expandedScale = new Vector3(3.5f, 5.21f, 0.00f);
+                isFirstEnter = false;
+            }
+
+            // Debug.Log("hover routine starting");
+            if (expandAllowed) {
+                start = StartCoroutine(HoverPulse());
+            }
+        }
+    }
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
         ExitResetSequence();
     }
 
-    private void OnMouseEnter() {
+    // private void OnMouseExit() {
+        
+    //     ExitResetSequence();
+    // }
 
-            if (!isCardPlayed) {
-                // check if it's a Target card first
-                cardDisplay = GetComponent<CardDisplay>();
-                isTarget = cardDisplay.card.isTarget;
-                // Debug.Log("isTarget: " + isTarget);
+    // private void OnMouseOver() {
 
-                // if it's a Target, instantiate the CursorFollower prefab
-                if(isTarget) {
-                    if(followerCreated) {
-                        Destroy(cursorFollowerInstance);
-                        followerCreated = false;
-                    }
-                    if(!followerCreated) {
-                        cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
-                        cursorFollowerInstance.SetActive(false);
-                        cursorFollowerInstance.transform.parent = transform.parent;
-                        cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
-                        followerCreated = true;
-                    }
-                }
+    //         if (!isCardPlayed) {
+    //             // check if it's a Target card first
+    //             cardDisplay = GetComponent<CardDisplay>();
+    //             isTarget = cardDisplay.card.isTarget;
+    //             // Debug.Log("isTarget: " + isTarget);
 
-                if (stop != null) {
-                    StopCoroutine(stop);
-                    stop = null;
-                }
-                originalPosition = transform.localPosition;
-                originalRotation = transform.rotation;
-                // originalScale = transform.localScale;
-                expandedScale = new Vector3(4.14f, 5.21f, 0.00f);
+    //             // if it's a Target, instantiate the CursorFollower prefab
+    //             if(isTarget) {
+    //                 if(followerCreated) {
+    //                     Destroy(cursorFollowerInstance);
+    //                     followerCreated = false;
+    //                 }
+    //                 if(!followerCreated) {
+    //                     cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
+    //                     cursorFollowerInstance.SetActive(false);
+    //                     cursorFollowerInstance.transform.parent = transform.parent;
+    //                     cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+    //                     followerCreated = true;
+    //                 }
+    //             }
 
-                // Debug.Log("hover routine starting");
-                start = StartCoroutine(HoverPulse());
-            }
-    }
+    //             if (stop != null) {
+    //                 StopCoroutine(stop);
+    //                 stop = null;
+    //             }
+    //             if (isFirstEnter) {
+    //                 originalPosition = transform.localPosition;
+    //                 originalRotation = transform.rotation;
+    //                 originalScale = transform.localScale;
+    //                 expandedScale = new Vector3(3.5f, 5.21f, 0.00f);
+    //                 isFirstEnter = false;
+    //             }
+
+    //             // Debug.Log("hover routine starting");
+    //             if (expandAllowed) {
+    //                 start = StartCoroutine(HoverPulse());
+    //             }
+    //         }
+    // }
 
     private void OnMouseDrag() {
         isSelected = true;
@@ -317,28 +369,32 @@ public class CardMouseActions : MonoBehaviour
     }
 
     private IEnumerator HoverPulse() {
-        transform.SetSiblingIndex(10);
-        Vector3 newScale = originalScale;
-        transform.localScale = originalScale;
+        expandAllowed = false;
+        // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
+        // transform.SetSiblingIndex(10);
+        // Vector3 newScale = originalScale;
+        // transform.localScale = originalScale;
         // transform.rotation = Quaternion.identity;
 
         // for each other child, shift it over
         // children to the left, shift left
-        for (int j = 0; j < siblingIndexOriginal; j++) {
-            StartCoroutine(ShiftCardLeft(j));
-        }
-        // children to the right, shift right
-        for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
-            StartCoroutine(ShiftCardRight(j));
-        }
+        // for (int j = 0; j < siblingIndexOriginal; j++) {
+        //     StartCoroutine(ShiftCardLeft(j));
+        // }
+        // // children to the right, shift right
+        // for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
+        //     StartCoroutine(ShiftCardRight(j));
+        // }
 
+        Vector3 currentPosition = transform.localPosition;
+        Vector3 currentScale = transform.localScale;
         // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
-            transform.localPosition = new Vector3(originalPosition.x, Mathf.Lerp(originalPosition.y, 75, Mathf.SmoothStep(0, 1, i)), originalPosition.z);
+            transform.localPosition = new Vector3(currentPosition.x, Mathf.Lerp(currentPosition.y, 75, Mathf.SmoothStep(0, 1, i)), currentPosition.z);
 
             transform.localScale = new Vector3(
-                (Mathf.Lerp(originalScale.x, originalScale.x + expandSize, Mathf.SmoothStep(0f, 1f, i))),
-                (Mathf.Lerp(originalScale.y, originalScale.y + expandSize, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(currentScale.x, expandedScale.x, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(currentScale.y, expandedScale.y, Mathf.SmoothStep(0f, 1f, i))),
                 0
             );
 
@@ -347,6 +403,7 @@ public class CardMouseActions : MonoBehaviour
             // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
+
         // expandedScale = transform.localScale;
         // Debug.Log("expandedScale: " + expandedScale);
         // Debug.Log("expandedPosition: " + transform.localPosition);
@@ -360,7 +417,7 @@ public class CardMouseActions : MonoBehaviour
         Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
         for (float i = 0f; i <= 1f; i+= 0.1f) {
             handManager.handCards[index].transform.localPosition = new Vector3(
-                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x - 65, Mathf.SmoothStep(0, 1, i)),
+                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x - 155, Mathf.SmoothStep(0, 1, i)),
                 cardOriginalPos.y,
                 cardOriginalPos.z
             );
@@ -372,7 +429,7 @@ public class CardMouseActions : MonoBehaviour
         Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
         for (float i = 0f; i <= 1f; i+= 0.1f) {
             handManager.handCards[index].transform.localPosition = new Vector3(
-                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x + 65, Mathf.SmoothStep(0, 1, i)),
+                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x + 155, Mathf.SmoothStep(0, 1, i)),
                 cardOriginalPos.y,
                 cardOriginalPos.z
             );
@@ -381,30 +438,40 @@ public class CardMouseActions : MonoBehaviour
     }
 
     private IEnumerator ExitShrink() {
-        transform.localScale = expandedScale;
+        // transform.localScale = expandedScale;
         transform.rotation = originalRotation;
         // Debug.Log("rotation reset: " + originalRotation);
         // Debug.Log("original position: " + originalPosition);
-        transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
+        // transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
         // Debug.Log("expandedScaleFirst: " +  expandedScale);
 
-        for (int j = 0; j < siblingIndexOriginal; j++) {
-            StartCoroutine(ShiftCardRight(j));
-        }
-        // children to the right, shift right
-        for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
-            StartCoroutine(ShiftCardLeft(j));
-        }
+        // for (int j = 0; j < siblingIndexOriginal; j++) {
+        //     StartCoroutine(ShiftCardRight(j));
+        // }
+        // // children to the right, shift right
+        // for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
+        //     StartCoroutine(ShiftCardLeft(j));
+        // }
 
+        Vector3 currentPosition = transform.localPosition;
         for (float i = 0f; i <= 1f; i+= 0.1f) {
+
+            transform.localPosition = new Vector3(
+                currentPosition.x,
+                Mathf.Lerp(currentPosition.y, originalPosition.y, Mathf.SmoothStep(0, 1, i)),
+                currentPosition.z
+            );
+
             transform.localScale = new Vector3(
-                (Mathf.Lerp(expandedScale.x, expandedScale.x - expandSize, Mathf.SmoothStep(0f, 1f, i))),
-                (Mathf.Lerp(expandedScale.y, expandedScale.y - expandSize, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(expandedScale.x, originalScale.x, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(expandedScale.y, originalScale.y, Mathf.SmoothStep(0f, 1f, i))),
                 0
             );
 
             // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
+
+        expandAllowed = true;
     }
 }
