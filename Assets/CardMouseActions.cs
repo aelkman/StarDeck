@@ -16,7 +16,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public float expandSize;
     private Quaternion originalRotation;
     private Vector3 originalScale;
-    private Vector3 originalPosition;
+    public Vector3 originalPosition;
     private Vector3 expandedScale;
     public CardAnimator cardAnimator;
     private int siblingIndexOriginal;
@@ -118,26 +118,31 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         yield return new WaitForSeconds(time);
         // perform actions for Target cards exit sequence
         if (isFollowerPlaced) {
-                STM = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
-            // if there is an existing target, perform the action
-            if (STM.GetTarget() != null) {
-                // Debug.Log("CardMouseActions: performing card action!");
-                battleManager.CardAction(cardDisplay);
-            }
-            else {
-                // do nothing here
-            }
+            //     STM = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
+            // // if there is an existing target, perform the action
+            // if (STM.GetTarget() != null) {
+            //     // Debug.Log("CardMouseActions: performing card action!");
+            //     battleManager.CardAction(cardDisplay);
+            // }
+            // else {
+            //     // do nothing here
+            // }
             isFollowerPlaced = false;
         }
-        else if (!isCancelled) {
-            // play non target cards here
-            battleManager.CardAction(cardDisplay);
-        }
+
+        battleManager.CardAction(cardDisplay);
+
+        // else if (!isCancelled) {
+        //     // play non target cards here
+        //     battleManager.CardAction(cardDisplay);
+        // }
         yield return new WaitForSeconds(1.3f);
         isCardPlayed = false;
     }
 
     private IEnumerator CardPlayAnimation(float timeInterval) {
+        // play card now, but defer the deletion for 1.7s
+        handManager.PlayCard(cardDisplay);
         Vector3 startingPosition = transform.position;
         // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
@@ -264,6 +269,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                     cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
                     cursorFollowerInstance.SetActive(false);
                     cursorFollowerInstance.transform.parent = transform.parent;
+                    cursorFollowerInstance.transform.SetSiblingIndex(50);
                     cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
                     followerCreated = true;
                 }
@@ -371,7 +377,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private IEnumerator HoverPulse() {
         expandAllowed = false;
         // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
-        transform.SetSiblingIndex(10);
+        transform.SetSiblingIndex(20);
         // Vector3 newScale = originalScale;
         // transform.localScale = originalScale;
         // transform.rotation = Quaternion.identity;

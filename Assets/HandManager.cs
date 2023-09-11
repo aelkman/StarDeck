@@ -51,7 +51,7 @@ public class HandManager : MonoBehaviour
             SetCardDefaultScalePos(cardInstance);
             handCards.Add(cardInstance);
             SortCards();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -95,13 +95,21 @@ public class HandManager : MonoBehaviour
     }
 
     public void PlayCard(CardDisplay cardDisplay) {
+        // remove from hand, then sort
         handCards.Remove(cardDisplay);
+        SortCards();
+
+        // defer deletion & removal by 1.7s
+        StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
+    }
+
+    private IEnumerator DeferCardDeletion(CardDisplay cardDisplay, float time) {
+        yield return new WaitForSeconds(time);
         discardCards.Add(cardDisplay);
         // next, need to remove GO from the Hand
         cardDisplay.gameObject.SetActive(false);
         Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
         Destroy(cardDisplay.gameObject);
-        SortCards();
     }
 
     public void DiscardHand() {
@@ -118,7 +126,7 @@ public class HandManager : MonoBehaviour
     private void SortCards() {
 
         for(int i = 0; i < handCards.Count; i++) {
-            if (handCards.Count > 1) {
+            // if (handCards.Count > 1) {
                 float alignResult = i / (handCards.Count - 1.0f);
 
                 // if (handCards[i].transform.localPosition == null || handCards[i].transform.rotation == null) {
@@ -140,20 +148,25 @@ public class HandManager : MonoBehaviour
                 // else {
                     StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f));
                 // }
-            }
-            else {
-                handCards[i].transform.localPosition = new Vector3(0,0,0);
-            }
+            // }
+            // else {
+            //     handCards[i].transform.localPosition = new Vector3(0,0,0);
+            // }
         }
     }
 
     private IEnumerator MoveCard(CardDisplay cardDisplay, float alignResult, float timeInterval) {
 
+        int handCardsLess1 = handCards.Count - 1;
+        if(handCards.Count == 1) {
+            alignResult = 1;
+            handCardsLess1 = 2;
+        }
         for (float i = 0f; i <= 1f; i+= timeInterval) {
 
             Vector3 originalPosition = cardDisplay.transform.localPosition;
-            float newXPos = Mathf.Lerp(-xOffset/2 * (handCards.Count-1), xOffset/2 * (handCards.Count-1), alignResult);
-            float newYPos = -Mathf.Abs(Mathf.Lerp((handCards.Count-1) * -yOffset, (handCards.Count-1) * yOffset, InverseSmoothstep(alignResult)));
+            float newXPos = Mathf.Lerp(-xOffset/2 * (handCardsLess1), xOffset/2 * (handCardsLess1), alignResult);
+            float newYPos = -Mathf.Abs(Mathf.Lerp((handCardsLess1) * -yOffset, (handCardsLess1) * yOffset, InverseSmoothstep(alignResult)));
 
             cardDisplay.transform.localPosition = new Vector3(
                 (Mathf.Lerp(originalPosition.x, newXPos, Mathf.SmoothStep(0f, 1f, i))),
@@ -161,7 +174,7 @@ public class HandManager : MonoBehaviour
                 0
             );
 
-            float newRotationZ = Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, alignResult);
+            float newRotationZ = Mathf.Lerp((handCardsLess1) * zRot, (handCardsLess1) * -zRot, alignResult);
             Quaternion originalRotation = cardDisplay.transform.rotation;
 
             Debug.Log("newZRot: " + newRotationZ);
@@ -172,6 +185,8 @@ public class HandManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.01f);
         }
+
+        cardDisplay.gameObject.GetComponent<CardMouseActions>().originalPosition = cardDisplay.transform.localPosition;
     }
 
     private static float WrapAngle(float angle)

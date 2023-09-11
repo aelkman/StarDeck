@@ -101,7 +101,7 @@ public class BattleManager : MonoBehaviour
                             throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
                         }
 
-                        StartCoroutine(DelayCardDeletion(cardDisplay));
+                        // StartCoroutine(DelayCardDeletion(cardDisplay));
 
                         // perform multi attack
                         StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
@@ -112,7 +112,7 @@ public class BattleManager : MonoBehaviour
                         // playerStats.shieldAnimator.ShieldOn();
                         playerHUD.ActivateBlockUI();
                         playerHUD.blockText.BlockAnimation();
-                        StartCoroutine(DelayCardDeletion(cardDisplay));
+                        // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
                     default:
                         break;
@@ -162,10 +162,10 @@ public class BattleManager : MonoBehaviour
         STM.targetLocked = false;
     }
 
-    private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {
-        yield return new WaitForSeconds(1.5f);
-        handManager.PlayCard(cardDisplay);
-    }
+    // private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {
+    //     yield return new WaitForSeconds(1.5f);
+    //     handManager.PlayCard(cardDisplay);
+    // }
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
