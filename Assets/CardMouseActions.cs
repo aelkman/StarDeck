@@ -371,7 +371,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private IEnumerator HoverPulse() {
         expandAllowed = false;
         // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
-        // transform.SetSiblingIndex(10);
+        transform.SetSiblingIndex(10);
         // Vector3 newScale = originalScale;
         // transform.localScale = originalScale;
         // transform.rotation = Quaternion.identity;

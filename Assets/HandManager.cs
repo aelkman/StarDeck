@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class HandManager : MonoBehaviour
 {
     public CardDisplay prefab;
+    public GameObject drawingDeck;
     public GameObject animatorPrefab;
     public DeckScript deck;
     public List<CardDisplay> handCards;
@@ -26,6 +27,10 @@ public class HandManager : MonoBehaviour
 
 
     public void DrawCards(int cardCount) {
+        StartCoroutine(DrawCardsTimed(cardCount));
+    }
+
+    private IEnumerator DrawCardsTimed(int cardCount) {
         for(int i = 0; i < cardCount; i++) {
             if(deck.cardStack.Count < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {
@@ -42,11 +47,12 @@ public class HandManager : MonoBehaviour
             // GameObject animatorInstance = Instantiate(animatorPrefab, transform);
             // animatorInstance.transform.GetChild(0).GetComponent<CardDisplay>().card = currentCard;
             // CardDisplay cardInstance = animatorInstance.transform.GetChild(0).GetComponent<CardDisplay>();
-            CardDisplay cardInstance = Instantiate(prefab, transform);
+            CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
             SetCardDefaultScalePos(cardInstance);
             handCards.Add(cardInstance);
+            SortCards();
+            yield return new WaitForSeconds(0.5f);
         }
-        SortCards();
     }
 
     void Update() {
@@ -54,28 +60,29 @@ public class HandManager : MonoBehaviour
     }
 
     private void SetCardDefaultScalePos(CardDisplay cardInstance) {
-        cardInstance.transform.localPosition = new Vector3(0,0,0);
+        cardInstance.transform.position = drawingDeck.transform.position;
+        // cardInstance.transform.localPosition = new Vector3(0,0,0);
         // cardInstance.transform.SetParent(this.transform);
         cardInstance.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
     }
 
-    public void AddCard() {
-        Card currentCard = deck.cardStack.Pop();
+    // public void AddCard() {
+    //     Card currentCard = deck.cardStack.Pop();
         
 
-        // CardDisplay newCard = Instantiate(prefab);
-        // newCard.card = currentCard;
+    //     // CardDisplay newCard = Instantiate(prefab);
+    //     // newCard.card = currentCard;
 
-        prefab.card = currentCard;
-        CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-        SetCardDefaultScalePos(cardInstance);
-        Debug.Log(cardInstance.transform.parent);
+    //     prefab.card = currentCard;
+    //     CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+    //     SetCardDefaultScalePos(cardInstance);
+    //     Debug.Log(cardInstance.transform.parent);
         
-        // cardPrefab.card = currentCard;
-        Debug.Log(cardInstance);
-        handCards.Add(cardInstance);
-        SortCards();
-    }
+    //     // cardPrefab.card = currentCard;
+    //     Debug.Log(cardInstance);
+    //     handCards.Add(cardInstance);
+    //     SortCards();
+    // }
 
     public List<CardDisplay> GetDiscards() {
         return discardCards;
@@ -113,23 +120,66 @@ public class HandManager : MonoBehaviour
         for(int i = 0; i < handCards.Count; i++) {
             if (handCards.Count > 1) {
                 float alignResult = i / (handCards.Count - 1.0f);
-                // Debug.Log("alignResult: " + alignResult);
-                Vector3 newPosition = handCards[i].transform.localPosition;
-                // Debug.Log("newPosition: " + newPosition);
-                // rectTransform = GetComponent<RectTransform>();
-                handCards[i].transform.rotation = Quaternion.identity;
-                // Debug.Log(Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, Mathf.SmoothStep(0.0f, 1.0f, alignResult)));
-                handCards[i].transform.Rotate(0.0f, 0.0f, Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, alignResult), Space.Self);
-                // newPosition.x = ((rectTransform.rect.width + this.transform.position.x) * alignResult) - rectTransform.rect.width/2;
-                newPosition.x = Mathf.Lerp(-xOffset/2 * (handCards.Count-1), xOffset/2 * (handCards.Count-1), alignResult);
-                newPosition.y = -Mathf.Abs(Mathf.Lerp((handCards.Count-1) * -yOffset, (handCards.Count-1) * yOffset, InverseSmoothstep(alignResult)));
-                // newPosition.z = i;
-                // Debug.Log("y position: " + newPosition.y);
-                handCards[i].transform.localPosition = newPosition;
+
+                // if (handCards[i].transform.localPosition == null || handCards[i].transform.rotation == null) {
+
+                //     // Debug.Log("alignResult: " + alignResult);
+                //     Vector3 newPosition = handCards[i].transform.localPosition;
+                //     // Debug.Log("newPosition: " + newPosition);
+                //     // rectTransform = GetComponent<RectTransform>();
+                //     handCards[i].transform.rotation = Quaternion.identity;
+                //     // Debug.Log(Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, Mathf.SmoothStep(0.0f, 1.0f, alignResult)));
+                //     handCards[i].transform.Rotate(0.0f, 0.0f, Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, alignResult), Space.Self);
+                //     // newPosition.x = ((rectTransform.rect.width + this.transform.position.x) * alignResult) - rectTransform.rect.width/2;
+                //     newPosition.x = Mathf.Lerp(-xOffset/2 * (handCards.Count-1), xOffset/2 * (handCards.Count-1), alignResult);
+                //     newPosition.y = -Mathf.Abs(Mathf.Lerp((handCards.Count-1) * -yOffset, (handCards.Count-1) * yOffset, InverseSmoothstep(alignResult)));
+                //     // newPosition.z = i;
+                //     // Debug.Log("y position: " + newPosition.y);
+                //     handCards[i].transform.localPosition = newPosition;
+                // }
+                // else {
+                    StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f));
+                // }
             }
             else {
                 handCards[i].transform.localPosition = new Vector3(0,0,0);
             }
         }
+    }
+
+    private IEnumerator MoveCard(CardDisplay cardDisplay, float alignResult, float timeInterval) {
+
+        for (float i = 0f; i <= 1f; i+= timeInterval) {
+
+            Vector3 originalPosition = cardDisplay.transform.localPosition;
+            float newXPos = Mathf.Lerp(-xOffset/2 * (handCards.Count-1), xOffset/2 * (handCards.Count-1), alignResult);
+            float newYPos = -Mathf.Abs(Mathf.Lerp((handCards.Count-1) * -yOffset, (handCards.Count-1) * yOffset, InverseSmoothstep(alignResult)));
+
+            cardDisplay.transform.localPosition = new Vector3(
+                (Mathf.Lerp(originalPosition.x, newXPos, Mathf.SmoothStep(0f, 1f, i))),
+                (Mathf.Lerp(originalPosition.y, newYPos, Mathf.SmoothStep(0f, 1f, i))),
+                0
+            );
+
+            float newRotationZ = Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, alignResult);
+            Quaternion originalRotation = cardDisplay.transform.rotation;
+
+            Debug.Log("newZRot: " + newRotationZ);
+            Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
+
+            Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), newRotationZ, Mathf.SmoothStep(0, 1, i)));
+            cardDisplay.transform.eulerAngles = currentAngle;
+
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    private static float WrapAngle(float angle)
+    {
+        angle%=360;
+        if(angle >180)
+            return angle - 360;
+
+        return angle;
     }
 }
