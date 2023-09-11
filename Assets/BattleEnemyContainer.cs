@@ -10,6 +10,8 @@ public class BattleEnemyContainer : MonoBehaviour
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem particleSystem;
+    public ParticleSystem shieldSystem;
+    public ShieldAnimator shieldAnimator;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public EnemySprite enemySprite;
@@ -26,6 +28,7 @@ public class BattleEnemyContainer : MonoBehaviour
 
     void Start()
     {
+        shieldSystem.Stop();
         battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
         actions = Resources.LoadAll("BattleEnemies/" + battleEnemy.name + "/Actions");
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
@@ -59,7 +62,7 @@ public class BattleEnemyContainer : MonoBehaviour
         }
         else {
             damage -= block;
-            block = 0;
+            resetBlock();
         }
         health -= damage;
         StartCoroutine(particleDelay(0.2f));
@@ -105,5 +108,31 @@ public class BattleEnemyContainer : MonoBehaviour
 
     public int getAtkMod() {
         return atkMod;
+    }
+
+    public void addBlock(int block) {
+        this.block += block;
+        Debug.Log("block is: " + this.block);
+    }
+
+    public void setBlock(int block) {
+        this.block = block;
+        Debug.Log("block is: " + this.block);
+    }
+
+    public int getBlock() {
+        return block;
+    }
+ 
+    public void resetBlock() {
+        block = 0;
+        shieldAnimator.StopForceField();
+    }
+
+    public bool hasBlock() {
+        if(block > 0) {
+            return true;
+        }
+        else return false;
     }
 }

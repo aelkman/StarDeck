@@ -108,8 +108,7 @@ public class BattleManager : MonoBehaviour
                         break;
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
-                        playerStats.StartForceField();
-                        // playerStats.shieldAnimator.ShieldOn();
+                        playerStats.shieldAnimator.StartForceField();
                         playerHUD.ActivateBlockUI();
                         playerHUD.blockText.BlockAnimation();
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
@@ -216,7 +215,7 @@ public class BattleManager : MonoBehaviour
                                     if(playerStats.getBlock() <= atkDmg) {
                                         atkDmg = atkDmg - playerStats.getBlock();
                                         playerStats.setBlock(0);
-                                        playerStats.StopForceField();
+                                        playerStats.shieldAnimator.StopForceField();
                                     }
                                     else {
                                         playerStats.setBlock(playerStats.getBlock() - atkDmg);
@@ -238,8 +237,8 @@ public class BattleManager : MonoBehaviour
                                 // to-do, defMod bonus
                                 // block += etc
                                 Debug.Log("block action: " + block);
-                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
-                                battleEnemy.block += block;
+                                battleEnemy.shieldAnimator.StartForceField();
+                                battleEnemy.addBlock(block);
                             }
                             break;
                         case "ATK_MOD":
@@ -262,6 +261,7 @@ public class BattleManager : MonoBehaviour
 
     public void EndPlayerTurn() {
         isPlayerTurn = false;
+        ResetEnemyShields();
     }
 
     public void EndTurn() {
@@ -271,5 +271,11 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(5);
         playerStats.resetMana();
         playerStats.resetBlock();
+    }
+
+    public void ResetEnemyShields() {
+        foreach(BattleEnemyContainer battleEnemy in BEM.GetBattleEnemies()) {
+            battleEnemy.resetBlock();
+        }
     }
 }

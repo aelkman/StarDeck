@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     public ShieldAnimator shieldAnimator;
     public BattleManager battleManager;
     public ManaBar manaBar;
-    public ParticleSystem particleSystem;
+    public ParticleSystem damageParticles;
     public GameObject forceField;
     public List<string> weapons;
     private ParticleSystem shieldSystem;
@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour
         // for now, gameData is ONLY the Stats object
         weapons = new List<string>();
         shieldSystem = forceField.GetComponent<ParticleSystem>();
-        shieldSystem.Pause();
+        shieldSystem.Stop();
         stats = gdm.gameData;
         healthBar.SetMaxHealth(stats.maxHealth);
         manaBar.SetMana(stats.maxMana, stats.mana);
@@ -48,7 +48,7 @@ public class PlayerStats : MonoBehaviour
 
     public void takeDamage(int damage) {
         stats.health -= damage;
-        StartCoroutine(particleDelay(.2f));
+        StartCoroutine(damageAnimation(.2f));
         healthBar.SetHealth(stats.health);
         GameObject damageTextInstance = Instantiate(damageText, transform);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
@@ -64,9 +64,9 @@ public class PlayerStats : MonoBehaviour
         battleManager.GameOver();
     }
 
-    public IEnumerator particleDelay(float time) {
+    public IEnumerator damageAnimation(float time) {
         yield return new WaitForSeconds(time);
-        particleSystem.Play();
+        damageParticles.Play();
     }
 
     public void addBlock(int block) {
@@ -82,31 +82,10 @@ public class PlayerStats : MonoBehaviour
     public int getBlock() {
         return block;
     }
-
-    public void StartForceField() {
-        if(shieldSystem.isPaused) {
-            shieldSystem.Play();
-            shieldAnimator.ShieldOn();
-        }
-    }
-
-    public void StopForceField() {
-        if (!shieldSystem.isPaused) {
-            StartCoroutine(ShieldOff());
-        }
-    }
-
+ 
     public void resetBlock() {
         block = 0;
-        if (!shieldSystem.isPaused) {
-            StartCoroutine(ShieldOff());
-        }
-    }
-
-    private IEnumerator ShieldOff() {
-        shieldAnimator.ShieldOff();
-        yield return new WaitForSeconds(0.5f);
-        shieldSystem.Pause();
+        shieldAnimator.StopForceField();
     }
 
     public bool hasBlock() {

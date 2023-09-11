@@ -66,4 +66,8 @@ public class BattleEnemyManager : MonoBehaviour
     {
         
     }
+
+    public List<BattleEnemyContainer> GetBattleEnemies() {
+        return battleEnemies;
+    }
 }
