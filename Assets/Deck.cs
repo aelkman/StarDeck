@@ -11,16 +11,20 @@ public class DeckScript : MonoBehaviour
     {
         cardStack = new Stack<Card>();
         for(int i = 0; i < 5; i++) {
-            Card attackBasic =  Resources.Load<Card>("StartingDeck/Blaster/Laser Shot");
-            cardStack.Push(attackBasic);
+            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Laser Shot");
+            cardStack.Push(card);
         }
         for(int i = 0; i < 2; i++) {
-            Card doubleShot =  Resources.Load<Card>("StartingDeck/Blaster/Double Shot");
-            cardStack.Push(doubleShot);
+            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Double Shot");
+            cardStack.Push(card);
+        }
+        for(int i = 0; i < 2; i++) {
+            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Shock Blast");
+            cardStack.Push(card);
         }
         for(int i = 0; i < 5; i++) {
-            Card defendBasic =  Resources.Load<Card>("StartingDeck/Defend");
-            cardStack.Push(defendBasic);
+            Card card =  Resources.Load<Card>("StartingDeck/Defend");
+            cardStack.Push(card);
         }
         Shuffle();
         Debug.Log("you have " + cardStack.Count + " cards in the deck");

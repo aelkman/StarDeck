@@ -63,7 +63,7 @@ public class HandManager : MonoBehaviour
         cardInstance.transform.position = drawingDeck.transform.position;
         // cardInstance.transform.localPosition = new Vector3(0,0,0);
         // cardInstance.transform.SetParent(this.transform);
-        cardInstance.transform.localScale = new Vector3(2.3879f, 3.462455f, 0f);
+        cardInstance.transform.localScale = new Vector3(2.768f, 3.462455f, 0f);
     }
 
     // public void AddCard() {

@@ -34,4 +34,8 @@ public class EnemyAnimator : MonoBehaviour
     public void DeathAnimation() {
         animator.SetTrigger("Death");
     }
+
+    public void ShockAnimation() {
+        animator.SetTrigger("Shock");
+    }
 }

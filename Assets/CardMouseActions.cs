@@ -32,6 +32,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private bool isFirstEnter = true;
     private bool expandAllowed = true;
     private bool contractAllowed = true;
+    public float scaleMultiplier = 1.6f;
 
     Coroutine start;
     Coroutine stop;
@@ -130,7 +131,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             isFollowerPlaced = false;
         }
 
-        battleManager.CardAction(cardDisplay);
+        StartCoroutine(battleManager.CardAction(cardDisplay));
 
         // else if (!isCancelled) {
         //     // play non target cards here
@@ -283,7 +284,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 originalPosition = transform.localPosition;
                 originalRotation = transform.rotation;
                 originalScale = transform.localScale;
-                expandedScale = new Vector3(3.5f, 5.21f, 0.00f);
+                expandedScale = new Vector3(originalScale.x * scaleMultiplier, originalScale.y * scaleMultiplier, 0.00f);
                 isFirstEnter = false;
             }
 

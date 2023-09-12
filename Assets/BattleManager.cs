@@ -84,7 +84,7 @@ public class BattleManager : MonoBehaviour
         else return false;
     }
 
-    public void CardAction(CardDisplay cardDisplay) {
+    public IEnumerator CardAction(CardDisplay cardDisplay) {
         Debug.Log("battlemanager TargetCardAcion");
         bool canAct = CheckCanAct(cardDisplay.card);
         Debug.Log("canAct: " + canAct);
@@ -104,7 +104,25 @@ public class BattleManager : MonoBehaviour
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
 
                         // perform multi attack
-                        StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
+                        // StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
+                        string cardType = cardDisplay.card.type;
+
+                        for (int i = 0; i < multiAttack[1]; i++) {
+                            bool isLast = i == (multiAttack[1] - 1);
+                            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                            // weapon animations here
+                            switch(cardType) {
+                                case "Blaster":
+                                    StartCoroutine(LaserAttack(0.1f));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            STM.GetTarget().TakeDamage(multiAttack[0]);
+                            if (!isLast) {
+                                yield return new WaitForSeconds(0.5f);
+                            }
+                        }
                         break;
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
@@ -113,10 +131,19 @@ public class BattleManager : MonoBehaviour
                         playerHUD.blockText.BlockAnimation();
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
+                    case "STN":
+                        STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
+                        Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
+                        STM.GetTarget().ShockAnimation();
+                        // StartCoroutine(DelayCardDeletion(cardDisplay));
+                        break;
                     default:
                         break;
                 }
             }
+            // unlock the target
+            STM.SetTarget(null);
+            STM.targetLocked = false;
         }
         else {
             Debug.Log("card could not be played, not enough mana!");
@@ -138,28 +165,27 @@ public class BattleManager : MonoBehaviour
         Destroy(newLaser);
     }
 
-    private IEnumerator MultiAttack(float time, List<int> multiAttack, string cardType) {
-        for (int i = 0; i < multiAttack[1]; i++) {
-            bool isLast = i == (multiAttack[1] - 1);
-            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-            // weapon animations here
-            switch(cardType) {
-                case "Blaster":
-                    StartCoroutine(LaserAttack(0.1f));
-                    break;
-                default:
-                    break;
-            }
-            STM.GetTarget().transform.parent.GetComponent<EnemyAnimator>().TakeDamageAnimation();
-            STM.GetTarget().TakeDamage(multiAttack[0]);
-            if (!isLast) {
-                yield return new WaitForSeconds(time);
-            }
-        }
-        // unlock the target
-        STM.SetTarget(null);
-        STM.targetLocked = false;
-    }
+    // private IEnumerator MultiAttack(float time, List<int> multiAttack, string cardType) {
+    //     for (int i = 0; i < multiAttack[1]; i++) {
+    //         bool isLast = i == (multiAttack[1] - 1);
+    //         playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+    //         // weapon animations here
+    //         switch(cardType) {
+    //             case "Blaster":
+    //                 StartCoroutine(LaserAttack(0.1f));
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //         STM.GetTarget().TakeDamage(multiAttack[0]);
+    //         if (!isLast) {
+    //             yield return new WaitForSeconds(time);
+    //         }
+    //     }
+    //     // unlock the target
+    //     STM.SetTarget(null);
+    //     STM.targetLocked = false;
+    // }
 
     // private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {
     //     yield return new WaitForSeconds(1.5f);
@@ -198,57 +224,64 @@ public class BattleManager : MonoBehaviour
                 Card randomAction = enemyActionPair.Item2;
                 BattleEnemyContainer battleEnemy = enemyActionPair.Item1;
 
-                foreach(var item in randomAction.actions) {
-                    switch(item.Key) {
-                        case "ATK_RND":
-                            List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
+                if (battleEnemy.stunnedTurns > 0) {
+                    // play stun animation
+                    battleEnemy.ShockAnimation();
+                    battleEnemy.stunnedTurns -= 1; 
+                }
+                else {
+                    foreach(var item in randomAction.actions) {
+                        switch(item.Key) {
+                            case "ATK_RND":
+                                List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
 
-                            if (randAttack.Count != 2) {
-                                throw new Exception("Invalid ATK_RND attributes! Must be 2 ints comma separated.");
-                            }
-                            else {
-                                int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
-                                atkDmg += battleEnemy.getAtkMod();
-                                Debug.Log("attack action: " + atkDmg);
-                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
-                                if(playerStats.hasBlock()) {
-                                    if(playerStats.getBlock() <= atkDmg) {
-                                        atkDmg = atkDmg - playerStats.getBlock();
-                                        playerStats.setBlock(0);
-                                        playerStats.shieldAnimator.StopForceField();
-                                    }
-                                    else {
-                                        playerStats.setBlock(playerStats.getBlock() - atkDmg);
-                                        atkDmg = 0;
-                                    }
+                                if (randAttack.Count != 2) {
+                                    throw new Exception("Invalid ATK_RND attributes! Must be 2 ints comma separated.");
                                 }
-                                playerStats.takeDamage(atkDmg);
-                                playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
-                            }
-                            break;
-                        case "DEF_RND":
-                            List<int> randBlock = randomAction.actions["DEF_RND"].Split(',').Select(int.Parse).ToList();
+                                else {
+                                    int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
+                                    atkDmg += battleEnemy.getAtkMod();
+                                    Debug.Log("attack action: " + atkDmg);
+                                    battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                    if(playerStats.hasBlock()) {
+                                        if(playerStats.getBlock() <= atkDmg) {
+                                            atkDmg = atkDmg - playerStats.getBlock();
+                                            playerStats.setBlock(0);
+                                            playerStats.shieldAnimator.StopForceField();
+                                        }
+                                        else {
+                                            playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                            atkDmg = 0;
+                                        }
+                                    }
+                                    playerStats.takeDamage(atkDmg);
+                                    playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                                }
+                                break;
+                            case "DEF_RND":
+                                List<int> randBlock = randomAction.actions["DEF_RND"].Split(',').Select(int.Parse).ToList();
 
-                            if (randBlock.Count != 2) {
-                                throw new Exception("Invalid DEF_RND attributes! Must be 2 ints comma separated.");
-                            }
-                            else {
-                                int block = UnityEngine.Random.Range(randBlock[0] - randBlock[1], randBlock[0] + randBlock[1] + 1);
-                                // to-do, defMod bonus
-                                // block += etc
-                                Debug.Log("block action: " + block);
-                                battleEnemy.shieldAnimator.StartForceField();
-                                battleEnemy.addBlock(block);
-                            }
-                            break;
-                        case "ATK_MOD":
-                            int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
-                            Debug.Log("attack mod: " + atkMod.ToString());
-                            battleEnemy.modifyAtk(atkMod);
-                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
-                            break;
-                        default:
-                            break;
+                                if (randBlock.Count != 2) {
+                                    throw new Exception("Invalid DEF_RND attributes! Must be 2 ints comma separated.");
+                                }
+                                else {
+                                    int block = UnityEngine.Random.Range(randBlock[0] - randBlock[1], randBlock[0] + randBlock[1] + 1);
+                                    // to-do, defMod bonus
+                                    // block += etc
+                                    Debug.Log("block action: " + block);
+                                    battleEnemy.shieldAnimator.StartForceField();
+                                    battleEnemy.addBlock(block);
+                                }
+                                break;
+                            case "ATK_MOD":
+                                int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
+                                Debug.Log("attack mod: " + atkMod.ToString());
+                                battleEnemy.modifyAtk(atkMod);
+                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
 

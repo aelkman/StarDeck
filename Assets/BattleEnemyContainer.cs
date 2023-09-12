@@ -11,6 +11,7 @@ public class BattleEnemyContainer : MonoBehaviour
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem particleSystem;
     public ParticleSystem shieldSystem;
+    public ShockPlayer shockPlayer;
     public ShieldAnimator shieldAnimator;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
@@ -18,16 +19,19 @@ public class BattleEnemyContainer : MonoBehaviour
     private Material material;
     public HealthBar healthBar;
     private Object[] actions;
+    private EnemyAnimator enemyAnimator;
     private int atkMod;
     private bool isTargeted = false;
     private int maxHealth;
     private int health;
     public int block = 0;
     public bool isDead = false;
+    public int stunnedTurns = 0;
     // Start is called before the first frame update
 
     void Start()
     {
+        enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
         battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
         actions = Resources.LoadAll("BattleEnemies/" + battleEnemy.name + "/Actions");
@@ -56,8 +60,13 @@ public class BattleEnemyContainer : MonoBehaviour
     // }
 
     public void TakeDamage(int damage) {
+        enemyAnimator.TakeDamageAnimation();
+
         if (block >= damage) {
             block -= damage;
+            if (block == 0) {
+                resetBlock();
+            }
             damage = 0;
         }
         else {
@@ -72,7 +81,7 @@ public class BattleEnemyContainer : MonoBehaviour
         if (health <= 0) {
             // death animation here, disable the NextAction as well
             nextActionText.SetText("");
-            transform.parent.GetComponent<EnemyAnimator>().DeathAnimation();
+            enemyAnimator.DeathAnimation();
             battleEnemyManager.EnemyDeath(this);
             isDead = true;
         }
@@ -134,5 +143,10 @@ public class BattleEnemyContainer : MonoBehaviour
             return true;
         }
         else return false;
+    }
+
+    public void ShockAnimation() {
+        shockPlayer.StartShock();
+        enemyAnimator.ShockAnimation();
     }
 }
