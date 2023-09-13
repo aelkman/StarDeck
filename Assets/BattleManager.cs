@@ -15,7 +15,6 @@ public class BattleManager : MonoBehaviour
     public GameOver gameOver;
     public BattleWon battleWon;
     public PlayerStats playerStats;
-    public PlayerHUD playerHUD;
     private SingleTargetManager STM;
     private HandManager handManager;
     private BattleEnemyManager BEM;
@@ -127,8 +126,6 @@ public class BattleManager : MonoBehaviour
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
                         playerStats.shieldAnimator.StartForceField();
-                        playerHUD.ActivateBlockUI();
-                        playerHUD.blockText.BlockAnimation();
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
                     case "STN":
@@ -136,6 +133,9 @@ public class BattleManager : MonoBehaviour
                         Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
                         STM.GetTarget().ShockAnimation();
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
+                        break;
+                    case "WEAK":
+                        playerStats.AddWeak(Int32.Parse(item.Value));
                         break;
                     default:
                         break;
@@ -289,7 +289,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        EndTurn();
+        EndEnemyTurn();
     }
 
     public void EndPlayerTurn() {
@@ -297,13 +297,14 @@ public class BattleManager : MonoBehaviour
         ResetEnemyShields();
     }
 
-    public void EndTurn() {
+    public void EndEnemyTurn() {
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         areEnemyActionsDecided = false;
         handManager.DiscardHand();
         handManager.DrawCards(5);
         playerStats.resetMana();
         playerStats.resetBlock();
+        playerStats.weak -= 1;
     }
 
     public void ResetEnemyShields() {

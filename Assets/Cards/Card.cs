@@ -15,6 +15,7 @@ public class Card : ScriptableObject, ISerializationCallbackReceiver
     public string description;
     public string type;
     public bool isTarget;
+    public string rarity;
 
     public void OnBeforeSerialize()
     {

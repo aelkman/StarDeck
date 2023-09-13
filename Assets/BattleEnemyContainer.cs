@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class BattleEnemyContainer : MonoBehaviour
+public class BattleEnemyContainer : BaseCharacterInfo
 {
     public BattleEnemy battleEnemy;
     public NextActionText nextActionText;
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem particleSystem;
-    public ParticleSystem shieldSystem;
     public ShockPlayer shockPlayer;
-    public ShieldAnimator shieldAnimator;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public EnemySprite enemySprite;
@@ -22,11 +20,6 @@ public class BattleEnemyContainer : MonoBehaviour
     private EnemyAnimator enemyAnimator;
     private int atkMod;
     private bool isTargeted = false;
-    private int maxHealth;
-    private int health;
-    public int block = 0;
-    public bool isDead = false;
-    public int stunnedTurns = 0;
     // Start is called before the first frame update
 
     void Start()
@@ -148,5 +141,9 @@ public class BattleEnemyContainer : MonoBehaviour
     public void ShockAnimation() {
         shockPlayer.StartShock();
         enemyAnimator.ShockAnimation();
+    }
+
+    public int GetWeak() {
+        return weak;
     }
 }

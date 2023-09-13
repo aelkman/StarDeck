@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHUD : MonoBehaviour
+public class CharacterHUD : MonoBehaviour
 {
     public GameObject blockHUD;
-    public PlayerStats playerStats;
+    public BaseCharacterInfo baseCharacterInfo;
     public GameObject blockSprite;
     public BlockText blockText;
+    public GameObject weakDisplay;
     private SpriteRenderer spriteRenderer;
     private bool isGlowUp = true;
     private float fade = 0f;
+    private int weak = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,17 +36,19 @@ public class PlayerHUD : MonoBehaviour
         }
         spriteRenderer.material.SetFloat("_Transparency", fade);
 
-        if(playerStats.getBlock() <= 0) {
+        if(baseCharacterInfo.getBlock() <= 0) {
             blockHUD.SetActive(false);
         }
         else {
-            blockText.setText(playerStats.getBlock().ToString());
+            blockText.setText(baseCharacterInfo.getBlock().ToString());
             blockHUD.SetActive(true);
         }
-    }
 
-    public void ActivateBlockUI() {
-        blockText.setText(playerStats.getBlock().ToString());
-        blockHUD.SetActive(true);
+        if(baseCharacterInfo.GetWeak() > 0) {
+            weakDisplay.SetActive(true);
+        }
+        else {
+            weakDisplay.SetActive(false);
+        }
     }
 }

@@ -5,7 +5,6 @@ using TMPro;
 
 public class BlockText : MonoBehaviour
 {
-    public PlayerStats playerStats;
     public TextMeshPro blockText;
     private Animator animator;
     // Start is called before the first frame update

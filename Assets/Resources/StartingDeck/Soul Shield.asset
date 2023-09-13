@@ -10,14 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
-  m_Name: Defend
+  m_Name: Soul Shield
   m_EditorClassIdentifier: 
-  name: Shield Block
-  artwork: {fileID: 21300000, guid: 0be22f71eafc1e7499d5f678d3bc20b5, type: 3}
+  name: Soul Shield
+  artwork: {fileID: 21300000, guid: 5e07680e87e07a34ba61ac7bf02ad1b3, type: 3}
   manaCost: 1
   actionKeys:
   - DEF
+  - WEAK
   actionValues:
-  - 5
-  description: The best offense is a good defense!
+  - 12
+  - 2
+  description: 
+  type: 
   isTarget: 0
+  rarity: U

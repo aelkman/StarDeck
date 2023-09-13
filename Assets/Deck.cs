@@ -23,7 +23,11 @@ public class DeckScript : MonoBehaviour
             cardStack.Push(card);
         }
         for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Defend");
+            Card card =  Resources.Load<Card>("StartingDeck/Force Field");
+            cardStack.Push(card);
+        }
+        for(int i = 0; i < 2; i++) {
+            Card card =  Resources.Load<Card>("StartingDeck/Soul Shield");
             cardStack.Push(card);
         }
         Shuffle();
