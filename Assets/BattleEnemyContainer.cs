@@ -15,7 +15,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public SingleTargetManager singleTargetManager;
     public EnemySprite enemySprite;
     private Material material;
-    public HealthBar healthBar;
     private Object[] actions;
     private EnemyAnimator enemyAnimator;
     private int atkMod;
