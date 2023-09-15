@@ -7,6 +7,7 @@ using TMPro;
 public class PlayerStats : BaseCharacterInfo
 {
     public Stats stats;
+    public PlayerAnimator playerAnimator;
     public GameDataManager gdm;
     public BattleManager battleManager;
     public ManaBar manaBar;

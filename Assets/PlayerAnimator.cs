@@ -28,4 +28,8 @@ public class PlayerAnimator : MonoBehaviour
     public void DeathAnimation() {
         animator.SetTrigger("Death");
     }
+
+    public void BlockAnimation() {
+        animator.SetTrigger("Blocking");
+    }
 }

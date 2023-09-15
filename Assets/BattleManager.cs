@@ -105,6 +105,7 @@ public class BattleManager : MonoBehaviour
                         // perform multi attack
                         // StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
                         string cardType = cardDisplay.card.type;
+                        Vector3 STMPos = STM.GetTarget().transform.position;
 
                         for (int i = 0; i < multiAttack[1]; i++) {
                             bool isLast = i == (multiAttack[1] - 1);
@@ -112,7 +113,7 @@ public class BattleManager : MonoBehaviour
                             // weapon animations here
                             switch(cardType) {
                                 case "Blaster":
-                                    StartCoroutine(LaserAttack(0.1f));
+                                    StartCoroutine(LaserAttack(STMPos, 0.1f));
                                     break;
                                 default:
                                     break;
@@ -125,7 +126,7 @@ public class BattleManager : MonoBehaviour
                         break;
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
-                        playerStats.shieldAnimator.StartForceField();
+                        StartCoroutine(PlayerShieldSequence());
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
                     case "STN":
@@ -150,9 +151,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LaserAttack(float timeInterval) {
-        Vector3 startingPosition = playerStats.transform.position;
-        Vector3 endPosition = STM.GetTarget().transform.position;
+    private IEnumerator PlayerShieldSequence() {
+        playerStats.playerAnimator.BlockAnimation();
+        yield return new WaitForSeconds(0.5f);
+        playerStats.shieldAnimator.StartForceField();
+    }
+
+    private IEnumerator LaserAttack(Vector3 STMPos, float timeInterval) {
+        yield return new WaitForSeconds(0.08f);
+        Debug.Log(playerStats.transform.position.x);
+        Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.05f, playerStats.transform.position.z);
+        Vector3 endPosition = STMPos;
         GameObject newLaser = Instantiate(laserAttack, startingPosition, Quaternion.identity, characterSpace.transform);
         for (float i = 0; i < 1; i+=timeInterval){
             newLaser.transform.position = new Vector3(

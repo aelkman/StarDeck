@@ -511,7 +511,6 @@ GameObject:
   - component: {fileID: 8520650959875971708}
   - component: {fileID: 2886094233426750211}
   - component: {fileID: 2705109504883580851}
-  - component: {fileID: 4976693482422711375}
   m_Layer: 3
   m_Name: BattleEnemyContainer
   m_TagString: Untagged
@@ -627,51 +626,6 @@ MonoBehaviour:
   shockPlayer: {fileID: 2066619198428004193}
   singleTargetManager: {fileID: 0}
   enemySprite: {fileID: 0}
---- !u!61 &4976693482422711375
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3062417418287928547}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.021764517, y: -0.007944703}
-  m_SpriteTilingProperty:
-    border: {x: 1.39, y: 1.25, z: 0.87, w: 0.90999997}
-    pivot: {x: 0.5422775, y: 0.5153004}
-    oldSize: {x: 8, y: 10}
-    newSize: {x: 8, y: 10}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 5.512673, y: 7.6941185}
-  m_EdgeRadius: 0
 --- !u!1 &3127526291453575222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1003,7 @@ Transform:
   m_GameObject: {fileID: 7106013211444587028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0, z: 0.027679283, w: 0.99961686}
-  m_LocalPosition: {x: 0.45000023, y: -1.04, z: 0}
+  m_LocalPosition: {x: 0.17, y: -1.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1169,7 +1123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.368}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16.39, y: -22.879}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &549992446997680506
@@ -1256,7 +1210,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.035324097, y: -0.024887443}
+  m_Offset: {x: 0.24838781, y: 0.29835355}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1267,7 +1221,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.4758654, y: 7.421564}
+  m_Size: {x: 4.163958, y: 4.881236}
   m_EdgeRadius: 0
 --- !u!114 &1950885573109349864
 MonoBehaviour:
@@ -2167,7 +2121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5470481789441749868, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: 5470481789441749868, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -75,6 +75,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             nextActionText.SetText("");
             enemyAnimator.DeathAnimation();
             battleEnemyManager.EnemyDeath(this);
+            transform.Find("Character").GetComponent<BoxCollider2D>().enabled = false;
             isDead = true;
         }
     }
