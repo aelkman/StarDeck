@@ -10,11 +10,6 @@ public class CursorFollowerSnake : MonoBehaviour
     public float timeUnit = 1f;
     public float totTime = 10f;
     public float forceAmount = 2000;
-
-    private bool coroutineAllowed;
-    private float xRot;
-    private float yRot;
-    private float zRot;
     private Quaternion originalRotation;
     private Vector3 originalScale;
     private Vector3 originalPosition;
@@ -23,8 +18,8 @@ public class CursorFollowerSnake : MonoBehaviour
     private int siblingIndexOriginal;
     private Rigidbody2D rigidBody;
 
-    Coroutine start;
-    Coroutine stop;
+    private Coroutine start;
+    private Coroutine stop;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +29,6 @@ public class CursorFollowerSnake : MonoBehaviour
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
         expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
-        coroutineAllowed = true;
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
         originalPosition = transform.localPosition;

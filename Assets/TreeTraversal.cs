@@ -22,18 +22,18 @@ public class TreeTraversal : MonoBehaviour
     }
 
     public void CreateTree(int index) {
-        Node childNode = transform.GetChild(index).GetComponent<Node>();
+        MapNode childMapNode = transform.GetChild(index).GetComponent<MapNode>();
         for(int j=0; j < nextLevel.transform.childCount; j++) {
             Transform grandChild = nextLevel.transform.GetChild(j);
-            if (grandChild.GetComponent<Node>().parentNodes.Count == 0) {
-                childNode.childrenNodes.Add(j);
-                grandChild.GetComponent<Node>().parentNodes.Add(index);
+            if (grandChild.GetComponent<MapNode>().parentNodes.Count == 0) {
+                childMapNode.childrenNodes.Add(grandChild.gameObject.GetInstanceID());
+                grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
                 nextLevel.GetComponent<TreeTraversal>().DFS(j);
 
-                GameObject newLine = Instantiate(treeLine, transform.parent.parent.transform);
+                GameObject newLine = Instantiate(treeLine, transform.parent.transform);
                 LineRenderer lr = newLine.GetComponent<LineRenderer>();
-                lr.SetPosition(0, transform.GetChild(0).position);
-                lr.SetPosition(1, grandChild.position);
+                lr.SetPosition(0, transform.GetChild(0).localPosition);
+                lr.SetPosition(1, grandChild.localPosition);
                 nextLevel.GetComponent<TreeTraversal>().DFS(Random.Range(0, nextLevel.transform.childCount));
                 nextLevel.GetComponent<TreeTraversal>().CreateTree(Random.Range(0, nextLevel.transform.childCount));
             }
@@ -63,19 +63,17 @@ public class TreeTraversal : MonoBehaviour
                         nextChildIndex = index;
                     }
                 }
-                Node childNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<Node>();
-                childNode.GetComponent<Node>().parentNodes.Add(nextChildIndex);
-                transform.GetChild(nextChildIndex).GetComponent<Node>().childrenNodes.Add(nextChildIndex);
             }
             else {
                 nextChildIndex = Random.Range(index, index + 2);
                 if (nextLevel.transform.childCount - 1 < nextChildIndex) {
                     nextChildIndex -= 1;
                 }
-                Node childNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<Node>();
-                childNode.GetComponent<Node>().parentNodes.Add(index);
-                transform.GetChild(index).GetComponent<Node>().childrenNodes.Add(nextChildIndex);
             }
+
+            MapNode childMapNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<MapNode>();
+            childMapNode.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
+            transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Add(nextLevel.transform.GetChild(nextChildIndex).gameObject.GetInstanceID());
 
             CreateLine(index, nextChildIndex);
 
@@ -85,10 +83,10 @@ public class TreeTraversal : MonoBehaviour
 
     private void CreateLine(int i, int j) {
         Transform grandChild = nextLevel.transform.GetChild(j);
-        GameObject newLine = Instantiate(treeLine, transform.parent.parent.transform);
+        GameObject newLine = Instantiate(treeLine, transform.parent.transform);
         LineRenderer lr = newLine.GetComponent<LineRenderer>();
-        lr.SetPosition(0, transform.GetChild(i).position);
-        Transform nextNode = grandChild;
-        lr.SetPosition(1, nextNode.position);
+        lr.SetPosition(0, transform.GetChild(i).localPosition);
+        Transform nextMapNode = grandChild;
+        lr.SetPosition(1, nextMapNode.localPosition);
     }
 }

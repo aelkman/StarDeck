@@ -8,6 +8,7 @@ public class CameraStart : MonoBehaviour
     void Start()
     {
         Camera.main.transparencySortAxis = new Vector3(0,0,-1);
+
     }
 
     // Update is called once per frame

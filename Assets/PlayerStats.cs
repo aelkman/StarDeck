@@ -18,7 +18,12 @@ public class PlayerStats : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
-        health = stats.health;
+        if (MainManager.Instance.playerHealth != null) {
+            health = (int)MainManager.Instance.playerHealth;
+        }
+        else {
+            health = stats.health;
+        }
         maxHealth = stats.maxHealth;
         // for now, gameData is ONLY the Stats object
         weapons = new List<string>();
@@ -26,6 +31,7 @@ public class PlayerStats : BaseCharacterInfo
         shieldSystem.Stop();
         stats = gdm.gameData;
         healthBar.SetMaxHealth(stats.maxHealth);
+        healthBar.SetHealth(health);
         manaBar.SetMana(stats.maxMana, stats.mana);
     }
 

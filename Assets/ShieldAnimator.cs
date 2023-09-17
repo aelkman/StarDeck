@@ -5,14 +5,14 @@ using UnityEngine;
 public class ShieldAnimator : MonoBehaviour
 {
     private Animator animator;
-    private ParticleSystem particleSystem;
+    private ParticleSystem shieldSystem;
     private float startTime = 0f;
     private float stopTime = 0f;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        particleSystem = GetComponent<ParticleSystem>();
+        shieldSystem = GetComponent<ParticleSystem>();
         RuntimeAnimatorController runtimeController = animator.runtimeAnimatorController;
         RuntimeAnimatorController newController = Instantiate(runtimeController);
         animator.runtimeAnimatorController = newController;
@@ -54,18 +54,18 @@ public class ShieldAnimator : MonoBehaviour
     private IEnumerator ShieldOffTimed() {
         ShieldOff();
         yield return new WaitForSeconds(stopTime);
-        particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        shieldSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     public void StartForceField() {
-        if(particleSystem.isStopped) {
-            particleSystem.Play();
+        if(shieldSystem.isStopped) {
+            shieldSystem.Play();
             ShieldOn();
         }
     }
 
     public void StopForceField() {
-        if (!particleSystem.isStopped) {
+        if (!shieldSystem.isStopped) {
             StartCoroutine(ShieldOffTimed());
         }
     }

@@ -104,16 +104,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd15c507ddccce54abf2ca3ae3706a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldSystem: {fileID: 2169169473007781698}
+  damageText: {fileID: 0}
+  shieldAnimator: {fileID: 0}
+  healthBar: {fileID: 0}
+  block: 0
+  weak: 0
+  maxHealth: 0
+  health: 0
+  stunnedTurns: 0
+  isDead: 0
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 4419981876448407803}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
-  particleSystem: {fileID: 0}
-  shieldSystem: {fileID: 2169169473007781698}
+  effectSystem: {fileID: 3615582925498265615, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
+  shockPlayer: {fileID: 0}
   singleTargetManager: {fileID: 0}
   enemySprite: {fileID: 0}
-  healthBar: {fileID: 0}
-  block: 0
-  isDead: 0
 --- !u!61 &8322291291705324111
 BoxCollider2D:
   m_ObjectHideFlags: 0

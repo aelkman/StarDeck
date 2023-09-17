@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f2af67503cd73745a2aa43d537a7613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!61 &2830162478638930006
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -622,7 +623,7 @@ MonoBehaviour:
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 808569400213747451}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
-  particleSystem: {fileID: 2587277430470127724}
+  effectSystem: {fileID: 2587277430470127724}
   shockPlayer: {fileID: 2066619198428004193}
   singleTargetManager: {fileID: 0}
   enemySprite: {fileID: 0}
@@ -1235,6 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f2af67503cd73745a2aa43d537a7613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!1 &7282918941463377064
 GameObject:
   m_ObjectHideFlags: 0

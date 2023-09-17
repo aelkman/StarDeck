@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
  
 public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     #region Inspector fields
-    [SerializeField] float startSize = 1;
+    // [SerializeField] float startSize = 1;
     [SerializeField] float minSize = 0.5f;
     [SerializeField] float maxSize = 1;
  

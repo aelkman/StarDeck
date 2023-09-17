@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySprite : MonoBehaviour
+public class EnemySprite : OutlineHoverer
 {
-    private float fade = 0;
-    private bool isGlowUp = true;
-    private Sprite sprite;
-    private SpriteRenderer spriteRenderer;
-    private BattleEnemy battleEnemy;
+    // private float fade = 0;
+    // private bool isGlowUp = true;
+    // private SpriteRenderer spriteRenderer;
+    // private BattleEnemy battleEnemy;
     private SingleTargetManager STM;
     // Start is called before the first frame update
     void Start()
     {
-        STM = transform.parent.GetComponent<BattleEnemyContainer>().singleTargetManager;
-        battleEnemy = transform.parent.GetComponent<BattleEnemyContainer>().battleEnemy;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = battleEnemy.sprite;
-        spriteRenderer.material = battleEnemy.material;
+        STM = transform.parent.GetComponent<BattleEnemyContainer>().singleTargetManager;
+        // battleEnemy = transform.parent.GetComponent<BattleEnemyContainer>().battleEnemy;
+        // spriteRenderer = GetComponent<SpriteRenderer>();
+        // spriteRenderer.sprite = battleEnemy.sprite;
+        // spriteRenderer.material = battleEnemy.material;
     }
 
     // Update is called once per frame
@@ -35,22 +35,22 @@ public class EnemySprite : MonoBehaviour
         }
     }
 
-    private void OnMouseOver() {
+    // private void OnMouseOver() {
         
-        if (isGlowUp) {
-            fade += Time.deltaTime * 2f;
-        }
-        else {
-            fade -= Time.deltaTime * 2f;
-        }
-        if (fade >= 1f) { 
-            isGlowUp = false;
-        }
-        else if (fade <= 0f) {
-            isGlowUp = true;
-        }
-        spriteRenderer.material.SetFloat("_Transparency", fade);
-    }
+    //     if (isGlowUp) {
+    //         fade += Time.deltaTime * 2f;
+    //     }
+    //     else {
+    //         fade -= Time.deltaTime * 2f;
+    //     }
+    //     if (fade >= 1f) { 
+    //         isGlowUp = false;
+    //     }
+    //     else if (fade <= 0f) {
+    //         isGlowUp = true;
+    //     }
+    //     spriteRenderer.material.SetFloat("_Transparency", fade);
+    // }
 
     private void OnMouseExit() {
         // remove target from STM
@@ -59,7 +59,7 @@ public class EnemySprite : MonoBehaviour
         if(!STM.targetLocked) {
             STM.SetTarget(null);
         }
-        fade = 0f;
-        spriteRenderer.material.SetFloat("_Transparency", fade);
+        // fade = 0f;
+        // spriteRenderer.material.SetFloat("_Transparency", fade);
     }
 }

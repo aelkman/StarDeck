@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ShockPlayer : MonoBehaviour
 {
-    private ParticleSystem particleSystem;
+    private ParticleSystem shockSystem;
     // Start is called before the first frame update
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
+        shockSystem = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -18,6 +18,6 @@ public class ShockPlayer : MonoBehaviour
     }
 
     public void StartShock() {
-        particleSystem.Play();
+        shockSystem.Play();
     }
 }

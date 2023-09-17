@@ -12,7 +12,7 @@ public class CharacterHUD : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isGlowUp = true;
     private float fade = 0f;
-    private int weak = 0;
+    
     // Start is called before the first frame update
     void Start()
     {

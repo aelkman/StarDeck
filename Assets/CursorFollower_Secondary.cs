@@ -11,7 +11,6 @@ public class CursorFollower_Secondary : MonoBehaviour
     public float totTime = 10f;
     public float sizeMultiplier = 0.005f;
 
-    private bool coroutineAllowed;
     private float xRot;
     private float yRot;
     private float zRot;
@@ -34,7 +33,6 @@ public class CursorFollower_Secondary : MonoBehaviour
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
         expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
-        coroutineAllowed = true;
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
         originalPosition = transform.localPosition;

@@ -9,7 +9,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public NextActionText nextActionText;
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
-    public ParticleSystem particleSystem;
+    public ParticleSystem effectSystem;
     public ShockPlayer shockPlayer;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
@@ -18,9 +18,8 @@ public class BattleEnemyContainer : BaseCharacterInfo
     private Object[] actions;
     private EnemyAnimator enemyAnimator;
     private int atkMod;
-    private bool isTargeted = false;
+    
     // Start is called before the first frame update
-
     void Start()
     {
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
@@ -82,7 +81,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
 
     public IEnumerator particleDelay(float time) {
         yield return new WaitForSeconds(time);
-        particleSystem.Play();
+        effectSystem.Play();
     }
 
     public int getMaxHealth() {
@@ -112,38 +111,8 @@ public class BattleEnemyContainer : BaseCharacterInfo
         return atkMod;
     }
 
-    public void addBlock(int block) {
-        this.block += block;
-        Debug.Log("block is: " + this.block);
-    }
-
-    public void setBlock(int block) {
-        this.block = block;
-        Debug.Log("block is: " + this.block);
-    }
-
-    public int getBlock() {
-        return block;
-    }
- 
-    public void resetBlock() {
-        block = 0;
-        shieldAnimator.StopForceField();
-    }
-
-    public bool hasBlock() {
-        if(block > 0) {
-            return true;
-        }
-        else return false;
-    }
-
     public void ShockAnimation() {
         shockPlayer.StartShock();
         enemyAnimator.ShockAnimation();
-    }
-
-    public int GetWeak() {
-        return weak;
     }
 }

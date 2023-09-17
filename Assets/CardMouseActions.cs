@@ -20,8 +20,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private Vector3 expandedScale;
     public CardAnimator cardAnimator;
     private int siblingIndexOriginal;
-    private bool allowStart = true;
-    private bool allowEnd = false;
     private bool isSelected = false;
     private bool isFollowerPlaced = false;
     private bool isTarget;
@@ -31,7 +29,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private bool isCardPlayed = false;
     private bool isFirstEnter = true;
     private bool expandAllowed = true;
-    private bool contractAllowed = true;
     public float scaleMultiplier = 1.6f;
 
     Coroutine start;
