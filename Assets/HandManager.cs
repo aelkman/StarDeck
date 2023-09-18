@@ -10,7 +10,7 @@ public class HandManager : MonoBehaviour
     public CardDisplay prefab;
     public GameObject drawingDeck;
     public GameObject animatorPrefab;
-    public DeckScript deck;
+    public DeckCopy deckCopy;
     public List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
     private CardDisplay currentCard;
@@ -32,16 +32,16 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator DrawCardsTimed(int cardCount) {
         for(int i = 0; i < cardCount; i++) {
-            if(deck.cardStack.Count < 1) {
+            if(deckCopy.cardStack.Count < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {
                     CardDisplay cardDisplay = discardCards[j];
-                    deck.cardStack.Push(cardDisplay.card);
+                    deckCopy.cardStack.Push(cardDisplay.card);
                     discardCards.Remove(cardDisplay);
                 }
-                deck.Shuffle();
+                deckCopy.Shuffle();
             }
 
-            Card currentCard = deck.cardStack.Pop();
+            Card currentCard = deckCopy.cardStack.Pop();
 
             prefab.card = currentCard;
             // GameObject animatorInstance = Instantiate(animatorPrefab, transform);
@@ -67,7 +67,7 @@ public class HandManager : MonoBehaviour
     }
 
     // public void AddCard() {
-    //     Card currentCard = deck.cardStack.Pop();
+    //     Card currentCard = deckCopy.cardStack.Pop();
         
 
     //     // CardDisplay newCard = Instantiate(prefab);

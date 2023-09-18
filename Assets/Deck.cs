@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class DeckScript : MonoBehaviour
+public class Deck : MonoBehaviour
 {
     public Stack<Card> cardStack;
     // Start is called before the first frame update
+
     void Start()
     {
         cardStack = new Stack<Card>();
@@ -47,9 +48,9 @@ public class DeckScript : MonoBehaviour
         cardStack = new Stack<Card>(cardList);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void AddCard(Card card) {
+        cardStack.Push(card);
+        Debug.Log("added " + card.name + " to deck!");
+        Debug.Log(cardStack.Count + " card in the deck");
     }
 }
