@@ -32,4 +32,8 @@ public class PlayerAnimator : MonoBehaviour
     public void BlockAnimation() {
         animator.SetTrigger("Blocking");
     }
+
+    public void ClapAnimation() {
+        animator.SetTrigger("Clap");
+    }
 }

@@ -52,10 +52,10 @@ public class PlayerStats : BaseCharacterInfo
     }
 
     public void takeDamage(int damage) {
-        if (weak > 0) {
+        if (vuln > 0) {
             float extraDamage = (float)damage * 1.5f;
             damage = (int)Math.Round(extraDamage, 0);
-            Debug.Log("weakened, new damage: " + damage);
+            Debug.Log("vulnened, new damage: " + damage);
         }
         health -= damage;
         StartCoroutine(damageAnimation(.2f));

@@ -48,7 +48,7 @@ public class BattleEnemyManager : MonoBehaviour
     public void EnemyDeath(BattleEnemyContainer battleEnemy) {
         battleEnemies.Remove(battleEnemy);
         if(battleEnemies.Count == 0) {
-            StartCoroutine(DelayWin(2.0f));
+            StartCoroutine(DelayWin(1.5f));
         }
         else {
             // if battle isn't over, remove the pending actions from the dead enemy
@@ -57,6 +57,7 @@ public class BattleEnemyManager : MonoBehaviour
     }
 
     private IEnumerator DelayWin(float time) {
+        battleManager.playerStats.playerAnimator.ClapAnimation();
         yield return new WaitForSeconds(time);
         battleManager.BattleWin();
     }

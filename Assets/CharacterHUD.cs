@@ -8,7 +8,7 @@ public class CharacterHUD : MonoBehaviour
     public BaseCharacterInfo baseCharacterInfo;
     public GameObject blockSprite;
     public BlockText blockText;
-    public GameObject weakDisplay;
+    public GameObject vulnDisplay;
     private SpriteRenderer spriteRenderer;
     private bool isGlowUp = true;
     private float fade = 0f;
@@ -44,11 +44,11 @@ public class CharacterHUD : MonoBehaviour
             blockHUD.SetActive(true);
         }
 
-        if(baseCharacterInfo.GetWeak() > 0) {
-            weakDisplay.SetActive(true);
+        if(baseCharacterInfo.GetVuln() > 0) {
+            vulnDisplay.SetActive(true);
         }
         else {
-            weakDisplay.SetActive(false);
+            vulnDisplay.SetActive(false);
         }
     }
 }

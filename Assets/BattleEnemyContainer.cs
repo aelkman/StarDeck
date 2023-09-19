@@ -50,8 +50,9 @@ public class BattleEnemyContainer : BaseCharacterInfo
     //     Debug.Log("hovered enemy!");
     // }
 
-    public void TakeDamage(int damage) {
-        enemyAnimator.TakeDamageAnimation();
+    public IEnumerator TakeDamage(int damage, float timeDelay) {
+        yield return new WaitForSeconds(timeDelay);
+        StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
 
         if (block >= damage) {
             block -= damage;
@@ -65,7 +66,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             resetBlock();
         }
         health -= damage;
-        StartCoroutine(particleDelay(0.2f));
+        StartCoroutine(particleDelay(0f));
         healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damagePrefab, transform);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();

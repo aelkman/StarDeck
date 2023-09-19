@@ -22,13 +22,13 @@ public class CardDisplay : MonoBehaviour
     void Start()
     {
         if(card.rarity == "C") {
-            rarityImage.gameObject.SetActive(false);
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_blue");
         }
         else if (card.rarity == "U") {
-            rarityImage.sprite = Resources.Load<Sprite>("star_uncommon");
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_purple");
         }
         else if (card.rarity == "R") {
-            rarityImage.sprite = Resources.Load<Sprite>("star_rare");
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_gold_2");
         }
         nameText.text = card.name;
         descriptionText.text = card.description + "<br>" + DescriptionParser();
@@ -78,6 +78,9 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "STN":
                     descriptionAdditional += "<br>Stun " + item.Value + " turn.";
+                    break;
+                case "VULN":
+                    descriptionAdditional += "<br>Vulnerable " + item.Value + " turn.";
                     break;
                 default:
                     break;

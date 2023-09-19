@@ -23,6 +23,10 @@ public class Deck : MonoBehaviour
             Card card =  Resources.Load<Card>("StartingDeck/Blaster/Shock Blast");
             cardStack.Push(card);
         }
+        for(int i = 0; i < 1; i++) {
+            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Homing Missile");
+            cardStack.Push(card);
+        }
         for(int i = 0; i < 5; i++) {
             Card card =  Resources.Load<Card>("StartingDeck/Force Field");
             cardStack.Push(card);

@@ -189,7 +189,7 @@ MonoBehaviour:
   baseCharacterInfo: {fileID: 0}
   blockSprite: {fileID: 1363505190589230810}
   blockText: {fileID: 8279206108307056720}
-  weakDisplay: {fileID: 6516061287053472043}
+  vulnDisplay: {fileID: 4722920014861999955}
 --- !u!1 &7902668586220103574
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4193870359015592032, guid: 9ea09a4b23331e34ca74870c12a419ab, type: 3}
       propertyPath: m_Name
-      value: Weak
+      value: Vulnerable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -744,6 +744,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5490773646342072783}
   m_SourcePrefab: {fileID: 100100000, guid: 9ea09a4b23331e34ca74870c12a419ab, type: 3}
+--- !u!1 &4722920014861999955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4193870359015592032, guid: 9ea09a4b23331e34ca74870c12a419ab, type: 3}
+  m_PrefabInstance: {fileID: 8915069414165221171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4825587980145147694 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4129623658814943261, guid: 9ea09a4b23331e34ca74870c12a419ab, type: 3}

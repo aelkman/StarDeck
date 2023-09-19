@@ -27,7 +27,8 @@ public class EnemyAnimator : MonoBehaviour
         animator.SetTrigger("Cast");
     }
 
-    public void TakeDamageAnimation() {
+    public IEnumerator TakeDamageAnimation(float delayTime) {
+        yield return new WaitForSeconds(delayTime);
         animator.SetTrigger("TakeDamage");
     }
 

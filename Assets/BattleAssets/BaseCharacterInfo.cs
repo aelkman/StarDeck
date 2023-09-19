@@ -9,7 +9,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public ShieldAnimator shieldAnimator;
     public HealthBar healthBar;
     public int block = 0;
-    public int weak = 0;
+    public int vuln = 0;
     public int maxHealth;
     public int health;
     public int stunnedTurns = 0;
@@ -52,11 +52,11 @@ public class BaseCharacterInfo : MonoBehaviour
         else return false;
     }
 
-    public int GetWeak() {
-        return weak;
+    public int GetVuln() {
+        return vuln;
     }
 
-    public void AddWeak(int weak) {
-        this.weak += weak;
+    public void AddVuln(int vuln) {
+        this.vuln += vuln;
     }
 }

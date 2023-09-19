@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour
     private bool isHandDealt = false;
     private bool isGameOver = false;
     private bool isBattleWon = false;
+    public float attackDelay = 0.25f;
     // Start is called before the first frame update
     void Start()
     {
@@ -118,7 +119,7 @@ public class BattleManager : MonoBehaviour
                                 default:
                                     break;
                             }
-                            STM.GetTarget().TakeDamage(multiAttack[0]);
+                            StartCoroutine(STM.GetTarget().TakeDamage(multiAttack[0], attackDelay));
                             if (!isLast) {
                                 yield return new WaitForSeconds(0.5f);
                             }
@@ -135,8 +136,8 @@ public class BattleManager : MonoBehaviour
                         STM.GetTarget().ShockAnimation();
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
-                    case "WEAK":
-                        playerStats.AddWeak(Int32.Parse(item.Value));
+                    case "VULN":
+                        playerStats.AddVuln(Int32.Parse(item.Value));
                         break;
                     default:
                         break;
@@ -158,9 +159,9 @@ public class BattleManager : MonoBehaviour
     }
 
     private IEnumerator LaserAttack(Vector3 STMPos, float timeInterval) {
-        yield return new WaitForSeconds(0.08f);
+        yield return new WaitForSeconds(attackDelay);
         Debug.Log(playerStats.transform.position.x);
-        Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.05f, playerStats.transform.position.z);
+        Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.1f, playerStats.transform.position.z);
         Vector3 endPosition = STMPos;
         GameObject newLaser = Instantiate(laserAttack, startingPosition, Quaternion.identity, characterSpace.transform);
         for (float i = 0; i < 1; i+=timeInterval){
@@ -313,7 +314,7 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(5);
         playerStats.resetMana();
         playerStats.resetBlock();
-        playerStats.weak -= 1;
+        playerStats.vuln -= 1;
     }
 
     public void ResetEnemyShields() {
