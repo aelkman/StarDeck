@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySprite : OutlineHoverer
+public class EnemySprite : MonoBehaviour
 {
     // private float fade = 0;
     // private bool isGlowUp = true;

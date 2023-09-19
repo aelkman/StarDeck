@@ -175,33 +175,6 @@ public class BattleManager : MonoBehaviour
         Destroy(newLaser);
     }
 
-    // private IEnumerator MultiAttack(float time, List<int> multiAttack, string cardType) {
-    //     for (int i = 0; i < multiAttack[1]; i++) {
-    //         bool isLast = i == (multiAttack[1] - 1);
-    //         playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-    //         // weapon animations here
-    //         switch(cardType) {
-    //             case "Blaster":
-    //                 StartCoroutine(LaserAttack(0.1f));
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //         STM.GetTarget().TakeDamage(multiAttack[0]);
-    //         if (!isLast) {
-    //             yield return new WaitForSeconds(time);
-    //         }
-    //     }
-    //     // unlock the target
-    //     STM.SetTarget(null);
-    //     STM.targetLocked = false;
-    // }
-
-    // private IEnumerator DelayCardDeletion(CardDisplay cardDisplay) {
-    //     yield return new WaitForSeconds(1.5f);
-    //     handManager.PlayCard(cardDisplay);
-    // }
-
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
             Card randomAction = battleEnemy.RandomAction();
@@ -252,7 +225,14 @@ public class BattleManager : MonoBehaviour
                                     int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
                                     atkDmg += battleEnemy.getAtkMod();
                                     Debug.Log("attack action: " + atkDmg);
-                                    battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                    switch(battleEnemy.battleEnemy.name) {
+                                        case "GoldBot":
+                                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().GoldBot_Melee_1();
+                                            break;
+                                        default:
+                                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                            break;
+                                    }
                                     if(playerStats.hasBlock()) {
                                         if(playerStats.getBlock() <= atkDmg) {
                                             atkDmg = atkDmg - playerStats.getBlock();

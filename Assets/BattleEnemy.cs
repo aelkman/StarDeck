@@ -10,6 +10,8 @@ public class BattleEnemy : ScriptableObject
     public int maxHealth;
     public int health;
     public float xOffset;
+    public float yOffset;
+    public float nextMoveYOffset;
     public Material material;
     public Vector3 scale;
 }

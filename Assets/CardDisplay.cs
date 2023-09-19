@@ -34,18 +34,18 @@ public class CardDisplay : MonoBehaviour
         descriptionText.text = card.description + "<br>" + DescriptionParser();
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
-        if (card.actions.ContainsKey("ATK")) {
-            attackText.text = card.actions["ATK"];
-        }
-        else {
-            attackText.text = "";
-        }
-        if (card.actions.ContainsKey("DEF")) {
-            defendText.text = card.actions["DEF"];
-        }
-        else {
-            defendText.text = "";
-        }
+        // if (card.actions.ContainsKey("ATK")) {
+        //     attackText.text = card.actions["ATK"];
+        // }
+        // else {
+        //     attackText.text = "";
+        // }
+        // if (card.actions.ContainsKey("DEF")) {
+        //     defendText.text = card.actions["DEF"];
+        // }
+        // else {
+        //     defendText.text = "";
+        // }
     }
 
     public void BaseToBack() {

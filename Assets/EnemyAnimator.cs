@@ -39,4 +39,8 @@ public class EnemyAnimator : MonoBehaviour
     public void ShockAnimation() {
         animator.SetTrigger("Shock");
     }
+
+    public void GoldBot_Melee_1() {
+        animator.SetTrigger("GoldBot_Melee1");
+    }
 }

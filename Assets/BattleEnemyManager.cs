@@ -38,6 +38,8 @@ public class BattleEnemyManager : MonoBehaviour
             // now, instantiate the prefab GO of the enemy sprites rig
             GameObject enemyGO = Resources.Load<GameObject>("BattleEnemies/" + enemyName + " Prefab");
             GameObject enemyGOInstance = Instantiate(enemyGO, battleEnemyContainer.transform);
+            enemyGOInstance.transform.localPosition = new Vector3(enemyGOInstance.transform.localPosition.x,  enemyGOInstance.transform.localPosition.y + battleEnemy.yOffset, enemyGOInstance.transform.localPosition.z);
+            battleEnemyContainer.enemyPrefabInstance = enemyGOInstance;
             // now restart the animator
             enemyAnimator.Rebind();
             enemyAnimator.Update(0f);
@@ -47,6 +49,8 @@ public class BattleEnemyManager : MonoBehaviour
                 Vector3 newPos = new Vector3(newXPos, battleEnemyContainer.transform.localPosition.y, battleEnemyContainer.transform.localPosition.z);
                 battleEnemyContainer.transform.localPosition = newPos;
             }
+            Vector3 nextActionPos = battleEnemyContainer.nextAction.transform.localPosition;
+            battleEnemyContainer.nextAction.transform.localPosition = new Vector3(nextActionPos.x, nextActionPos.y + battleEnemy.nextMoveYOffset, nextActionPos.z);
             battleEnemies.Add(battleEnemyContainer);
             // battleEnemyContainer.rectTransform.localScale = new Vector3(0.21334f, 0.21334f, 0.21334f);
             // battleEnemyContainer

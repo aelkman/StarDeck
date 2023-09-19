@@ -7,12 +7,14 @@ public class BattleEnemyContainer : BaseCharacterInfo
 {
     public BattleEnemy battleEnemy;
     public NextActionText nextActionText;
+    public GameObject nextAction;
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem effectSystem;
     public ShockPlayer shockPlayer;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
+    public GameObject enemyPrefabInstance;
     private Object[] actions;
     private EnemyAnimator enemyAnimator;
     private int atkMod;
@@ -67,13 +69,14 @@ public class BattleEnemyContainer : BaseCharacterInfo
         StartCoroutine(particleDelay(0f));
         healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damagePrefab, transform);
+        damageTextInstance.transform.localPosition = new Vector3(damageTextInstance.transform.localPosition.x, damageTextInstance.transform.localPosition.y + battleEnemy.nextMoveYOffset, damageTextInstance.transform.localPosition.z);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (health <= 0) {
             // death animation here, disable the NextAction as well
             nextActionText.SetText("");
             enemyAnimator.DeathAnimation();
             battleEnemyManager.EnemyDeath(this);
-            transform.Find("Character").GetComponent<BoxCollider2D>().enabled = false;
+            enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
             isDead = true;
         }
     }
