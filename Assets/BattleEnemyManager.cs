@@ -20,12 +20,27 @@ public class BattleEnemyManager : MonoBehaviour
             string enemyName = enemyNames[i];
             GameObject newAnimator = Instantiate(animatorPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             newAnimator.transform.SetParent(this.transform, false);
-            // BattleEnemyContainer battleEnemyContainer = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            // now assign the proper animator for the enemy
+            Animator enemyAnimator = newAnimator.gameObject.GetComponent<Animator>();
+            switch(enemyName) {
+                case "Rob":
+                    enemyAnimator.runtimeAnimatorController = Resources.Load("BattleEnemies/Rob Animator") as RuntimeAnimatorController;
+                    break;
+                case "GoldBot":
+                    enemyAnimator.runtimeAnimatorController = Resources.Load("BattleEnemies/GoldBot Animator") as RuntimeAnimatorController;
+                    break;
+                default:
+                    break;
+            }
             BattleEnemyContainer battleEnemyContainer = newAnimator.GetComponentInChildren<BattleEnemyContainer>();
-            // battleEnemyContainer.transform.SetParent(this.transform, false);
-            // get size of the enemy
-            BattleEnemy battleEnemy =  Resources.Load<BattleEnemy>("BattleEnemies/" + enemyName);
+            BattleEnemy battleEnemy =  Resources.Load<BattleEnemy>("BattleEnemies/" + enemyName + " BE");
             battleEnemyContainer.battleEnemy = battleEnemy;
+            // now, instantiate the prefab GO of the enemy sprites rig
+            GameObject enemyGO = Resources.Load<GameObject>("BattleEnemies/" + enemyName + " Prefab");
+            GameObject enemyGOInstance = Instantiate(enemyGO, battleEnemyContainer.transform);
+            // now restart the animator
+            enemyAnimator.Rebind();
+            enemyAnimator.Update(0f);
             if (enemyNames.Count > 1) {
                 float alignResult = i / (enemyNames.Count - 1.0f);
                 float newXPos = Mathf.Lerp(-battleEnemy.xOffset/2 * (enemyNames.Count-1), battleEnemy.xOffset/2 * (enemyNames.Count-1), alignResult);

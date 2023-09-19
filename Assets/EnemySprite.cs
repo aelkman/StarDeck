@@ -12,7 +12,7 @@ public class EnemySprite : OutlineHoverer
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        // spriteRenderer = GetComponent<SpriteRenderer>();
         STM = transform.parent.GetComponent<BattleEnemyContainer>().singleTargetManager;
         // battleEnemy = transform.parent.GetComponent<BattleEnemyContainer>().battleEnemy;
         // spriteRenderer = GetComponent<SpriteRenderer>();

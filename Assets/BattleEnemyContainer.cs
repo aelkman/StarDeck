@@ -13,8 +13,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public ShockPlayer shockPlayer;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
-    public EnemySprite enemySprite;
-    private Material material;
     private Object[] actions;
     private EnemyAnimator enemyAnimator;
     private int atkMod;
@@ -25,7 +23,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
         battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
-        actions = Resources.LoadAll("BattleEnemies/" + battleEnemy.name + "/Actions");
+        actions = Resources.LoadAll("BattleEnemies/"  + "Actions/" + battleEnemy.name);
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
         // healthBarGO = Instantiate(healthBarPrefab);
