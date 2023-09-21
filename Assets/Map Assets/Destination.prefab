@@ -31,7 +31,7 @@ RectTransform:
   m_GameObject: {fileID: 6101316612726742922}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -91,9 +91,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7080940e851160040bf90c3560fb5106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  STM: {fileID: 0}
   childrenNodes: 
   parentNodes: 
+  mapManager: {fileID: 0}
+  instanceId: 0
+  spriteRenderer: {fileID: 0}
 --- !u!210 &3424222286846791786
 SortingGroup:
   m_ObjectHideFlags: 0

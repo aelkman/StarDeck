@@ -13,7 +13,7 @@ public class CardUISelector : MonoBehaviour
     void Start()
     {
         deck = GameObject.Find("Deck").GetComponent<Deck>();
-        cards = Resources.LoadAll("StartingDeck", typeof(Card));
+        cards = Resources.LoadAll("Cards", typeof(Card));
         for (int i = 0; i < selectionCount; i++) {
             CreateCard(GetRandomCard(), i);
         }

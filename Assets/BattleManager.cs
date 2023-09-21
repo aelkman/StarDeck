@@ -15,6 +15,8 @@ public class BattleManager : MonoBehaviour
     public GameOver gameOver;
     public BattleWon battleWon;
     public PlayerStats playerStats;
+    public GameObject ammoControllerInstance;
+    private AmmoController ammoController;
     private SingleTargetManager STM;
     private HandManager handManager;
     private BattleEnemyManager BEM;
@@ -29,6 +31,7 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
         BEM = battleEnemyManager.GetComponent<BattleEnemyManager>();
@@ -81,31 +84,61 @@ public class BattleManager : MonoBehaviour
         if(playerStats.stats.mana >= card.manaCost) {
             return true;
         }
+        else {
+            // add some ui element to tell user not enough mana
+            return false;
+        }
+    }
+
+    public bool CheckBlasterCanAct(CardDisplay cardDisplay) {
+
+        String cardType = cardDisplay.card.type;
+        // for all non attack Blaster cards, they will not use a charge
+        int requiredCharges = 0;
+
+        if(cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster") {
+            requiredCharges = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList()[1];
+        }
+
+        if(!ammoController.userHasBlaster) {
+            return true;
+        }
+        else if(ammoController.charge >= requiredCharges) {
+            // add some ui element to tell the user not enough ammo
+            return true;
+        }
         else return false;
     }
 
-    public IEnumerator CardAction(CardDisplay cardDisplay) {
-        Debug.Log("battlemanager TargetCardAcion");
-        bool canAct = CheckCanAct(cardDisplay.card);
-        Debug.Log("canAct: " + canAct);
-        if(canAct) {
-            // first, consume card mana
-            playerStats.useMana(cardDisplay.card.manaCost);
+    public IEnumerator CardAction(Card card) {
+        // Debug.Log("battlemanager TargetCardAcion");
+        // bool canAct = CheckCanAct(cardDisplay.card);
+        // Debug.Log("canAct: " + canAct);
+        string cardType = card.type;
+        // bool canBlasterAct = true;
 
-            foreach(var item in cardDisplay.card.actions) {
+        // // now check here if ammo charges are needed & allowed
+        // if(cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster") {
+        //     int requiredCharges = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList()[1];
+        //     if (!CheckBlasterCanAct(requiredCharges)) {
+        //         canBlasterAct = false;
+        //     }
+        // }
+
+        // canBlasterAct will always be true if it's not a Blaster card
+        // if(canAct && canBlasterAct) {
+            // first, consume card mana
+            playerStats.useMana(card.manaCost);
+
+            foreach(var item in card.actions) {
                 switch(item.Key) {
                     case "ATK":
-                        List<int> multiAttack = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList();
+                        List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
 
                         if (multiAttack.Count != 2) {
                             throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
                         }
 
-                        // StartCoroutine(DelayCardDeletion(cardDisplay));
-
-                        // perform multi attack
-                        // StartCoroutine(MultiAttack(0.5f, multiAttack, cardDisplay.card.type));
-                        string cardType = cardDisplay.card.type;
                         Vector3 STMPos = STM.GetTarget().transform.position;
 
                         for (int i = 0; i < multiAttack[1]; i++) {
@@ -119,7 +152,7 @@ public class BattleManager : MonoBehaviour
                                 default:
                                     break;
                             }
-                            StartCoroutine(STM.GetTarget().TakeDamage(multiAttack[0], attackDelay));
+                            StartCoroutine(STM.GetTarget().TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
                             if (!isLast) {
                                 yield return new WaitForSeconds(0.5f);
                             }
@@ -139,6 +172,52 @@ public class BattleManager : MonoBehaviour
                     case "VULN":
                         playerStats.AddVuln(Int32.Parse(item.Value));
                         break;
+                    case "RELOAD":
+                        ammoController.FullCharge();
+                        break;
+                    case "FINAL_BLOW":
+                        List<string> finalBlow = card.actions["FINAL_BLOW"].Split(',').ToList();
+
+                        // if (finalBlow.Count != 4) {
+                        //     throw new Exception("Invalid FINAL_BLOW attributes! Must be 4 strings comma separated.");
+                        // }
+
+                        int dmg = Int32.Parse(finalBlow[0]);
+                        int multiplier = Int32.Parse(finalBlow[1]);
+
+                        // unfortunate code copying, but refacting is too much work
+                        Vector3 STMPos2 = STM.GetTarget().transform.position;
+
+                        for (int i = 0; i < multiplier; i++) {
+                            bool isLast = i == (multiplier - 1);
+                            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                            // weapon animations here
+                            switch(cardType) {
+                                case "Blaster":
+                                    StartCoroutine(LaserAttack(STMPos2, 0.1f));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            StartCoroutine(STM.GetTarget().TakeDamage(dmg, attackDelay, isDeadReturnValue => {
+                                if(isDeadReturnValue) {
+                                    // if the enemy was killed, perform the next action
+                                    string nextAction = finalBlow[2];
+                                    // for now, this only works with RELOAD... will have to fix later
+                                    Card newCard = ScriptableObject.CreateInstance<Card>();
+                                    newCard.type = "Blaster";
+                                    newCard.manaCost = 0;
+                                    newCard.actions = new Dictionary<string, string>();
+                                    newCard.actions.Add(finalBlow[2], finalBlow[3]);
+                                    // recursion
+                                    StartCoroutine(CardAction(newCard));
+                                }
+                            }));
+                            if (!isLast) {
+                                yield return new WaitForSeconds(0.5f);
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -146,10 +225,10 @@ public class BattleManager : MonoBehaviour
             // unlock the target
             STM.SetTarget(null);
             STM.targetLocked = false;
-        }
-        else {
-            Debug.Log("card could not be played, not enough mana!");
-        }
+        // }
+        // else {
+        //     Debug.Log("card could not be played, not enough mana!");
+        // }
     }
 
     private IEnumerator PlayerShieldSequence() {
@@ -160,6 +239,10 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator LaserAttack(Vector3 STMPos, float timeInterval) {
         yield return new WaitForSeconds(attackDelay);
+
+        // reduce the charges in the ammo container
+        ammoController.UseCharge(1);
+
         Debug.Log(playerStats.transform.position.x);
         Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.1f, playerStats.transform.position.z);
         Vector3 endPosition = STMPos;

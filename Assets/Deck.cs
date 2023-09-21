@@ -11,30 +11,38 @@ public class Deck : MonoBehaviour
     void Start()
     {
         cardStack = new Stack<Card>();
+        for(int i = 0; i < 3; i++) {
+            Card card =  Resources.Load<Card>("Cards/Blaster/Energy Cell");
+            cardStack.Push(card);
+        }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Charge Shot");
+        //     cardStack.Push(card);
+        // }
         for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Laser Shot");
+            Card card =  Resources.Load<Card>("Cards/Blaster/Laser Shot");
             cardStack.Push(card);
         }
         for(int i = 0; i < 2; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Double Shot");
+            Card card =  Resources.Load<Card>("Cards/Blaster/Double Shot");
             cardStack.Push(card);
         }
-        for(int i = 0; i < 2; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Shock Blast");
-            cardStack.Push(card);
-        }
-        for(int i = 0; i < 1; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Blaster/Homing Missile");
-            cardStack.Push(card);
-        }
+        // for(int i = 0; i < 2; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Shock Blast");
+        //     cardStack.Push(card);
+        // }
+        // for(int i = 0; i < 1; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Homing Missile");
+        //     cardStack.Push(card);
+        // }
         for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Force Field");
+            Card card =  Resources.Load<Card>("Cards/Force Field");
             cardStack.Push(card);
         }
-        for(int i = 0; i < 2; i++) {
-            Card card =  Resources.Load<Card>("StartingDeck/Soul Shield");
-            cardStack.Push(card);
-        }
+        // for(int i = 0; i < 2; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Soul Shield");
+        //     cardStack.Push(card);
+        // }
         Shuffle();
         Debug.Log("you have " + cardStack.Count + " cards in the deck");
     }

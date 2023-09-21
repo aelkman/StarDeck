@@ -6,12 +6,19 @@ public class TreeTraversal : MonoBehaviour
 {
     public GameObject nextLevel;
     public GameObject treeLine;
+    public TreeMapManager treeMapManager;
     public bool isFirstLevel = false;
     // Start is called before the first frame update
     void Start()
     {
+        treeMapManager.AddChildren(transform.childCount);
+        StartCoroutine(WaitForLoad());
+    }
+
+    private IEnumerator WaitForLoad() {
+        yield return new WaitForSeconds(1.0f);
         if (isFirstLevel) {
-            CreateTree(0);
+            CreateTree();
         }
     }
 
@@ -21,29 +28,51 @@ public class TreeTraversal : MonoBehaviour
         
     }
 
-    public void CreateTree(int index) {
-        MapNode childMapNode = transform.GetChild(index).GetComponent<MapNode>();
-        for(int j=0; j < nextLevel.transform.childCount; j++) {
-            Transform grandChild = nextLevel.transform.GetChild(j);
-            if (grandChild.GetComponent<MapNode>().parentNodes.Count == 0) {
-                childMapNode.childrenNodes.Add(grandChild.gameObject.GetInstanceID());
-                grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
-                nextLevel.GetComponent<TreeTraversal>().DFS(j);
+    public void CreateTree() {
+        if (nextLevel != null && !treeMapManager.isDone) {
+            for (int i = 0; i < transform.childCount; i++) {
+                MapNode childMapNode = transform.GetChild(i).GetComponent<MapNode>();
+                DFS(i);
+                for(int j=0; j < nextLevel.transform.childCount; j++) {
+                    Transform grandChild = nextLevel.transform.GetChild(j);
+                    if (grandChild.GetComponent<MapNode>().parentNodes.Count == 0) {
+                        childMapNode.childrenNodes.Add(grandChild.gameObject.GetInstanceID());
+                        grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(i).gameObject.GetInstanceID());
 
-                GameObject newLine = Instantiate(treeLine, transform.parent.transform);
-                LineRenderer lr = newLine.GetComponent<LineRenderer>();
-                lr.SetPosition(0, transform.GetChild(0).localPosition);
-                lr.SetPosition(1, grandChild.localPosition);
-                nextLevel.GetComponent<TreeTraversal>().DFS(Random.Range(0, nextLevel.transform.childCount));
-                nextLevel.GetComponent<TreeTraversal>().CreateTree(Random.Range(0, nextLevel.transform.childCount));
+                        GameObject newLine = Instantiate(treeLine, transform.parent.transform);
+                        LineRenderer lr = newLine.GetComponent<LineRenderer>();
+                        lr.SetPosition(0, transform.GetChild(i).localPosition);
+                        lr.SetPosition(1, grandChild.localPosition);
+                        nextLevel.GetComponent<TreeTraversal>().DFS(j);
+                        // nextLevel.GetComponent<TreeTraversal>().DFS(Random.Range(0, nextLevel.transform.childCount));
+                    }
+                    // if (childMapNode.childrenNodes.Count == 0) {
+                    //     DFS(index);
+                    // }
+
+                    CheckIfComplete(childMapNode);
+                    CheckIfComplete(grandChild.GetComponent<MapNode>());
+                }
+                CreateTree();
             }
         }
         // potentially unsafe timing issues
         
     }
 
-    private void SetChildParentCreateLine() {
-        
+    private void CheckIfComplete(MapNode childMapNode) {
+        if(childMapNode.parentNodes.Count > 0 && childMapNode.childrenNodes.Count > 0) {
+            if (!treeMapManager.treeMap.ContainsKey(childMapNode.instanceId)) {
+                treeMapManager.treeMap.Add(childMapNode.instanceId, true);
+                Debug.Log("added to the treeMap! count: " + treeMapManager.treeMap.Count);
+            }
+        }
+
+        // first and last do not have both child & parent
+        if (treeMapManager.treeMap.Count == treeMapManager.childCount - 2) {
+            treeMapManager.isDone = true;
+            Debug.Log("finished!");
+        }
     }
 
     private void DFS(int index) {
@@ -71,11 +100,52 @@ public class TreeTraversal : MonoBehaviour
                 }
             }
 
-            MapNode childMapNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<MapNode>();
-            childMapNode.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
-            transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Add(nextLevel.transform.GetChild(nextChildIndex).gameObject.GetInstanceID());
+            // this works, but it is too random, it makes it look very crazy
+            // nextChildIndex = Random.Range(0, nextLevel.transform.childCount);
+            
+            // pseudo-random algo instead, for less complexity, 
+            // need next level to be no more than 1 less or 1 more
+            // int lowerBound = index - 1;
+            // if (lowerBound < 0) { lowerBound = 0;}
+            // int upperBound = index + 1;
 
-            CreateLine(index, nextChildIndex);
+            // List<int> values = new List<int>
+            // {
+            //     lowerBound,
+            //     index,
+            //     upperBound
+            // };
+
+
+            // for (int i = values.Count - 1; i > 0; i--) {
+            //     int random = UnityEngine.Random.Range(lowerBound, upperBound + 1);
+            //     Debug.Log("nextlevel childcount: " + nextLevel.transform.childCount);
+            //     Debug.Log("random index: " + random);
+            //     if(nextLevel.transform.childCount >= random + 1) {
+            //         nextChildIndex = random;
+            //         break;
+            //     }
+            //     else {
+            //         values.Remove(random);
+            //         i--;
+            //     }
+            // }
+ 
+            MapNode childMapNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<MapNode>();
+
+            if (!childMapNode.GetComponent<MapNode>().parentNodes.Contains(transform.GetChild(index).gameObject.GetInstanceID())) {
+                childMapNode.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
+                transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Add(nextLevel.transform.GetChild(nextChildIndex).gameObject.GetInstanceID());
+                
+                CheckIfComplete(childMapNode);
+                CheckIfComplete(transform.GetChild(index).GetComponent<MapNode>());
+                
+                CreateLine(index, nextChildIndex);
+            }
+
+
+
+
 
             nextLevel.GetComponent<TreeTraversal>().DFS(nextChildIndex);
         }

@@ -66,7 +66,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             if (isSelected && !isHardReset) {
                 // Debug.Log("drag exit");
 
-                if(!battleManager.CheckCanAct(cardDisplay.card)) {
+                if(!battleManager.CheckCanAct(cardDisplay.card) || 
+                    (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
                     isSelected = false;
                     isFollowerPlaced = false;
                     if(cursorFollowerInstance != null) {
@@ -128,7 +129,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             isFollowerPlaced = false;
         }
 
-        StartCoroutine(battleManager.CardAction(cardDisplay));
+        StartCoroutine(battleManager.CardAction(cardDisplay.card));
 
         // else if (!isCancelled) {
         //     // play non target cards here

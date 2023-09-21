@@ -82,6 +82,9 @@ public class CardDisplay : MonoBehaviour
                 case "VULN":
                     descriptionAdditional += "<br>Vulnerable " + item.Value + " turn.";
                     break;
+                case "RELOAD":
+                    descriptionAdditional += "<br>Reload";
+                    break;
                 default:
                     break;
             }

@@ -72,6 +72,7 @@ public class BattleEnemyManager : MonoBehaviour
         else {
             // if battle isn't over, remove the pending actions from the dead enemy
             battleManager.RemoveEnemyActions(battleEnemy);
+            battleEnemy.nextAction.SetActive(false);
         }
     }
 
