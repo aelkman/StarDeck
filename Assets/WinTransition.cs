@@ -30,6 +30,7 @@ public class WinTransition : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         SceneManager.LoadScene(sceneIndex);
+        
     }
 
     private void UpdatePlayerStats() {

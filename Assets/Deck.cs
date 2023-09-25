@@ -23,10 +23,18 @@ public class Deck : MonoBehaviour
             Card card =  Resources.Load<Card>("Cards/Blaster/Laser Shot");
             cardStack.Push(card);
         }
-        for(int i = 0; i < 2; i++) {
-            Card card =  Resources.Load<Card>("Cards/Blaster/Double Shot");
+        for(int i = 0; i < 5; i++) {
+            Card card =  Resources.Load<Card>("Cards/Shield Hack");
             cardStack.Push(card);
         }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Quickdraw");
+        //     cardStack.Push(card);
+        // }
+        // for(int i = 0; i < 2; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Double Shot");
+        //     cardStack.Push(card);
+        // }
         // for(int i = 0; i < 2; i++) {
         //     Card card =  Resources.Load<Card>("Cards/Blaster/Shock Blast");
         //     cardStack.Push(card);
@@ -37,6 +45,10 @@ public class Deck : MonoBehaviour
         // }
         for(int i = 0; i < 5; i++) {
             Card card =  Resources.Load<Card>("Cards/Force Field");
+            cardStack.Push(card);
+        }
+        for(int i = 0; i < 2; i++) {
+            Card card = Resources.Load<Card>("Cards/Dash");
             cardStack.Push(card);
         }
         // for(int i = 0; i < 2; i++) {

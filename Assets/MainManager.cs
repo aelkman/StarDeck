@@ -10,6 +10,8 @@ public class MainManager : MonoBehaviour
 
     public int? playerHealth;
     public int? playerMaxHealth;
+    public int coinCount = 50;
+    public MapNode currentNode;
 
     private void Awake()
     {

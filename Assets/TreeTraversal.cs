@@ -7,19 +7,27 @@ public class TreeTraversal : MonoBehaviour
     public GameObject nextLevel;
     public GameObject treeLine;
     public TreeMapManager treeMapManager;
+    public int level;
     public bool isFirstLevel = false;
     // Start is called before the first frame update
     void Start()
     {
         treeMapManager.AddChildren(transform.childCount);
-        StartCoroutine(WaitForLoad());
+        var ttThis = GetComponent<TreeTraversal>();
+        if (isFirstLevel) {
+            level = 0;
+            while(ttThis.nextLevel != null) {
+                TreeTraversal ttNext = ttThis.nextLevel.GetComponent<TreeTraversal>();
+                ttNext.level = ttThis.level + 1;
+                ttThis = ttNext;
+            }
+            StartCoroutine(WaitForLoad());
+        }
     }
 
     private IEnumerator WaitForLoad() {
-        yield return new WaitForSeconds(1.0f);
-        if (isFirstLevel) {
-            CreateTree();
-        }
+        yield return new WaitForSeconds(0.25f);
+        CreateTree();
     }
 
     // Update is called once per frame
@@ -53,7 +61,7 @@ public class TreeTraversal : MonoBehaviour
                     CheckIfComplete(childMapNode);
                     CheckIfComplete(grandChild.GetComponent<MapNode>());
                 }
-                CreateTree();
+                nextLevel.GetComponent<TreeTraversal>().CreateTree();
             }
         }
         // potentially unsafe timing issues

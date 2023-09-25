@@ -35,6 +35,8 @@ public class BattleManager : MonoBehaviour
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
         BEM = battleEnemyManager.GetComponent<BattleEnemyManager>();
+
+        // wait until the BEM has finished initializing it's Start()
         handManager = hand.GetComponent<HandManager>();
         isPlayerTurn = true;
     }
@@ -42,27 +44,29 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        battleEnemies = BEM.GetEnemies();
+        if(BEM.isInitialized){
+            battleEnemies = BEM.GetEnemies();
 
-        if(!isBattleWon) {
-            if(isPlayerTurn) {
-                // enable the TargetManager
-                // possibly use TargetManager prefab and SetActive(true)? 
-                // then disable TargetManager otherwise
-                if(!areEnemyActionsDecided) {
-                    GenerateEnemyActions(battleEnemies);
-                    areEnemyActionsDecided = true;
+            if(!isBattleWon) {
+                if(isPlayerTurn) {
+                    // enable the TargetManager
+                    // possibly use TargetManager prefab and SetActive(true)? 
+                    // then disable TargetManager otherwise
+                    if(!areEnemyActionsDecided) {
+                        GenerateEnemyActions(battleEnemies);
+                        areEnemyActionsDecided = true;
+                    }
+                    if (!isHandDealt) {
+                        handManager.DrawCards(5);
+                        isHandDealt = true;
+                    }
                 }
-                if (!isHandDealt) {
-                    handManager.DrawCards(5);
-                    isHandDealt = true;
+                else {
+                    // enemy turn
+                    // make GetEnemies filter out dead enemies
+                    StartCoroutine(ProcessEnemyAction(battleEnemies));
+                    isPlayerTurn = true;
                 }
-            }
-            else {
-                // enemy turn
-                // make GetEnemies filter out dead enemies
-                StartCoroutine(ProcessEnemyAction(battleEnemies));
-                isPlayerTurn = true;
             }
         }
     }
@@ -162,6 +166,26 @@ public class BattleManager : MonoBehaviour
                         playerStats.addBlock(Int32.Parse(item.Value));
                         StartCoroutine(PlayerShieldSequence());
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
+                        break;
+                    case "DRAW":
+                        handManager.DrawCards(1);
+                        break;
+                    case "HACK":
+                        // perform hacking animation here
+                        if(item.Value == "SHIELD") {
+                            if(STM.GetTarget().block <= 10) {
+                                STM.GetTarget().resetBlock();
+                            }
+                        }
+                        break;
+                    case "QUICKDRAW":
+                        StartCoroutine(handManager.DrawCardsTimed(2, cardsReturnValue => {
+                            foreach(Card card in cardsReturnValue) {
+                                if (card.subType == "Shot") {
+                                    playerStats.addMana(1);
+                                }
+                            }
+                        }));
                         break;
                     case "STN":
                         STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);

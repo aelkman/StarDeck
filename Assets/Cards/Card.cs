@@ -14,6 +14,8 @@ public class Card : ScriptableObject, ISerializationCallbackReceiver
     public Dictionary<string,string> actions;
     public string description;
     public string type;
+    public string subType;
+    public string category;
     public bool isTarget;
     public string rarity;
 

@@ -50,6 +50,8 @@ public class BattleEnemyContainer : BaseCharacterInfo
     //     Debug.Log("hovered enemy!");
     // }
 
+    
+
     public IEnumerator TakeDamage(int damage, float timeDelay, System.Action<bool> isDeadCallback) {
         yield return new WaitForSeconds(timeDelay);
         StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));

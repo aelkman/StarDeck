@@ -10,9 +10,17 @@ public class BattleEnemyManager : MonoBehaviour
     public BattleManager battleManager;
     private List<BattleEnemyContainer> battleEnemies;
     private List<GameObject> enemyInstances;
+    public bool isInitialized = false;
     // Start is called before the first frame update
     void Start()
     {
+        if (GameObject.Find("MainManager") != null) {
+            MapNode currentNode = GameObject.Find("MainManager").GetComponent<MainManager>().currentNode;
+            enemyNames = currentNode.enemies;
+        }
+        if(enemyNames.Count == 0) {
+            enemyNames = new List<string>() {"MiniBot"};
+        }
         battleEnemies = new List<BattleEnemyContainer>();
         
         // create enemy grid based on count of enemies
@@ -22,16 +30,8 @@ public class BattleEnemyManager : MonoBehaviour
             newAnimator.transform.SetParent(this.transform, false);
             // now assign the proper animator for the enemy
             Animator enemyAnimator = newAnimator.gameObject.GetComponent<Animator>();
-            switch(enemyName) {
-                case "Rob":
-                    enemyAnimator.runtimeAnimatorController = Resources.Load("BattleEnemies/Rob Animator") as RuntimeAnimatorController;
-                    break;
-                case "GoldBot":
-                    enemyAnimator.runtimeAnimatorController = Resources.Load("BattleEnemies/GoldBot Animator") as RuntimeAnimatorController;
-                    break;
-                default:
-                    break;
-            }
+            enemyAnimator.runtimeAnimatorController = Resources.Load("BattleEnemies/" + enemyName + " Animator") as RuntimeAnimatorController;
+    
             BattleEnemyContainer battleEnemyContainer = newAnimator.GetComponentInChildren<BattleEnemyContainer>();
             BattleEnemy battleEnemy =  Resources.Load<BattleEnemy>("BattleEnemies/" + enemyName + " BE");
             battleEnemyContainer.battleEnemy = battleEnemy;
@@ -56,7 +56,7 @@ public class BattleEnemyManager : MonoBehaviour
             // battleEnemyContainer
 
         }
-
+        isInitialized = true;
         // try to get enemyNames from GameManager, if it doesn't exist then use a default for testing
     }
 

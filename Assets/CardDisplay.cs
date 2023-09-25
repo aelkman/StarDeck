@@ -64,26 +64,33 @@ public class CardDisplay : MonoBehaviour
                 case "ATK":
                     List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
                     if (multiAttack.Count != 2) {
-                        throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
+                        throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated");
                     }
                     if (multiAttack[1] == 1) {
-                        descriptionAdditional += "<br>Deal " + multiAttack[0] + " damage.";
+                        descriptionAdditional += "<br>Deal " + multiAttack[0] + " damage";
                     }
                     else {
-                        descriptionAdditional = "<br>Deal " + multiAttack[0] + " damage " + multiAttack[1] + " times.";
+                        descriptionAdditional = "<br>Deal " + multiAttack[0] + " damage " + multiAttack[1] + " times";
                     }
                     break;
                 case "DEF":
-                    descriptionAdditional += "<br>Block " + item.Value + ".";
+                    descriptionAdditional += "<br>Block " + item.Value + "";
                     break;
                 case "STN":
-                    descriptionAdditional += "<br>Stun " + item.Value + " turn.";
+                    descriptionAdditional += "<br>Stun " + item.Value + " turn";
                     break;
                 case "VULN":
-                    descriptionAdditional += "<br>Vulnerable " + item.Value + " turn.";
+                    descriptionAdditional += "<br>Vulnerable " + item.Value + " turn";
                     break;
                 case "RELOAD":
                     descriptionAdditional += "<br>Reload";
+                    break;
+                case "DRAW":
+                    string cardText = " card";
+                    if(Int32.Parse(item.Value) > 1) {
+                        cardText += "s";
+                    }
+                    descriptionAdditional += "<br>Draw " + item.Value + cardText;
                     break;
                 default:
                     break;

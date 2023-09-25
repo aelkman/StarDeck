@@ -177,6 +177,7 @@ MonoBehaviour:
   nextLevel: {fileID: 1509066075}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!1001 &47975083
 PrefabInstance:
@@ -190,6 +191,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -369,6 +374,7 @@ MonoBehaviour:
   nextLevel: {fileID: 1356709720}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &166979504
 GameObject:
@@ -399,6 +405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a1483759514f49438894adebf6ce1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinCount: 50
+  currentNode: {fileID: 0}
 --- !u!4 &166979506
 Transform:
   m_ObjectHideFlags: 0
@@ -426,6 +434,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -596,6 +608,7 @@ MonoBehaviour:
   nextLevel: {fileID: 1091188835}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!1001 &318544892
 PrefabInstance:
@@ -609,6 +622,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -742,6 +759,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -876,6 +897,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -1295,6 +1320,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -1424,6 +1453,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -1553,6 +1586,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -1755,6 +1792,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -1926,6 +1967,7 @@ MonoBehaviour:
   nextLevel: {fileID: 1407380093}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!224 &1208467683 stripped
 RectTransform:
@@ -2049,6 +2091,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -2203,6 +2249,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -2332,6 +2382,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -2502,16 +2556,12 @@ MonoBehaviour:
   nextLevel: {fileID: 630594056}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!224 &1590604639 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6515507107473672884, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
   m_PrefabInstance: {fileID: 1945492174}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1595538585 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9188155841964224417, guid: 8815f429ba29d234bb932e6468ff49d1, type: 3}
-  m_PrefabInstance: {fileID: 1910338378}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &1611161520 stripped
 RectTransform:
@@ -2557,6 +2607,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -2686,6 +2740,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -2822,6 +2880,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childCount: 0
   isDone: 0
+--- !u!114 &1712106150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379999768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be82fbecbdc68c24eb92a2fa535f92d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeMapManager: {fileID: 1712106149}
+  destinations: []
 --- !u!1 &1836321917 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1849562716090389806, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
@@ -2922,43 +2994,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9188155841964224417, guid: 8815f429ba29d234bb932e6468ff49d1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1910338385}
-    - targetCorrespondingSourceObject: {fileID: 9188155841964224417, guid: 8815f429ba29d234bb932e6468ff49d1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1910338386}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8815f429ba29d234bb932e6468ff49d1, type: 3}
 --- !u!95 &1910338380 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3373577345877505440, guid: 8815f429ba29d234bb932e6468ff49d1, type: 3}
   m_PrefabInstance: {fileID: 1910338378}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1910338385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595538585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e388e2a90bb2ec438d313b1cd87d4a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!225 &1910338386
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595538585}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1001 &1945492174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2971,6 +3013,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -3163,6 +3209,7 @@ MonoBehaviour:
   nextLevel: {fileID: 1836321917}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
   treeMapManager: {fileID: 1712106149}
+  level: 0
   isFirstLevel: 0
 --- !u!224 &2031853359 stripped
 RectTransform:
@@ -3181,6 +3228,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 1978145047}
+    - target: {fileID: -385071719546057879, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1440226141389163306, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
       propertyPath: m_Material
       value: 
@@ -3327,7 +3378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb34c1c031ca704db19631fe481057c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transition: {fileID: 0}
+  transition: {fileID: 1910338380}
+  mapCanvas: {fileID: 734503043}
 --- !u!4 &2049787669
 Transform:
   m_ObjectHideFlags: 0
@@ -3356,6 +3408,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 734503047}
     m_Modifications:
+    - target: {fileID: 94481005515357776, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 266074052257383482, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 453675587902659741, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 648464127937887342, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 2807
@@ -3372,6 +3436,18 @@ PrefabInstance:
       propertyPath: treeMapManager
       value: 
       objectReference: {fileID: 1712106149}
+    - target: {fileID: 815828041663301295, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 868476184001852838, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 1033119395601987259, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 1141411431874644439, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: nextLevel
       value: 
@@ -3384,6 +3460,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1453485097957170180, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 1515883588156536760, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 2415021796952342413, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 222
@@ -3392,6 +3476,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 65
       objectReference: {fileID: 0}
+    - target: {fileID: 2647091233711002656, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 2896807206609157555, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 2936214831487304512, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 3143001499778156402, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 277
@@ -3412,10 +3508,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 1599
       objectReference: {fileID: 0}
+    - target: {fileID: 4048669869577796615, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 4048833897734355457, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 04f9610b87fb7524e8bf3eebef4fca9e, type: 2}
+    - target: {fileID: 4217286263449824769, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 4622039714189963923, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 4848858457729211711, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: nextLevel
       value: 
@@ -3436,6 +3544,18 @@ PrefabInstance:
       propertyPath: treeMapManager
       value: 
       objectReference: {fileID: 1712106149}
+    - target: {fileID: 5703416247979619149, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 5891238940240599760, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 6030095898245009028, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 6263916408283203784, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: nextLevel
       value: 
@@ -3444,10 +3564,18 @@ PrefabInstance:
       propertyPath: treeMapManager
       value: 
       objectReference: {fileID: 1712106149}
+    - target: {fileID: 6455671779516997973, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 6461594994591785588, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_CullTransparentMesh
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7175597979575048101, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 7202979481198114097, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: nextLevel
       value: 
@@ -3464,6 +3592,10 @@ PrefabInstance:
       propertyPath: transition
       value: 
       objectReference: {fileID: 1910338380}
+    - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: mainManager
+      value: 
+      objectReference: {fileID: 166979505}
     - target: {fileID: 7635219133682918943, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3544,6 +3676,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7820437931864504508, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     - target: {fileID: 7982008232303390342, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -3572,6 +3708,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 8778820832661802281, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
+    - target: {fileID: 8904950605528191414, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsController
+      value: 
+      objectReference: {fileID: 1712106150}
     m_RemovedComponents:
     - {fileID: 4048833897734355457, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
     m_RemovedGameObjects: []
@@ -3598,6 +3742,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2785563958711987535, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1712106149}
+    - targetCorrespondingSourceObject: {fileID: 2785563958711987535, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712106150}
   m_SourcePrefab: {fileID: 100100000, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

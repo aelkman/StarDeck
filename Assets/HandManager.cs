@@ -25,12 +25,12 @@ public class HandManager : MonoBehaviour
         discardCards = new List<CardDisplay>();
     }
 
-
     public void DrawCards(int cardCount) {
-        StartCoroutine(DrawCardsTimed(cardCount));
+        StartCoroutine(DrawCardsTimed(cardCount, cardsReturnValue => {}));
     }
 
-    private IEnumerator DrawCardsTimed(int cardCount) {
+    public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
+        List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
             if(deckCopy.cardStack.Count < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {
@@ -42,6 +42,7 @@ public class HandManager : MonoBehaviour
             }
 
             Card currentCard = deckCopy.cardStack.Pop();
+            cards.Add(currentCard);
 
             prefab.card = currentCard;
             // GameObject animatorInstance = Instantiate(animatorPrefab, transform);
@@ -53,6 +54,8 @@ public class HandManager : MonoBehaviour
             SortCards();
             yield return new WaitForSeconds(0.2f);
         }
+
+        cardsCallback(cards);
     }
 
     void Update() {

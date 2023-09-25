@@ -14,8 +14,14 @@ public class CardUISelector : MonoBehaviour
     {
         deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
+        var cardsListFiltered = new List<Card>();
+        foreach(Card card in cards) {
+            if (card.category != "Starter") {
+                cardsListFiltered.Add(card);
+            }
+        }
         for (int i = 0; i < selectionCount; i++) {
-            CreateCard(GetRandomCard(), i);
+            CreateCard(GetRandomCard(cardsListFiltered), i);
         }
     }
 
@@ -25,13 +31,13 @@ public class CardUISelector : MonoBehaviour
         
     }
 
-    public Card GetRandomCard() {
+    public Card GetRandomCard(List<Card> cardList) {
         // Random.seed = System.DateTime.Now.Millisecond;
         // Random.Range with ints is (inclusive, exclusive)
-        return (Card)cards[Random.Range(0, cards.Length)];
+        return (Card)cardList[Random.Range(0, cardList.Count)];
     }
 
-    private void CreateCard(Card card, int i) {
+    public void CreateCard(Card card, int i) {
         prefab.card = card;
         CardDisplay cardInstance = Instantiate(prefab, new Vector3(-20f, 30f, 0f), Quaternion.identity, transform.GetChild(0));
         float fract = (float)i/((float)selectionCount - 1f);

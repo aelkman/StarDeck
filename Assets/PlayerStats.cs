@@ -46,6 +46,11 @@ public class PlayerStats : BaseCharacterInfo
         manaBar.SetMana(stats.mana, stats.maxMana);
     }
 
+    public void addMana(int mana) {
+        stats.mana += mana;
+        manaBar.SetMana(stats.mana, stats.maxMana);
+    }
+
     public void resetMana() {
         stats.mana = stats.maxMana;
         manaBar.SetMana(stats.mana, stats.maxMana);

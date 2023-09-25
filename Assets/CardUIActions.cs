@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class CardUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public CardUISelector cardUISelector;
-    private HandManager handManager;
+    // private HandManager handManager;
     private BattleManager battleManager;
     private CardDisplay cardDisplay;
     private Quaternion originalRotation;
@@ -26,6 +26,7 @@ public class CardUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private bool isFirstEnter = true;
     private bool expandAllowed = true;
     public float scaleMultiplier = 1.6f;
+    public bool isShop = false;
 
     Coroutine start;
     Coroutine stop;
@@ -35,8 +36,16 @@ public class CardUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {   
         // load all cards and pick one at random
         cardDisplay = GetComponent<CardDisplay>();
-        cardUISelector = GameObject.Find("CardUISelector").GetComponent<CardUISelector>();
-        handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
+        if(gameObject.name == "ShopCard(Clone)") {
+            isShop = true;
+        }
+        if(isShop) {
+            cardUISelector = GameObject.Find("ShopCardUISelector").GetComponent<CardUISelector>();
+        }
+        else {
+            cardUISelector = GameObject.Find("CardUISelector").GetComponent<CardUISelector>();
+        }
+        // handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         siblingIndexOriginal = transform.GetSiblingIndex();
     }
@@ -265,29 +274,29 @@ public class CardUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    private IEnumerator ShiftCardLeft(int index) {
-        Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
-        for (float i = 0f; i <= 1f; i+= 0.1f) {
-            handManager.handCards[index].transform.localPosition = new Vector3(
-                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x - 155, Mathf.SmoothStep(0, 1, i)),
-                cardOriginalPos.y,
-                cardOriginalPos.z
-            );
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
+    // private IEnumerator ShiftCardLeft(int index) {
+    //     Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
+    //     for (float i = 0f; i <= 1f; i+= 0.1f) {
+    //         handManager.handCards[index].transform.localPosition = new Vector3(
+    //             Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x - 155, Mathf.SmoothStep(0, 1, i)),
+    //             cardOriginalPos.y,
+    //             cardOriginalPos.z
+    //         );
+    //         yield return new WaitForSeconds(0.01f);
+    //     }
+    // }
 
-    private IEnumerator ShiftCardRight(int index) {
-        Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
-        for (float i = 0f; i <= 1f; i+= 0.1f) {
-            handManager.handCards[index].transform.localPosition = new Vector3(
-                Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x + 155, Mathf.SmoothStep(0, 1, i)),
-                cardOriginalPos.y,
-                cardOriginalPos.z
-            );
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
+    // private IEnumerator ShiftCardRight(int index) {
+    //     Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
+    //     for (float i = 0f; i <= 1f; i+= 0.1f) {
+    //         handManager.handCards[index].transform.localPosition = new Vector3(
+    //             Mathf.Lerp(cardOriginalPos.x, cardOriginalPos.x + 155, Mathf.SmoothStep(0, 1, i)),
+    //             cardOriginalPos.y,
+    //             cardOriginalPos.z
+    //         );
+    //         yield return new WaitForSeconds(0.01f);
+    //     }
+    // }
 
     private IEnumerator ExitShrink() {
         // transform.localScale = expandedScale;
