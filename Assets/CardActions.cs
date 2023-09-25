@@ -8,22 +8,22 @@ using UnityEngine.EventSystems;
 public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public CardUISelector cardUISelector;
-    // private HandManager handManager;
-    private CardDisplay cardDisplay;
-    private Quaternion originalRotation;
-    private Vector3 originalScale;
+    // protected HandManager handManager;
+    protected CardDisplay cardDisplay;
+    protected Quaternion originalRotation;
+    protected Vector3 originalScale;
     public Vector3 originalPosition;
-    private Vector3 expandedScale;
+    protected Vector3 expandedScale;
     public CardAnimator cardAnimator;
-    private int siblingIndexOriginal;
-    private bool isSelected = false;
-    private bool isTarget;
-    private bool followerCreated = false;
-    private bool isHardReset = false;
-    private bool isCancelled = false;
-    private bool isCardPlayed = false;
-    private bool isFirstEnter = true;
-    private bool expandAllowed = true;
+    protected int siblingIndexOriginal;
+    protected bool isSelected = false;
+    protected bool isTarget;
+    protected bool followerCreated = false;
+    protected bool isHardReset = false;
+    protected bool isCancelled = false;
+    protected bool isCardPlayed = false;
+    protected bool isFirstEnter = true;
+    protected bool expandAllowed = true;
     public float scaleMultiplier = 1.6f;
     public bool isShop = false;
     public Vector3 finalCardPosition = new Vector3(60,60,60);
@@ -54,7 +54,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     }
 
-    private void OnMouseOver() {
+    protected void OnMouseOver() {
         Debug.Log("onmouse enter");
         if (Input.GetMouseButtonDown(1)) {
             isCancelled = true;
@@ -93,7 +93,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    private IEnumerator CardPlayAnimation(float timeInterval) {
+    protected IEnumerator CardPlayAnimation(float timeInterval) {
         Vector3 startingPosition = transform.position;
         // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
@@ -178,7 +178,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    private void ExitResetSequence() {
+    protected void ExitResetSequence() {
         if (!isCardPlayed) {
             transform.SetSiblingIndex(siblingIndexOriginal);
             Debug.Log("sibling index: " + transform.GetSiblingIndex());
@@ -220,7 +220,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         ExitResetSequence();
     }
 
-    // private void OnMouseDrag() {
+    // protected void OnMouseDrag() {
     //     isSelected = true;
 
     //     Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -228,7 +228,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //     transform.position = translatedWorldPosition;
     // }
 
-    private static float WrapAngle(float angle)
+    protected static float WrapAngle(float angle)
     {
         angle%=360;
         if(angle >180)
@@ -237,7 +237,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         return angle;
     }
 
-    private IEnumerator HoverPulse() {
+    protected IEnumerator HoverPulse() {
         expandAllowed = false;
         // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
         transform.SetSiblingIndex(20);
@@ -274,7 +274,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    // private IEnumerator ShiftCardLeft(int index) {
+    // protected IEnumerator ShiftCardLeft(int index) {
     //     Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
     //     for (float i = 0f; i <= 1f; i+= 0.1f) {
     //         handManager.handCards[index].transform.localPosition = new Vector3(
@@ -286,7 +286,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //     }
     // }
 
-    // private IEnumerator ShiftCardRight(int index) {
+    // protected IEnumerator ShiftCardRight(int index) {
     //     Vector3 cardOriginalPos = handManager.handCards[index].transform.localPosition;
     //     for (float i = 0f; i <= 1f; i+= 0.1f) {
     //         handManager.handCards[index].transform.localPosition = new Vector3(
@@ -298,7 +298,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //     }
     // }
 
-    private IEnumerator ExitShrink() {
+    protected IEnumerator ExitShrink() {
         // transform.localScale = expandedScale;
         transform.rotation = originalRotation;
         // Debug.Log("rotation reset: " + originalRotation);

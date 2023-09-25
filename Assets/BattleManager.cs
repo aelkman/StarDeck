@@ -284,14 +284,16 @@ public class BattleManager : MonoBehaviour
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
-            Card randomAction = battleEnemy.RandomAction();
-            // pass the action back to the enemy to display
-            string actionText = randomAction.name;
-            foreach(KeyValuePair<string, string> entry in randomAction.actions) {
-                actionText += "<br>" + entry.Key + " " + entry.Value;
+            if(battleEnemy.actions.Length > 0){
+                Card randomAction = battleEnemy.RandomAction();
+                // pass the action back to the enemy to display
+                string actionText = randomAction.name;
+                foreach(KeyValuePair<string, string> entry in randomAction.actions) {
+                    actionText += "<br>" + entry.Key + " " + entry.Value;
+                }
+                battleEnemy.SetNextActionText(actionText);
+                enemyActions.Add(new Tuple<BattleEnemyContainer,Card>(battleEnemy, randomAction));
             }
-            battleEnemy.SetNextActionText(actionText);
-            enemyActions.Add(new Tuple<BattleEnemyContainer,Card>(battleEnemy, randomAction));
         }
     }
 

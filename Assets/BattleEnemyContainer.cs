@@ -15,7 +15,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
-    private Object[] actions;
+    public Object[] actions;
     private EnemyAnimator enemyAnimator;
     private int atkMod;
     

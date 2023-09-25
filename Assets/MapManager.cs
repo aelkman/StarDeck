@@ -14,9 +14,8 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (transition == null) {
-            transition = GameObject.Find("Crossfade").GetComponent<Animator>();
-        }
+        // if (transition == null) {
+        // }
     }
 
     // Update is called once per frame
@@ -49,6 +48,7 @@ public class MapManager : MonoBehaviour
     }
 
     IEnumerator LoadLevel(string sceneName) {
+        transition = GameObject.Find("Crossfade").GetComponent<Animator>();
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
