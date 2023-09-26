@@ -7,11 +7,13 @@ public class CoinCount : MonoBehaviour
 {
     public int coinCount;
     public TextMeshProUGUI tmp;
+    private MainManager mainManager;
     // Start is called before the first frame update
     void Start()
     {
         if(GameObject.Find("MainManager") != null) {
-            coinCount = GameObject.Find("MainManager").GetComponent<MainManager>().coinCount;
+            mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+            coinCount = mainManager.coinCount;
         }
         else {
             coinCount = 100;
@@ -22,5 +24,10 @@ public class CoinCount : MonoBehaviour
     void Update()
     {
         tmp.text = coinCount.ToString();
+    }
+
+    public void SpendCoins(int coins) {
+        coinCount -= coins;
+        mainManager.coinCount -= coins;
     }
 }

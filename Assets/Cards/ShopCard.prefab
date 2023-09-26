@@ -73,7 +73,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 37081625775088450}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -129,6 +129,7 @@ MonoBehaviour:
   scaleMultiplier: 1.6
   isShop: 0
   finalCardPosition: {x: 60, y: 60, z: 60}
+  itemCost: {fileID: 8560878259281508120}
 --- !u!1 &1198177000752501161
 GameObject:
   m_ObjectHideFlags: 0

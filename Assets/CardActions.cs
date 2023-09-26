@@ -27,6 +27,8 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public float scaleMultiplier = 1.6f;
     public bool isShop = false;
     public Vector3 finalCardPosition = new Vector3(60,60,60);
+    private bool mouse_over = false;
+    public ItemCost itemCost;
 
     Coroutine start;
     Coroutine stop;
@@ -50,48 +52,57 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     void Update () {
-
-
-    }
-
-    protected void OnMouseOver() {
-        Debug.Log("onmouse enter");
-        if (Input.GetMouseButtonDown(1)) {
-            isCancelled = true;
-            if (isSelected) {
-                // Debug.Log("cancelling action (right click)");
-                if(!isTarget) {
-                    // for cards that are not target cards, move it back
-                    transform.localPosition = originalPosition;
-                }
-                isSelected = false;
-                isHardReset = true;
-                isCardPlayed = false;
-                // now shrink card back to where it was
-                ExitResetSequence();
-            }
-        }
-        if (Input.GetMouseButtonUp (0)) {
-            if (isSelected && !isHardReset) {
-                // Debug.Log("drag exit");
-
-                        isSelected = false;
-                        isCardPlayed = true;
-
-                        // add card play animation here
-                        if (cardUISelector.AddToDeck(cardDisplay.card)){
-                            StartCoroutine(CardPlayAnimation(0.05f));
+        if(mouse_over) {
+            Debug.Log("mouse over");
+            if (Input.GetMouseButtonDown(1)) {
+                        isCancelled = true;
+                        if (isSelected) {
+                            // Debug.Log("cancelling action (right click)");
+                            if(!isTarget) {
+                                // for cards that are not target cards, move it back
+                                transform.localPosition = originalPosition;
+                            }
+                            isSelected = false;
+                            isHardReset = true;
+                            isCardPlayed = false;
+                            // now shrink card back to where it was
+                            ExitResetSequence();
                         }
-                        // perform card selection & add to deck
+                    }
+            if (Input.GetMouseButtonUp (0)) {
+                if (isSelected && !isHardReset) {
+                    // Debug.Log("drag exit");
+                            isSelected = false;
+
+                            // add card play animation here
+                            if (isShop) {
+                                if (((ShopCardUISelector)cardUISelector).AddToDeck(cardDisplay.card, itemCost.price)){
+                                    StartCoroutine(CardPlayAnimation(0.05f));
+                                    isCardPlayed = true;
+
+                            }
+                            }
+                            else if (cardUISelector.AddToDeck(cardDisplay.card)){
+                                StartCoroutine(CardPlayAnimation(0.05f));
+                                isCardPlayed = true;
+
+                            }
+                            // perform card selection & add to deck
+                }
+                else if (isHardReset) {
+                    isSelected = false;
+                    isHardReset = false;
+                    isCardPlayed = false;
+                }
+                isCancelled = false;
             }
-            else if (isHardReset) {
-                isSelected = false;
-                isHardReset = false;
-                isCardPlayed = false;
-            }
-            isCancelled = false;
         }
     }
+
+    // private void OnMouseOver() {
+    //     Debug.Log("onmouse enter");
+        
+    // }
 
     protected IEnumerator CardPlayAnimation(float timeInterval) {
         Vector3 startingPosition = transform.position;
@@ -193,6 +204,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        mouse_over = true;
         isSelected = true;
         if (!isCardPlayed) {
 
@@ -216,6 +228,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void OnPointerExit(PointerEventData pointerEventData)
     {
+        mouse_over = false;
         isSelected = false;
         ExitResetSequence();
     }

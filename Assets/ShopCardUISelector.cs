@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShopCardUISelector : CardUISelector
 {
+    public CoinCount coinCount;
     public new void CreateCard(Card card, int i) {
         prefab.card = card;
         CardDisplay cardInstance = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity, transform.GetChild(0));
@@ -13,8 +14,14 @@ public class ShopCardUISelector : CardUISelector
         cardInstance.transform.localScale = new Vector3(3.0f, 3.0f, 0f);
     }
 
-    public new bool AddToDeck(Card card) {
+    public bool AddToDeck(Card card, int cost) {
+        if (coinCount.coinCount >= cost) {
             deck.AddCard(card);
+            coinCount.SpendCoins(cost);
             return true;
+        }
+        else {
+            return false;
+        }
     }
 }
