@@ -77,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1733185611
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 240173dee2095dd4c89ff29873b948a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -204,7 +204,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1733185611
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5eb64a5e9ba9add42bc66c9635b74cb3, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -360,6 +360,8 @@ MonoBehaviour:
   effectSystem: {fileID: 2587277430470127724}
   shockPlayer: {fileID: 2066619198428004193}
   singleTargetManager: {fileID: 0}
+  enemyPrefabInstance: {fileID: 0}
+  actions: []
 --- !u!1 &4254911735686161093
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +511,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1733185611
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &7645357941746893177
@@ -643,7 +645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5486458947453235177, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5486458947453235177, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
       propertyPath: m_SortingLayerID
@@ -884,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2615766048378288432, guid: 2830e54e5b4555a44aa61f80a503ac82, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2615766048378288432, guid: 2830e54e5b4555a44aa61f80a503ac82, type: 3}
       propertyPath: m_SortingOrder
@@ -1009,15 +1011,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1062503209160073620, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2828570521442285784, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3178706873677676045, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3759989900953688023, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: baseCharacterInfo
@@ -1109,11 +1111,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5490773646342072783, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6303908478805244019, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7583936394690081316, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_Name

@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 0}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &375806257716993178
 GameObject:
@@ -105,6 +107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 6585795104174013944}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &1849562716090389806
 GameObject:
@@ -160,6 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 7777368738048773032}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &2007091804311882646
 GameObject:
@@ -247,6 +253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 9047489984199421978}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 1
 --- !u!1 &2785563958711987535
 GameObject:
@@ -405,6 +413,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 1849562716090389806}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &6585795104174013944
 GameObject:
@@ -460,6 +470,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 5081303233041113927}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &7777368738048773032
 GameObject:
@@ -514,6 +526,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 291728223247738901}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1 &7827299817583548113
 GameObject:
@@ -572,7 +586,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -791,6 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapArrow: {fileID: 7827299817583548113}
+  mainManager: {fileID: 0}
   movementSelection: {fileID: 0}
   transition: {fileID: 0}
 --- !u!1 &9047489984199421978
@@ -845,6 +860,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 375806257716993178}
   treeLine: {fileID: 1146721604732371253, guid: 4a6b18e550019f446a3af47f209bdb15, type: 3}
+  treeMapManager: {fileID: 0}
+  level: 0
   isFirstLevel: 0
 --- !u!1001 &86498762821786335
 PrefabInstance:

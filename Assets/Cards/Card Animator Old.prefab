@@ -63,6 +63,7 @@ MonoBehaviour:
   descriptionText: {fileID: 1210801686820354678}
   artworkImage: {fileID: 8511071256731805987}
   cardBase: {fileID: 1037721817283767789}
+  rarityImage: {fileID: 0}
   manaText: {fileID: 8965143261400779268}
   attackText: {fileID: 7747678039713867871}
   defendText: {fileID: 1783097645206012562}
@@ -80,7 +81,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorFollowerPrefab: {fileID: 6828184117593541162, guid: 9b1bb8feb7ae6a247b8aacef9dde20c9, type: 3}
   expandSize: 1.8
+  originalPosition: {x: 0, y: 0, z: 0}
   cardAnimator: {fileID: 6780564987174335287}
+  scaleMultiplier: 1.6
 --- !u!61 &9010898266968928557
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -754,7 +757,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -773,7 +776,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1993270415
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: b80437c21210c8e48bd0c1d314d989dd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1025,7 +1028,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1993270415
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &323024830773172736
