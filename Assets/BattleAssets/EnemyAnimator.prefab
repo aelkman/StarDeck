@@ -355,6 +355,7 @@ MonoBehaviour:
   isDead: 0
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 808569400213747451}
+  characterHUD: {fileID: 1414547864159836435}
   nextAction: {fileID: 2000603611772570230}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
   effectSystem: {fileID: 2587277430470127724}
@@ -1126,6 +1127,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+--- !u!1 &1414547864159836435 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7583936394690081316, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+  m_PrefabInstance: {fileID: 8835770211503205175}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3564027383248541787 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5470481789441749868, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}

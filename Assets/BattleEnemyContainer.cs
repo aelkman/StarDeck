@@ -7,6 +7,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
 {
     public BattleEnemy battleEnemy;
     public NextActionText nextActionText;
+    public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
@@ -113,6 +114,12 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public void modifyAtk(int mod) {
         atkMod += mod;
         Debug.Log("atkMod modified: " + atkMod);
+    }
+
+    public void BlockSequence(int block) {
+        enemyAnimator.BlockAnimation();
+        shieldAnimator.StartForceField();
+        addBlock(block);
     }
 
     public int getAtkMod() {

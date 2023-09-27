@@ -368,8 +368,7 @@ public class BattleManager : MonoBehaviour
                                     // to-do, defMod bonus
                                     // block += etc
                                     Debug.Log("block action: " + block);
-                                    battleEnemy.shieldAnimator.StartForceField();
-                                    battleEnemy.addBlock(block);
+                                    battleEnemy.BlockSequence(block);
                                 }
                                 break;
                             case "ATK_MOD":
