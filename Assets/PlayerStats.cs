@@ -63,6 +63,7 @@ public class PlayerStats : BaseCharacterInfo
             Debug.Log("vulnened, new damage: " + damage);
         }
         health -= damage;
+        MainManager.Instance.playerHealth -= damage;
         StartCoroutine(damageAnimation(.2f));
         healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damageText, transform);

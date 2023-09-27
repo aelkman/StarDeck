@@ -8,8 +8,8 @@ public class MainManager : MonoBehaviour
 
     public static MainManager Instance;
 
-    public int? playerHealth;
-    public int? playerMaxHealth;
+    public int playerHealth = 50;
+    public int playerMaxHealth = 50;
     public int coinCount = 50;
     public MapNode currentNode;
 

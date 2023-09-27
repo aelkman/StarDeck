@@ -10,14 +10,14 @@ public class FontManager : MonoBehaviour
     void Start() {
     
 
-        foreach(TextMeshPro textMeshPro3D in GameObject.FindObjectsOfType<TextMeshPro>())
-        {
-            textMeshPro3D.font = fontAsset;
-        }
-        foreach(TextMeshProUGUI textMeshProUi in GameObject.FindObjectsOfType<TextMeshProUGUI>())
-        {
-            textMeshProUi.font = fontAsset;
-        }
+        // foreach(TextMeshPro textMeshPro3D in GameObject.FindObjectsOfType<TextMeshPro>())
+        // {
+        //     textMeshPro3D.font = fontAsset;
+        // }
+        // foreach(TextMeshProUGUI textMeshProUi in GameObject.FindObjectsOfType<TextMeshProUGUI>())
+        // {
+        //     textMeshProUi.font = fontAsset;
+        // }
     }
 
     public TMP_FontAsset GetAsset() {

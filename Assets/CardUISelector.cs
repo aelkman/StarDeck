@@ -9,9 +9,11 @@ public class CardUISelector : MonoBehaviour
     public CardDisplay prefab;
     private Object[] cards;
     public int selectionCount = 3;
+    public MainManager mainManager;
     // Start is called before the first frame update
     void Start()
     {
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
         deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();

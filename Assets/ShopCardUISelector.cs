@@ -15,7 +15,7 @@ public class ShopCardUISelector : CardUISelector
     }
 
     public bool AddToDeck(Card card, int cost) {
-        if (coinCount.coinCount >= cost) {
+        if (mainManager.coinCount >= cost) {
             deck.AddCard(card);
             coinCount.SpendCoins(cost);
             return true;
