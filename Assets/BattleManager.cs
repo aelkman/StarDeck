@@ -28,6 +28,8 @@ public class BattleManager : MonoBehaviour
     private bool isGameOver = false;
     private bool isBattleWon = false;
     public float attackDelay = 0.25f;
+    private bool isPocketGenerator = false;
+    public bool noDamageTaken = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -151,7 +153,7 @@ public class BattleManager : MonoBehaviour
                             // weapon animations here
                             switch(cardType) {
                                 case "Blaster":
-                                    StartCoroutine(LaserAttack(STMPos, 0.1f));
+                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card));
                                     break;
                                 default:
                                     break;
@@ -218,7 +220,7 @@ public class BattleManager : MonoBehaviour
                             // weapon animations here
                             switch(cardType) {
                                 case "Blaster":
-                                    StartCoroutine(LaserAttack(STMPos2, 0.1f));
+                                    StartCoroutine(BlasterAttack(STMPos2, 0.1f, card));
                                     break;
                                 default:
                                     break;
@@ -242,6 +244,12 @@ public class BattleManager : MonoBehaviour
                             }
                         }
                         break;
+                    case "POWER":
+                        if (item.Value == "POCK_GEN") {
+                            ammoController.FullCharge();
+                            isPocketGenerator = true;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -261,11 +269,16 @@ public class BattleManager : MonoBehaviour
         playerStats.shieldAnimator.StartForceField();
     }
 
-    private IEnumerator LaserAttack(Vector3 STMPos, float timeInterval) {
+    private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card) {
         yield return new WaitForSeconds(attackDelay);
 
         // reduce the charges in the ammo container
-        ammoController.UseCharge(1);
+        if (isPocketGenerator && card.subType == "Shot") {
+            Debug.Log("pocket generator strikes again!");
+        }
+        else {
+            ammoController.UseCharge(1);
+        }
 
         Debug.Log(playerStats.transform.position.x);
         Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.1f, playerStats.transform.position.z);
@@ -284,6 +297,9 @@ public class BattleManager : MonoBehaviour
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
+            while(battleEnemy.actions.Length == 0) {
+                // wait until it loads
+            }
             if(battleEnemy.actions.Length > 0){
                 Card randomAction = battleEnemy.RandomAction();
                 // pass the action back to the enemy to display
@@ -337,6 +353,7 @@ public class BattleManager : MonoBehaviour
                                     switch(battleEnemy.battleEnemy.name) {
                                         case "GoldBot":
                                             battleEnemy.transform.parent.GetComponent<EnemyAnimator>().GoldBot_Melee_1();
+                                            yield return new WaitForSeconds(0.75f);
                                             break;
                                         default:
                                             battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
@@ -376,6 +393,7 @@ public class BattleManager : MonoBehaviour
                                 Debug.Log("attack mod: " + atkMod.ToString());
                                 battleEnemy.modifyAtk(atkMod);
                                 battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
+                                battleEnemy.SwordAnimation();
                                 break;
                             default:
                                 break;

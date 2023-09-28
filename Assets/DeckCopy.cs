@@ -13,6 +13,7 @@ public class DeckCopy : Deck
         foreach (Card card in deckOriginal.cardStack) {
             cardStack.Push(card);
         }
+        Shuffle();
     }
 
     // Update is called once per frame

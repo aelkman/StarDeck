@@ -14,4 +14,6 @@ public class BattleEnemy : ScriptableObject
     public float nextMoveYOffset;
     public Material material;
     public Vector3 scale;
+    public bool isMiniBoss;
+    public bool isBoss;
 }

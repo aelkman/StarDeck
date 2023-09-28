@@ -10,6 +10,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
+    public GameObject swordPrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem effectSystem;
     public ShockPlayer shockPlayer;
@@ -18,7 +19,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject enemyPrefabInstance;
     public Object[] actions;
     private EnemyAnimator enemyAnimator;
-    private int atkMod;
     
     // Start is called before the first frame update
     void Start()
@@ -88,6 +88,11 @@ public class BattleEnemyContainer : BaseCharacterInfo
         }
     }
 
+    public void SwordAnimation() {
+        GameObject swordAnimationInsance = Instantiate(swordPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        swordAnimationInsance.transform.localPosition = new Vector3(swordAnimationInsance.transform.localPosition.x, swordAnimationInsance.transform.localPosition.y + battleEnemy.nextMoveYOffset, swordAnimationInsance.transform.localPosition.z);
+    }
+
     public IEnumerator particleDelay(float time) {
         yield return new WaitForSeconds(time);
         effectSystem.Play();
@@ -111,19 +116,10 @@ public class BattleEnemyContainer : BaseCharacterInfo
         nextActionText.SetText(text);
     }
 
-    public void modifyAtk(int mod) {
-        atkMod += mod;
-        Debug.Log("atkMod modified: " + atkMod);
-    }
-
     public void BlockSequence(int block) {
         enemyAnimator.BlockAnimation();
         shieldAnimator.StartForceField();
         addBlock(block);
-    }
-
-    public int getAtkMod() {
-        return atkMod;
     }
 
     public void ShockAnimation() {

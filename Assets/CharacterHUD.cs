@@ -10,6 +10,7 @@ public class CharacterHUD : MonoBehaviour
     public BlockText blockText;
     public GameObject vulnDisplay;
     private SpriteRenderer spriteRenderer;
+    public GameObject damageUp;
     private bool isGlowUp = true;
     private float fade = 0f;
     
@@ -42,6 +43,13 @@ public class CharacterHUD : MonoBehaviour
         else {
             blockText.setText(baseCharacterInfo.getBlock().ToString());
             blockHUD.SetActive(true);
+        }
+
+        if(baseCharacterInfo.atkMod > 0) {
+            damageUp.SetActive(true);
+        }
+        else {
+            damageUp.SetActive(false);
         }
 
         if(baseCharacterInfo.GetVuln() > 0) {

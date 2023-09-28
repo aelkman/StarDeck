@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BattleWon : MonoBehaviour
 {
+    public PointsEarned pointsEarned;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,5 +30,7 @@ public class BattleWon : MonoBehaviour
         GameObject go = GameObject.Find("Card Canvas");
         SetLayerRecursively(go, LayerIgnoreRaycast);
         gameObject.SetActive(true);
+        pointsEarned.gameObject.SetActive(true);
+        pointsEarned.SetData();
     }
 }

@@ -14,6 +14,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public int health;
     public int stunnedTurns = 0;
     public bool isDead = false;
+    public int atkMod;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,5 +59,14 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void AddVuln(int vuln) {
         this.vuln += vuln;
+    }
+
+    public void modifyAtk(int mod) {
+        atkMod += mod;
+        Debug.Log("atkMod modified: " + atkMod);
+    }
+    
+    public int getAtkMod() {
+        return atkMod;
     }
 }

@@ -8,8 +8,8 @@ public class BattleEnemyManager : MonoBehaviour
     public GameObject animatorPrefab;
     public List<string> enemyNames;
     public BattleManager battleManager;
-    private List<BattleEnemyContainer> battleEnemies;
-    private List<GameObject> enemyInstances;
+    public List<BattleEnemyContainer> battleEnemies;
+    public List<BattleEnemyContainer> battleEnemiesStarting;
     public bool isInitialized = false;
     // Start is called before the first frame update
     void Start()
@@ -52,6 +52,7 @@ public class BattleEnemyManager : MonoBehaviour
             Vector3 nextActionPos = battleEnemyContainer.nextAction.transform.localPosition;
             battleEnemyContainer.nextAction.transform.localPosition = new Vector3(nextActionPos.x, nextActionPos.y + battleEnemy.nextMoveYOffset, nextActionPos.z);
             battleEnemies.Add(battleEnemyContainer);
+            battleEnemiesStarting.Add(battleEnemyContainer);
             // battleEnemyContainer.rectTransform.localScale = new Vector3(0.21334f, 0.21334f, 0.21334f);
             // battleEnemyContainer
 

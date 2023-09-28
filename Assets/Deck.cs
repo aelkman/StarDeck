@@ -5,28 +5,33 @@ using System.Linq;
 
 public class Deck : MonoBehaviour
 {
+    public StartingDeck startingDeck;
     public Stack<Card> cardStack;
+    public bool isInitialized = false;
     // Start is called before the first frame update
 
     void Start()
     {
         cardStack = new Stack<Card>();
-        for(int i = 0; i < 3; i++) {
-            Card card =  Resources.Load<Card>("Cards/Blaster/Energy Cell");
+        foreach(Card card in startingDeck.cardList) {
             cardStack.Push(card);
         }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Charge Shot");
+        // for(int i = 0; i < 3; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Energy Cell");
         //     cardStack.Push(card);
         // }
-        for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("Cards/Blaster/Laser Shot");
-            cardStack.Push(card);
-        }
-        for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("Cards/Shield Hack");
-            cardStack.Push(card);
-        }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Pocket Generator");
+        //     cardStack.Push(card);
+        // }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Blaster/Laser Shot");
+        //     cardStack.Push(card);
+        // }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Shield Hack");
+        //     cardStack.Push(card);
+        // }
         // for(int i = 0; i < 5; i++) {
         //     Card card =  Resources.Load<Card>("Cards/Blaster/Quickdraw");
         //     cardStack.Push(card);
@@ -43,20 +48,21 @@ public class Deck : MonoBehaviour
         //     Card card =  Resources.Load<Card>("Cards/Blaster/Homing Missile");
         //     cardStack.Push(card);
         // }
-        for(int i = 0; i < 5; i++) {
-            Card card =  Resources.Load<Card>("Cards/Force Field");
-            cardStack.Push(card);
-        }
-        for(int i = 0; i < 2; i++) {
-            Card card = Resources.Load<Card>("Cards/Dash");
-            cardStack.Push(card);
-        }
+        // for(int i = 0; i < 5; i++) {
+        //     Card card =  Resources.Load<Card>("Cards/Force Field");
+        //     cardStack.Push(card);
+        // }
+        // for(int i = 0; i < 2; i++) {
+        //     Card card = Resources.Load<Card>("Cards/Dash");
+        //     cardStack.Push(card);
+        // }
         // for(int i = 0; i < 2; i++) {
         //     Card card =  Resources.Load<Card>("Cards/Soul Shield");
         //     cardStack.Push(card);
         // }
-        Shuffle();
+        // Shuffle();
         Debug.Log("you have " + cardStack.Count + " cards in the deck");
+        isInitialized = true;
     }
 
     public void Shuffle() {

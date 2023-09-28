@@ -1,0 +1,103 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using TMPro;
+
+public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+    private bool mouse_over;
+    public int coinsEarned;
+    public TextMeshProUGUI coinsText;
+    public TextMeshProUGUI pointsText;
+    public BattleManager battleManager;
+    public BattleEnemyManager BEM;
+    private float noDamageMultiplier = 1.5f;
+    private int enemyCount;
+    private int miniBossCount;
+    private int bossCount;
+    private int enemyValue = 10;
+    private int miniBossValue = 50;
+    private int bossValue = 100;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (mouse_over) {
+            if (Input.GetMouseButtonUp(0)) {
+                gameObject.SetActive(false);
+                MainManager.Instance.coinCount += coinsEarned;
+            }
+        }
+    }
+
+    public void SetData() {
+        enemyCount = 0;
+        miniBossCount = 0;
+        bossCount = 0;
+
+        foreach(BattleEnemyContainer bec in BEM.battleEnemiesStarting) {
+            if(bec.battleEnemy.isBoss) {
+                bossCount += 1;
+            }
+            else if(bec.battleEnemy.isMiniBoss) {
+                miniBossCount += 1;
+            }
+            else {
+                enemyCount += 1;
+            }
+        }
+
+        pointsText.text = "";
+
+        if (enemyCount > 0) {
+            string descriptor = "Enemies";
+            if (enemyCount == 1) {
+                descriptor = "Enemy";
+            }
+            pointsText.text += enemyCount + " " + descriptor + "<br>";
+        }
+        if (miniBossCount > 0) {
+            string descriptor = "MiniBosses";
+            if (miniBossCount == 1) {
+                descriptor = "MiniBoss";
+            }
+            pointsText.text += miniBossCount + " "  + descriptor + "<br>";
+        }
+        if (bossCount > 0) {
+            string descriptor = "Bosses";
+            if (bossCount == 1) {
+                descriptor = "Boss";
+            }
+            pointsText.text += bossCount + " "  + descriptor + "<br>";
+        }
+
+        int enemyCoins = (enemyCount * enemyValue) + (miniBossCount * miniBossValue) + (bossCount * bossValue);
+
+        if(battleManager.noDamageTaken) {
+            coinsEarned = (int)(enemyCoins * noDamageMultiplier);
+            pointsText.text += "Perfect Bonus " + noDamageMultiplier + "x<br>";
+        }
+        else {
+            coinsEarned = enemyCoins;
+        }
+        pointsText.text += "<br>" + coinsEarned + " gold earned";
+        coinsText.text = coinsEarned.ToString();
+    }
+
+    public void OnPointerEnter(PointerEventData pointerEventData) {
+        mouse_over = true;
+    }
+
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
+        mouse_over = false;
+    }
+
+}
