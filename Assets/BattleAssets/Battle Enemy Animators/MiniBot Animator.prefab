@@ -279,7 +279,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1733185611
   m_SortingLayer: 2
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: -289550147, guid: fe914dbeeba7b0d4c9af43940d363370, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6620,7 +6620,7 @@ MonoBehaviour:
   - {x: -0.2656902, y: -0.6800003, z: 0}
   m_ShapePathHash: -1724278963
   m_Mesh: {fileID: 0}
-  m_InstanceId: 126596
+  m_InstanceId: 36934
   m_LocalBounds:
     m_Center: {x: 0.5349122, y: -0.3453808, z: 0}
     m_Extent: {x: 0.8335409, y: 0.3346195, z: 0}
@@ -6681,6 +6681,7 @@ MonoBehaviour:
   blockSprite: {fileID: 5256863553058951117}
   blockText: {fileID: 4335662727658567162}
   vulnDisplay: {fileID: 7431126081045155682}
+  damageUp: {fileID: 0}
 --- !u!1 &6875379550579014210
 GameObject:
   m_ObjectHideFlags: 0
@@ -6907,11 +6908,13 @@ MonoBehaviour:
   health: 15
   stunnedTurns: 0
   isDead: 0
+  atkMod: 0
   battleEnemy: {fileID: 11400000, guid: 8fca794719ec152488aa0af47368320e, type: 2}
   nextActionText: {fileID: 9095915088838717423}
   characterHUD: {fileID: 5784590369253448937}
   nextAction: {fileID: 8124414767380265729}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
+  swordPrefab: {fileID: 0}
   effectSystem: {fileID: 2601293596152526663}
   shockPlayer: {fileID: 3852405519089407750}
   singleTargetManager: {fileID: 0}

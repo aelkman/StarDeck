@@ -18,6 +18,7 @@ public class PlayerStats : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
+        nextMoveYOffset = 0;
         if (MainManager.Instance != null) {
             health = (int)MainManager.Instance.playerHealth;
         }
@@ -57,11 +58,7 @@ public class PlayerStats : BaseCharacterInfo
     }
 
     public void takeDamage(int damage) {
-        if (vuln > 0) {
-            float extraDamage = (float)damage * 1.5f;
-            damage = (int)Math.Round(extraDamage, 0);
-            Debug.Log("vulnened, new damage: " + damage);
-        }
+        damage = CalculateDamage(damage);
         health -= damage;
         if (damage > 0) {
             battleManager.noDamageTaken = false;

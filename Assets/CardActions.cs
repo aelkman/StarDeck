@@ -69,7 +69,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                             ExitResetSequence();
                         }
                     }
-            if (Input.GetMouseButtonUp (0)) {
+            if (Input.GetMouseButtonUp(0)) {
                 if (isSelected && !isHardReset) {
                     // Debug.Log("drag exit");
                             isSelected = false;

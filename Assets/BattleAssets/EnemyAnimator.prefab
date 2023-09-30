@@ -347,6 +347,8 @@ MonoBehaviour:
   damageText: {fileID: 0}
   shieldAnimator: {fileID: 5807941899587652574}
   healthBar: {fileID: 3573433032513937497}
+  swordPrefab: {fileID: 8175952742522311240, guid: bafe39a6c2b2e5948a74f3c124056ecf, type: 3}
+  vulnPrefab: {fileID: 8175952742522311240, guid: cbaa7034a0970fc41a07559639931380, type: 3}
   block: 0
   vuln: 0
   maxHealth: 0
@@ -354,12 +356,12 @@ MonoBehaviour:
   stunnedTurns: 0
   isDead: 0
   atkMod: 0
+  nextMoveYOffset: 0
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 808569400213747451}
   characterHUD: {fileID: 1414547864159836435}
   nextAction: {fileID: 2000603611772570230}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
-  swordPrefab: {fileID: 8175952742522311240, guid: bafe39a6c2b2e5948a74f3c124056ecf, type: 3}
   effectSystem: {fileID: 2587277430470127724}
   shockPlayer: {fileID: 2066619198428004193}
   singleTargetManager: {fileID: 0}

@@ -10,7 +10,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
-    public GameObject swordPrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem effectSystem;
     public ShockPlayer shockPlayer;
@@ -23,6 +22,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
+        nextMoveYOffset = battleEnemy.nextMoveYOffset;
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
         battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
@@ -56,7 +56,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public IEnumerator TakeDamage(int damage, float timeDelay, System.Action<bool> isDeadCallback) {
         yield return new WaitForSeconds(timeDelay);
         StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
-
+        damage = CalculateDamage(damage);
         if (block >= damage) {
             block -= damage;
             if (block == 0) {
@@ -86,11 +86,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
         else {
             isDeadCallback(false);
         }
-    }
-
-    public void SwordAnimation() {
-        GameObject swordAnimationInsance = Instantiate(swordPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        swordAnimationInsance.transform.localPosition = new Vector3(swordAnimationInsance.transform.localPosition.x, swordAnimationInsance.transform.localPosition.y + battleEnemy.nextMoveYOffset, swordAnimationInsance.transform.localPosition.z);
     }
 
     public IEnumerator particleDelay(float time) {

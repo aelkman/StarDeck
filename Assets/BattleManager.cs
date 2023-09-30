@@ -196,7 +196,14 @@ public class BattleManager : MonoBehaviour
                         // StartCoroutine(DelayCardDeletion(cardDisplay));
                         break;
                     case "VULN":
-                        playerStats.AddVuln(Int32.Parse(item.Value));
+                        if(card.isTarget) {
+                            STM.GetTarget().AddVuln(Int32.Parse(item.Value));
+                            STM.GetTarget().VulnerableAnimation();
+                        }
+                        else {
+                            playerStats.AddVuln(Int32.Parse(item.Value));
+                            playerStats.VulnerableAnimation();
+                        }
                         break;
                     case "RELOAD":
                         ammoController.FullCharge();
@@ -297,9 +304,9 @@ public class BattleManager : MonoBehaviour
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
-            while(battleEnemy.actions.Length == 0) {
-                // wait until it loads
-            }
+            // while(battleEnemy.actions.Length == 0) {
+            //     // wait until it loads
+            // }
             if(battleEnemy.actions.Length > 0){
                 Card randomAction = battleEnemy.RandomAction();
                 // pass the action back to the enemy to display
@@ -420,7 +427,10 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(5);
         playerStats.resetMana();
         playerStats.resetBlock();
-        playerStats.vuln -= 1;
+        playerStats.RemoveSingleVuln();
+        foreach(BattleEnemyContainer be in battleEnemies) {
+            be.RemoveSingleVuln();
+        }
     }
 
     public void ResetEnemyShields() {
