@@ -19,6 +19,8 @@ public class DiceRoller : MonoBehaviour
     public Button continueButton;
     private bool isRollFinished = false;
     public float upwardForce = 20f;
+    public MapManager mapManager;
+    public GameObject diceContainer;
 
     readonly List<string> FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
     // Start is called before the first frame update
@@ -93,6 +95,7 @@ public class DiceRoller : MonoBehaviour
                 // Debug.Log("Final roll: " + UpperSideTxt);
                 isRollFinished = true;
                 continueButton.interactable = true;
+                rerollButton.interactable = true;
             }
         }
     }
@@ -100,13 +103,19 @@ public class DiceRoller : MonoBehaviour
     public void ThrowDice() {
         isRollFinished = false;
         continueButton.interactable = false;
+        rerollButton.interactable = false;
         rerollRemaining -= 1;
         rerollCountText.text = rerollRemaining.ToString();
-        // if(rerollRemaining == 0) {
-        //     rerollButton.interactable = false;
-        // }
+        if(rerollRemaining == 0) {
+            rerollButton.interactable = false;
+        }
         transform.localPosition = startingPos;
 
         DiceRoll();
+    }
+
+    public void ContinueClick() {
+        mapManager.LoadNextLevel(UpperSideTxt.text);
+        diceContainer.SetActive(false);
     }
 }

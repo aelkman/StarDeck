@@ -74,7 +74,7 @@ public class MapNode : MonoBehaviour
 
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Enemy Icon Animator");
             }
-            else if (destinationName == "MiniBoss") {
+            else if (destinationName == "Mini-Boss") {
                 enemies = new List<string>();
                 EnemyGroup[] group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/MiniBoss");
 

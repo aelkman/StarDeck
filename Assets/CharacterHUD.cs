@@ -9,6 +9,7 @@ public class CharacterHUD : MonoBehaviour
     public GameObject blockSprite;
     public BlockText blockText;
     public GameObject vulnDisplay;
+    public GameObject blindDisplay;
     private SpriteRenderer spriteRenderer;
     public GameObject damageUp;
     private bool isGlowUp = true;
@@ -57,6 +58,13 @@ public class CharacterHUD : MonoBehaviour
         }
         else {
             vulnDisplay.SetActive(false);
+        }
+
+        if(baseCharacterInfo.blind > 0) {
+            blindDisplay.SetActive(true);
+        }
+        else {
+            blindDisplay.SetActive(false);
         }
     }
 }

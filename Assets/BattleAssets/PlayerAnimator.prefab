@@ -59,8 +59,11 @@ MonoBehaviour:
   healthBar: {fileID: 8895199435353869052}
   swordPrefab: {fileID: 8175952742522311240, guid: bafe39a6c2b2e5948a74f3c124056ecf, type: 3}
   vulnPrefab: {fileID: 8175952742522311240, guid: cbaa7034a0970fc41a07559639931380, type: 3}
+  shockPlayer: {fileID: 7668028047141457067}
+  characterAnimator: {fileID: 3141597828022023762}
   block: 0
   vuln: 0
+  blind: 0
   maxHealth: 0
   health: 0
   stunnedTurns: 0
@@ -372,6 +375,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8650882526934452556, guid: 2830e54e5b4555a44aa61f80a503ac82, type: 3}
   m_PrefabInstance: {fileID: 3256463340872821668}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7668028047141457067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5141710849015490319, guid: 2830e54e5b4555a44aa61f80a503ac82, type: 3}
+  m_PrefabInstance: {fileID: 3256463340872821668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4509760510343607702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1549b6f163a14c846955f9c3df2f47a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3493540526601683346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -754,7 +768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4058339895541563220, guid: e69ff91abd5b6ed41b596a585dc3c5bb, type: 3}
       propertyPath: m_InstanceId
-      value: -404124
+      value: -34636
       objectReference: {fileID: 0}
     - target: {fileID: 4082602004476018367, guid: e69ff91abd5b6ed41b596a585dc3c5bb, type: 3}
       propertyPath: m_LocalPosition.z

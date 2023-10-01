@@ -11,6 +11,7 @@ public class MapManager : MonoBehaviour
     public MainManager mainManager;
     public MapNode movementSelection;
     public Animator transition;
+    public GameObject diceContainer;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +34,12 @@ public class MapManager : MonoBehaviour
             mapArrow.GetComponent<MapArrow>().currentNode = newNode;
             mainManager.currentNode = newNode;
             newNode.destination.gameObject.SetActive(false);
-            LoadNextLevel(newNode.destinationName);
+            if(newNode.destinationName == "Unknown") {
+                diceContainer.SetActive(true);
+            }
+            else {
+                LoadNextLevel(newNode.destinationName);
+            }
         }
         else {
             Debug.Log("not a next node!");
@@ -41,7 +47,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void LoadNextLevel(string destinationName) {
-        if(destinationName == "Enemy" || destinationName == "MiniBoss") {
+        if(destinationName == "Enemy" || destinationName == "Mini-Boss") {
             destinationName = "Battle";
         }
         StartCoroutine(LoadLevel(destinationName));
@@ -52,7 +58,7 @@ public class MapManager : MonoBehaviour
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadScene("Battle");
+        SceneManager.LoadScene(sceneName);
     }
 
     private void OnSceneUnloaded(Scene current)

@@ -11,8 +11,11 @@ public class BaseCharacterInfo : MonoBehaviour
     public HealthBar healthBar;
     public GameObject swordPrefab;
     public GameObject vulnPrefab;
+    public ShockPlayer shockPlayer;
+    public CharacterAnimator characterAnimator;
     public int block = 0;
     public int vuln = 0;
+    public int blind = 0;
     public int maxHealth;
     public int health;
     public int stunnedTurns = 0;
@@ -74,6 +77,12 @@ public class BaseCharacterInfo : MonoBehaviour
         return atkMod;
     }
 
+    public void RemoveSingleBlind() {
+        if (blind > 0) {
+            blind -= 1;
+        }
+    }
+
     public void SwordAnimation() {
         GameObject swordAnimationInsance = Instantiate(swordPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
         swordAnimationInsance.transform.localPosition = new Vector3(swordAnimationInsance.transform.localPosition.x, swordAnimationInsance.transform.localPosition.y + nextMoveYOffset, swordAnimationInsance.transform.localPosition.z);
@@ -90,6 +99,13 @@ public class BaseCharacterInfo : MonoBehaviour
         }
     }
 
+    public bool isBlind() {
+        if(blind > 0) {
+            return true;
+        }
+        else return false;
+    }
+
     public int CalculateDamage(int damage) {
         if (vuln > 0) {
             float extraDamage = (float)damage * 1.5f;
@@ -97,5 +113,10 @@ public class BaseCharacterInfo : MonoBehaviour
             Debug.Log("vulnerable, new damage: " + damage);
         }
         return damage;
+    }
+
+    public void ShockAnimation() {
+        shockPlayer.StartShock();
+        characterAnimator.ShockAnimation();
     }
 }

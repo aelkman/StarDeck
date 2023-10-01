@@ -13,14 +13,17 @@ public class HandManager : MonoBehaviour
     public DeckCopy deckCopy;
     public List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
+    private List<CardDisplay> expelCards;
     private CardDisplay currentCard;
     private RectTransform rectTransform;
     private float zRot = 1.0f;
     private float yOffset = 15.0f;
     private float xOffset = 200;
+    public PlayerStats playerStats;
     // Start is called before the first frame update
     void Start()
     {
+        expelCards = new List<CardDisplay>();
         handCards = new List<CardDisplay>();
         discardCards = new List<CardDisplay>();
     }
@@ -101,23 +104,38 @@ public class HandManager : MonoBehaviour
         // remove from hand, then sort
         handCards.Remove(cardDisplay);
         SortCards();
-
         // defer deletion & removal by 1.7s
         StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
     }
 
     private IEnumerator DeferCardDeletion(CardDisplay cardDisplay, float time) {
         yield return new WaitForSeconds(time);
-        discardCards.Add(cardDisplay);
+        if(cardDisplay.card.name == "Virus") {
+            expelCards.Add(cardDisplay);
+        }
+        else {
+            discardCards.Add(cardDisplay);
+        }
         // next, need to remove GO from the Hand
         cardDisplay.gameObject.SetActive(false);
         Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
         Destroy(cardDisplay.gameObject);
     }
 
+    private void NegativeDiscards(CardDisplay cardDisplay) {
+        if(cardDisplay.card.name == "Virus") {
+            // duplicate
+            discardCards.Add(cardDisplay);
+            // deal 5 damage to player
+            playerStats.takeDamage(5);
+        }
+    }
+
     public void DiscardHand() {
         for(int i=0; i< handCards.Count; i=0) {
             CardDisplay cardDisplay = handCards[i];
+            // negative cards effects for discard here
+            NegativeDiscards(cardDisplay);
             handCards.Remove(cardDisplay);
             discardCards.Add(cardDisplay);
             cardDisplay.gameObject.SetActive(false);

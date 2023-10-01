@@ -30,6 +30,12 @@ public class CardDisplay : MonoBehaviour
         else if (card.rarity == "R") {
             cardBase.sprite = Resources.Load<Sprite>("Card_base_gold_2");
         }
+        else if (card.rarity == "N") {
+            descriptionText.color = Color.white;
+            nameText.color = Color.white;
+            manaText.color = Color.white;
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_black");
+        }
         nameText.text = card.name;
         descriptionText.text = card.description + "<br>" + DescriptionParser();
         artworkImage.sprite = card.artwork;
@@ -72,6 +78,16 @@ public class CardDisplay : MonoBehaviour
                     else {
                         descriptionAdditional = "<br>Deal " + multiAttack[0] + " damage " + multiAttack[1] + " times";
                     }
+                    break;
+                case "ATK_ALL":
+                    List<int> attackAll = card.actions["ATK_ALL"].Split(',').Select(int.Parse).ToList();
+                    if (attackAll.Count != 2) {
+                        throw new Exception("Invalid ATK_ALL attributes! Must be 2 ints comma separated");
+                    }
+                    descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
+                    break;
+                case "BLIND_ALL":
+                    descriptionAdditional += "<br>Blind ALL enemies " + item.Value + " turn/s";
                     break;
                 case "DEF":
                     descriptionAdditional += "<br>Block " + item.Value + "";

@@ -31,7 +31,7 @@ public class DestinationsController : MonoBehaviour
                 destinations.Add("Chest");
             }
             else if (randomIndex >= 5 && randomIndex <= 6) {
-                destinations.Add("MiniBoss");
+                destinations.Add("Mini-Boss");
             }
             else if (randomIndex >= 7 && randomIndex <= 8) {
                 destinations.Add("Unknown");

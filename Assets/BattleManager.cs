@@ -116,6 +116,25 @@ public class BattleManager : MonoBehaviour
         else return false;
     }
 
+    private void SetConfusionTarget() {
+        int target = UnityEngine.Random.Range(0, battleEnemies.Count + 1);
+        if(target == 0) {
+            STM.SetTarget(playerStats);
+        }
+        else {
+            STM.SetTarget(battleEnemies[target]);
+        }
+    }
+
+    private bool DidTargetMiss(BaseCharacterInfo character) {
+        bool miss = false;
+        if(character.isBlind()) {
+            // see if they miss
+            miss = UnityEngine.Random.Range(0, 2) == 1;
+        }
+        return miss;
+    }
+
     public IEnumerator CardAction(Card card) {
         // Debug.Log("battlemanager TargetCardAcion");
         // bool canAct = CheckCanAct(cardDisplay.card);
@@ -145,24 +164,76 @@ public class BattleManager : MonoBehaviour
                             throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
                         }
 
-                        Vector3 STMPos = STM.GetTarget().transform.position;
-
                         for (int i = 0; i < multiAttack[1]; i++) {
+                            
+                            Vector3 STMPos;
+                            if(DidTargetMiss(playerStats)) {
+                                Vector3 targPos = STM.GetTarget().transform.position;
+                                STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                            }
+                            else {
+                                STMPos = STM.GetTarget().transform.position;
+                            }
+
                             bool isLast = i == (multiAttack[1] - 1);
                             playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                             // weapon animations here
                             switch(cardType) {
                                 case "Blaster":
-                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card));
+                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true));
+                                    break;
+                                case "Blaster_All":
+                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false));
                                     break;
                                 default:
                                     break;
                             }
-                            StartCoroutine(STM.GetTarget().TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
+
+                            if(!DidTargetMiss(playerStats)) {
+                                // check target type
+                                if(STM.GetTarget() is BattleEnemyContainer) {
+                                    StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
+                                }
+                                else {
+                                    // player is blinded, attack self
+                                    ((PlayerStats)STM.GetTarget()).takeDamage(multiAttack[0]);
+                                }
+                            }
                             if (!isLast) {
                                 yield return new WaitForSeconds(0.5f);
                             }
                         }
+                        break;
+                    case "ATK_ALL":
+                        if(card.type == "Blaster") {
+                            ammoController.UseCharge(1);
+                        }
+                        foreach(var enemy in battleEnemies) {
+                            Card newCard = ScriptableObject.CreateInstance<Card>();
+                            if(card.type == "Blaster") {
+                                newCard.type = "Blaster_All";
+                                // check if its the first, then otherwise remove Blaster type
+                                // so that it doesnt consume more ammo
+                            }
+                            else {
+                                newCard.type = card.type;
+                            }
+                            newCard.manaCost = 0;
+                            newCard.actions = new Dictionary<string, string>();
+                            newCard.actions.Add("ATK", item.Value);
+                            // hopefully this works
+                            STM.SetTarget(enemy);
+                            // recursion
+                            StartCoroutine(CardAction(newCard));
+                        }
+                        break;
+                    case "BLIND_ALL":
+                        foreach(var battleEnemy in battleEnemies) {
+                            battleEnemy.blind += 1;
+                        }
+                        break;
+                    case "BLIND":
+                        STM.GetTarget().blind += 1;
                         break;
                     case "DEF":
                         playerStats.addBlock(Int32.Parse(item.Value));
@@ -219,33 +290,50 @@ public class BattleManager : MonoBehaviour
                         int multiplier = Int32.Parse(finalBlow[1]);
 
                         // unfortunate code copying, but refacting is too much work
-                        Vector3 STMPos2 = STM.GetTarget().transform.position;
-
                         for (int i = 0; i < multiplier; i++) {
+
+                            Vector3 STMPos2;
+                            if(DidTargetMiss(playerStats)) {
+                                Vector3 targPos = STM.GetTarget().transform.position;
+                                STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                            }
+                            else {
+                                STMPos2 = STM.GetTarget().transform.position;
+                            }
+
                             bool isLast = i == (multiplier - 1);
                             playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                             // weapon animations here
                             switch(cardType) {
                                 case "Blaster":
-                                    StartCoroutine(BlasterAttack(STMPos2, 0.1f, card));
+                                    StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true));
                                     break;
                                 default:
                                     break;
                             }
-                            StartCoroutine(STM.GetTarget().TakeDamage(dmg, attackDelay, isDeadReturnValue => {
-                                if(isDeadReturnValue) {
-                                    // if the enemy was killed, perform the next action
-                                    string nextAction = finalBlow[2];
-                                    // for now, this only works with RELOAD... will have to fix later
-                                    Card newCard = ScriptableObject.CreateInstance<Card>();
-                                    newCard.type = "Blaster";
-                                    newCard.manaCost = 0;
-                                    newCard.actions = new Dictionary<string, string>();
-                                    newCard.actions.Add(finalBlow[2], finalBlow[3]);
-                                    // recursion
-                                    StartCoroutine(CardAction(newCard));
+                            if(!DidTargetMiss(playerStats)) {
+                                if(STM.GetTarget() is BattleEnemyContainer) {
+                                    StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
+                                        if(isDeadReturnValue) {
+                                            // if the enemy was killed, perform the next action
+                                            string nextAction = finalBlow[2];
+                                            // for now, this only works with RELOAD... will have to fix later
+                                            Card newCard = ScriptableObject.CreateInstance<Card>();
+                                            newCard.type = "Blaster";
+                                            newCard.manaCost = 0;
+                                            newCard.actions = new Dictionary<string, string>();
+                                            newCard.actions.Add(finalBlow[2], finalBlow[3]);
+                                            // recursion
+                                            StartCoroutine(CardAction(newCard));
+                                        }
+                                    }));
                                 }
-                            }));
+                            }
+                            else {
+                                // player is blind, attack self
+                                ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
+                            }
+
                             if (!isLast) {
                                 yield return new WaitForSeconds(0.5f);
                             }
@@ -276,12 +364,15 @@ public class BattleManager : MonoBehaviour
         playerStats.shieldAnimator.StartForceField();
     }
 
-    private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card) {
+    private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card, bool useCharge) {
         yield return new WaitForSeconds(attackDelay);
 
         // reduce the charges in the ammo container
         if (isPocketGenerator && card.subType == "Shot") {
             Debug.Log("pocket generator strikes again!");
+        }
+        else if (!useCharge) {
+            Debug.Log("don't use charge!");
         }
         else {
             ammoController.UseCharge(1);
@@ -348,6 +439,7 @@ public class BattleManager : MonoBehaviour
                     foreach(var item in randomAction.actions) {
                         switch(item.Key) {
                             case "ATK_RND":
+
                                 List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
 
                                 if (randAttack.Count != 2) {
@@ -366,19 +458,21 @@ public class BattleManager : MonoBehaviour
                                             battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
                                             break;
                                     }
-                                    if(playerStats.hasBlock()) {
-                                        if(playerStats.getBlock() <= atkDmg) {
-                                            atkDmg = atkDmg - playerStats.getBlock();
-                                            playerStats.setBlock(0);
-                                            playerStats.shieldAnimator.StopForceField();
+                                    if(!DidTargetMiss(battleEnemy)) {
+                                        if(playerStats.hasBlock()) {
+                                            if(playerStats.getBlock() <= atkDmg) {
+                                                atkDmg = atkDmg - playerStats.getBlock();
+                                                playerStats.setBlock(0);
+                                                playerStats.shieldAnimator.StopForceField();
+                                            }
+                                            else {
+                                                playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                                atkDmg = 0;
+                                            }
                                         }
-                                        else {
-                                            playerStats.setBlock(playerStats.getBlock() - atkDmg);
-                                            atkDmg = 0;
-                                        }
+                                        playerStats.takeDamage(atkDmg);
+                                        playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                                     }
-                                    playerStats.takeDamage(atkDmg);
-                                    playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                                 }
                                 break;
                             case "DEF_RND":
@@ -418,6 +512,8 @@ public class BattleManager : MonoBehaviour
     public void EndPlayerTurn() {
         isPlayerTurn = false;
         ResetEnemyShields();
+        playerStats.RemoveSingleBlind();
+        playerStats.RemoveSingleVuln();
     }
 
     public void EndEnemyTurn() {
@@ -427,9 +523,9 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(5);
         playerStats.resetMana();
         playerStats.resetBlock();
-        playerStats.RemoveSingleVuln();
         foreach(BattleEnemyContainer be in battleEnemies) {
             be.RemoveSingleVuln();
+            be.RemoveSingleBlind();
         }
     }
 

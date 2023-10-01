@@ -1232,7 +1232,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 332849897}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1289044818}
+        m_TargetAssemblyTypeName: DiceRoller, Assembly-CSharp
+        m_MethodName: ContinueClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &332849897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1827,7 +1839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &582516098
 Transform:
   m_ObjectHideFlags: 0
@@ -3954,7 +3966,7 @@ GameObject:
   - component: {fileID: 859133446}
   - component: {fileID: 859133445}
   m_Layer: 5
-  m_Name: Reroll
+  m_Name: Reroll Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5750,6 +5762,8 @@ MonoBehaviour:
   rerollButton: {fileID: 192755600}
   continueButton: {fileID: 332849896}
   upwardForce: 200
+  mapManager: {fileID: 1978145047}
+  diceContainer: {fileID: 582516097}
 --- !u!1001 &1292457562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7881,6 +7895,10 @@ PrefabInstance:
       propertyPath: mainManager
       value: 
       objectReference: {fileID: 166979505}
+    - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: diceContainer
+      value: 
+      objectReference: {fileID: 582516097}
     - target: {fileID: 7635219133682918943, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

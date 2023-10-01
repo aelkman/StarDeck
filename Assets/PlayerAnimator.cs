@@ -2,36 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : CharacterAnimator
 {
-    private Animator animator;
+    // private Animator animator;
     // Start is called before the first frame update
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
+    // void Start()
+    // {
+    //     animator = GetComponent<Animator>();
+    // }
 
-    // Update is called once per frame
-    void Update()
-    {
+    // // Update is called once per frame
+    // void Update()
+    // {
         
-    }
-
-    public void DamageAnimation() {
-        animator.SetTrigger("TakeDamage");
-    }
-
-    public void AttackAnimation() {
-        animator.SetTrigger("Attack");
-    }
-
-    public void DeathAnimation() {
-        animator.SetTrigger("Death");
-    }
-
-    public void BlockAnimation() {
-        animator.SetTrigger("Blocking");
-    }
+    // }
 
     public void ClapAnimation() {
         animator.SetTrigger("Clap");

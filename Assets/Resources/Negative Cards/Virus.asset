@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
+  m_Name: Virus
+  m_EditorClassIdentifier: 
+  name: Virus
+  artwork: {fileID: 21300000, guid: 80d5d95f515fd9a4292ca8adf813f798, type: 3}
+  manaCost: 1
+  actionKeys:
+  - VIRUS
+  actionValues:
+  - 
+  description: When played, Expel<br><br>If discarded, duplicate and lose 5 health
+  type: Negative
+  subType: 
+  category: 
+  isTarget: 0
+  rarity: N

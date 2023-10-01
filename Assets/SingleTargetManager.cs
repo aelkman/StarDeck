@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SingleTargetManager : MonoBehaviour
 {
-    public BattleEnemyContainer currentTarget;
+    public BaseCharacterInfo currentTarget;
     public bool targetLocked = false;
     // Start is called before the first frame update
     void Start()
@@ -22,11 +22,11 @@ public class SingleTargetManager : MonoBehaviour
         currentTarget = null;
     }
 
-    public void SetTarget(BattleEnemyContainer target) {
+    public void SetTarget(BaseCharacterInfo target) {
         currentTarget = target;
     }
 
-    public BattleEnemyContainer GetTarget() {
+    public BaseCharacterInfo GetTarget() {
         return currentTarget;
     }
 }

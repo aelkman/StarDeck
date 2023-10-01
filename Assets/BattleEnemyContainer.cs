@@ -12,7 +12,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject damagePrefab;
     private BattleEnemyManager battleEnemyManager;
     public ParticleSystem effectSystem;
-    public ShockPlayer shockPlayer;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
@@ -115,10 +114,5 @@ public class BattleEnemyContainer : BaseCharacterInfo
         enemyAnimator.BlockAnimation();
         shieldAnimator.StartForceField();
         addBlock(block);
-    }
-
-    public void ShockAnimation() {
-        shockPlayer.StartShock();
-        enemyAnimator.ShockAnimation();
     }
 }

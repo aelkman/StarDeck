@@ -64,9 +64,9 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             pointsText.text += enemyCount + " " + descriptor + "<br>";
         }
         if (miniBossCount > 0) {
-            string descriptor = "MiniBosses";
+            string descriptor = "Mini-Bosses";
             if (miniBossCount == 1) {
-                descriptor = "MiniBoss";
+                descriptor = "Mini-Boss";
             }
             pointsText.text += miniBossCount + " "  + descriptor + "<br>";
         }
