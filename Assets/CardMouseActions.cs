@@ -240,7 +240,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private void ExitResetSequence() {
         if (!isCardPlayed) {
             transform.SetSiblingIndex(siblingIndexOriginal);
-            Debug.Log("sibling index: " + transform.GetSiblingIndex());
+            // Debug.Log("sibling index: " + transform.GetSiblingIndex());
             if (start != null) {
                 StopCoroutine(start);
                 start = null;

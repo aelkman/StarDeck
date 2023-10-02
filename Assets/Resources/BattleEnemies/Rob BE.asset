@@ -17,5 +17,13 @@ MonoBehaviour:
   maxHealth: 30
   health: 30
   xOffset: 285
+  yOffset: 0
+  nextMoveYOffset: 0
   material: {fileID: 2100000, guid: a292e0da0d505964a8a5dd9ad82a5b7d, type: 2}
   scale: {x: 0, y: 0, z: 0}
+  isMiniBoss: 0
+  isBoss: 0
+  actions:
+  - {fileID: 11400000, guid: a1de4e2964be0a6488f9bd768738e8f4, type: 2}
+  - {fileID: 11400000, guid: be45def5a1a15b343bc01f1837b3bcc6, type: 2}
+  - {fileID: 11400000, guid: 84c908c86874c3543969f4c09998ed06, type: 2}

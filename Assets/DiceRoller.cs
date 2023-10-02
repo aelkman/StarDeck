@@ -17,15 +17,28 @@ public class DiceRoller : MonoBehaviour
     private int rerollRemaining = 2;
     public Button rerollButton;
     public Button continueButton;
-    private bool isRollFinished = false;
+    private bool isRollFinished;
     public float upwardForce = 20f;
     public MapManager mapManager;
     public GameObject diceContainer;
+    public string eventName;
+    public MeshRenderer diceRenderer;
 
-    readonly List<string> FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
+    List<string> FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        isRollFinished = false;
+        if(eventName == "Unknown") {
+            diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
+        }
+        else if(eventName == "Chest") {
+            diceRenderer.material = Resources.Load<Material>("Dice Material Chest");
+            FaceRepresent = new List<string>() {"", "Chest", "Chest", "Enemy", "Enemy", "Chest", "Chest"};
+        }
+        else {
+            diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
+        }
         rerollCountText.text = rerollRemaining.ToString();
         continueButton.interactable = false;
         timeElapsed = 0;
@@ -92,7 +105,7 @@ public class DiceRoller : MonoBehaviour
         }
         else {
             if (timeElapsed > 0.2f && !isRollFinished) {
-                // Debug.Log("Final roll: " + UpperSideTxt);
+                Debug.Log("roll finished!");
                 isRollFinished = true;
                 continueButton.interactable = true;
                 rerollButton.interactable = true;
@@ -106,16 +119,25 @@ public class DiceRoller : MonoBehaviour
         rerollButton.interactable = false;
         rerollRemaining -= 1;
         rerollCountText.text = rerollRemaining.ToString();
-        if(rerollRemaining == 0) {
-            rerollButton.interactable = false;
-        }
+        // if(rerollRemaining == 0) {
+        //     rerollButton.interactable = false;
+        // }
         transform.localPosition = startingPos;
 
         DiceRoll();
     }
 
     public void ContinueClick() {
-        mapManager.LoadNextLevel(UpperSideTxt.text);
+        if(eventName == "Chest") {
+            if(UpperSideTxt.text == "Enemy") {
+                MainManager.Instance.currentNode.enemies.Add("Chest");
+                foreach(string e in MainManager.Instance.currentNode.enemies) {
+                    Debug.Log("enemy: " + e);
+                }
+            }
+        }
+        Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
         diceContainer.SetActive(false);
+        mapManager.LoadNextLevel(UpperSideTxt.text);
     }
 }

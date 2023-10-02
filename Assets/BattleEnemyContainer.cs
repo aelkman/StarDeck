@@ -15,7 +15,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
-    public Object[] actions;
+    public List<Card> actions;
     private EnemyAnimator enemyAnimator;
     
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
         battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
-        actions = Resources.LoadAll("BattleEnemies/"  + "Actions/" + battleEnemy.name);
+        actions = battleEnemy.actions;
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
         // healthBarGO = Instantiate(healthBarPrefab);
@@ -103,7 +103,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public Card RandomAction() {
         // Random.seed = System.DateTime.Now.Millisecond;
         // Random.Range with ints is (inclusive, exclusive)
-        return (Card)actions[Random.Range(0, actions.Length)];
+        return (Card)actions[Random.Range(0, actions.Count)];
     }
 
     public void SetNextActionText(string text) {

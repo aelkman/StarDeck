@@ -58,7 +58,6 @@ public class SceneLoadSingleton : MonoBehaviour
             // cg.interactable = true;
             // cg.blocksRaycasts = true;
         }
-        Debug.Log(mode);
     }
 
     private void OnSceneUnloaded(Scene current)

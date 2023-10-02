@@ -198,8 +198,8 @@ public class HandManager : MonoBehaviour
             float newRotationZ = Mathf.Lerp((handCardsLess1) * zRot, (handCardsLess1) * -zRot, alignResult);
             Quaternion originalRotation = cardDisplay.transform.rotation;
 
-            Debug.Log("newZRot: " + newRotationZ);
-            Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
+            // Debug.Log("newZRot: " + newRotationZ);
+            // Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
 
             Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), newRotationZ, Mathf.SmoothStep(0, 1, i)));
             cardDisplay.transform.eulerAngles = currentAngle;

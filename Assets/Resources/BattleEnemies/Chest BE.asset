@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b3e2c5405f94341bbcb5f42a817b8a, type: 3}
+  m_Name: Chest BE
+  m_EditorClassIdentifier: 
+  name: Chest
+  sprite: {fileID: 0}
+  maxHealth: 50
+  health: 50
+  xOffset: 285
+  yOffset: 0
+  nextMoveYOffset: 84
+  material: {fileID: 0}
+  scale: {x: 0, y: 0, z: 0}
+  isMiniBoss: 1
+  isBoss: 0
+  actions:
+  - {fileID: 11400000, guid: cc3e2e6303b3b914f8d3a02b53f88b32, type: 2}
+  - {fileID: 11400000, guid: 0c4c0520ec87048479cb0a6251934cf2, type: 2}

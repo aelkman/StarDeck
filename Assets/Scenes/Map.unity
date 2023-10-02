@@ -5687,7 +5687,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4777196175697903961, guid: 5fb04f0c28a6aca4a813554a37f95baa, type: 3}
+  - {fileID: 2100000, guid: bebae7182eef28b4b9302d8b9bbb31fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5764,6 +5764,8 @@ MonoBehaviour:
   upwardForce: 200
   mapManager: {fileID: 1978145047}
   diceContainer: {fileID: 582516097}
+  eventName: 
+  diceRenderer: {fileID: 1289044815}
 --- !u!1001 &1292457562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7887,6 +7889,10 @@ PrefabInstance:
       propertyPath: treeMapManager
       value: 
       objectReference: {fileID: 1712106149}
+    - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: diceRoller
+      value: 
+      objectReference: {fileID: 1289044818}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: transition
       value: 

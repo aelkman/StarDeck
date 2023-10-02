@@ -31,7 +31,7 @@ public class ShieldAnimator : MonoBehaviour
                     break;
                 case "ShieldOff":
                     stopTime = clip.length;
-                    Debug.Log("stopTime: " + stopTime);
+                    // Debug.Log("stopTime: " + stopTime);
                     break;
             }
         }

@@ -136,226 +136,211 @@ public class BattleManager : MonoBehaviour
     }
 
     public IEnumerator CardAction(Card card) {
-        // Debug.Log("battlemanager TargetCardAcion");
-        // bool canAct = CheckCanAct(cardDisplay.card);
-        // Debug.Log("canAct: " + canAct);
         string cardType = card.type;
-        // bool canBlasterAct = true;
 
-        // // now check here if ammo charges are needed & allowed
-        // if(cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster") {
-        //     int requiredCharges = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList()[1];
-        //     if (!CheckBlasterCanAct(requiredCharges)) {
-        //         canBlasterAct = false;
-        //     }
-        // }
+        // first, consume card mana
+        playerStats.useMana(card.manaCost);
 
-        // canBlasterAct will always be true if it's not a Blaster card
-        // if(canAct && canBlasterAct) {
-            // first, consume card mana
-            playerStats.useMana(card.manaCost);
+        foreach(var item in card.actions) {
+            switch(item.Key) {
+                case "ATK":
+                    List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
 
-            foreach(var item in card.actions) {
-                switch(item.Key) {
-                    case "ATK":
-                        List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
+                    if (multiAttack.Count != 2) {
+                        throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
+                    }
 
-                        if (multiAttack.Count != 2) {
-                            throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
-                        }
-
-                        for (int i = 0; i < multiAttack[1]; i++) {
-                            
-                            Vector3 STMPos;
-                            if(DidTargetMiss(playerStats)) {
-                                Vector3 targPos = STM.GetTarget().transform.position;
-                                STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
-                            }
-                            else {
-                                STMPos = STM.GetTarget().transform.position;
-                            }
-
-                            bool isLast = i == (multiAttack[1] - 1);
-                            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-                            // weapon animations here
-                            switch(cardType) {
-                                case "Blaster":
-                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true));
-                                    break;
-                                case "Blaster_All":
-                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false));
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            if(!DidTargetMiss(playerStats)) {
-                                // check target type
-                                if(STM.GetTarget() is BattleEnemyContainer) {
-                                    StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
-                                }
-                                else {
-                                    // player is blinded, attack self
-                                    ((PlayerStats)STM.GetTarget()).takeDamage(multiAttack[0]);
-                                }
-                            }
-                            if (!isLast) {
-                                yield return new WaitForSeconds(0.5f);
-                            }
-                        }
-                        break;
-                    case "ATK_ALL":
-                        if(card.type == "Blaster") {
-                            ammoController.UseCharge(1);
-                        }
-                        foreach(var enemy in battleEnemies) {
-                            Card newCard = ScriptableObject.CreateInstance<Card>();
-                            if(card.type == "Blaster") {
-                                newCard.type = "Blaster_All";
-                                // check if its the first, then otherwise remove Blaster type
-                                // so that it doesnt consume more ammo
-                            }
-                            else {
-                                newCard.type = card.type;
-                            }
-                            newCard.manaCost = 0;
-                            newCard.actions = new Dictionary<string, string>();
-                            newCard.actions.Add("ATK", item.Value);
-                            // hopefully this works
-                            STM.SetTarget(enemy);
-                            // recursion
-                            StartCoroutine(CardAction(newCard));
-                        }
-                        break;
-                    case "BLIND_ALL":
-                        foreach(var battleEnemy in battleEnemies) {
-                            battleEnemy.blind += 1;
-                        }
-                        break;
-                    case "BLIND":
-                        STM.GetTarget().blind += 1;
-                        break;
-                    case "DEF":
-                        playerStats.addBlock(Int32.Parse(item.Value));
-                        StartCoroutine(PlayerShieldSequence());
-                        // StartCoroutine(DelayCardDeletion(cardDisplay));
-                        break;
-                    case "DRAW":
-                        handManager.DrawCards(1);
-                        break;
-                    case "HACK":
-                        // perform hacking animation here
-                        if(item.Value == "SHIELD") {
-                            if(STM.GetTarget().block <= 10) {
-                                STM.GetTarget().resetBlock();
-                            }
-                        }
-                        break;
-                    case "QUICKDRAW":
-                        StartCoroutine(handManager.DrawCardsTimed(2, cardsReturnValue => {
-                            foreach(Card card in cardsReturnValue) {
-                                if (card.subType == "Shot") {
-                                    playerStats.addMana(1);
-                                }
-                            }
-                        }));
-                        break;
-                    case "STN":
-                        STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
-                        Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
-                        STM.GetTarget().ShockAnimation();
-                        // StartCoroutine(DelayCardDeletion(cardDisplay));
-                        break;
-                    case "VULN":
-                        if(card.isTarget) {
-                            STM.GetTarget().AddVuln(Int32.Parse(item.Value));
-                            STM.GetTarget().VulnerableAnimation();
+                    for (int i = 0; i < multiAttack[1]; i++) {
+                        
+                        Vector3 STMPos;
+                        if(DidTargetMiss(playerStats)) {
+                            Vector3 targPos = STM.GetTarget().transform.position;
+                            STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
                         else {
-                            playerStats.AddVuln(Int32.Parse(item.Value));
-                            playerStats.VulnerableAnimation();
+                            STMPos = STM.GetTarget().transform.position;
                         }
-                        break;
-                    case "RELOAD":
+
+                        bool isLast = i == (multiAttack[1] - 1);
+                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                        // weapon animations here
+                        switch(cardType) {
+                            case "Blaster":
+                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true));
+                                break;
+                            case "Blaster_All":
+                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false));
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if(!DidTargetMiss(playerStats)) {
+                            // check target type
+                            if(STM.GetTarget() is BattleEnemyContainer) {
+                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
+                            }
+                            else {
+                                // player is blinded, attack self
+                                ((PlayerStats)STM.GetTarget()).takeDamage(multiAttack[0]);
+                            }
+                        }
+                        if (!isLast) {
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                    }
+                    break;
+                case "ATK_ALL":
+                    if(card.type == "Blaster") {
+                        ammoController.UseCharge(1);
+                    }
+                    foreach(var enemy in battleEnemies) {
+                        Card newCard = ScriptableObject.CreateInstance<Card>();
+                        if(card.type == "Blaster") {
+                            newCard.type = "Blaster_All";
+                            // check if its the first, then otherwise remove Blaster type
+                            // so that it doesnt consume more ammo
+                        }
+                        else {
+                            newCard.type = card.type;
+                        }
+                        newCard.manaCost = 0;
+                        newCard.actions = new Dictionary<string, string>();
+                        newCard.actions.Add("ATK", item.Value);
+                        // hopefully this works
+                        STM.SetTarget(enemy);
+                        // recursion
+                        StartCoroutine(CardAction(newCard));
+                    }
+                    break;
+                case "BLIND_ALL":
+                    foreach(var battleEnemy in battleEnemies) {
+                        battleEnemy.blind += 1;
+                    }
+                    break;
+                case "BLIND":
+                    STM.GetTarget().blind += 1;
+                    break;
+                case "DEF":
+                    playerStats.addBlock(Int32.Parse(item.Value));
+                    StartCoroutine(PlayerShieldSequence());
+                    // StartCoroutine(DelayCardDeletion(cardDisplay));
+                    break;
+                case "DRAW":
+                    handManager.DrawCards(1);
+                    break;
+                case "HACK":
+                    // perform hacking animation here
+                    if(item.Value == "SHIELD") {
+                        if(STM.GetTarget().block <= 10) {
+                            STM.GetTarget().resetBlock();
+                        }
+                    }
+                    break;
+                case "QUICKDRAW":
+                    StartCoroutine(handManager.DrawCardsTimed(2, cardsReturnValue => {
+                        foreach(Card card in cardsReturnValue) {
+                            if (card.subType == "Shot") {
+                                playerStats.addMana(1);
+                            }
+                        }
+                    }));
+                    break;
+                case "STN":
+                    STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
+                    Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
+                    STM.GetTarget().ShockAnimation();
+                    // StartCoroutine(DelayCardDeletion(cardDisplay));
+                    break;
+                case "VULN":
+                    if(card.isTarget) {
+                        STM.GetTarget().AddVuln(Int32.Parse(item.Value));
+                        STM.GetTarget().VulnerableAnimation();
+                    }
+                    else {
+                        playerStats.AddVuln(Int32.Parse(item.Value));
+                        playerStats.VulnerableAnimation();
+                    }
+                    break;
+                case "RELOAD":
+                    ammoController.FullCharge();
+                    break;
+                case "FINAL_BLOW":
+                    List<string> finalBlow = card.actions["FINAL_BLOW"].Split(',').ToList();
+
+                    // if (finalBlow.Count != 4) {
+                    //     throw new Exception("Invalid FINAL_BLOW attributes! Must be 4 strings comma separated.");
+                    // }
+
+                    int dmg = Int32.Parse(finalBlow[0]);
+                    int multiplier = Int32.Parse(finalBlow[1]);
+
+                    // unfortunate code copying, but refacting is too much work
+                    for (int i = 0; i < multiplier; i++) {
+
+                        Vector3 STMPos2;
+                        if(DidTargetMiss(playerStats)) {
+                            Vector3 targPos = STM.GetTarget().transform.position;
+                            STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                        }
+                        else {
+                            STMPos2 = STM.GetTarget().transform.position;
+                        }
+
+                        bool isLast = i == (multiplier - 1);
+                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                        // weapon animations here
+                        switch(cardType) {
+                            case "Blaster":
+                                StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true));
+                                break;
+                            default:
+                                break;
+                        }
+                        if(!DidTargetMiss(playerStats)) {
+                            if(STM.GetTarget() is BattleEnemyContainer) {
+                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
+                                    if(isDeadReturnValue) {
+                                        // if the enemy was killed, perform the next action
+                                        string nextAction = finalBlow[2];
+                                        // for now, this only works with RELOAD... will have to fix later
+                                        Card newCard = ScriptableObject.CreateInstance<Card>();
+                                        newCard.type = "Blaster";
+                                        newCard.manaCost = 0;
+                                        newCard.actions = new Dictionary<string, string>();
+                                        newCard.actions.Add(finalBlow[2], finalBlow[3]);
+                                        // recursion
+                                        StartCoroutine(CardAction(newCard));
+                                    }
+                                }));
+                            }
+                        }
+                        else {
+                            // player is blind, attack self
+                            ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
+                        }
+
+                        if (!isLast) {
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                    }
+                    break;
+                case "POWER":
+                    if (item.Value == "POCK_GEN") {
                         ammoController.FullCharge();
-                        break;
-                    case "FINAL_BLOW":
-                        List<string> finalBlow = card.actions["FINAL_BLOW"].Split(',').ToList();
-
-                        // if (finalBlow.Count != 4) {
-                        //     throw new Exception("Invalid FINAL_BLOW attributes! Must be 4 strings comma separated.");
-                        // }
-
-                        int dmg = Int32.Parse(finalBlow[0]);
-                        int multiplier = Int32.Parse(finalBlow[1]);
-
-                        // unfortunate code copying, but refacting is too much work
-                        for (int i = 0; i < multiplier; i++) {
-
-                            Vector3 STMPos2;
-                            if(DidTargetMiss(playerStats)) {
-                                Vector3 targPos = STM.GetTarget().transform.position;
-                                STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
-                            }
-                            else {
-                                STMPos2 = STM.GetTarget().transform.position;
-                            }
-
-                            bool isLast = i == (multiplier - 1);
-                            playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-                            // weapon animations here
-                            switch(cardType) {
-                                case "Blaster":
-                                    StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true));
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if(!DidTargetMiss(playerStats)) {
-                                if(STM.GetTarget() is BattleEnemyContainer) {
-                                    StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
-                                        if(isDeadReturnValue) {
-                                            // if the enemy was killed, perform the next action
-                                            string nextAction = finalBlow[2];
-                                            // for now, this only works with RELOAD... will have to fix later
-                                            Card newCard = ScriptableObject.CreateInstance<Card>();
-                                            newCard.type = "Blaster";
-                                            newCard.manaCost = 0;
-                                            newCard.actions = new Dictionary<string, string>();
-                                            newCard.actions.Add(finalBlow[2], finalBlow[3]);
-                                            // recursion
-                                            StartCoroutine(CardAction(newCard));
-                                        }
-                                    }));
-                                }
-                            }
-                            else {
-                                // player is blind, attack self
-                                ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
-                            }
-
-                            if (!isLast) {
-                                yield return new WaitForSeconds(0.5f);
-                            }
-                        }
-                        break;
-                    case "POWER":
-                        if (item.Value == "POCK_GEN") {
-                            ammoController.FullCharge();
-                            isPocketGenerator = true;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                        isPocketGenerator = true;
+                    }
+                    break;
+                case "CAST":
+                    playerStats.playerAnimator.CastAnimation();
+                    break;
+                default:
+                    break;
             }
-            // unlock the target
-            STM.SetTarget(null);
-            STM.targetLocked = false;
-        // }
-        // else {
-        //     Debug.Log("card could not be played, not enough mana!");
-        // }
+        }
+        // unlock the target
+        STM.SetTarget(null);
+        STM.targetLocked = false;
     }
 
     private IEnumerator PlayerShieldSequence() {
@@ -398,7 +383,7 @@ public class BattleManager : MonoBehaviour
             // while(battleEnemy.actions.Length == 0) {
             //     // wait until it loads
             // }
-            if(battleEnemy.actions.Length > 0){
+            if(battleEnemy.actions.Count > 0){
                 Card randomAction = battleEnemy.RandomAction();
                 // pass the action back to the enemy to display
                 string actionText = randomAction.name;

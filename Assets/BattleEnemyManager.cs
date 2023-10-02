@@ -11,16 +11,20 @@ public class BattleEnemyManager : MonoBehaviour
     public List<BattleEnemyContainer> battleEnemies;
     public List<BattleEnemyContainer> battleEnemiesStarting;
     public bool isInitialized = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (GameObject.Find("MainManager") != null) {
-            MapNode currentNode = GameObject.Find("MainManager").GetComponent<MainManager>().currentNode;
+
+    void Awake() {
+        if (MainManager.Instance != null) {
+            MapNode currentNode = MainManager.Instance.currentNode;
+            Debug.Log("currentNode enemies: " + currentNode.enemies.Count);
             enemyNames = currentNode.enemies;
+        }
+        else {
+            Debug.Log("Main Manager not found!");
         }
         if(enemyNames.Count == 0) {
             enemyNames = new List<string>() {"MiniBot"};
         }
+
         battleEnemies = new List<BattleEnemyContainer>();
         
         // create enemy grid based on count of enemies
@@ -58,6 +62,12 @@ public class BattleEnemyManager : MonoBehaviour
 
         }
         isInitialized = true;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
         // try to get enemyNames from GameManager, if it doesn't exist then use a default for testing
     }
 
