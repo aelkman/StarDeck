@@ -13,6 +13,9 @@ public class MainManager : MonoBehaviour
     public int coinCount = 50;
     public MapNode currentNode;
 
+    public List<string> artifacts = new List<string>();
+    public List<string> possibleArtifacts;
+
     private void Awake()
     {
         // start of new code

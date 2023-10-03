@@ -128,6 +128,7 @@ public class DiceRoller : MonoBehaviour
     }
 
     public void ContinueClick() {
+        string nextLevel = UpperSideTxt.text;
         if(eventName == "Chest") {
             if(UpperSideTxt.text == "Enemy") {
                 MainManager.Instance.currentNode.enemies.Add("Chest");
@@ -135,9 +136,12 @@ public class DiceRoller : MonoBehaviour
                     Debug.Log("enemy: " + e);
                 }
             }
+            else {
+                nextLevel = "ChestScene";
+            }
         }
         Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
         diceContainer.SetActive(false);
-        mapManager.LoadNextLevel(UpperSideTxt.text);
+        mapManager.LoadNextLevel(nextLevel);
     }
 }
