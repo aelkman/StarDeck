@@ -94,24 +94,6 @@ public class HandManager : MonoBehaviour
         cardInstance.transform.localScale = new Vector3(3.0f, 3.0f, 0f);
     }
 
-    // public void AddCard() {
-    //     Card currentCard = deckCopy.cardStack.Pop();
-        
-
-    //     // CardDisplay newCard = Instantiate(prefab);
-    //     // newCard.card = currentCard;
-
-    //     prefab.card = currentCard;
-    //     CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-    //     SetCardDefaultScalePos(cardInstance);
-    //     Debug.Log(cardInstance.transform.parent);
-        
-    //     // cardPrefab.card = currentCard;
-    //     Debug.Log(cardInstance);
-    //     handCards.Add(cardInstance);
-    //     SortCards();
-    // }
-
     public List<CardDisplay> GetDiscards() {
         return discardCards;
     }
@@ -213,6 +195,7 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator MoveCard(CardDisplay cardDisplay, float alignResult, float timeInterval) {
 
+        cardDisplay.pointerBoundary.SetActive(false);
         int handCardsLess1 = handCards.Count - 1;
         if(handCards.Count == 1) {
             alignResult = 1;
@@ -241,7 +224,7 @@ public class HandManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.01f);
         }
-
+        cardDisplay.pointerBoundary.SetActive(true);
         cardDisplay.gameObject.GetComponent<CardMouseActions>().originalPosition = cardDisplay.transform.localPosition;
     }
 

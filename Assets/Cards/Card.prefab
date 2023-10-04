@@ -443,6 +443,7 @@ MonoBehaviour:
   manaText: {fileID: 1854359182441760642}
   attackText: {fileID: 1032414715799037401}
   defendText: {fileID: 9036545539750760212}
+  pointerBoundary: {fileID: 8155774894647227327}
 --- !u!114 &7710139055511708180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +608,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4087805649914949220, guid: 2f026c6f76149084e9ad77186d3e8980, type: 3}
   m_PrefabInstance: {fileID: 913965714240489362}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8155774894647227327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9043277494103307309, guid: 2f026c6f76149084e9ad77186d3e8980, type: 3}
+  m_PrefabInstance: {fileID: 913965714240489362}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2929581344997311604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -702,6 +708,10 @@ PrefabInstance:
     - target: {fileID: 3015689448701760665, guid: 56b82e78930b337489ba595c97d7f9c7, type: 3}
       propertyPath: m_fontSizeBase
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015689448701760665, guid: 56b82e78930b337489ba595c97d7f9c7, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4076821144343911032, guid: 56b82e78930b337489ba595c97d7f9c7, type: 3}
       propertyPath: m_Name
@@ -927,6 +937,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2857131074941381813, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5553976031499929114, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
@@ -1157,6 +1171,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5385423694917532626, guid: 206c8c638994aca4da9bc580f56d3a27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7297601197968335776, guid: 206c8c638994aca4da9bc580f56d3a27, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

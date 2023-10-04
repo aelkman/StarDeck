@@ -21,16 +21,4 @@ public class CardDisplayCanvas : MonoBehaviour
     {
         
     }
-
-    public void RemoveCard(Card card) {
-
-    }
-
-    public void AddCard(Card card) {
-
-    }
-
-    public void UpdateCanvas(Deck deck) {
-        
-    }
 }

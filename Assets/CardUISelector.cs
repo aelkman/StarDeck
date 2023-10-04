@@ -50,7 +50,8 @@ public class CardUISelector : MonoBehaviour
 
     public bool AddToDeck(Card card) {
         if (addedCount < 1) {
-            deck.AddCard(card);
+            var cardInstance = Instantiate(card);
+            deck.AddCard(cardInstance);
             addedCount++;
             return true;
         }

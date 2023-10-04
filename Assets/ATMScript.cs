@@ -28,8 +28,10 @@ public class ATMScript : MonoBehaviour
     public void Option1Click() {
         mainManager.coinCount += 150;
         var virus = Resources.Load<Card>("Negative Cards/Virus");
-        deck.AddCard(virus);
-        deck.AddCard(virus);
+        var virusInstance = Instantiate(virus);
+        var virusInstance2 = Instantiate(virus);
+        deck.AddCard(virusInstance);
+        deck.AddCard(virusInstance2);
         option1.interactable = false;
         option2.interactable = false;
     }

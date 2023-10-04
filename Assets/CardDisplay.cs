@@ -18,6 +18,7 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI manaText;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defendText;
+    public GameObject pointerBoundary;
     // Start is called before the first frame update
     void Start()
     {

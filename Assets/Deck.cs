@@ -14,7 +14,8 @@ public class Deck : MonoBehaviour
     {
         cardStack = new StackList<Card>();
         foreach(Card card in startingDeck.cardList) {
-            cardStack.Push(card);
+            Card cardInstance = Instantiate(card);
+            cardStack.Push(cardInstance);
         }
         Debug.Log("you have " + cardStack.Count() + " cards in the deck");
         isInitialized = true;
