@@ -146,6 +146,14 @@ public class DiceRoller : MonoBehaviour
                 nextLevel = "ChestScene";
             }
         }
+        else if(eventName == "Unknown") {
+            if(UpperSideTxt.text == "Enemy") {
+                MainManager.Instance.currentNode.GenerateEnemyGroup();
+                foreach(string e in MainManager.Instance.currentNode.enemies) {
+                    Debug.Log("enemy: " + e);
+                }
+            }
+        }
         Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
         diceContainer.SetActive(false);
         mapManager.LoadNextLevel(nextLevel);

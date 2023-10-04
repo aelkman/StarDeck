@@ -48,29 +48,9 @@ public class MapNode : MonoBehaviour
                 // if it's the child node
                 destinationName = "Enemy";
             }
-            if (destinationName == "Enemy") {
-                enemies = new List<string>();
-                // For now, these are hard-coded, will need to change later
-                EnemyGroup[] group;
-                if(level >= 0 && level <= 3) {
-                    // Easy groups
-                    group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Easy");
-                }
-                else if (level >= 4 && level <= 8) {
-                    // Medium groups
-                    group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Medium");
-                }
-                else {
-                    // Hard groups
-                    group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Hard");
-                }
-
-                // pick a random group
-                int index = Random.Range(0, group.Length);
-                var enemiesEnum = group[index].enemies;
-                foreach(EnemiesEnum enemy in enemiesEnum) {
-                    enemies.Add(enemy.ToString());
-                }
+            if (destinationName == "Enemy")
+            {
+                GenerateEnemyGroup();
 
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Enemy Icon Animator");
             }
@@ -110,7 +90,37 @@ public class MapNode : MonoBehaviour
         }        
     }
 
-   private void OnMouseOver() {
+    public void GenerateEnemyGroup()
+    {
+        enemies = new List<string>();
+        // For now, these are hard-coded, will need to change later
+        EnemyGroup[] group;
+        if (level >= 0 && level <= 3)
+        {
+            // Easy groups
+            group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Easy");
+        }
+        else if (level >= 4 && level <= 8)
+        {
+            // Medium groups
+            group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Medium");
+        }
+        else
+        {
+            // Hard groups
+            group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Hard");
+        }
+
+        // pick a random group
+        int index = Random.Range(0, group.Length);
+        var enemiesEnum = group[index].enemies;
+        foreach (EnemiesEnum enemy in enemiesEnum)
+        {
+            enemies.Add(enemy.ToString());
+        }
+    }
+
+    private void OnMouseOver() {
         if (Input.GetMouseButtonUp (0)) {
             Debug.Log("clicked node id: " + instanceId);
             mapManager.SetMovementSelection(instanceId, this);

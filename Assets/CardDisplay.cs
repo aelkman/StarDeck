@@ -108,6 +108,9 @@ public class CardDisplay : MonoBehaviour
                     }
                     descriptionAdditional += "<br>Draw " + item.Value + cardText;
                     break;
+                case "SCRY":
+                    descriptionAdditional += "<br>Foresight " + item.Value;
+                    break;
                 default:
                     break;
             }

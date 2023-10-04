@@ -8,17 +8,23 @@ public class DeckCopy : Deck
     // overrides the original deck Start()
     void Start()
     {
+        isInitialized = false;
         deckOriginal = GameObject.Find("Deck").GetComponent<Deck>();
-        cardStack = new Stack<Card>();
-        foreach (Card card in deckOriginal.cardStack) {
+        cardStack = new StackList<Card>();
+        foreach (Card card in deckOriginal.cardStack.items) {
             cardStack.Push(card);
         }
         Shuffle();
+        isInitialized = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void DiscardCard(Card card) {
+
     }
 }

@@ -6,81 +6,65 @@ using System.Linq;
 public class Deck : MonoBehaviour
 {
     public StartingDeck startingDeck;
-    public Stack<Card> cardStack;
+    public StackList<Card> cardStack;
     public bool isInitialized = false;
     // Start is called before the first frame update
 
     void Start()
     {
-        cardStack = new Stack<Card>();
+        cardStack = new StackList<Card>();
         foreach(Card card in startingDeck.cardList) {
             cardStack.Push(card);
         }
-        // for(int i = 0; i < 3; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Energy Cell");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Pocket Generator");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Laser Shot");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Shield Hack");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Quickdraw");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 2; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Double Shot");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 2; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Shock Blast");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 1; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Blaster/Homing Missile");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 5; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Force Field");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 2; i++) {
-        //     Card card = Resources.Load<Card>("Cards/Dash");
-        //     cardStack.Push(card);
-        // }
-        // for(int i = 0; i < 2; i++) {
-        //     Card card =  Resources.Load<Card>("Cards/Soul Shield");
-        //     cardStack.Push(card);
-        // }
-        // Shuffle();
-        Debug.Log("you have " + cardStack.Count + " cards in the deck");
+        Debug.Log("you have " + cardStack.Count() + " cards in the deck");
         isInitialized = true;
     }
 
     public void Shuffle() {
-        List<Card> cardList = cardStack.ToList();
+        // List<Card> cardList = cardStack;
 
-        for (var i = cardList.Count - 1; i > 0; i--)
+        for (var i = cardStack.Count() - 1; i > 0; i--)
         {
-            var temp = cardList[i];
+            var temp = cardStack.items[i];
             var index = UnityEngine.Random.Range(0, i + 1);
-            cardList[i] = cardList[index];
-            cardList[index] = temp;
+            cardStack.items[i] = cardStack.items[index];
+            cardStack.items[index] = temp;
         }
-        cardStack = new Stack<Card>(cardList);
+        // cardStack = new Stack<Card>(cardList);
     }
 
     public void AddCard(Card card) {
         cardStack.Push(card);
         Debug.Log("added " + card.name + " to deck!");
-        Debug.Log(cardStack.Count + " card in the deck");
+        Debug.Log(cardStack.Count() + " card in the deck");
+    }
+}
+
+public class StackList<T>
+{
+    public List<T> items = new List<T>();
+
+    public void Push(T item)
+    {
+        items.Add(item);
+    }
+    public T Pop()
+    {
+        if (items.Count > 0)
+        {
+            T temp = items[items.Count - 1];
+            items.RemoveAt(items.Count - 1);
+            return temp;
+        }
+        else
+            return default(T);
+    }
+    public void Remove(int itemAtPosition)
+    {
+        items.RemoveAt(itemAtPosition);
+    }
+
+    public int Count() {
+        return items.Count;
     }
 }

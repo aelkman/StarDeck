@@ -16,7 +16,7 @@ public class DrawDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        drawText.text = "Draw Pile: <br>" + handManager.deckCopy.cardStack.Count.ToString();
+        drawText.text = "Draw Pile: <br>" + handManager.deckCopy.cardStack.Count().ToString();
     }
 
 

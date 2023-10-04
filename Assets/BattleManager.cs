@@ -334,6 +334,9 @@ public class BattleManager : MonoBehaviour
                 case "CAST":
                     playerStats.playerAnimator.CastAnimation();
                     break;
+                case "SCRY":
+                    handManager.Scry(Int32.Parse(item.Value));
+                    break;
                 default:
                     break;
             }

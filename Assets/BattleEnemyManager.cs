@@ -86,7 +86,7 @@ public class BattleEnemyManager : MonoBehaviour
     }
 
     private IEnumerator DelayWin(float time) {
-        battleManager.playerStats.playerAnimator.ClapAnimation();
+        battleManager.playerStats.playerAnimator.HipThrust();
         yield return new WaitForSeconds(time);
         battleManager.BattleWin();
     }

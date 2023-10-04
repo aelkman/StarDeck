@@ -20,4 +20,8 @@ public class PlayerAnimator : CharacterAnimator
     public void ClapAnimation() {
         animator.SetTrigger("Clap");
     }
+
+    public void HipThrust() {
+        animator.SetTrigger("HipThrust");
+    }
 }

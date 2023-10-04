@@ -12,6 +12,7 @@ public class CharacterHUD : MonoBehaviour
     public GameObject blindDisplay;
     private SpriteRenderer spriteRenderer;
     public GameObject damageUp;
+    public VulneratibiltyHoverDescription vhd;
     private bool isGlowUp = true;
     private float fade = 0f;
     
@@ -55,6 +56,7 @@ public class CharacterHUD : MonoBehaviour
 
         if(baseCharacterInfo.GetVuln() > 0) {
             vulnDisplay.SetActive(true);
+            vhd.SetText(baseCharacterInfo.GetVuln());
         }
         else {
             vulnDisplay.SetActive(false);

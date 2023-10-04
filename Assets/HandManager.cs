@@ -20,9 +20,12 @@ public class HandManager : MonoBehaviour
     private float yOffset = 15.0f;
     private float xOffset = 200;
     public PlayerStats playerStats;
+    public GameObject scryViewer;
+    public ScryUISelector scryUISelector;
     // Start is called before the first frame update
     void Start()
     {
+        scryViewer.SetActive(false);
         expelCards = new List<CardDisplay>();
         handCards = new List<CardDisplay>();
         discardCards = new List<CardDisplay>();
@@ -32,10 +35,29 @@ public class HandManager : MonoBehaviour
         StartCoroutine(DrawCardsTimed(cardCount, cardsReturnValue => {}));
     }
 
+    public void Scry(int scryCount) {
+        StartCoroutine(ScryTimed(scryCount));
+    }
+
+    private IEnumerator ScryTimed(int scryCount) {
+        yield return new WaitForSeconds(0.3f);
+        scryUISelector.scryCount = scryCount;
+        scryViewer.SetActive(true);
+    }
+
+    public void DisableScryViewer() {
+        StartCoroutine(DisableScryTimed());
+    }
+
+    private IEnumerator DisableScryTimed() {
+        yield return new WaitForSeconds(0.75f);
+        scryViewer.SetActive(false);
+    }
+
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
         List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
-            if(deckCopy.cardStack.Count < 1) {
+            if(deckCopy.cardStack.Count() < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {
                     CardDisplay cardDisplay = discardCards[j];
                     deckCopy.cardStack.Push(cardDisplay.card);
@@ -108,6 +130,20 @@ public class HandManager : MonoBehaviour
         StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
     }
 
+    public void DeleteCardNoDiscard(CardDisplay cardDisplay, float delay) {
+        StartCoroutine(DeferCardDeletionNoDiscard(cardDisplay, delay));
+    }
+
+    public void DeleteCardWithDiscard(CardDisplay cardDisplay, float delay) {
+        StartCoroutine(DeferCardDeletion(cardDisplay, delay));
+    }
+
+    private IEnumerator DeferCardDeletionNoDiscard(CardDisplay cardDisplay, float time) {
+        yield return new WaitForSeconds(time);
+        cardDisplay.gameObject.SetActive(false);
+        Destroy(cardDisplay.gameObject);
+    }
+
     private IEnumerator DeferCardDeletion(CardDisplay cardDisplay, float time) {
         yield return new WaitForSeconds(time);
         if(cardDisplay.card.name == "Virus") {
@@ -118,7 +154,6 @@ public class HandManager : MonoBehaviour
         }
         // next, need to remove GO from the Hand
         cardDisplay.gameObject.SetActive(false);
-        Destroy(cardDisplay.GetComponent<CardMouseActions>().GetCursorFollowerInstance());
         Destroy(cardDisplay.gameObject);
     }
 

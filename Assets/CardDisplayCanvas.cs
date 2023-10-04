@@ -10,7 +10,7 @@ public class CardDisplayCanvas : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitUntil(() => deck.isInitialized);
-        foreach(Card card in deck.cardStack) {
+        foreach(Card card in deck.cardStack.items) {
             GameObject cardInstance = Instantiate(cardUIPrefab, transform);
             cardInstance.GetComponent<CardDisplay>().card = card;
         }
