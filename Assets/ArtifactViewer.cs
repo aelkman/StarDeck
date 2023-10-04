@@ -22,7 +22,8 @@ public class ArtifactViewer : MonoBehaviour
 
     public void AddArtifact(Artifact artifact) {
         Vector3 location = new Vector3(currentPos, 0, 0);
-        GameObject ai = Instantiate(artifactIconPrefab, location, Quaternion.identity, transform);
+        GameObject ai = Instantiate(artifactIconPrefab, transform);
+        ai.transform.localPosition = new Vector3(currentPos, 0, 0);
         ai.GetComponent<ArtifactDisplay>().artifact = artifact;
         ai.GetComponent<ArtifactDisplay>().SetValues();
         artifactsInstances.Add(ai);

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class ArtifactDisplay : MonoBehaviour
+public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Artifact artifact;
     public string artifactName;
@@ -12,10 +15,13 @@ public class ArtifactDisplay : MonoBehaviour
     public TextMeshProUGUI flavorText;
     public bool isIcon = false;
     public ArtifactViewer artifactViewer;
-    public Image iconImage;
+    public GameObject hoverText;
     // Start is called before the first frame update
     void Start()
     {
+        if(isIcon) {
+            hoverText.SetActive(false);
+        }
         artifactViewer = GameObject.Find("ArtifactViewer").GetComponent<ArtifactViewer>();
         if(!isIcon) {
             if(MainManager.Instance != null) {
@@ -38,18 +44,37 @@ public class ArtifactDisplay : MonoBehaviour
         
     }
 
+    public void OnPointerEnter(PointerEventData pointerEventData)
+    {
+        if(isIcon) {
+            hoverText.SetActive(true);
+            hoverText.GetComponent<ArtifactHoverDescription>().flavorText.text = artifactName + " - " + artifact.description;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
+        if(isIcon) {
+            hoverText.SetActive(false);
+        }
+    }
+
     public void SetValues() {
         artifactName = artifact.name;
-        // iconImage.sprite = artifact.artwork;
-        flavorText.text = artifactName + " - " + artifact.description;
+        Image image = gameObject.GetComponent<Image>();
+        image.sprite = artifact.artwork;
+        // flavorText.text = artifactName + " - " + artifact.description;
     }
 
     private void OnMouseOver() {
         if(!isIcon) {
             if(Input.GetMouseButtonUp(0)) {
                 artifactViewer.AddArtifact(artifact);
-                spriteRenderer.enabled = false;
+                MainManager.Instance.AddArtifact(artifact.codeName);
+                // spriteRenderer.enabled = false;
+                gameObject.SetActive(false);
             }
         }
     }
+
 }

@@ -108,7 +108,7 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public int CalculateDamage(int damage) {
         if (vuln > 0) {
-            float extraDamage = (float)damage * 1.5f;
+            float extraDamage = (float)damage * MainManager.Instance.vulnerableModifier;
             damage = (int)Math.Round(extraDamage, 0);
             Debug.Log("vulnerable, new damage: " + damage);
         }

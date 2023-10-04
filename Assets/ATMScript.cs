@@ -37,7 +37,7 @@ public class ATMScript : MonoBehaviour
     public void Option2Click() {
         mainManager.coinCount += 50;
         option1.interactable = false;
-        option1.interactable = false;
+        option2.interactable = false;
     }
 
     public void Leave() {

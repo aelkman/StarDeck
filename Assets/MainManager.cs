@@ -12,6 +12,7 @@ public class MainManager : MonoBehaviour
     public int playerMaxHealth = 50;
     public int coinCount = 50;
     public MapNode currentNode;
+    public float vulnerableModifier = 1.5f;
 
     public List<string> artifacts = new List<string>();
     public List<string> possibleArtifacts;
@@ -28,5 +29,12 @@ public class MainManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void AddArtifact(string codeName){
+        if(codeName == "MARKS_MED") {
+            vulnerableModifier = 1.75f;
+        }
+        artifacts.Add(codeName);
     }
 }

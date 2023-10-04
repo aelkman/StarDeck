@@ -41,11 +41,15 @@ public class DiceRoller : MonoBehaviour
         }
         rerollCountText.text = rerollRemaining.ToString();
         continueButton.interactable = false;
+        rerollButton.interactable = false;
         timeElapsed = 0;
         OpposingDirectionValues = 7 * Vector3Int.one - DirectionValues;
         rb = GetComponent<Rigidbody>();
-        startingPos = transform.localPosition;
         DiceRoll();
+    }
+
+    void Start() {
+        startingPos = transform.localPosition;
     }
 
     private void DiceRoll()
@@ -56,6 +60,8 @@ public class DiceRoller : MonoBehaviour
         rb.AddTorque(vec * 100.0f); // where 1.0 is rotation speed
         transform.rotation = Quaternion.LookRotation(Random.onUnitSphere, Random.onUnitSphere);
         rb.AddForce(new Vector3(0, 0, -1 * upwardForce));
+        timeElapsed = 0;
+        isRollFinished = false;
     }
 
     // Update is called once per frame
@@ -65,7 +71,6 @@ public class DiceRoller : MonoBehaviour
         if  (transform.hasChanged)
         {
             if (  Vector3.Cross(-1 * Vector3.forward, transform.right).magnitude < 0.5f) //x axis a.b.sin theta <45
-          //if ((int) Vector3.Cross(Vector3.up, transform.right).magnitude == 0) //Previously
             {
                 if (Vector3.Dot(-1 * Vector3.forward, transform.right) > 0)
                 {
@@ -101,20 +106,21 @@ public class DiceRoller : MonoBehaviour
 
             // Debug.Log("top side: " + UpperSideTxt);
             transform.hasChanged = false;
-            timeElapsed = 0;
         }
         else {
-            if (timeElapsed > 0.2f && !isRollFinished) {
+            if (timeElapsed > 0.05f && (rb.velocity.magnitude < 0.1) && (rb.angularVelocity.magnitude < 0.1)) {
                 Debug.Log("roll finished!");
                 isRollFinished = true;
                 continueButton.interactable = true;
                 rerollButton.interactable = true;
             }
+            // else {
+            //     Debug.Log("not moving but! not finished, time elapsed: " + timeElapsed + " isRolleFinished: " + isRollFinished);
+            // }
         }
     }
 
     public void ThrowDice() {
-        isRollFinished = false;
         continueButton.interactable = false;
         rerollButton.interactable = false;
         rerollRemaining -= 1;
