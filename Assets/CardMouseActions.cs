@@ -50,6 +50,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 // Debug.Log("cancelling action (right click)");
                 if(cursorFollowerInstance != null) {
                     cursorFollowerInstance.SetActive(false);
+                    Cursor.visible = true;
                 }
                 if(!isTarget) {
                     // for cards that are not target cards, move it back
@@ -65,22 +66,18 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (Input.GetMouseButtonUp (0)) {
             if (isSelected && !isHardReset) {
                 // Debug.Log("drag exit");
+                if (cursorFollowerInstance != null) {
+                        cursorFollowerInstance.SetActive(false);
+                        Cursor.visible = true;
+                }
 
                 if(!battleManager.CheckCanAct(cardDisplay.card) || 
                     (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
                     isSelected = false;
                     isFollowerPlaced = false;
-                    if(cursorFollowerInstance != null) {
-                        cursorFollowerInstance.SetActive(false);
-                    }
                     ExitResetSequence();
                 }
                 else{
-
-                    if (cursorFollowerInstance != null) {
-                            cursorFollowerInstance.SetActive(false);
-                    }
-
                     // if it's a target but the STM doesn't have a target, that's bad
                     if (isTarget && STM.GetTarget() == null) {
                         isSelected = false;
@@ -260,10 +257,10 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
             // if it's a Target, instantiate the CursorFollower prefab
             if(isTarget) {
-                if(followerCreated) {
-                    Destroy(cursorFollowerInstance);
-                    followerCreated = false;
-                }
+                // if(followerCreated) {
+                //     Destroy(cursorFollowerInstance);
+                //     followerCreated = false;
+                // }
                 if(!followerCreated) {
                     cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
                     cursorFollowerInstance.SetActive(false);
@@ -352,6 +349,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         if(isTarget) {
             if(!isFollowerPlaced) {
+                Cursor.visible = false;
                 cursorFollowerInstance.SetActive(true);
                 cursorFollowerInstance.transform.localPosition = transform.localPosition;
                 isFollowerPlaced = true;

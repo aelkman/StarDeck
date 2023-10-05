@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MainManager : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class MainManager : MonoBehaviour
 
     public List<string> artifacts = new List<string>();
     public List<string> possibleArtifacts;
+    public Texture2D mouseTexture;
+    public Texture2D mouseClickTex;
+    private CursorMode cursorMode = CursorMode.ForceSoftware;
+    private Vector2 hotSpot;
 
     private void Awake()
     {
@@ -29,6 +34,14 @@ public class MainManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        var arr = Resources.LoadAll<Artifact>("Artifacts/").ToList();
+        foreach(var artifact in arr) {
+            possibleArtifacts.Add(artifact.codeName);
+        }
+
+        hotSpot = new Vector2(mouseTexture.width/2, mouseTexture.height/2);
+        Cursor.SetCursor(mouseTexture, hotSpot, cursorMode);
     }
 
     public void AddArtifact(string codeName){
@@ -36,5 +49,14 @@ public class MainManager : MonoBehaviour
             vulnerableModifier = 1.75f;
         }
         artifacts.Add(codeName);
+    }
+
+    void Update() {
+        if(Input.GetMouseButtonDown(0)) {
+            Cursor.SetCursor(mouseClickTex, hotSpot, cursorMode);
+        }
+        if(Input.GetMouseButtonUp(0)) {
+            Cursor.SetCursor(mouseTexture, hotSpot, cursorMode);
+        }
     }
 }

@@ -29,9 +29,12 @@ public class ScryUISelector : MonoBehaviour
         yield return new WaitUntil(() => deckCopy.isInitialized);
         if(scryCount > deckCopy.cardStack.Count()) {
             scryCount = deckCopy.cardStack.Count();
+            Debug.Log("scryCount: " + scryCount);
         }
         for (int i = 0; i < scryCount; i++) {
             int index = deckCopy.cardStack.Count() - 1 - i;
+            Debug.Log("cardStack size: " + deckCopy.cardStack.Count());
+            Debug.Log("attempted index: " + index);
             CreateCard(deckCopy.cardStack.items[index], index, i);
         }
     }

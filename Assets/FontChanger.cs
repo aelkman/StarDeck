@@ -10,17 +10,17 @@ public class FontChanger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fontManager = GameObject.Find("FontManager").GetComponent<FontManager>();
-        fontAsset = fontManager.GetAsset();
+        // fontManager = GameObject.Find("FontManager").GetComponent<FontManager>();
+        // fontAsset = fontManager.GetAsset();
 
-        foreach(TextMeshPro textMeshPro3D in GameObject.FindObjectsOfType<TextMeshPro>())
-        {
-            textMeshPro3D.font = fontAsset;
-        }
-        foreach(TextMeshProUGUI textMeshProUi in GameObject.FindObjectsOfType<TextMeshProUGUI>())
-        {
-            textMeshProUi.font = fontAsset;
-        }
+        // foreach(TextMeshPro textMeshPro3D in GameObject.FindObjectsOfType<TextMeshPro>())
+        // {
+        //     textMeshPro3D.font = fontAsset;
+        // }
+        // foreach(TextMeshProUGUI textMeshProUi in GameObject.FindObjectsOfType<TextMeshProUGUI>())
+        // {
+        //     textMeshProUi.font = fontAsset;
+        // }
     }
 
     // Update is called once per frame

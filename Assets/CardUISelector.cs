@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CardUISelector : MonoBehaviour
 {
@@ -34,9 +35,28 @@ public class CardUISelector : MonoBehaviour
     }
 
     public Card GetRandomCard(List<Card> cardList) {
-        // Random.seed = System.DateTime.Now.Millisecond;
-        // Random.Range with ints is (inclusive, exclusive)
-        return (Card)cardList[Random.Range(0, cardList.Count)];
+        var commonCards = cardList.Where(c => c.rarity == "C").ToList();
+        var uncommonCards = cardList.Where(c => c.rarity == "U").ToList();
+        var rareCards = cardList.Where(c => c.rarity == "R").ToList();
+
+        var rarityIndex = Random.Range(0, 12);
+        Debug.Log("random card index: " + rarityIndex);
+        if(rarityIndex >= 0 && rarityIndex <=8) {
+            // common type
+            return (Card)commonCards[Random.Range(0, commonCards.Count)];
+        }
+        else if(rarityIndex >= 8 && rarityIndex <=11) {
+            // uncommon type
+            return (Card)uncommonCards[Random.Range(0, uncommonCards.Count)];
+        }
+        else if(rarityIndex == 12) {
+            // rare type
+            return (Card)rareCards[Random.Range(0, rareCards.Count)];
+        }
+        else {
+            Debug.Log("GetRandomCard shouldn't be here!");
+            return (Card)cardList[Random.Range(0, cardList.Count)];
+        }
     }
 
     public void CreateCard(Card card, int i) {

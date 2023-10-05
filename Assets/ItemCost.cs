@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,13 +15,22 @@ public class ItemCost : MonoBehaviour
         if (item.GetComponent<CardDisplay>() != null) {
             var card = item.GetComponent<CardDisplay>();
             if(card.card.rarity == "C") {
-                price = 40;
+                price = 50;
             }
             else if (card.card.rarity == "U") {
-                price = 80;
+                price = 100;
             }
             else if (card.card.rarity == "R") {
-                price = 160;
+                price = 200;
+            }
+            if(MainManager.Instance.artifacts.Contains("CRED")) {
+                price = (int)Math.Round(0.75 * price);
+            }
+        }
+        else if (item.GetComponent<ExtractorScript>() != null) {
+            price = 75;
+            if(MainManager.Instance.artifacts.Contains("CRED")) {
+                price = (int)Math.Round(0.75 * price);
             }
         }
         tmp.text = price.ToString();

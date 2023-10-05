@@ -14,8 +14,6 @@ public class HandManager : MonoBehaviour
     public List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
     private List<CardDisplay> expelCards;
-    private CardDisplay currentCard;
-    private RectTransform rectTransform;
     private float zRot = 1.0f;
     private float yOffset = 15.0f;
     private float xOffset = 200;
@@ -162,34 +160,9 @@ public class HandManager : MonoBehaviour
     }
 
     private void SortCards() {
-
         for(int i = 0; i < handCards.Count; i++) {
-            // if (handCards.Count > 1) {
-                float alignResult = i / (handCards.Count - 1.0f);
-
-                // if (handCards[i].transform.localPosition == null || handCards[i].transform.rotation == null) {
-
-                //     // Debug.Log("alignResult: " + alignResult);
-                //     Vector3 newPosition = handCards[i].transform.localPosition;
-                //     // Debug.Log("newPosition: " + newPosition);
-                //     // rectTransform = GetComponent<RectTransform>();
-                //     handCards[i].transform.rotation = Quaternion.identity;
-                //     // Debug.Log(Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, Mathf.SmoothStep(0.0f, 1.0f, alignResult)));
-                //     handCards[i].transform.Rotate(0.0f, 0.0f, Mathf.Lerp((handCards.Count-1) * zRot, (handCards.Count-1) * -zRot, alignResult), Space.Self);
-                //     // newPosition.x = ((rectTransform.rect.width + this.transform.position.x) * alignResult) - rectTransform.rect.width/2;
-                //     newPosition.x = Mathf.Lerp(-xOffset/2 * (handCards.Count-1), xOffset/2 * (handCards.Count-1), alignResult);
-                //     newPosition.y = -Mathf.Abs(Mathf.Lerp((handCards.Count-1) * -yOffset, (handCards.Count-1) * yOffset, InverseSmoothstep(alignResult)));
-                //     // newPosition.z = i;
-                //     // Debug.Log("y position: " + newPosition.y);
-                //     handCards[i].transform.localPosition = newPosition;
-                // }
-                // else {
-                    StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f));
-                // }
-            // }
-            // else {
-            //     handCards[i].transform.localPosition = new Vector3(0,0,0);
-            // }
+            float alignResult = i / (handCards.Count - 1.0f);
+            StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f));
         }
     }
 

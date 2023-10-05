@@ -5,6 +5,7 @@ using UnityEngine;
 public class PersistentHUD : MonoBehaviour
 {
     private static PersistentHUD _instance;
+    public DeckViewer deckViewer;
 
     public static PersistentHUD Instance 
     { 

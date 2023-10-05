@@ -28,6 +28,7 @@ public class DiceRoller : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        startingPos = transform.localPosition;
         isRollFinished = false;
         if(eventName == "Unknown") {
             diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
@@ -49,11 +50,11 @@ public class DiceRoller : MonoBehaviour
     }
 
     void Start() {
-        startingPos = transform.localPosition;
     }
 
     private void DiceRoll()
     {
+        transform.localPosition = startingPos;
         var vec = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         vec.Normalize();
         // Gives the Asteroid a random rotation
@@ -128,7 +129,6 @@ public class DiceRoller : MonoBehaviour
         // if(rerollRemaining == 0) {
         //     rerollButton.interactable = false;
         // }
-        transform.localPosition = startingPos;
 
         DiceRoll();
     }

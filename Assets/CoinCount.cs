@@ -6,22 +6,22 @@ using TMPro;
 public class CoinCount : MonoBehaviour
 {
     public TextMeshProUGUI tmp;
-    private MainManager mainManager;
+    // private MainManager mainManager;
     // Start is called before the first frame update
     void Start()
     {
-        if(GameObject.Find("MainManager") != null) {
-            mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
-        }
+        // if(GameObject.Find("MainManager") != null) {
+        //     mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        // }
     }
 
     // Update is called once per frame
     void Update()
     {
-        tmp.text = mainManager.coinCount.ToString();
+        tmp.text = MainManager.Instance.coinCount.ToString();
     }
 
     public void SpendCoins(int coins) {
-        mainManager.coinCount -= coins;
+        MainManager.Instance.coinCount -= coins;
     }
 }
