@@ -14,6 +14,7 @@ public class ScryUISelector : MonoBehaviour
     public List<GameObject> selectedCards;
     public List<GameObject> shownCards;
     public HandManager handManager;
+    public bool isComplete;
     // Start is called before the first frame update
 
     void Start() {
@@ -75,6 +76,7 @@ public class ScryUISelector : MonoBehaviour
         }
         selectedCards = new List<GameObject>();
         shownCards = new List<GameObject>();
+        isComplete = true;
         handManager.DisableScryViewer();
     }
 
@@ -88,7 +90,13 @@ public class ScryUISelector : MonoBehaviour
         prefab.GetComponent<CardDisplay>().card = card;
         prefab.GetComponent<ScryUIActions>().deckIndex = deckIndex;
         GameObject cardInstance = Instantiate(prefab, new Vector3(-20f, 30f, 0f), Quaternion.identity, transform.GetChild(0));
-        float fract = (float)i/((float)scryCount - 1f);
+        float fract;
+        if(scryCount > 1) {
+            fract = (float)i/((float)scryCount - 1f);
+        }
+        else {
+            fract = 0.5f;
+        }
         Debug.Log("fract: " + fract);
         float totalSpace = scryCount * 225f;
         cardInstance.transform.localPosition = new Vector3(Mathf.Lerp(-1f * totalSpace/2, totalSpace/2, fract), cardInstance.transform.position.y, cardInstance.transform.position.z);

@@ -20,6 +20,8 @@ public class HandManager : MonoBehaviour
     public PlayerStats playerStats;
     public GameObject scryViewer;
     public ScryUISelector scryUISelector;
+    public Card lastCard;
+    public BattleManager battleManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -104,10 +106,11 @@ public class HandManager : MonoBehaviour
 
     public void PlayCard(CardDisplay cardDisplay) {
         // remove from hand, then sort
+        // lastCard = cardDisplay.card;
         handCards.Remove(cardDisplay);
         SortCards();
         // defer deletion & removal by 1.7s
-        StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
+        // StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
     }
 
     public void DeleteCardNoDiscard(CardDisplay cardDisplay, float delay) {
@@ -135,6 +138,14 @@ public class HandManager : MonoBehaviour
         // next, need to remove GO from the Hand
         cardDisplay.gameObject.SetActive(false);
         Destroy(cardDisplay.gameObject);
+    }
+
+    public void PlayCardBattleManager() {
+        StartCoroutine(battleManager.CardAction(lastCard));
+
+        // if(cardDisplay.card.actionKeys.Contains("SCRY")) {
+        //     yield return new WaitUntil(() => battleManager.isScryComplete);
+        // }
     }
 
     private void NegativeDiscards(CardDisplay cardDisplay) {

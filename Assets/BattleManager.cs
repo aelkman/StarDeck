@@ -30,6 +30,8 @@ public class BattleManager : MonoBehaviour
     public float attackDelay = 0.25f;
     private bool isPocketGenerator = false;
     public bool noDamageTaken = true;
+    public ScryUISelector scryUISelector;
+    public bool isScryComplete = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -335,7 +337,11 @@ public class BattleManager : MonoBehaviour
                     playerStats.playerAnimator.CastAnimation();
                     break;
                 case "SCRY":
+                    scryUISelector.isComplete = false;
                     handManager.Scry(Int32.Parse(item.Value));
+                    yield return new WaitUntil(() => scryUISelector.isComplete);
+                    // isScryComplete = true;
+                    Debug.Log("ending scry");
                     break;
                 default:
                     break;

@@ -30,6 +30,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private bool isFirstEnter = true;
     private bool expandAllowed = true;
     public float scaleMultiplier = 1.6f;
+    public ScryUISelector scryUISelector;
 
     Coroutine start;
     Coroutine stop;
@@ -114,31 +115,19 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         yield return new WaitForSeconds(time);
         // perform actions for Target cards exit sequence
         if (isFollowerPlaced) {
-            //     STM = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
-            // // if there is an existing target, perform the action
-            // if (STM.GetTarget() != null) {
-            //     // Debug.Log("CardMouseActions: performing card action!");
-            //     battleManager.CardAction(cardDisplay);
-            // }
-            // else {
-            //     // do nothing here
-            // }
             isFollowerPlaced = false;
         }
-
-        StartCoroutine(battleManager.CardAction(cardDisplay.card));
-
-        // else if (!isCancelled) {
-        //     // play non target cards here
-        //     battleManager.CardAction(cardDisplay);
-        // }
+        battleManager.isScryComplete = false;
+        handManager.PlayCardBattleManager();
         yield return new WaitForSeconds(1.3f);
+
         isCardPlayed = false;
     }
 
     private IEnumerator CardPlayAnimation(float timeInterval) {
         // play card now, but defer the deletion for 1.7s
         handManager.PlayCard(cardDisplay);
+        handManager.lastCard = cardDisplay.card;
         Vector3 startingPosition = transform.position;
         // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
@@ -221,6 +210,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             );
             yield return new WaitForSeconds(0.01f);
         }
+
+        handManager.DeleteCardWithDiscard(cardDisplay, 0f);
     }
 
     private IEnumerator FlipAnimationSequence() {
@@ -294,58 +285,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         ExitResetSequence();
     }
 
-    // private void OnMouseExit() {
-        
-    //     ExitResetSequence();
-    // }
-
-    // private void OnMouseOver() {
-
-    //         if (!isCardPlayed) {
-    //             // check if it's a Target card first
-    //             cardDisplay = GetComponent<CardDisplay>();
-    //             isTarget = cardDisplay.card.isTarget;
-    //             // Debug.Log("isTarget: " + isTarget);
-
-    //             // if it's a Target, instantiate the CursorFollower prefab
-    //             if(isTarget) {
-    //                 if(followerCreated) {
-    //                     Destroy(cursorFollowerInstance);
-    //                     followerCreated = false;
-    //                 }
-    //                 if(!followerCreated) {
-    //                     cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
-    //                     cursorFollowerInstance.SetActive(false);
-    //                     cursorFollowerInstance.transform.parent = transform.parent;
-    //                     cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
-    //                     followerCreated = true;
-    //                 }
-    //             }
-
-    //             if (stop != null) {
-    //                 StopCoroutine(stop);
-    //                 stop = null;
-    //             }
-    //             if (isFirstEnter) {
-    //                 originalPosition = transform.localPosition;
-    //                 originalRotation = transform.rotation;
-    //                 originalScale = transform.localScale;
-    //                 expandedScale = new Vector3(3.5f, 5.21f, 0.00f);
-    //                 isFirstEnter = false;
-    //             }
-
-    //             // Debug.Log("hover routine starting");
-    //             if (expandAllowed) {
-    //                 start = StartCoroutine(HoverPulse());
-    //             }
-    //         }
-    // }
-
     private void OnMouseDrag() {
         isSelected = true;
-
-        // Debug.Log("transform postiion: " +  transform.localPosition);
-        // Debug.Log(Input.mousePosition);
 
         if(isTarget) {
             if(!isFollowerPlaced) {
@@ -375,19 +316,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         expandAllowed = false;
         // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
         transform.SetSiblingIndex(20);
-        // Vector3 newScale = originalScale;
-        // transform.localScale = originalScale;
-        // transform.rotation = Quaternion.identity;
-
-        // for each other child, shift it over
-        // children to the left, shift left
-        // for (int j = 0; j < siblingIndexOriginal; j++) {
-        //     StartCoroutine(ShiftCardLeft(j));
-        // }
-        // // children to the right, shift right
-        // for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
-        //     StartCoroutine(ShiftCardRight(j));
-        // }
 
         Vector3 currentPosition = transform.localPosition;
         Vector3 currentScale = transform.localScale;
@@ -406,14 +334,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
-
-        // expandedScale = transform.localScale;
-        // Debug.Log("expandedScale: " + expandedScale);
-        // Debug.Log("expandedPosition: " + transform.localPosition);
-
-        // // enable cursorFollower and move under this card
-        // cursorFollower.SetActive(true);
-        // Debug.Log("finalScale: " + transform.localScale);
     }
 
     private IEnumerator ShiftCardLeft(int index) {
@@ -443,18 +363,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private IEnumerator ExitShrink() {
         // transform.localScale = expandedScale;
         transform.rotation = originalRotation;
-        // Debug.Log("rotation reset: " + originalRotation);
-        // Debug.Log("original position: " + originalPosition);
-        // transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
-        // Debug.Log("expandedScaleFirst: " +  expandedScale);
-
-        // for (int j = 0; j < siblingIndexOriginal; j++) {
-        //     StartCoroutine(ShiftCardRight(j));
-        // }
-        // // children to the right, shift right
-        // for (int j = siblingIndexOriginal + 1; j < handManager.handCards.Count; j++) {
-        //     StartCoroutine(ShiftCardLeft(j));
-        // }
 
         Vector3 currentPosition = transform.localPosition;
         for (float i = 0f; i <= 1f; i+= 0.1f) {
