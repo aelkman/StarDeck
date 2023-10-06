@@ -8,7 +8,7 @@ public class CardUISelector : MonoBehaviour
     public Deck deck;
     private int addedCount = 0;
     public CardDisplay prefab;
-    private Object[] cards;
+    public Object[] cards;
     public int selectionCount = 3;
     public MainManager mainManager;
     // Start is called before the first frame update
@@ -55,6 +55,29 @@ public class CardUISelector : MonoBehaviour
         }
         else {
             Debug.Log("GetRandomCard shouldn't be here!");
+            return (Card)cardList[Random.Range(0, cardList.Count)];
+        }
+    }
+
+    public Card GetRandomRarity(List<Card> cardList, string rarity) {
+        var commonCards = cardList.Where(c => c.rarity == "C").ToList();
+        var uncommonCards = cardList.Where(c => c.rarity == "U").ToList();
+        var rareCards = cardList.Where(c => c.rarity == "R").ToList();
+
+        if(rarity == "C") {
+            // common type
+            return (Card)commonCards[Random.Range(0, commonCards.Count)];
+        }
+        else if(rarity == "U") {
+            // uncommon type
+            return (Card)uncommonCards[Random.Range(0, uncommonCards.Count)];
+        }
+        else if(rarity == "R") {
+            // rare type
+            return (Card)rareCards[Random.Range(0, rareCards.Count)];
+        }
+        else {
+            Debug.Log("GetRandomCardRarity shouldn't be here! Invalid rarity string");
             return (Card)cardList[Random.Range(0, cardList.Count)];
         }
     }

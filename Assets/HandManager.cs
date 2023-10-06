@@ -13,7 +13,7 @@ public class HandManager : MonoBehaviour
     public DeckCopy deckCopy;
     public List<CardDisplay> handCards;
     private List<CardDisplay> discardCards;
-    private List<CardDisplay> expelCards;
+    public List<CardDisplay> expelCards;
     private float zRot = 1.0f;
     private float yOffset = 15.0f;
     private float xOffset = 200;
@@ -67,6 +67,10 @@ public class HandManager : MonoBehaviour
             }
 
             Card currentCard = deckCopy.cardStack.Pop();
+            if(lastCard != null && lastCard.name == "Meditation") {
+                currentCard.manaCost = 0;
+                currentCard.actions.Add("EXPEL", "");
+            }
             cards.Add(currentCard);
 
             prefab.card = currentCard;
@@ -129,8 +133,10 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator DeferCardDeletion(CardDisplay cardDisplay, float time) {
         yield return new WaitForSeconds(time);
-        if(cardDisplay.card.name == "Virus") {
-            expelCards.Add(cardDisplay);
+        if(cardDisplay.card.actions.ContainsKey("EXPEL")) {
+            // make a copy since it is about to be deleted
+            CardDisplay expelCard = Instantiate(cardDisplay);
+            expelCards.Add(expelCard);
         }
         else {
             discardCards.Add(cardDisplay);
@@ -142,7 +148,6 @@ public class HandManager : MonoBehaviour
 
     public void PlayCardBattleManager() {
         StartCoroutine(battleManager.CardAction(lastCard));
-
         // if(cardDisplay.card.actionKeys.Contains("SCRY")) {
         //     yield return new WaitUntil(() => battleManager.isScryComplete);
         // }

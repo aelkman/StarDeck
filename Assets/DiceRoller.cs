@@ -113,7 +113,9 @@ public class DiceRoller : MonoBehaviour
                 Debug.Log("roll finished!");
                 isRollFinished = true;
                 continueButton.interactable = true;
-                rerollButton.interactable = true;
+                if(rerollRemaining > 0) {
+                    rerollButton.interactable = true;
+                }
             }
             // else {
             //     Debug.Log("not moving but! not finished, time elapsed: " + timeElapsed + " isRolleFinished: " + isRollFinished);
@@ -126,7 +128,7 @@ public class DiceRoller : MonoBehaviour
         rerollButton.interactable = false;
         rerollRemaining -= 1;
         rerollCountText.text = rerollRemaining.ToString();
-        // if(rerollRemaining == 0) {
+        // if(rerollRemaining <= 0) {
         //     rerollButton.interactable = false;
         // }
 
@@ -149,6 +151,12 @@ public class DiceRoller : MonoBehaviour
         else if(eventName == "Unknown") {
             if(UpperSideTxt.text == "Enemy") {
                 MainManager.Instance.currentNode.GenerateEnemyGroup();
+                foreach(string e in MainManager.Instance.currentNode.enemies) {
+                    Debug.Log("enemy: " + e);
+                }
+            }
+            else if(UpperSideTxt.text == "Mini-Boss") {
+                MainManager.Instance.currentNode.GenerateMiniBoss();
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
                     Debug.Log("enemy: " + e);
                 }

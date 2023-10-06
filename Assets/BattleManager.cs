@@ -340,6 +340,7 @@ public class BattleManager : MonoBehaviour
                     scryUISelector.isComplete = false;
                     handManager.Scry(Int32.Parse(item.Value));
                     yield return new WaitUntil(() => scryUISelector.isComplete);
+                    yield return new WaitForSeconds(1f);
                     // isScryComplete = true;
                     Debug.Log("ending scry");
                     break;

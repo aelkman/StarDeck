@@ -54,16 +54,9 @@ public class MapNode : MonoBehaviour
 
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Enemy Icon Animator");
             }
-            else if (destinationName == "Mini-Boss") {
-                enemies = new List<string>();
-                EnemyGroup[] group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/MiniBoss");
-
-                // pick a random group
-                int index = Random.Range(0, group.Length);
-                var enemiesEnum = group[index].enemies;
-                foreach(EnemiesEnum enemy in enemiesEnum) {
-                    enemies.Add(enemy.ToString());
-                }
+            else if (destinationName == "Mini-Boss")
+            {
+                GenerateMiniBoss();
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Super Enemy Icon Animator");
             }
             else if (destinationName == "Unknown") {
@@ -88,6 +81,20 @@ public class MapNode : MonoBehaviour
             destination = Instantiate(prefabInstance, transform);
             prefabInstance.transform.localScale = new Vector3(1,1,1);
         }        
+    }
+
+    public void GenerateMiniBoss()
+    {
+        enemies = new List<string>();
+        EnemyGroup[] group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/MiniBoss");
+
+        // pick a random group
+        int index = Random.Range(0, group.Length);
+        var enemiesEnum = group[index].enemies;
+        foreach (EnemiesEnum enemy in enemiesEnum)
+        {
+            enemies.Add(enemy.ToString());
+        }
     }
 
     public void GenerateEnemyGroup()

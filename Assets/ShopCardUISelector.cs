@@ -5,6 +5,21 @@ using UnityEngine;
 public class ShopCardUISelector : CardUISelector
 {
     public CoinCount coinCount;
+
+    void Start() {
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        deck = GameObject.Find("Deck").GetComponent<Deck>();
+        cards = Resources.LoadAll("Cards", typeof(Card));
+        var cardsListFiltered = new List<Card>();
+        foreach(Card card in cards) {
+            if (card.category != "Starter") {
+                cardsListFiltered.Add(card);
+            }
+        }
+        CreateCard(GetRandomRarity(cardsListFiltered, "C"), 0);
+        CreateCard(GetRandomRarity(cardsListFiltered, "U"), 1);
+        CreateCard(GetRandomRarity(cardsListFiltered, "R"), 2);
+    }
     public new void CreateCard(Card card, int i) {
         prefab.card = card;
         CardDisplay cardInstance = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity, transform.GetChild(0));

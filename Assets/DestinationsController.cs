@@ -21,28 +21,70 @@ public class DestinationsController : MonoBehaviour
         // shop:                9
         // event:               10
         // don't include first or last node, those are fixed enemy & boss
-        for (int i = 0; i < treeMapManager.childCount - 2; i++) {
-            int randomIndex = Random.Range(0, 11);
-            // regular enemy
-            if (randomIndex >= 0 && randomIndex <= 3) {
-                destinations.Add("Enemy");
-            }
-            else if (randomIndex == 4) {
-                destinations.Add("Chest");
-            }
-            else if (randomIndex >= 5 && randomIndex <= 6) {
-                destinations.Add("Mini-Boss");
-            }
-            else if (randomIndex >= 7 && randomIndex <= 8) {
-                destinations.Add("Unknown");
-            }
-            else if (randomIndex == 9) {
-                destinations.Add("Shop");
-            }
-            else if (randomIndex == 10) {
-                destinations.Add("Event");
+
+        // shops should be 10%
+        // events should be 10%
+        // enemies should be 45%
+        // miniboss should be 15%
+        // unkmown should be 10%
+        // chest should be 10%
+        int totalVisitableNodes = treeMapManager.childCount - 2;
+        Debug.Log("total visitable nodes (excluding first and last): " + totalVisitableNodes);
+        int tenPercent = (int)System.Math.Round((double)totalVisitableNodes/(double)10);
+        for(int i = 0; i < 4; i++) {
+            // get random count +/- 1
+            int randomCount = Random.Range(tenPercent - 1, tenPercent + 2);
+            
+            for(int j = 0; j < randomCount; j++) {
+                if(i == 0) {
+                    destinations.Add("Shop");
+                }
+                if(i == 1) {
+                    destinations.Add("Event");
+                }
+                if(i == 2) {
+                    destinations.Add("Unknown");
+                }
+                if(i == 3) {
+                    destinations.Add("Chest");
+                }
             }
         }
+
+        // check how many we have left now
+        totalVisitableNodes -= destinations.Count;
+        int fifteenPercent = (int)System.Math.Round(totalVisitableNodes * 0.25);
+        for(int i = 0; i < fifteenPercent; i++) {
+            destinations.Add("Mini-Boss");
+        }
+
+        totalVisitableNodes -= fifteenPercent;
+        for(int i = 0; i < totalVisitableNodes; i++) {
+            destinations.Add("Enemy");
+        }
+
+        // for (int i = 0; i < treeMapManager.childCount - 2; i++) {
+        //     int randomIndex = Random.Range(0, 11);
+        //     // regular enemy
+        //     if (randomIndex >= 0 && randomIndex <= 3) {
+        //         destinations.Add("Enemy");
+        //     }
+        //     else if (randomIndex == 4) {
+        //         destinations.Add("Chest");
+        //     }
+        //     else if (randomIndex >= 5 && randomIndex <= 6) {
+        //         destinations.Add("Mini-Boss");
+        //     }
+        //     else if (randomIndex >= 7 && randomIndex <= 8) {
+        //         destinations.Add("Unknown");
+        //     }
+        //     else if (randomIndex == 9) {
+        //         destinations.Add("Shop");
+        //     }
+        //     else if (randomIndex == 10) {
+        //         destinations.Add("Event");
+        //     }
+        // }
 
         // now, assign the destinations to the GOs
     }

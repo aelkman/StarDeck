@@ -26,7 +26,7 @@ public class ATMScript : MonoBehaviour
     }
 
     public void Option1Click() {
-        mainManager.coinCount += 150;
+        mainManager.coinCount += 250;
         var virus = Resources.Load<Card>("Negative Cards/Virus");
         var virusInstance = Instantiate(virus);
         var virusInstance2 = Instantiate(virus);

@@ -430,6 +430,7 @@ MonoBehaviour:
   animatorPrefab: {fileID: 6284634172651462950, guid: 8b14b945b99f23841b88eae9ba2f85da, type: 3}
   deckCopy: {fileID: 893357587}
   handCards: []
+  expelCards: []
   playerStats: {fileID: 1019438604}
   scryViewer: {fileID: 413373069}
   scryUISelector: {fileID: 475826907}
@@ -3463,7 +3464,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!43 &993148051
+--- !u!43 &963444266
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5661,6 +5662,7 @@ GameObject:
   - component: {fileID: 1799751634}
   - component: {fileID: 1799751633}
   - component: {fileID: 1799751632}
+  - component: {fileID: 1799751635}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -5731,7 +5733,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1799751633}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1799751633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5770,6 +5784,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799751630}
   m_CullTransparentMesh: 1
+--- !u!114 &1799751635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799751630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15fb7fb7c3e9e714dbff201ca02e5d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  restartButton: {fileID: 1799751632}
 --- !u!1 &1820929790
 GameObject:
   m_ObjectHideFlags: 0
