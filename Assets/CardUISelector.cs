@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class CardUISelector : MonoBehaviour
 {
     public Deck deck;
-    private int addedCount = 0;
+    public int addedCount = 0;
     public CardDisplay prefab;
     public Object[] cards;
+    public List<Card> cardsSelectable;
     public int selectionCount = 3;
-    public MainManager mainManager;
+    public CanvasGroup canvasGroup;
+    public Button healButton;
     // Start is called before the first frame update
     void Start()
     {
-        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        cardsSelectable = new List<Card>();
+        if(MainManager.Instance.artifacts.Contains("DEC_FAT")) {
+            selectionCount += 1;
+        }
         deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();
@@ -24,7 +30,13 @@ public class CardUISelector : MonoBehaviour
             }
         }
         for (int i = 0; i < selectionCount; i++) {
-            CreateCard(GetRandomCard(cardsListFiltered), i);
+            // don't allow duplicate cards
+            Card card = GetRandomCard(cardsListFiltered);
+            while(cardsSelectable.Contains(card)) {
+                card = GetRandomCard(cardsListFiltered);
+            }
+            cardsSelectable.Add(card);
+            CreateCard(card, i);
         }
     }
 
@@ -96,6 +108,9 @@ public class CardUISelector : MonoBehaviour
             var cardInstance = Instantiate(card);
             deck.AddCard(cardInstance);
             addedCount++;
+            canvasGroup.alpha = 0.5f;
+            canvasGroup.blocksRaycasts = false;
+            healButton.interactable = false;
             return true;
         }
         else {

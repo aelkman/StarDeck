@@ -10,13 +10,14 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
-    private BattleEnemyManager battleEnemyManager;
+    private BattleEnemyManager BEM;
     public ParticleSystem effectSystem;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
     public List<Card> actions;
     private EnemyAnimator enemyAnimator;
+    public List<BattleEnemyContainer> damagedEnemies;
     
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         nextMoveYOffset = battleEnemy.nextMoveYOffset;
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
-        battleEnemyManager = transform.parent.parent.GetComponent<BattleEnemyManager>();
+        BEM = transform.parent.parent.GetComponent<BattleEnemyManager>();
         actions = battleEnemy.actions;
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
@@ -75,9 +76,9 @@ public class BattleEnemyContainer : BaseCharacterInfo
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (health <= 0) {
             // death animation here, disable the NextAction as well
-            nextActionText.SetText("");
+            nextActionText.SetText("", null, null);
             enemyAnimator.DeathAnimation();
-            battleEnemyManager.EnemyDeath(this);
+            BEM.EnemyDeath(this);
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
             isDead = true;
             isDeadCallback(true);
@@ -101,18 +102,43 @@ public class BattleEnemyContainer : BaseCharacterInfo
     }
 
     public Card RandomAction() {
+        damagedEnemies = new List<BattleEnemyContainer>();
+        foreach(var be in BEM.GetBattleEnemies()) {
+            if(be.health < be.maxHealth) {
+                damagedEnemies.Add(be);
+            }
+        }
         // Random.seed = System.DateTime.Now.Millisecond;
         // Random.Range with ints is (inclusive, exclusive)
-        return (Card)actions[Random.Range(0, actions.Count)];
+
+        // remove the nextAction (which is last action right now)
+        var possibleActions = actions;
+        possibleActions.Remove(nextActionText.card);
+
+        Card nextCard = (Card)possibleActions[Random.Range(0, possibleActions.Count)];
+        if(nextCard.actions.ContainsKey("HEAL")) {
+            if(damagedEnemies.Count < 1) {
+                possibleActions.Remove(nextCard);
+                nextCard = (Card)possibleActions[Random.Range(0, possibleActions.Count)];
+            }
+        }
+        return nextCard;
     }
 
-    public void SetNextActionText(string text) {
-        nextActionText.SetText(text);
+    public void SetNextActionText(string text, Dictionary<string, string> actions, Card card) {
+        nextActionText.SetText(text, actions, card);
     }
 
     public void BlockSequence(int block) {
         enemyAnimator.BlockAnimation();
         shieldAnimator.StartForceField();
         addBlock(block);
+    }
+
+    public void HealRandomTarget(int heal) {
+        // pick random damaged enemy to heal
+        var randIndex = Random.Range(0, damagedEnemies.Count);
+        var target = damagedEnemies[randIndex];
+        target.Heal(heal);
     }
 }

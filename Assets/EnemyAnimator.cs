@@ -25,4 +25,12 @@ public class EnemyAnimator : CharacterAnimator
     public void GoldBot_Melee_1() {
         animator.SetTrigger("GoldBot_Melee1");
     }
+
+    public void TauntAnimation() {
+        animator.SetTrigger("Taunt");
+    }
+
+    public void EndTauntAnimation() {
+        animator.SetTrigger("EndTaunt");
+    }
 }

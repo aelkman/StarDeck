@@ -5,7 +5,9 @@ using UnityEngine;
 public enum EnemiesEnum {
     MiniBot,
     Rob,
-    GoldBot
+    GoldBot,
+    HealBot,
+    ArmorBot
 }
 
 [CreateAssetMenu(fileName = "New Enemy Group", menuName = "Enemy Group")]

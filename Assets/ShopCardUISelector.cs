@@ -7,7 +7,6 @@ public class ShopCardUISelector : CardUISelector
     public CoinCount coinCount;
 
     void Start() {
-        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
         deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();
@@ -30,7 +29,7 @@ public class ShopCardUISelector : CardUISelector
     }
 
     public bool AddToDeck(Card card, int cost) {
-        if (mainManager.coinCount >= cost) {
+        if (MainManager.Instance.coinCount >= cost) {
             deck.AddCard(card);
             coinCount.SpendCoins(cost);
             return true;

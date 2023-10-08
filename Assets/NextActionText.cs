@@ -6,6 +6,8 @@ using TMPro;
 public class NextActionText : MonoBehaviour
 {
     public TextMeshPro nextActionText;
+    public Dictionary<string, string> actions;
+    public Card card;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,9 @@ public class NextActionText : MonoBehaviour
     {
     }
 
-    public void SetText(string text) {
+    public void SetText(string text, Dictionary<string, string> actions, Card card) {
+        this.actions = actions;
+        this.card = card;
         nextActionText.text = text;
     }
 }

@@ -34,6 +34,16 @@ public class BaseCharacterInfo : MonoBehaviour
         
     }
 
+    public void Heal(int heal) {
+        if(heal + health > maxHealth) {
+            health = maxHealth;
+        }
+        else {
+            health += heal;
+        }
+        healthBar.SetHealth(health);
+    }
+
     public void addBlock(int block) {
         this.block += block;
         Debug.Log("block is: " + this.block);

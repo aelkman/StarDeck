@@ -153,13 +153,15 @@ public class BattleManager : MonoBehaviour
                     }
 
                     for (int i = 0; i < multiAttack[1]; i++) {
-                        
                         Vector3 STMPos;
                         if(DidTargetMiss(playerStats)) {
                             Vector3 targPos = STM.GetTarget().transform.position;
                             STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
                         else {
+                            if(playerStats.tauntTurns > 0) {
+                                STM.SetTarget(playerStats.tauntingEnemy);
+                            }
                             STMPos = STM.GetTarget().transform.position;
                         }
 
@@ -168,10 +170,10 @@ public class BattleManager : MonoBehaviour
                         // weapon animations here
                         switch(cardType) {
                             case "Blaster":
-                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true));
+                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true, isLast));
                                 break;
                             case "Blaster_All":
-                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false));
+                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false, isLast));
                                 break;
                             default:
                                 break;
@@ -265,6 +267,7 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "RELOAD":
+                    playerStats.playerAnimator.ReloadAnimation(playerStats);
                     ammoController.FullCharge();
                     break;
                 case "FINAL_BLOW":
@@ -291,14 +294,16 @@ public class BattleManager : MonoBehaviour
 
                         bool isLast = i == (multiplier - 1);
                         playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                        
                         // weapon animations here
                         switch(cardType) {
                             case "Blaster":
-                                StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true));
+                                StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true, isLast));
                                 break;
                             default:
                                 break;
                         }
+
                         if(!DidTargetMiss(playerStats)) {
                             if(STM.GetTarget() is BattleEnemyContainer) {
                                 StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
@@ -359,7 +364,8 @@ public class BattleManager : MonoBehaviour
         playerStats.shieldAnimator.StartForceField();
     }
 
-    private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card, bool useCharge) {
+    private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card, bool useCharge, bool isLast) {
+        playerStats.HoldWeapon();
         yield return new WaitForSeconds(attackDelay);
 
         // reduce the charges in the ammo container
@@ -374,7 +380,7 @@ public class BattleManager : MonoBehaviour
         }
 
         Debug.Log(playerStats.transform.position.x);
-        Vector3 startingPosition = new Vector3(playerStats.transform.position.x + 0.1f, playerStats.transform.position.y + 0.1f, playerStats.transform.position.z);
+        Vector3 startingPosition = new Vector3(playerStats.blasterHeld.transform.position.x + 0.1f, playerStats.blasterHeld.transform.position.y, playerStats.blasterHeld.transform.position.z);
         Vector3 endPosition = STMPos;
         GameObject newLaser = Instantiate(laserAttack, startingPosition, Quaternion.identity, characterSpace.transform);
         for (float i = 0; i < 1; i+=timeInterval){
@@ -386,6 +392,9 @@ public class BattleManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         Destroy(newLaser);
+        if(isLast) {
+            playerStats.RemoveWeapon();
+        }
     }
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
@@ -394,13 +403,23 @@ public class BattleManager : MonoBehaviour
             //     // wait until it loads
             // }
             if(battleEnemy.actions.Count > 0){
+                // if(battleEnemy.name == "ArmorBot") {
+                //     if(battleEnemy.nextActionText.actions.ContainsKey("TAUNT")) {
+                //         Card blockAction = Resources.Load<Card>("BLOCK_MEDIUM");
+                //     }
+                // }
+
+                // next action should not be the same as last
+
                 Card randomAction = battleEnemy.RandomAction();
                 // pass the action back to the enemy to display
                 string actionText = randomAction.name;
+                Dictionary<string, string> actions = new Dictionary<string, string>();
                 foreach(KeyValuePair<string, string> entry in randomAction.actions) {
                     actionText += "<br>" + entry.Key + " " + entry.Value;
+                    actions.Add(entry.Key, entry.Value);
                 }
-                battleEnemy.SetNextActionText(actionText);
+                battleEnemy.SetNextActionText(actionText, actions, randomAction);
                 enemyActions.Add(new Tuple<BattleEnemyContainer,Card>(battleEnemy, randomAction));
             }
         }
@@ -491,6 +510,15 @@ public class BattleManager : MonoBehaviour
                                 battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
                                 battleEnemy.SwordAnimation();
                                 break;
+                            case "TAUNT":
+                                ((EnemyAnimator)battleEnemy.characterAnimator).TauntAnimation();
+                                playerStats.tauntingEnemy = battleEnemy;
+                                playerStats.tauntTurns += Int32.Parse(item.Value);
+                                break;
+                            case "HEAL":
+                                battleEnemy.characterAnimator.CastAnimation();
+                                battleEnemy.HealRandomTarget(Int32.Parse(item.Value));
+                                break;
                             default:
                                 break;
                         }
@@ -509,6 +537,7 @@ public class BattleManager : MonoBehaviour
         ResetEnemyShields();
         playerStats.RemoveSingleBlind();
         playerStats.RemoveSingleVuln();
+        playerStats.RemoveSingleTaunt();
     }
 
     public void EndEnemyTurn() {

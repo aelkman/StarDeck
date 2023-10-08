@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
   m_Name: Vulnerable Shot
   m_EditorClassIdentifier: 
-  name: 
-  artwork: {fileID: 0}
-  manaCost: 0
-  actionKeys: []
-  actionValues: []
+  name: Vulnerable Shot
+  artwork: {fileID: 21300000, guid: 87b6e1443a8663e4facf48c936ce941f, type: 3}
+  manaCost: 1
+  actionKeys:
+  - ATK
+  - VULN
+  actionValues:
+  - 7,1
+  - 1
   description: 
-  type: 
-  subType: 
+  type: Blaster
+  subType: Shot
   category: 
-  isTarget: 0
-  rarity: 
+  isTarget: 1
+  rarity: C

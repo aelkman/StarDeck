@@ -14,10 +14,15 @@ public class PlayerStats : BaseCharacterInfo
     public ParticleSystem damageParticles;
     public GameObject forceField;
     public List<string> weapons;
+    public GameObject blasterHeld;
+    public GameObject blasterHip;
+    public BattleEnemyContainer tauntingEnemy;
+    public int tauntTurns = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        RemoveWeapon();
         nextMoveYOffset = 0;
         if (MainManager.Instance != null) {
             health = (int)MainManager.Instance.playerHealth;
@@ -83,6 +88,25 @@ public class PlayerStats : BaseCharacterInfo
     public IEnumerator damageAnimation(float time) {
         yield return new WaitForSeconds(time);
         damageParticles.Play();
+    }
+
+    public void HoldWeapon() {
+        blasterHip.SetActive(false);
+        blasterHeld.SetActive(true);
+    }
+
+    public void RemoveWeapon() {
+        blasterHip.SetActive(true);
+        blasterHeld.SetActive(false);
+    }
+
+    public void RemoveSingleTaunt() {
+        if(tauntTurns == 1) {
+            ((EnemyAnimator)tauntingEnemy.characterAnimator).EndTauntAnimation();
+        }
+        if(tauntTurns >= 1) {
+            tauntTurns -= 1;
+        }
     }
 
 }
