@@ -10,6 +10,7 @@ public class CharacterHUD : MonoBehaviour
     public BlockText blockText;
     public GameObject vulnDisplay;
     public GameObject blindDisplay;
+    public GameObject tauntDisplay;
     private SpriteRenderer spriteRenderer;
     public GameObject damageUp;
     public VulneratibiltyHoverDescription vhd;
@@ -67,6 +68,13 @@ public class CharacterHUD : MonoBehaviour
         }
         else {
             blindDisplay.SetActive(false);
+        }
+
+        if(baseCharacterInfo.isTaunter) {
+            tauntDisplay.SetActive(true);
+        }
+        else {
+            tauntDisplay.SetActive(false);
         }
     }
 }

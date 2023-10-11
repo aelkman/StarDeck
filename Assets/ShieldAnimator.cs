@@ -7,7 +7,7 @@ public class ShieldAnimator : MonoBehaviour
     private Animator animator;
     private ParticleSystem shieldSystem;
     private float startTime = 0f;
-    private float stopTime = 0f;
+    public float stopTime = 0f;
     // Start is called before the first frame update
     void Start()
     {

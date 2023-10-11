@@ -74,9 +74,15 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
                 if(!battleManager.CheckCanAct(cardDisplay.card) || 
                     (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
+                    if(!isTarget) {
+                        // for cards that are not target cards, move it back
+                        transform.localPosition = originalPosition;
+                    }
                     isSelected = false;
                     isFollowerPlaced = false;
-                    ExitResetSequence();
+                    isCardPlayed = false;
+                    // isHardReset = true;
+
                 }
                 else{
                     // if it's a target but the STM doesn't have a target, that's bad
@@ -105,6 +111,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 isHardReset = false;
                 isFollowerPlaced = false;
                 isCardPlayed = false;
+                transform.localPosition = originalPosition;
             }
             isCancelled = false;
         }
@@ -287,6 +294,15 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void OnMouseDrag() {
         isSelected = true;
+        if(!isTarget) {
+            Debug.Log("input y pos: " + Input.mousePosition.y);
+            if(Input.mousePosition.y > 420) {
+                isHardReset = false;
+            }
+            else {
+                isHardReset = true;
+            }
+        }
 
         if(isTarget) {
             if(!isFollowerPlaced) {

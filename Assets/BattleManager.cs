@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -29,9 +30,13 @@ public class BattleManager : MonoBehaviour
     private bool isBattleWon = false;
     public float attackDelay = 0.25f;
     private bool isPocketGenerator = false;
+    private bool isPowerSurge = false;
+    private bool isPulseAmplifier = false;
+    private bool hasReloaded = false;
     public bool noDamageTaken = true;
     public ScryUISelector scryUISelector;
     public bool isScryComplete = false;
+    public Button endTurnButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +88,7 @@ public class BattleManager : MonoBehaviour
     public void BattleWin() {
         isBattleWon = true;
         battleWon.Initiate();
+        
     }
 
     public bool CheckCanAct(Card card) {
@@ -105,7 +111,21 @@ public class BattleManager : MonoBehaviour
         int requiredCharges = 0;
 
         if(cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster") {
-            requiredCharges = cardDisplay.card.actions["ATK"].Split(',').Select(int.Parse).ToList()[1];
+            // int attack;
+            int multi;
+            var strings = cardDisplay.card.actions["ATK"].Split(',').ToList();
+            // attack = Int32.Parse(strings[0]);
+
+            if(strings[1] == "X"){
+                multi = playerStats.stats.mana;
+            }
+            else if(strings[1] == "A") {
+                multi = (int)ammoController.charge;
+            }
+            else {
+                multi = Int32.Parse(strings[1]);
+            }
+            requiredCharges = multi;
         }
 
         if(!ammoController.userHasBlaster) {
@@ -146,13 +166,38 @@ public class BattleManager : MonoBehaviour
         foreach(var item in card.actions) {
             switch(item.Key) {
                 case "ATK":
-                    List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
+                    int attack;
+                    int multi;
+                    // List<int> multiAttack = new List<int>();
+                    if(item.Value == "DEF") {
+                        attack = playerStats.block;
+                        multi = 1;
+                        // multiAttack.Add(playerStats.block);
+                        // multiAttack.Add(1);
+                    }
+                    else {
+                        var strings = item.Value.Split(',').ToList();
+                        attack = Int32.Parse(strings[0]);
 
-                    if (multiAttack.Count != 2) {
-                        throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
+                        if(strings[1] == "X"){
+                            multi = playerStats.stats.mana;
+                        }
+                        else if(strings[1] == "A") {
+                            multi = (int)ammoController.charge;
+                        }
+                        else {
+                            multi = Int32.Parse(strings[1]);
+                        }
+                        // multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
                     }
 
-                    for (int i = 0; i < multiAttack[1]; i++) {
+                    // if (multiAttack.Count != 2) {
+                    //     throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
+                    // }
+
+                    float atkMod = 1.0f;
+
+                    for (int i = 0; i < multi; i++) {
                         Vector3 STMPos;
                         if(DidTargetMiss(playerStats)) {
                             Vector3 targPos = STM.GetTarget().transform.position;
@@ -161,11 +206,12 @@ public class BattleManager : MonoBehaviour
                         else {
                             if(playerStats.tauntTurns > 0) {
                                 STM.SetTarget(playerStats.tauntingEnemy);
+                                atkMod += 0.2f;
                             }
                             STMPos = STM.GetTarget().transform.position;
                         }
 
-                        bool isLast = i == (multiAttack[1] - 1);
+                        bool isLast = i == (multi - 1);
                         playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                         // weapon animations here
                         switch(cardType) {
@@ -180,13 +226,14 @@ public class BattleManager : MonoBehaviour
                         }
 
                         if(!DidTargetMiss(playerStats)) {
+                            int damage = (int)Math.Round((float)attack * atkMod);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
-                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(multiAttack[0], attackDelay, returnValue => {}));
+                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, returnValue => {}));
                             }
                             else {
                                 // player is blinded, attack self
-                                ((PlayerStats)STM.GetTarget()).takeDamage(multiAttack[0]);
+                                ((PlayerStats)STM.GetTarget()).takeDamage(damage);
                             }
                         }
                         if (!isLast) {
@@ -226,12 +273,32 @@ public class BattleManager : MonoBehaviour
                     STM.GetTarget().blind += 1;
                     break;
                 case "DEF":
-                    playerStats.addBlock(Int32.Parse(item.Value));
-                    StartCoroutine(PlayerShieldSequence());
+                    if(item.Value == "2X") {
+                        playerStats.characterAnimator.CastAnimation();
+                        playerStats.DoubleBlock();
+                    }
+                    else{
+                        playerStats.addBlock(Int32.Parse(item.Value));
+                        StartCoroutine(PlayerShieldSequence());
+                    }
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
                     break;
+                case "DEF_RELOAD":
+                    var blocks = item.Value.Split(',').Select(int.Parse).ToList();
+                    if(hasReloaded) {
+                        playerStats.addBlock(blocks[1]);
+                    }
+                    else {
+                        playerStats.addBlock(blocks[0]);
+                    }
+
+                    StartCoroutine(PlayerShieldSequence());
+                    break;
                 case "DRAW":
-                    handManager.DrawCards(1);
+                    handManager.DrawCards(Int32.Parse(item.Value));
+                    break;
+                case "DRAW_PULSE":
+                    DrawPulse();
                     break;
                 case "HACK":
                     // perform hacking animation here
@@ -242,9 +309,9 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "QUICKDRAW":
-                    StartCoroutine(handManager.DrawCardsTimed(2, cardsReturnValue => {
+                    StartCoroutine(handManager.DrawCardsTimed(3, cardsReturnValue => {
                         foreach(Card card in cardsReturnValue) {
-                            if (card.subType == "Shot") {
+                            if (card.isAttack) {
                                 playerStats.addMana(1);
                             }
                         }
@@ -255,6 +322,12 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
                     STM.GetTarget().ShockAnimation();
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
+                    break;
+                case "STN_ALL":
+                    foreach(var be in battleEnemies) {
+                        be.stunnedTurns += Int32.Parse(item.Value);
+                        be.ShockAnimation();
+                    }
                     break;
                 case "VULN":
                     if(card.isTarget) {
@@ -267,8 +340,22 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "RELOAD":
+                    if(item.Value == "EXPAND" && ammoController.IsAmmoFull()) {
+                        ammoController.ExpandSlots(1);
+                    }
+                    else {
+                        hasReloaded = true;
+                        ammoController.FullCharge();
+                        if(isPowerSurge) {
+                            handManager.DrawCards(1);
+                            playerStats.addMana(1);
+                        }
+                        if(isPulseAmplifier)
+                        {
+                            DrawPulse();
+                        }
+                    }
                     playerStats.playerAnimator.ReloadAnimation(playerStats);
-                    ammoController.FullCharge();
                     break;
                 case "FINAL_BLOW":
                     List<string> finalBlow = card.actions["FINAL_BLOW"].Split(',').ToList();
@@ -337,6 +424,12 @@ public class BattleManager : MonoBehaviour
                         ammoController.FullCharge();
                         isPocketGenerator = true;
                     }
+                    else if(item.Value == "POWER_SURGE"){
+                        isPowerSurge = true;
+                    }
+                    else if(item.Value == "PULSE_AMPLIFIER") {
+                        isPulseAmplifier = true;
+                    }
                     break;
                 case "CAST":
                     playerStats.playerAnimator.CastAnimation();
@@ -356,6 +449,14 @@ public class BattleManager : MonoBehaviour
         // unlock the target
         STM.SetTarget(null);
         STM.targetLocked = false;
+    }
+
+    private void DrawPulse()
+    {
+        var pulse = Resources.Load<Card>("Cards_Special/Blaster/Pulse");
+        var pulseInstance = Instantiate(pulse);
+        handManager.deckCopy.AddCard(pulseInstance);
+        handManager.DrawCards(1);
     }
 
     private IEnumerator PlayerShieldSequence() {
@@ -452,6 +553,58 @@ public class BattleManager : MonoBehaviour
                 else {
                     foreach(var item in randomAction.actions) {
                         switch(item.Key) {
+                            case "ATK":
+                                List<int> multiAttack = new List<int>();
+
+                                int attack;
+                                int multi;
+
+                                multiAttack = item.Value.Split(',').Select(int.Parse).ToList();
+
+                                // if (multiAttack.Count != 2) {
+                                //     throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated.");
+                                // }
+
+                                attack = multiAttack[0];
+                                multi = multiAttack[1];
+
+                                // float atkMod = 1.0f;
+
+                                for (int i = 0; i < multi; i++) {
+                                    Vector3 STMPos;
+                                    if(DidTargetMiss(battleEnemy)) {
+                                        Vector3 targPos = STM.GetTarget().transform.position;
+                                        STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                                    }
+
+                                    battleEnemy.characterAnimator.AttackAnimation();
+
+                                    bool isLast = i == (multi - 1);
+
+                                    if(!DidTargetMiss(battleEnemy)) {
+
+                                        var atkDmg = attack;
+
+                                        if(playerStats.hasBlock()) {
+                                            if(playerStats.getBlock() <= atkDmg) {
+                                                atkDmg = atkDmg - playerStats.getBlock();
+                                                playerStats.setBlock(0);
+                                                playerStats.shieldAnimator.StopForceField();
+                                            }
+                                            else {
+                                                playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                                atkDmg = 0;
+                                            }
+                                        }
+                                        playerStats.takeDamage(atkDmg);
+                                        playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                                    }
+
+                                    if (!isLast) {
+                                        yield return new WaitForSeconds(0.2f);
+                                    }
+                                }
+                                break;
                             case "ATK_RND":
 
                                 List<int> randAttack = randomAction.actions["ATK_RND"].Split(',').Select(int.Parse).ToList();
@@ -512,12 +665,18 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case "TAUNT":
                                 ((EnemyAnimator)battleEnemy.characterAnimator).TauntAnimation();
+                                battleEnemy.isTaunter = true;
+                                playerStats.TauntAnimation();
                                 playerStats.tauntingEnemy = battleEnemy;
                                 playerStats.tauntTurns += Int32.Parse(item.Value);
                                 break;
                             case "HEAL":
                                 battleEnemy.characterAnimator.CastAnimation();
                                 battleEnemy.HealRandomTarget(Int32.Parse(item.Value));
+                                break;
+                            case "BLIND":
+                                battleEnemy.characterAnimator.AttackAnimation();
+                                playerStats.blind += 1;
                                 break;
                             default:
                                 break;
@@ -529,10 +688,11 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        EndEnemyTurn();
+        StartCoroutine(EndEnemyTurn());
     }
 
     public void EndPlayerTurn() {
+        endTurnButton.interactable = false;
         isPlayerTurn = false;
         ResetEnemyShields();
         playerStats.RemoveSingleBlind();
@@ -540,17 +700,27 @@ public class BattleManager : MonoBehaviour
         playerStats.RemoveSingleTaunt();
     }
 
-    public void EndEnemyTurn() {
+    public IEnumerator EndEnemyTurn() {
+        hasReloaded = false;
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         areEnemyActionsDecided = false;
         handManager.DiscardHand();
-        handManager.DrawCards(5);
         playerStats.resetMana();
-        playerStats.resetBlock();
+        if(!MainManager.Instance.artifacts.Contains("DEF_PERSIST")) {
+            playerStats.resetBlock();
+        }
+        else {
+            playerStats.block -= playerStats.block/2;
+        }
+        // ok solution for now, need to wait for block off animation to finish
+        // for situation with DEF_DRAW artifact
+        yield return new WaitForSeconds(playerStats.shieldAnimator.stopTime);
+        handManager.DrawCards(5);
         foreach(BattleEnemyContainer be in battleEnemies) {
             be.RemoveSingleVuln();
             be.RemoveSingleBlind();
         }
+        endTurnButton.interactable = true;
     }
 
     public void ResetEnemyShields() {

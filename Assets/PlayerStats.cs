@@ -102,6 +102,7 @@ public class PlayerStats : BaseCharacterInfo
 
     public void RemoveSingleTaunt() {
         if(tauntTurns == 1) {
+            tauntingEnemy.isTaunter = false;
             ((EnemyAnimator)tauntingEnemy.characterAnimator).EndTauntAnimation();
         }
         if(tauntTurns >= 1) {

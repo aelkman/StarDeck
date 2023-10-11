@@ -11,6 +11,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public HealthBar healthBar;
     public GameObject swordPrefab;
     public GameObject vulnPrefab;
+    public GameObject tauntPrefab;
     public ShockPlayer shockPlayer;
     public CharacterAnimator characterAnimator;
     public int block = 0;
@@ -22,6 +23,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public bool isDead = false;
     public int atkMod;
     public float nextMoveYOffset;
+    public bool isTaunter = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,10 @@ public class BaseCharacterInfo : MonoBehaviour
     public void addBlock(int block) {
         this.block += block;
         Debug.Log("block is: " + this.block);
+    }
+
+    public void DoubleBlock() {
+        this.block *= 2;
     }
 
     public void setBlock(int block) {
@@ -101,6 +107,11 @@ public class BaseCharacterInfo : MonoBehaviour
     public void VulnerableAnimation() {
         GameObject vulnAnimationInsance = Instantiate(vulnPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
         vulnAnimationInsance.transform.localPosition = new Vector3(vulnAnimationInsance.transform.localPosition.x, vulnAnimationInsance.transform.localPosition.y + nextMoveYOffset, vulnAnimationInsance.transform.localPosition.z);
+    }
+
+    public void TauntAnimation() {
+        GameObject tauntAnimationInsance = Instantiate(tauntPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        tauntAnimationInsance.transform.localPosition = new Vector3(tauntAnimationInsance.transform.localPosition.x, tauntAnimationInsance.transform.localPosition.y + nextMoveYOffset, tauntAnimationInsance.transform.localPosition.z);
     }
 
     public void RemoveSingleVuln() {

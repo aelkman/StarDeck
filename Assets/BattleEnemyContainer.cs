@@ -10,15 +10,14 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
+    public GameObject healPrefab;
     private BattleEnemyManager BEM;
     public ParticleSystem effectSystem;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
     public List<Card> actions;
-    private EnemyAnimator enemyAnimator;
-    public List<BattleEnemyContainer> damagedEnemies;
-    
+    private EnemyAnimator enemyAnimator;    
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +54,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
 
     public IEnumerator TakeDamage(int damage, float timeDelay, System.Action<bool> isDeadCallback) {
         yield return new WaitForSeconds(timeDelay);
-        StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
         damage = CalculateDamage(damage);
         if (block >= damage) {
             block -= damage;
@@ -84,6 +82,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             isDeadCallback(true);
         }
         else {
+            StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
             isDeadCallback(false);
         }
     }
@@ -101,23 +100,38 @@ public class BattleEnemyContainer : BaseCharacterInfo
         return health;
     }
 
-    public Card RandomAction() {
-        damagedEnemies = new List<BattleEnemyContainer>();
+    public List<BattleEnemyContainer> GetDamagedEnemies() {
+        List<BattleEnemyContainer> damagedEnemies = new List<BattleEnemyContainer>();
         foreach(var be in BEM.GetBattleEnemies()) {
-            if(be.health < be.maxHealth) {
+            if(be.health > 0 && be.health < be.maxHealth) {
                 damagedEnemies.Add(be);
             }
         }
+        return damagedEnemies;
+    }
+
+    public Card RandomAction() {
         // Random.seed = System.DateTime.Now.Millisecond;
         // Random.Range with ints is (inclusive, exclusive)
 
         // remove the nextAction (which is last action right now)
-        var possibleActions = actions;
+        var possibleActions = new List<Card>(actions);
+
+        // if ArmorBot is alone, he can attack
+        if(battleEnemy.name == "ArmorBot") {
+            if(BEM.GetBattleEnemies().Count == 1) {
+                possibleActions.RemoveAll(x => x.actions.ContainsKey("TAUNT"));
+                var attackCard = new Card();
+                attackCard.actions = new Dictionary<string, string>();
+                attackCard.actions.Add("ATK_RND", "8, 4");
+                possibleActions.Add(attackCard);
+            }
+        }
         possibleActions.Remove(nextActionText.card);
 
         Card nextCard = (Card)possibleActions[Random.Range(0, possibleActions.Count)];
         if(nextCard.actions.ContainsKey("HEAL")) {
-            if(damagedEnemies.Count < 1) {
+            if(GetDamagedEnemies().Count < 1) {
                 possibleActions.Remove(nextCard);
                 nextCard = (Card)possibleActions[Random.Range(0, possibleActions.Count)];
             }
@@ -137,8 +151,17 @@ public class BattleEnemyContainer : BaseCharacterInfo
 
     public void HealRandomTarget(int heal) {
         // pick random damaged enemy to heal
-        var randIndex = Random.Range(0, damagedEnemies.Count);
-        var target = damagedEnemies[randIndex];
-        target.Heal(heal);
+        var damagedEnemies = GetDamagedEnemies();
+        if(damagedEnemies.Count > 0) {
+            var randIndex = Random.Range(0, damagedEnemies.Count);
+            var target = damagedEnemies[randIndex];
+            GameObject healTextInstance = Instantiate(healPrefab, target.transform.position, Quaternion.identity, target.transform);
+            healTextInstance.transform.localPosition = new Vector3(healTextInstance.transform.localPosition.x, healTextInstance.transform.localPosition.y + target.battleEnemy.nextMoveYOffset, healTextInstance.transform.localPosition.z);
+            healTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = heal.ToString();
+            target.Heal(heal);
+        }
+        else {
+            // shrug animation
+        }
     }
 }

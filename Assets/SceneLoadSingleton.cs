@@ -10,6 +10,7 @@ public class SceneLoadSingleton : MonoBehaviour
     public GameObject mapCanvas;
 
     private static SceneLoadSingleton _instance;
+    public ZoomScript zoomScript;
 
     public static SceneLoadSingleton Instance 
     { 

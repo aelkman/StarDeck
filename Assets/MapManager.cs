@@ -13,6 +13,7 @@ public class MapManager : MonoBehaviour
     public Animator transition;
     public GameObject diceContainer;
     public DiceRoller diceRoller;
+    public ZoomScript zoomScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,16 +27,37 @@ public class MapManager : MonoBehaviour
         
     }
 
-    public void SetMovementSelection(int instanceId, MapNode newNode) {
+    public void SetMovementSelection(MapNode newNode) {
         currentNode = mapArrow.GetComponent<MapArrow>().currentNode;
-        if(currentNode.childrenNodes.Contains(instanceId)) {
+        if(currentNode.childrenNodes.Contains(newNode)) {
             Debug.Log("nextNode match found!");
             var go = Resources.Load<GameObject>("Map Destinations/Checkmark");
             Instantiate(go, mapArrow.GetComponent<MapArrow>().currentNode.transform);
             mapArrow.GetComponent<MapArrow>().currentNode = newNode;
             mainManager.currentNode = newNode;
+
+            // move the scroll rect on click (if it's zoomed)
+            // revisit later
+            // var pos1 = zoomScript.GetComponent<RectTransform>().transform.InverseTransformPoint(zoomScript.GetComponent<RectTransform>().position);
+            // var pos2 = zoomScript.GetComponent<RectTransform>().transform.InverseTransformPoint(newNode.GetComponent<RectTransform>().position);
+            // var pos3 = pos1 - pos2;
+            // var newPos = zoomScript.GetComponent<RectTransform>().transform.InverseTransformPoint(newNode.GetComponent<RectTransform>().localPosition);
+            // zoomScript.LerpToPos(pos3);
+           
             newNode.destination.gameObject.SetActive(false);
             LoadNextLevel(newNode.destinationName);
+            // now, turn off and on proper animations
+            foreach(var node in currentNode.childrenNodes) {
+                var childNodeAnimator = node.destinationAnimator;
+                childNodeAnimator.Rebind();
+                childNodeAnimator.Update(0f);
+                childNodeAnimator.enabled = false;
+            }
+            // now animate the new children
+            foreach(var node in newNode.childrenNodes) {
+                var childNodeAnimator = node.destinationAnimator;
+                childNodeAnimator.enabled = true;
+            }
         }
         else {
             Debug.Log("not a next node!");

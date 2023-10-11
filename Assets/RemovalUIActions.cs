@@ -150,6 +150,8 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             );
             yield return new WaitForSeconds(0.01f);
         }
+
+        removalUISelector.cardDisplayCanvas.RemoveCard(cardDisplay.card);
     }
 
     protected void ExitResetSequence() {

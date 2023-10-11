@@ -50,18 +50,27 @@ public class CardUISelector : MonoBehaviour
         var commonCards = cardList.Where(c => c.rarity == "C").ToList();
         var uncommonCards = cardList.Where(c => c.rarity == "U").ToList();
         var rareCards = cardList.Where(c => c.rarity == "R").ToList();
+        int rarityDiff_C = 0;
+        int rarityDiff_U = 0;
+        if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
+            rarityDiff_C = 2;
+            rarityDiff_U = 1;
+        }
 
-        var rarityIndex = Random.Range(0, 12);
+        // current odds: 66.66/25/8.33
+        // golden ticket odds: 50/33.33/16.66
+
+        var rarityIndex = Random.Range(0, 13);
         Debug.Log("random card index: " + rarityIndex);
-        if(rarityIndex >= 0 && rarityIndex <=8) {
+        if(rarityIndex >= 0 && rarityIndex <= 8 - rarityDiff_C) {
             // common type
             return (Card)commonCards[Random.Range(0, commonCards.Count)];
         }
-        else if(rarityIndex >= 8 && rarityIndex <=11) {
+        else if(rarityIndex > 8 - rarityDiff_C && rarityIndex <= 11 - rarityDiff_U) {
             // uncommon type
             return (Card)uncommonCards[Random.Range(0, uncommonCards.Count)];
         }
-        else if(rarityIndex == 12) {
+        else if(rarityIndex >= 12 - rarityDiff_U) {
             // rare type
             return (Card)rareCards[Random.Range(0, rareCards.Count)];
         }

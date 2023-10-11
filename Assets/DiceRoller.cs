@@ -23,19 +23,23 @@ public class DiceRoller : MonoBehaviour
     public GameObject diceContainer;
     public string eventName;
     public MeshRenderer diceRenderer;
+    private bool isFirstRun = true;
 
     List<string> FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
     // Start is called before the first frame update
     void OnEnable()
     {
-        startingPos = transform.localPosition;
+        if(isFirstRun) {
+            startingPos = transform.localPosition;
+            isFirstRun = false;
+        }
         isRollFinished = false;
         if(eventName == "Unknown") {
             diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
         }
         else if(eventName == "Chest") {
             diceRenderer.material = Resources.Load<Material>("Dice Material Chest");
-            FaceRepresent = new List<string>() {"", "Chest", "Chest", "Enemy", "Enemy", "Chest", "Chest"};
+            FaceRepresent = new List<string>() {"", "Chest", "Chest", "Chest", "Enemy", "Enemy", "Chest"};
         }
         else {
             diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
@@ -59,7 +63,9 @@ public class DiceRoller : MonoBehaviour
         vec.Normalize();
         // Gives the Asteroid a random rotation
         rb.AddTorque(vec * 100.0f); // where 1.0 is rotation speed
-        transform.rotation = Quaternion.LookRotation(Random.onUnitSphere, Random.onUnitSphere);
+
+        // commented below for possible bug fix
+        // transform.rotation = Quaternion.LookRotation(Random.onUnitSphere, Random.onUnitSphere);
         rb.AddForce(new Vector3(0, 0, -1 * upwardForce));
         timeElapsed = 0;
         isRollFinished = false;

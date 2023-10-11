@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
+  m_Name: Toughen Up
+  m_EditorClassIdentifier: 
+  name: Toughen Up
+  artwork: {fileID: 21300000, guid: c1b83bc7a6d42314992cf2e1204b85dc, type: 3}
+  manaCost: 1
+  actionKeys:
+  - DEF
+  actionValues:
+  - 2X
+  description: Light and fresh, like the turtle
+  type: General
+  subType: 
+  category: 
+  isTarget: 0
+  isAttack: 0
+  rarity: C

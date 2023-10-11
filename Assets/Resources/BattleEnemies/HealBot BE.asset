@@ -18,13 +18,12 @@ MonoBehaviour:
   health: 40
   xOffset: 285
   yOffset: 0
-  nextMoveYOffset: 0
+  nextMoveYOffset: -30
   material: {fileID: 0}
   scale: {x: 0, y: 0, z: 0}
-  isMiniBoss: 1
+  isMiniBoss: 0
   isBoss: 0
   actions:
+  - {fileID: 11400000, guid: 37f957311c33a204d97c16f5b8e03c9a, type: 2}
   - {fileID: 11400000, guid: 10909d057c173b144888247428eaefaa, type: 2}
-  - {fileID: 11400000, guid: bb6ef5aee97f5c54880d715558ab12b1, type: 2}
   - {fileID: 11400000, guid: c0892d895a0f06646a24b2c4f9eecdab, type: 2}
-  - {fileID: 11400000, guid: 89c28733fe574744e9bb2840b6ef16aa, type: 2}

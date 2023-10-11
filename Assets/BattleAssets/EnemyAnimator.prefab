@@ -365,10 +365,12 @@ MonoBehaviour:
   characterHUD: {fileID: 1414547864159836435}
   nextAction: {fileID: 2000603611772570230}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
+  healPrefab: {fileID: 6726857980285676640, guid: f1e4ac079959a884194d3e05b497a4a7, type: 3}
   effectSystem: {fileID: 2587277430470127724}
   singleTargetManager: {fileID: 0}
   enemyPrefabInstance: {fileID: 0}
   actions: []
+  damagedEnemies: []
 --- !u!1 &4254911735686161093
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ecf14d5ba1155540982ab550602f1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!95 &4752108858939346401
 Animator:
   serializedVersion: 5
@@ -626,6 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextActionText: {fileID: 7645357941746893177}
+  card: {fileID: 0}
 --- !u!114 &5996850347724053765
 MonoBehaviour:
   m_ObjectHideFlags: 0

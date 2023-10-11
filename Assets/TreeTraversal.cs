@@ -44,8 +44,8 @@ public class TreeTraversal : MonoBehaviour
                 for(int j=0; j < nextLevel.transform.childCount; j++) {
                     Transform grandChild = nextLevel.transform.GetChild(j);
                     if (grandChild.GetComponent<MapNode>().parentNodes.Count == 0) {
-                        childMapNode.childrenNodes.Add(grandChild.gameObject.GetInstanceID());
-                        grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(i).gameObject.GetInstanceID());
+                        childMapNode.childrenNodes.Add(grandChild.GetComponent<MapNode>());
+                        grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(i).GetComponent<MapNode>());
 
                         GameObject newLine = Instantiate(treeLine, transform.parent.transform);
                         LineRenderer lr = newLine.GetComponent<LineRenderer>();
@@ -141,9 +141,9 @@ public class TreeTraversal : MonoBehaviour
  
             MapNode childMapNode = nextLevel.transform.GetChild(nextChildIndex).GetComponent<MapNode>();
 
-            if (!childMapNode.GetComponent<MapNode>().parentNodes.Contains(transform.GetChild(index).gameObject.GetInstanceID())) {
-                childMapNode.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).gameObject.GetInstanceID());
-                transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Add(nextLevel.transform.GetChild(nextChildIndex).gameObject.GetInstanceID());
+            if (!childMapNode.GetComponent<MapNode>().parentNodes.Contains(transform.GetChild(index).GetComponent<MapNode>())) {
+                childMapNode.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(index).GetComponent<MapNode>());
+                transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Add(nextLevel.transform.GetChild(nextChildIndex).GetComponent<MapNode>());
                 
                 CheckIfComplete(childMapNode);
                 CheckIfComplete(transform.GetChild(index).GetComponent<MapNode>());

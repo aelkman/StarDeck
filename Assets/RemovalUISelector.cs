@@ -8,6 +8,7 @@ public class RemovalUISelector : MonoBehaviour
 {
     public DeckCopy deckCopy;
     public GameObject selectedCard;
+    public CardDisplayCanvas cardDisplayCanvas;
     // Start is called before the first frame update
 
     void Start() {

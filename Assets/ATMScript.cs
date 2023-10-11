@@ -32,14 +32,14 @@ public class ATMScript : MonoBehaviour
         var virusInstance2 = Instantiate(virus);
         deck.AddCard(virusInstance);
         deck.AddCard(virusInstance2);
-        option1.interactable = false;
+        option1.enabled = false;
         option2.interactable = false;
     }
 
     public void Option2Click() {
         mainManager.coinCount += 50;
         option1.interactable = false;
-        option2.interactable = false;
+        option2.enabled = false;
     }
 
     public void Leave() {

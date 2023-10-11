@@ -22,6 +22,7 @@ public class HandManager : MonoBehaviour
     public ScryUISelector scryUISelector;
     public Card lastCard;
     public BattleManager battleManager;
+    public BattleEnemyManager BEM;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +58,19 @@ public class HandManager : MonoBehaviour
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
         List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
+            Debug.Log("drawing card: " + i+1);
+            if(MainManager.Instance.artifacts.Contains("DEF_DRAW")) {
+                if(playerStats.block < 1) {
+                    playerStats.characterAnimator.BlockAnimation();
+                    playerStats.shieldAnimator.StartForceField();
+                }
+                playerStats.addBlock(1);
+            }
+            if(MainManager.Instance.artifacts.Contains("ATK_DRAW")) {
+                int randIndex = UnityEngine.Random.Range(0, BEM.GetBattleEnemies().Count);
+                var randTarget = BEM.GetBattleEnemies()[randIndex];
+                StartCoroutine(randTarget.TakeDamage(1, 0.2f,  returnValue => {}));
+            }
             if(deckCopy.cardStack.Count() < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {
                     CardDisplay cardDisplay = discardCards[j];
@@ -213,8 +227,8 @@ public class HandManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.01f);
         }
-        cardDisplay.pointerBoundary.SetActive(true);
         cardDisplay.gameObject.GetComponent<CardMouseActions>().originalPosition = cardDisplay.transform.localPosition;
+        cardDisplay.pointerBoundary.SetActive(true);
     }
 
     private static float WrapAngle(float angle)

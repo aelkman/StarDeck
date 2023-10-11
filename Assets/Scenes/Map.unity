@@ -2735,6 +2735,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1039166124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5143993795690212511, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+  m_PrefabInstance: {fileID: 924000814248844654}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac3ea812e3031f478ad625436093177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1042498724
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,20 +2885,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9164656884526259795, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
   m_PrefabInstance: {fileID: 924000814248844654}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1047314722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047314719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce27fae6d4d0c714380fbcf279cc8c78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deckCopy: {fileID: 0}
-  selectedCard: {fileID: 0}
 --- !u!114 &1047314724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4555,6 +4552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingDeck: {fileID: 11400000, guid: 264190cae2c45a24d9498423e6505a44, type: 2}
+  cardDisplayCanvas: {fileID: 1039166124}
   isInitialized: 0
 --- !u!224 &1687382076 stripped
 RectTransform:
@@ -5062,6 +5060,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8206d06e166d48b408dace67dcfcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1978145049 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6413265765551178865, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+  m_PrefabInstance: {fileID: 3887249259396133466}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 572aa4c6e678a7c48b22bf5d1e816119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2007558275 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6515507107473672884, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
@@ -5291,6 +5300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCanvas: {fileID: 734503043}
+  zoomScript: {fileID: 0}
 --- !u!4 &2049787669
 Transform:
   m_ObjectHideFlags: 0
@@ -5410,6 +5420,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5943955679120874558, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: cardDisplayCanvas
+      value: 
+      objectReference: {fileID: 1039166124}
     - target: {fileID: 6154329696483624486, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: cancelButton
       value: 
@@ -5564,9 +5578,6 @@ PrefabInstance:
     - {fileID: 8723475806085749317, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9164656884526259795, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1047314722}
     - targetCorrespondingSourceObject: {fileID: 9164656884526259795, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1047314725}
@@ -5869,6 +5880,10 @@ PrefabInstance:
       propertyPath: transition
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: zoomScript
+      value: 
+      objectReference: {fileID: 1978145049}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: mainManager
       value: 

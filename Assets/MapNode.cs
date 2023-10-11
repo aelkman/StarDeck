@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class MapNode : MonoBehaviour
 {
-    public List<int> childrenNodes;
-    public List<int> parentNodes;
+    public List<MapNode> childrenNodes;
+    public List<MapNode> parentNodes;
     public MapManager mapManager;
     public GameObject destination;
     public List<string> enemies;
@@ -14,15 +14,16 @@ public class MapNode : MonoBehaviour
     public int instanceId;
     private float fade = 0;
     private bool isGlowUp = true;
-    private int level;
+    public int level;
     public SpriteRenderer spriteRenderer;
     public string destinationName;
+    public Animator destinationAnimator;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(WaitForLoad());
         instanceId = gameObject.GetInstanceID();
-        childrenNodes = new List<int>();
+        childrenNodes = new List<MapNode>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -79,6 +80,15 @@ public class MapNode : MonoBehaviour
         // dont instantiate a prefab for the root node, we're already there
         if (transform.GetComponent<MapNode>().parentNodes.Count != 0) {
             destination = Instantiate(prefabInstance, transform);
+            var animator = destination.GetComponent<Animator>();
+            destinationAnimator = animator;
+            var currentNode = mapManager.mapArrow.GetComponent<MapArrow>().currentNode;
+            if(currentNode.childrenNodes.Contains(this)) {
+                animator.enabled = true;
+            }
+            else {
+                animator.enabled = false;
+            }
             prefabInstance.transform.localScale = new Vector3(1,1,1);
         }        
     }
@@ -102,10 +112,15 @@ public class MapNode : MonoBehaviour
         enemies = new List<string>();
         // For now, these are hard-coded, will need to change later
         EnemyGroup[] group;
-        if (level >= 0 && level <= 3)
+        if (level >= 0 && level <= 1)
         {
             // Easy groups
             group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Easy");
+        }
+        else if (level >= 2 && level <= 3)
+        {
+            // Easy groups
+            group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/Easy-2");
         }
         else if (level >= 4 && level <= 8)
         {
@@ -130,7 +145,7 @@ public class MapNode : MonoBehaviour
     private void OnMouseOver() {
         if (Input.GetMouseButtonUp (0)) {
             Debug.Log("clicked node id: " + instanceId);
-            mapManager.SetMovementSelection(instanceId, this);
+            mapManager.SetMovementSelection(this);
         }
         
         if (isGlowUp) {

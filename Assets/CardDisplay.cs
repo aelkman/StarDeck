@@ -69,15 +69,34 @@ public class CardDisplay : MonoBehaviour
         foreach(var item in card.actions) {
             switch(item.Key) {
                 case "ATK":
-                    List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
-                    if (multiAttack.Count != 2) {
-                        throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated");
-                    }
-                    if (multiAttack[1] == 1) {
-                        descriptionAdditional += "<br>Deal " + multiAttack[0] + " damage";
-                    }
-                    else {
-                        descriptionAdditional = "<br>Deal " + multiAttack[0] + " damage " + multiAttack[1] + " times";
+                    if(item.Value != "DEF") {
+                        int attack;
+                        string multi;
+                        if(item.Value.Contains("X") || item.Value.Contains("A")) {
+                            var multiAttackStrings = item.Value.Split(',').ToList();
+                            attack = Int32.Parse(multiAttackStrings[0]);
+                            if(multiAttackStrings[1] != "X" && multiAttackStrings[1] != "A") {
+                                throw new Exception("Invalid string found in ATK value! " + multiAttackStrings[1]);
+                            }
+                            else {
+                                multi = multiAttackStrings[1];
+                            }
+                        }
+                        else {
+                            List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
+                            if (multiAttack.Count != 2) {
+                                throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated");
+                            }
+                            attack = multiAttack[0];
+                            multi = multiAttack[1].ToString();
+                        }
+
+                        if (multi == "1") {
+                            descriptionAdditional += "<br>Deal " + attack + " damage";
+                        }
+                        else {
+                            descriptionAdditional = "<br>Deal " + attack + " damage " + multi + " times";
+                        }
                     }
                     break;
                 case "ATK_ALL":
@@ -88,14 +107,22 @@ public class CardDisplay : MonoBehaviour
                     descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
                     break;
                 case "BLIND_ALL":
-                    descriptionAdditional += "<br>Blind ALL enemies " + item.Value + " turn/s";
+                    descriptionAdditional += "<br>Blind " + item.Value + " turn";
                     break;
                 case "DEF":
-                    descriptionAdditional += "<br>Block " + item.Value + "";
+                    if(item.Value == "2X") {
+                        descriptionAdditional += "<br>Double your block";
+                    }
+                    else {
+                        descriptionAdditional += "<br>Block " + item.Value + "";
+                    }
                     break;
                 case "STN":
                     descriptionAdditional += "<br>Stun " + item.Value + " turn";
                     break;
+                case "STN_ALL":
+                    descriptionAdditional += "<br>Stun " + item.Value + " turn";
+                    break;  
                 case "VULN":
                     descriptionAdditional += "<br>Vulnerable " + item.Value + " turn";
                     break;

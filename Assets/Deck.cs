@@ -7,6 +7,7 @@ public class Deck : MonoBehaviour
 {
     public StartingDeck startingDeck;
     public StackList<Card> cardStack;
+    public CardDisplayCanvas cardDisplayCanvas;
     public bool isInitialized = false;
     // Start is called before the first frame update
 
@@ -36,6 +37,7 @@ public class Deck : MonoBehaviour
 
     public void AddCard(Card card) {
         cardStack.Push(card);
+        cardDisplayCanvas.AddCard(card);
         Debug.Log("added " + card.name + " to deck!");
         Debug.Log(cardStack.Count() + " card in the deck");
     }

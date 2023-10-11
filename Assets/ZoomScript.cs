@@ -2,24 +2,65 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
  
 public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-    #region Inspector fields
     // [SerializeField] float startSize = 1;
     [SerializeField] float minSize = 0.5f;
     [SerializeField] float maxSize = 1;
  
     [SerializeField] private float zoomRate = 5;
     private float currentScale = 0f;
-    public float maxScale = 1.0f;
-    public float minScale = 0.63f;
-    #endregion
+    // public float maxScale = 1.0f;
+    // public float minScale = 0.63f;
  
-    #region Private Variables
     private bool onObj = false;
-    #endregion
+    private RectTransform rt;
  
-    #region Unity Methods
+
+    void Start() {
+        rt = GetComponent<RectTransform>();
+        StartCoroutine(ZoomLerp());
+    }
+
+    private IEnumerator ZoomLerp() {
+        yield return new WaitForSeconds(1f);
+        float time = 0.01667f;
+        float totTime = 1.5f;
+        for(float i = 0; i < totTime; i+= time) {
+            var zoomVal = Mathf.Lerp(1, 2, Mathf.SmoothStep(0,1, i/totTime));
+            SetZoom(zoomVal);
+            //960, 510 localPos of rectTransform
+            var newPos = new Vector3(Mathf.Lerp(rt.localPosition.x, 960, Mathf.SmoothStep(0,1,i/totTime)),
+                        Mathf.Lerp(rt.localPosition.y, 510, Mathf.SmoothStep(0,1,i/totTime)),
+                        rt.localPosition.z);
+            rt.localPosition = newPos;
+            yield return new WaitForSeconds(time);
+        }
+    }
+
+    public void LerpToPos(Vector3 pos) {
+        StartCoroutine(LerpToPosTime(pos));
+    }
+
+    private IEnumerator LerpToPosTime(Vector3 pos) {
+        // 30 frames/second
+        float time = 0.01667f;
+        float totTime = 1.5f;
+        for(float i = 0; i < totTime; i+= time) {
+            // var zoomVal = Mathf.Lerp(1, 2, Mathf.SmoothStep(0,1, i/totTime));
+            // SetZoom(zoomVal);
+            var rtPos = rt.localPosition;
+            var newPos = new Vector3(Mathf.Lerp(rt.localPosition.x, pos.x, Mathf.SmoothStep(0,1,i/totTime)),
+                        Mathf.Lerp(rt.localPosition.y, pos.y, Mathf.SmoothStep(0,1,i/totTime)),
+                        rt.localPosition.z);
+            rt.localPosition = newPos;
+            yield return new WaitForSeconds(time);
+        }
+    }
+
     private void Update() {
         float scrollWheel = -Input.mouseScrollDelta.y;
         // if (currentScale >= maxScale) {
@@ -44,9 +85,7 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnDisable() {
         onObj = false;
     }
-    #endregion
  
-    #region Private Methods
     private void ChangeZoom(float scrollWheel) {
         float rate = 1 + zoomRate * Time.unscaledDeltaTime;
         if (scrollWheel > 0) {
@@ -60,5 +99,4 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void SetZoom(float targetSize) {
         transform.localScale = new Vector3(targetSize, targetSize, 1);
     }
-    #endregion
 }
