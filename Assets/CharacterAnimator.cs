@@ -5,16 +5,28 @@ using UnityEngine;
 public class CharacterAnimator : MonoBehaviour
 {
     public Animator animator;
+    public AudioSource shieldAudio;
+    public AudioSource shockAudio;
+    public BattleManager bem;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        bem = GameObject.Find("BattleManager").GetComponent<BattleManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void ShieldAudioPlay() {
+        shieldAudio.Play();
+    }
+
+    public void ShockAudioPlay() {
+        shockAudio.Play();
     }
 
     public void DamageAnimation() {
@@ -30,7 +42,7 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     public void BlockAnimation() {
-        animator.SetTrigger("Blocking");
+        animator.SetTrigger("Block");
     }
 
     public void ShockAnimation() {

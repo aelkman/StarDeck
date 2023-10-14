@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
-public class MainManager : MonoBehaviour
+public class MainManager : MonoBehaviour, IDisposable
 {
     // Start() and Update() methods deleted - we don't need them right now
 
@@ -12,6 +13,8 @@ public class MainManager : MonoBehaviour
     public int playerHealth = 50;
     public int playerMaxHealth = 50;
     public int coinCount = 50;
+    public int level = 1;
+    public int maxCharges = 3;
     public MapNode currentNode;
     public float vulnerableModifier = 1.5f;
 
@@ -21,6 +24,7 @@ public class MainManager : MonoBehaviour
     public Texture2D mouseClickTex;
     private CursorMode cursorMode = CursorMode.ForceSoftware;
     private Vector2 hotSpot;
+    public bool isBossBattle = false;
 
     private void Awake()
     {
@@ -48,6 +52,9 @@ public class MainManager : MonoBehaviour
         if(codeName == "MARKS_MED") {
             vulnerableModifier = 1.75f;
         }
+        if(codeName == "EXTRA_CHARGE") {
+            maxCharges += 1;
+        }
         artifacts.Add(codeName);
     }
 
@@ -58,5 +65,13 @@ public class MainManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0)) {
             Cursor.SetCursor(mouseTexture, hotSpot, cursorMode);
         }
+    }
+
+    void OnDestroy() {
+        Debug.Log("MainManager destroyed!");
+    }
+
+    public void Dispose() {
+        Instance = null;
     }
 }

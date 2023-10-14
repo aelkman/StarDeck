@@ -11,7 +11,13 @@ public class RandomBackground : MonoBehaviour
     void Start()
     {
         // Load random background
-        var prefabs = Resources.LoadAll<Object>("Battle Backgrounds");
+        Object[] prefabs;
+        if(MainManager.Instance.isBossBattle) {
+            prefabs = Resources.LoadAll<Object>("Battle Backgrounds/Boss Backgrounds/Level " + MainManager.Instance.level);
+        }
+        else {
+            prefabs = Resources.LoadAll<Object>("Battle Backgrounds/Level " + MainManager.Instance.level);
+        }
         randomPrefab = (BattleBackground)prefabs[Random.Range(0, prefabs.Length)];
         foreach(Light2D light in randomPrefab.lights) {
             Instantiate(light);

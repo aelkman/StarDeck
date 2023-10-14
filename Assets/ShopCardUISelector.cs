@@ -7,6 +7,10 @@ public class ShopCardUISelector : CardUISelector
     public CoinCount coinCount;
 
     void Start() {
+        if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
+            canvasGroup.alpha = 0.5f;
+            canvasGroup.blocksRaycasts = false;
+        }
         deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b3e2c5405f94341bbcb5f42a817b8a, type: 3}
+  m_Name: KingBot BE
+  m_EditorClassIdentifier: 
+  name: KingBot
+  sprite: {fileID: 0}
+  maxHealth: 250
+  health: 250
+  xOffset: 285
+  yOffset: 0
+  nextMoveYOffset: 84
+  material: {fileID: 0}
+  scale: {x: 0, y: 0, z: 0}
+  isMiniBoss: 0
+  isBoss: 1
+  actions:
+  - {fileID: 11400000, guid: d817840db6350894b9d3d6855c27c03b, type: 2}
+  - {fileID: 11400000, guid: 1b5f70b1cdd6fbb4fa6eaa22e7eb375b, type: 2}
+  - {fileID: 11400000, guid: 928675ba6ef7b524eb80ae3d51661664, type: 2}
+  - {fileID: 11400000, guid: 8ed818729b0549e49b1f3520d56de623, type: 2}
+  - {fileID: 11400000, guid: 3b2f1610f38b6664f9f4868323009eba, type: 2}
+  - {fileID: 11400000, guid: d38e865531bbba3498c9bc55ee82a131, type: 2}
+  - {fileID: 11400000, guid: b1f8b68155a00b04bb94a024a953de39, type: 2}
+  - {fileID: 11400000, guid: 577f6d51ac3ed0940aea684824817008, type: 2}

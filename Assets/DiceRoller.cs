@@ -162,7 +162,7 @@ public class DiceRoller : MonoBehaviour
                 }
             }
             else if(UpperSideTxt.text == "Mini-Boss") {
-                MainManager.Instance.currentNode.GenerateMiniBoss();
+                MainManager.Instance.currentNode.GenerateBossGroup("MiniBoss");
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
                     Debug.Log("enemy: " + e);
                 }

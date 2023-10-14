@@ -10,7 +10,6 @@ public class SceneLoadSingleton : MonoBehaviour
     public GameObject mapCanvas;
 
     private static SceneLoadSingleton _instance;
-    public ZoomScript zoomScript;
 
     public static SceneLoadSingleton Instance 
     { 
@@ -54,7 +53,9 @@ public class SceneLoadSingleton : MonoBehaviour
         Debug.Log("OnSceneLoaded: " + scene.name);  
         
         if (scene.name == "Map") {
-            mapCanvas.SetActive(true);
+            if(mapCanvas != null) {
+                mapCanvas.SetActive(true);
+            }
             // cg.alpha = 1;
             // cg.interactable = true;
             // cg.blocksRaycasts = true;
@@ -65,7 +66,9 @@ public class SceneLoadSingleton : MonoBehaviour
     {
         Debug.Log("OnSceneUnloaded: " + current);
         if (current.name == "Map") {
-            mapCanvas.SetActive(false);
+            if(mapCanvas != null) {
+                mapCanvas.SetActive(false);
+            }
             // cg.alpha = 0;
             // cg.interactable = false;
             // cg.blocksRaycasts = false;
@@ -79,11 +82,6 @@ public class SceneLoadSingleton : MonoBehaviour
         // else if (current.name == "Shop") {
         //     mapCanvas.SetActive(true);
         // }
-    }
-
-    private void OnSceneLoaded(Scene current) {
-        Debug.Log("OnSceneLoaded: " + current);
-
     }
 
     void Update()

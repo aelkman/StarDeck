@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerAnimator : CharacterAnimator
 {
     private bool reloadFinished = false;
+    public AudioSource reloadAudio;
+    public AudioSource deathAudio;
+    public AudioSource blasterAudio;
     // private Animator animator;
     // Start is called before the first frame update
     // void Start()
@@ -22,6 +25,19 @@ public class PlayerAnimator : CharacterAnimator
     {
         reloadFinished = true;
         Debug.Log("reload animation finished!");
+    }
+
+    public void ReloadAudioPlay() {
+        reloadAudio.Play();
+    }
+
+    public void DeathAudioPlay() {
+        deathAudio.Play();
+    }
+
+    public void BlasterAudioPlay() {
+        blasterAudio.Stop();
+        blasterAudio.Play();
     }
 
     public void ClapAnimation() {

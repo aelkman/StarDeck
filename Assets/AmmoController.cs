@@ -27,6 +27,8 @@ public class AmmoController : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+        charge = MainManager.Instance.maxCharges;
+        maxCharge = MainManager.Instance.maxCharges;
         tmp.text = charge + "/" + maxCharge;
         slider.value = charge/maxCharge;
     }
@@ -58,8 +60,14 @@ public class AmmoController : MonoBehaviour
     }
 
     public void UseCharge(int charge) {
-        if(charge > 0) {
+        if(charge > this.charge) {
+            throw new System.Exception("attempted charge of " + charge + "was greater than remaining charges of " + this.charge);
+        }
+        if(this.charge > 0) {
             this.charge -= charge;
+        }
+        else {
+            throw new System.Exception("Invalid charge in UseCharge, charge started as " + this.charge);
         }
         slider.value = this.charge/maxCharge;
         tmp.text = this.charge + "/" + maxCharge;

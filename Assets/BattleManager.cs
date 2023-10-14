@@ -33,6 +33,8 @@ public class BattleManager : MonoBehaviour
     private bool isPowerSurge = false;
     private bool isPulseAmplifier = false;
     private bool hasReloaded = false;
+    private bool isFirstEnemyAttack = true;
+    public bool isCharacterMissing = false;
     public bool noDamageTaken = true;
     public ScryUISelector scryUISelector;
     public bool isScryComplete = false;
@@ -88,7 +90,7 @@ public class BattleManager : MonoBehaviour
     public void BattleWin() {
         isBattleWon = true;
         battleWon.Initiate();
-        
+
     }
 
     public bool CheckCanAct(Card card) {
@@ -110,22 +112,35 @@ public class BattleManager : MonoBehaviour
         // for all non attack Blaster cards, they will not use a charge
         int requiredCharges = 0;
 
-        if(cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster") {
-            // int attack;
-            int multi;
-            var strings = cardDisplay.card.actions["ATK"].Split(',').ToList();
-            // attack = Int32.Parse(strings[0]);
-
-            if(strings[1] == "X"){
-                multi = playerStats.stats.mana;
-            }
-            else if(strings[1] == "A") {
-                multi = (int)ammoController.charge;
+        if((cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster")
+            || (cardDisplay.card.actions.ContainsKey("ATK_ALL") && cardType == "Blaster")) {
+            if(isPocketGenerator && cardDisplay.card.subType == "Shot") {
+                requiredCharges = 0;
             }
             else {
-                multi = Int32.Parse(strings[1]);
+                // int attack;
+                int multi;
+                List<string> strings;
+                if(cardDisplay.card.actions.ContainsKey("ATK")){
+                    strings = cardDisplay.card.actions["ATK"].Split(',').ToList();
+                } 
+                else {
+                    strings = cardDisplay.card.actions["ATK_ALL"].Split(',').ToList();
+                }
+                // attack = Int32.Parse(strings[0]);
+
+                if(strings[1] == "X"){
+                    multi = playerStats.stats.mana;
+                }
+                else if(strings[1] == "A") {
+                    multi = (int)ammoController.charge;
+                }
+                else {
+                    multi = Int32.Parse(strings[1]);
+                }
+                requiredCharges = multi;
             }
-            requiredCharges = multi;
+
         }
 
         if(!ammoController.userHasBlaster) {
@@ -199,7 +214,8 @@ public class BattleManager : MonoBehaviour
 
                     for (int i = 0; i < multi; i++) {
                         Vector3 STMPos;
-                        if(DidTargetMiss(playerStats)) {
+                        isCharacterMissing = DidTargetMiss(playerStats);
+                        if(isCharacterMissing) {
                             Vector3 targPos = STM.GetTarget().transform.position;
                             STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
@@ -225,7 +241,7 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        if(!DidTargetMiss(playerStats)) {
+                        if(!isCharacterMissing) {
                             int damage = (int)Math.Round((float)attack * atkMod);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
@@ -371,7 +387,8 @@ public class BattleManager : MonoBehaviour
                     for (int i = 0; i < multiplier; i++) {
 
                         Vector3 STMPos2;
-                        if(DidTargetMiss(playerStats)) {
+                        isCharacterMissing = DidTargetMiss(playerStats);
+                        if(isCharacterMissing) {
                             Vector3 targPos = STM.GetTarget().transform.position;
                             STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
@@ -391,7 +408,7 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        if(!DidTargetMiss(playerStats)) {
+                        if(!isCharacterMissing) {
                             if(STM.GetTarget() is BattleEnemyContainer) {
                                 StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
@@ -409,10 +426,10 @@ public class BattleManager : MonoBehaviour
                                 }));
                             }
                         }
-                        else {
-                            // player is blind, attack self
-                            ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
-                        }
+                        // else {
+                        //     // player is blind, attack self
+                        //     ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
+                        // }
 
                         if (!isLast) {
                             yield return new WaitForSeconds(0.5f);
@@ -477,6 +494,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log("don't use charge!");
         }
         else {
+            Debug.Log("using charge for card type: " + card.type + ", name: " + card.name);
             ammoController.UseCharge(1);
         }
 
@@ -500,6 +518,7 @@ public class BattleManager : MonoBehaviour
 
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
+
             // while(battleEnemy.actions.Length == 0) {
             //     // wait until it loads
             // }
@@ -511,8 +530,17 @@ public class BattleManager : MonoBehaviour
                 // }
 
                 // next action should not be the same as last
-
-                Card randomAction = battleEnemy.RandomAction();
+                Card randomAction;
+                if(battleEnemy.battleEnemy.name == "KingBot" && isFirstEnemyAttack) {
+                    var laughCard = new Card();
+                    laughCard.actions = new Dictionary<string, string>();
+                    laughCard.actions.Add("LAUGH", "");
+                    randomAction = laughCard;
+                    isFirstEnemyAttack = false;
+                }
+                else {
+                    randomAction = battleEnemy.RandomAction();
+                }
                 // pass the action back to the enemy to display
                 string actionText = randomAction.name;
                 Dictionary<string, string> actions = new Dictionary<string, string>();
@@ -571,17 +599,18 @@ public class BattleManager : MonoBehaviour
                                 // float atkMod = 1.0f;
 
                                 for (int i = 0; i < multi; i++) {
-                                    Vector3 STMPos;
-                                    if(DidTargetMiss(battleEnemy)) {
-                                        Vector3 targPos = STM.GetTarget().transform.position;
-                                        STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
-                                    }
+                                    // Vector3 STMPos;
+                                    isCharacterMissing = DidTargetMiss(battleEnemy);
+                                    // if(isCharacterMissing) {
+                                    //     Vector3 targPos = playerStats.transform.position;
+                                    //     STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                                    // }
 
                                     battleEnemy.characterAnimator.AttackAnimation();
 
                                     bool isLast = i == (multi - 1);
 
-                                    if(!DidTargetMiss(battleEnemy)) {
+                                    if(!isCharacterMissing) {
 
                                         var atkDmg = attack;
 
@@ -625,7 +654,8 @@ public class BattleManager : MonoBehaviour
                                             battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
                                             break;
                                     }
-                                    if(!DidTargetMiss(battleEnemy)) {
+                                    isCharacterMissing = DidTargetMiss(battleEnemy);
+                                    if(!isCharacterMissing) {
                                         if(playerStats.hasBlock()) {
                                             if(playerStats.getBlock() <= atkDmg) {
                                                 atkDmg = atkDmg - playerStats.getBlock();
@@ -675,8 +705,16 @@ public class BattleManager : MonoBehaviour
                                 battleEnemy.HealRandomTarget(Int32.Parse(item.Value));
                                 break;
                             case "BLIND":
-                                battleEnemy.characterAnimator.AttackAnimation();
+                                if(battleEnemy.battleEnemy.name == "KingBot") {
+                                    ((EnemyAnimator)battleEnemy.characterAnimator).PointAnimation();
+                                }
+                                else {
+                                    battleEnemy.characterAnimator.AttackAnimation();
+                                }
                                 playerStats.blind += 1;
+                                break;
+                            case "LAUGH":
+                                ((EnemyAnimator)battleEnemy.characterAnimator).LaughAnimation();
                                 break;
                             default:
                                 break;

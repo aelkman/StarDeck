@@ -25,13 +25,22 @@ public class GameManager : MonoBehaviour
     }
 
     public void RestartGame() {
+        MainManager.Instance.Dispose();
+        MapSingleton.Instance.Dispose();
         var allTransforms = FindObjectsOfType<Transform>();
+        var mapCam = GameObject.Find("Map Camera");
+        var crossFade = GameObject.Find("Crossfade");
+        var sceneLoad = GameObject.Find("SceneLoad");
         foreach( var tr in allTransforms)
         {
-            Destroy(tr.gameObject);
+            // if(tr.gameObject == mapCam || tr.gameObject == sceneLoad) {
+            //     Debug.Log("found map camera! not destroying");
+            // }
+            // else {
+                Destroy(tr.gameObject);
+            // }
         }
         // then load the map again
         SceneManager.LoadScene("Map");
-        MapSingleton.Instance.GetComponent<Canvas>().worldCamera = MapCameraSingleton.Instance.GetComponent<Camera>();
     }
 }

@@ -36,9 +36,13 @@ public class PlayerStats : BaseCharacterInfo
         shieldSystem = forceField.GetComponent<ParticleSystem>();
         shieldSystem.Stop();
         stats = gdm.gameData;
+        if(MainManager.Instance.artifacts.Contains("MANA_VULN")) {
+            stats.mana += 1;
+            vuln += 2;
+        }
         healthBar.SetMaxHealth(stats.maxHealth);
         healthBar.SetHealth(health);
-        manaBar.SetMana(stats.maxMana, stats.mana);
+        manaBar.SetMana(stats.mana, stats.maxMana);
     }
 
     // Update is called once per frame

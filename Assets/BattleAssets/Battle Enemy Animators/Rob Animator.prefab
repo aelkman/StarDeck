@@ -192,6 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ecf14d5ba1155540982ab550602f1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  attack1Audio: {fileID: 0}
 --- !u!95 &3575985323764254003
 Animator:
   serializedVersion: 5
@@ -399,6 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextActionText: {fileID: 2962710760166060845}
+  card: {fileID: 0}
 --- !u!114 &417961995206199351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5928,6 +5931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8b2138983e63847b428ec8c3358caa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stopTime: 0
 --- !u!1 &5784590369253448937
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,7 +5989,10 @@ MonoBehaviour:
   blockSprite: {fileID: 5256863553058951117}
   blockText: {fileID: 4335662727658567162}
   vulnDisplay: {fileID: 7431126081045155682}
+  blindDisplay: {fileID: 0}
+  tauntDisplay: {fileID: 0}
   damageUp: {fileID: 0}
+  vhd: {fileID: 0}
 --- !u!1 &7213437330308664667
 GameObject:
   m_ObjectHideFlags: 0
@@ -6098,21 +6105,28 @@ MonoBehaviour:
   damageText: {fileID: 0}
   shieldAnimator: {fileID: 4869894455502544149}
   healthBar: {fileID: 1605224665209688703}
+  swordPrefab: {fileID: 0}
+  vulnPrefab: {fileID: 0}
+  tauntPrefab: {fileID: 0}
+  shockPlayer: {fileID: 3852405519089407750}
+  characterAnimator: {fileID: 0}
   block: 0
   vuln: 0
+  blind: 0
   maxHealth: 15
   health: 15
   stunnedTurns: 0
   isDead: 0
   atkMod: 0
+  nextMoveYOffset: 0
+  isTaunter: 0
   battleEnemy: {fileID: 11400000, guid: 8fca794719ec152488aa0af47368320e, type: 2}
   nextActionText: {fileID: 9095915088838717423}
   characterHUD: {fileID: 5784590369253448937}
   nextAction: {fileID: 8124414767380265729}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
-  swordPrefab: {fileID: 0}
+  healPrefab: {fileID: 0}
   effectSystem: {fileID: 2601293596152526663}
-  shockPlayer: {fileID: 3852405519089407750}
   singleTargetManager: {fileID: 0}
   enemyPrefabInstance: {fileID: 0}
   actions:
@@ -16474,7 +16488,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1406729580877503213, guid: f7029233cbfd2744eabbbd31bf9534cb, type: 3}
       propertyPath: m_InstanceId
-      value: -206996
+      value: -1463682
       objectReference: {fileID: 0}
     - target: {fileID: 1473898537029914741, guid: f7029233cbfd2744eabbbd31bf9534cb, type: 3}
       propertyPath: m_SortingLayer

@@ -405,7 +405,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1921194903
+      path: 2564551221
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -414,7 +414,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1921194903
+      path: 2564551221
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -423,7 +423,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 846215270
+      path: 677102608
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -432,7 +432,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1315855690
+      path: 708036823
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -441,7 +441,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2115449647
+      path: 3378825229
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -450,7 +450,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 174996269
+      path: 1512027557
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -459,7 +459,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1005105869
+      path: 4093778045
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -468,7 +468,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 174996269
+      path: 1512027557
       attribute: 1460864421
       script: {fileID: 0}
       typeID: 224
@@ -477,7 +477,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 174996269
+      path: 1512027557
       attribute: 538195251
       script: {fileID: 0}
       typeID: 224
@@ -1776,4 +1776,11 @@ AnimationClip:
     flags: 0
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.25
+    functionName: PlayAttack1Audio
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -9,6 +9,7 @@ public enum EnemiesEnum {
     HealBot,
     ArmorBot,
     DroneBot,
+    KingBot
 }
 
 [CreateAssetMenu(fileName = "New Enemy Group", menuName = "Enemy Group")]

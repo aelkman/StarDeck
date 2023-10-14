@@ -295,7 +295,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private void OnMouseDrag() {
         isSelected = true;
         if(!isTarget) {
-            Debug.Log("input y pos: " + Input.mousePosition.y);
+            // Debug.Log("input y pos: " + Input.mousePosition.y);
             if(Input.mousePosition.y > 420) {
                 isHardReset = false;
             }

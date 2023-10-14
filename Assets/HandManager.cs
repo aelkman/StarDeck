@@ -23,6 +23,8 @@ public class HandManager : MonoBehaviour
     public Card lastCard;
     public BattleManager battleManager;
     public BattleEnemyManager BEM;
+    public AudioSource drawAudio;
+    public AudioSource damageAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +71,12 @@ public class HandManager : MonoBehaviour
             if(MainManager.Instance.artifacts.Contains("ATK_DRAW")) {
                 int randIndex = UnityEngine.Random.Range(0, BEM.GetBattleEnemies().Count);
                 var randTarget = BEM.GetBattleEnemies()[randIndex];
+                damageAudio.Stop();
+                damageAudio.Play();
                 StartCoroutine(randTarget.TakeDamage(1, 0.2f,  returnValue => {}));
+            }
+            else {
+                drawAudio.Play();
             }
             if(deckCopy.cardStack.Count() < 1) {
                 for (int j = 0; j < discardCards.Count; j = 0) {

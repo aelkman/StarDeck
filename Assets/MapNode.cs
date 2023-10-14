@@ -18,6 +18,7 @@ public class MapNode : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public string destinationName;
     public Animator destinationAnimator;
+    public bool isBoss = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +38,11 @@ public class MapNode : MonoBehaviour
         level = transform.parent.GetComponent<TreeTraversal>().level;
         GameObject prefabInstance;
 
-        if (transform.parent.GetComponent<TreeTraversal>().nextLevel == null) {
+        if (transform.parent.GetComponent<TreeTraversal>().nextLevel == null || isBoss) {
                 // this is a boss
-                prefabInstance = Resources.Load<GameObject>("Map Destinations/Enemy Icon Animator");
+                destinationName = "Boss";
+                GenerateBossGroup("Boss");
+                prefabInstance = Resources.Load<GameObject>("Map Destinations/Boss Icon Animator");
         }
         else {
             if (transform.GetComponent<MapNode>().parentNodes.Count != 0) {
@@ -57,7 +60,7 @@ public class MapNode : MonoBehaviour
             }
             else if (destinationName == "Mini-Boss")
             {
-                GenerateMiniBoss();
+                GenerateBossGroup("MiniBoss");
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Super Enemy Icon Animator");
             }
             else if (destinationName == "Unknown") {
@@ -93,10 +96,10 @@ public class MapNode : MonoBehaviour
         }        
     }
 
-    public void GenerateMiniBoss()
+    public void GenerateBossGroup(string folder)
     {
         enemies = new List<string>();
-        EnemyGroup[] group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/MiniBoss");
+        EnemyGroup[] group = Resources.LoadAll<EnemyGroup>("BattleEnemies/Groups/Level 1/" + folder);
 
         // pick a random group
         int index = Random.Range(0, group.Length);

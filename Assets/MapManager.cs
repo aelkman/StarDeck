@@ -65,7 +65,14 @@ public class MapManager : MonoBehaviour
     }
 
     public void LoadNextLevel(string destinationName) {
-        if(destinationName == "Enemy" || destinationName == "Mini-Boss") {
+        if(destinationName == "Boss") {
+            MainManager.Instance.isBossBattle = true;
+            MainManager.Instance.playerHealth += (int)(MainManager.Instance.playerHealth * 0.30);
+            if(MainManager.Instance.playerHealth > MainManager.Instance.playerMaxHealth) {
+                MainManager.Instance.playerHealth = MainManager.Instance.playerMaxHealth;
+            }
+        }
+        if(destinationName == "Enemy" || destinationName == "Mini-Boss" || destinationName == "Boss") {
             destinationName = "Battle";
             StartCoroutine(LoadLevel(destinationName));
         }
