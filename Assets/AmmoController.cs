@@ -43,10 +43,12 @@ public class AmmoController : MonoBehaviour
         return charge == maxCharge;
     }
 
-    public void ExpandSlots(int expandSize) {
+    public void ExpandSlots(int expandSize, bool withReload) {
         maxCharge += expandSize;
-        charge = maxCharge;
-        slider.value = 1;
+        if(withReload) {
+            charge = maxCharge;
+        }
+        slider.value = charge/maxCharge;
         tmp.text = charge + "/" + maxCharge;
     }
 

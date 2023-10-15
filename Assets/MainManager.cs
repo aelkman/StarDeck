@@ -75,4 +75,11 @@ public class MainManager : MonoBehaviour, IDisposable
     public void Dispose() {
         Instance = null;
     }
+
+    public void HealPlayer(double percent) {
+        playerHealth += (int)(playerHealth * percent);
+        if(playerHealth > playerMaxHealth) {
+            playerHealth = playerMaxHealth;
+        }
+    }
 }

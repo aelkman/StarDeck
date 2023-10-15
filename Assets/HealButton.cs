@@ -25,12 +25,7 @@ public class HealButton : MonoBehaviour
     }
 
     public void HealClick() {
-        if(MainManager.Instance.playerHealth + twentyPercentMax >= MainManager.Instance.playerMaxHealth) {
-            playerStats.health = MainManager.Instance.playerMaxHealth;
-        }
-        else {
-            playerStats.health += twentyPercentMax;
-        }
+        MainManager.Instance.HealPlayer(0.20);
         MainManager.Instance.playerHealth = playerStats.health;
         healButton.interactable = false;
         cardSelectorGroup.alpha = 0.5f;

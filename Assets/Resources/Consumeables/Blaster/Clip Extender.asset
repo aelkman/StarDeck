@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2122f40b29d5c4cb68310c3f4470db, type: 3}
+  m_Name: Clip Extender
+  m_EditorClassIdentifier: 
+  spriteUI: {fileID: 21300000, guid: d54a7f37e16129c4c809e47f32a0ef53, type: 3}
+  spriteUISelected: {fileID: 21300000, guid: d20d795c482c42a43a5d55d611d2bf33, type: 3}
+  spriteStore: {fileID: 21300000, guid: cab7d84b294612f4986567f0f7342f7a, type: 3}
+  spriteStoreSelected: {fileID: 21300000, guid: fa4454832ef6a0348bb3fb145982808a, type: 3}
+  spriteStoreDisabled: {fileID: 0}
+  name: Clip Extender
+  codeName: CLIP_EXT
+  description: Shots fired!<br><br>Extend clip size by +1 for this battle
+  price: 125

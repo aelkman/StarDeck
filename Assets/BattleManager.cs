@@ -357,7 +357,7 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "RELOAD":
                     if(item.Value == "EXPAND" && ammoController.IsAmmoFull()) {
-                        ammoController.ExpandSlots(1);
+                        ammoController.ExpandSlots(1, true);
                     }
                     else {
                         hasReloaded = true;

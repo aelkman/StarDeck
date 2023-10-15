@@ -8,7 +8,7 @@ using TMPro;
 
 public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Button button;
+    // private Button button;
     private Image image;
     public Potion potion;
     public GameObject hoverTextGO;
@@ -18,6 +18,7 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public int price;
     public CanvasGroup canvasGroup;
     public ShopAudio shopAudio;
+    private bool mouse_over = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,41 +38,49 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     // Update is called once per frame
     void Update()
     {
-        
+        if (mouse_over) {
+            if (Input.GetMouseButtonUp(0)) {
+                PurchasePotion();
+            }
+        }
     }
 
     public void SetPotion(Potion potion) {
         this.potion = potion;
         image = GetComponent<Image>();
         image.sprite = potion.spriteStore;
-        button = GetComponent<Button>();
-        SpriteState ss = new SpriteState();
-        ss.highlightedSprite = potion.spriteStoreSelected;
-        // ss.disabledSprite = potion.spriteStoreDisabled;
-        // ss.selectedSprite = potion.spriteStoreSelected;
-        // ss.pressedSprite = potion.spriteStoreSelected;
-        button.spriteState = ss;
+        // button = GetComponent<Button>();
+        // SpriteState ss = new SpriteState();
+        // ss.highlightedSprite = potion.spriteStoreSelected;
+        // // ss.disabledSprite = potion.spriteStoreDisabled;
+        // // ss.selectedSprite = potion.spriteStoreSelected;
+        // // ss.pressedSprite = potion.spriteStoreSelected;
+        // button.spriteState = ss;
     }
 
     public void RemovePotion() {
         this.potion = null;
         image.sprite = null;
-        SpriteState ss = new SpriteState();
-        ss.highlightedSprite = null;
-        // ss.disabledSprite = null;
-        // ss.selectedSprite = null;
-        // ss.pressedSprite = null;
-        button.spriteState = ss;
+        // SpriteState ss = new SpriteState();
+        // ss.highlightedSprite = null;
+        // // ss.disabledSprite = null;
+        // // ss.selectedSprite = null;
+        // // ss.pressedSprite = null;
+        // button.spriteState = ss;
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        mouse_over = true;
+        image.sprite = potion.spriteStoreSelected;
         hoverTextGO.SetActive(true);
         hoverDescription.text = potion.name + " - " + potion.description;
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
+        mouse_over = false;
+        image.sprite = potion.spriteStore;
         hoverTextGO.SetActive(false);
     }
 
@@ -82,7 +91,7 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
             MainManager.Instance.potions.Add(potion);
-            potionUI.EquipPotion(MainManager.Instance.potions.Count - 1, potion);
+            potionUI.EquipPotion(potion);
             MainManager.Instance.coinCount -= price;
         }
     }

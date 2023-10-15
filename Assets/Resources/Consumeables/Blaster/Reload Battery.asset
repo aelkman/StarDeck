@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2122f40b29d5c4cb68310c3f4470db, type: 3}
+  m_Name: Reload Battery
+  m_EditorClassIdentifier: 
+  spriteUI: {fileID: 21300000, guid: a664ffd501cd3b048bab4e7bfe991e12, type: 3}
+  spriteUISelected: {fileID: 21300000, guid: 072cb7d0f5c0f214f8365fac56f760d7, type: 3}
+  spriteStore: {fileID: 21300000, guid: ceb1283260f1b9940adc9a406e00f002, type: 3}
+  spriteStoreSelected: {fileID: 21300000, guid: 02eb5ecdb6257124aa2674dd7425dead, type: 3}
+  spriteStoreDisabled: {fileID: 0}
+  name: Reload Battery
+  codeName: RELOAD_BAT
+  description: Extra clip for when you really need it<br><br>Reload ammo
+  price: 100

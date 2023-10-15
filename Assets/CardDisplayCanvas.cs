@@ -29,8 +29,10 @@ public class CardDisplayCanvas : MonoBehaviour
             cardInstances = new Dictionary<Card, GameObject>();
         }
         GameObject cardInstance = Instantiate(cardUIPrefab, canvasGO.transform);
-        cardInstance.GetComponent<CardDisplay>().card = card;
-        cardInstances.Add(card, cardInstance);
+        // Instantiate the card here so it's unique
+        Card cardCopy = Instantiate(card);
+        cardInstance.GetComponent<CardDisplay>().card = cardCopy;
+        cardInstances.Add(cardCopy, cardInstance);
     }
 
     // Update is called once per frame

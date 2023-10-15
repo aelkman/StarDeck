@@ -67,10 +67,7 @@ public class MapManager : MonoBehaviour
     public void LoadNextLevel(string destinationName) {
         if(destinationName == "Boss") {
             MainManager.Instance.isBossBattle = true;
-            MainManager.Instance.playerHealth += (int)(MainManager.Instance.playerHealth * 0.30);
-            if(MainManager.Instance.playerHealth > MainManager.Instance.playerMaxHealth) {
-                MainManager.Instance.playerHealth = MainManager.Instance.playerMaxHealth;
-            }
+            MainManager.Instance.HealPlayer(0.30);
         }
         if(destinationName == "Enemy" || destinationName == "Mini-Boss" || destinationName == "Boss") {
             destinationName = "Battle";
@@ -94,7 +91,7 @@ public class MapManager : MonoBehaviour
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadScene("Shop");
+        SceneManager.LoadScene(sceneName);
     }
 
     private void OnSceneUnloaded(Scene current)
