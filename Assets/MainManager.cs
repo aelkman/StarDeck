@@ -19,6 +19,7 @@ public class MainManager : MonoBehaviour, IDisposable
     public float vulnerableModifier = 1.5f;
 
     public List<string> artifacts = new List<string>();
+    public List<Potion> potions = new List<Potion>();
     public List<string> possibleArtifacts;
     public Texture2D mouseTexture;
     public Texture2D mouseClickTex;

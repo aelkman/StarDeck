@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShopCardUISelector : CardUISelector
 {
     public CoinCount coinCount;
+    public ShopAudio shopAudio;
 
     void Start() {
         if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
@@ -34,6 +35,7 @@ public class ShopCardUISelector : CardUISelector
 
     public bool AddToDeck(Card card, int cost) {
         if (MainManager.Instance.coinCount >= cost) {
+            shopAudio.PlayPurchaseAudio();
             deck.AddCard(card);
             coinCount.SpendCoins(cost);
             return true;
