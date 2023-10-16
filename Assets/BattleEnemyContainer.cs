@@ -17,10 +17,12 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
     public List<Card> actions;
-    private EnemyAnimator enemyAnimator;    
+    private EnemyAnimator enemyAnimator;  
+    public CameraShake cameraShake;
     // Start is called before the first frame update
     void Start()
     {
+        cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         nextMoveYOffset = battleEnemy.nextMoveYOffset;
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
@@ -55,6 +57,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public IEnumerator TakeDamage(int damage, float timeDelay, System.Action<bool> isDeadCallback) {
         yield return new WaitForSeconds(timeDelay);
         damage = CalculateDamage(damage);
+        cameraShake.StartShake();
         if (block >= damage) {
             block -= damage;
             if (block == 0) {

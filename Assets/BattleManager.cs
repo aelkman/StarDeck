@@ -13,10 +13,14 @@ public class BattleManager : MonoBehaviour
     public GameObject discardDeck;
     public GameObject laserAttack;
     public GameObject characterSpace;
+    public GameObject noAmmoPrefab;
+    public GameObject noEnergyPrefab;
     public GameOver gameOver;
     public BattleWon battleWon;
+    public BattleAudioController bac;
     public PlayerStats playerStats;
     public GameObject ammoControllerInstance;
+    public GameObject shakeHolder;
     private AmmoController ammoController;
     private SingleTargetManager STM;
     private HandManager handManager;
@@ -102,6 +106,8 @@ public class BattleManager : MonoBehaviour
         }
         else {
             // add some ui element to tell user not enough mana
+            bac.PlayNegativeFeedback();
+            Instantiate(noEnergyPrefab, shakeHolder.transform);
             return false;
         }
     }
@@ -150,7 +156,12 @@ public class BattleManager : MonoBehaviour
             // add some ui element to tell the user not enough ammo
             return true;
         }
-        else return false;
+        else {
+            // play noammo UI element
+            bac.PlayNegativeFeedback();
+            Instantiate(noAmmoPrefab, shakeHolder.transform);   
+            return false;
+        }
     }
 
     private void SetConfusionTarget() {
@@ -245,12 +256,18 @@ public class BattleManager : MonoBehaviour
                             int damage = (int)Math.Round((float)attack * atkMod);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
-                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, returnValue => {}));
+                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, isDeadReturnValue => {
+                                    if(isDeadReturnValue) {
+                                        // if the enemy was killed, perform the next action
+                                        isLast = true;
+                                        i = multi;
+                                    }
+                                }));
                             }
-                            else {
-                                // player is blinded, attack self
-                                ((PlayerStats)STM.GetTarget()).takeDamage(damage);
-                            }
+                            // else {
+                            //     // player is blinded, attack self
+                            //     ((PlayerStats)STM.GetTarget()).takeDamage(damage);
+                            // }
                         }
                         if (!isLast) {
                             yield return new WaitForSeconds(0.5f);
@@ -627,6 +644,11 @@ public class BattleManager : MonoBehaviour
                                         }
                                         playerStats.takeDamage(atkDmg);
                                         playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                                    }
+                                    if(playerStats.isDead) {
+                                        // should work since its not a coroutine to take damage
+                                        isLast = true;
+                                        i = multi;
                                     }
 
                                     if (!isLast) {

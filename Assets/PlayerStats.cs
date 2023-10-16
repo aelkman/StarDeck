@@ -18,10 +18,12 @@ public class PlayerStats : BaseCharacterInfo
     public GameObject blasterHip;
     public BattleEnemyContainer tauntingEnemy;
     public int tauntTurns = 0;
+    public CameraShake cameraShake;
 
     // Start is called before the first frame update
     void Start()
     {
+        cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         RemoveWeapon();
         nextMoveYOffset = 0;
         if (MainManager.Instance != null) {
@@ -67,6 +69,7 @@ public class PlayerStats : BaseCharacterInfo
     }
 
     public void takeDamage(int damage) {
+        cameraShake.StartShake();
         damage = CalculateDamage(damage);
         health -= damage;
         if (damage > 0) {

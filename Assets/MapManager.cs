@@ -10,6 +10,7 @@ public class MapManager : MonoBehaviour
     private MapNode currentNode;
     public MainManager mainManager;
     public MapNode movementSelection;
+    public MapAudio mapAudio;
     public Animator transition;
     public GameObject diceContainer;
     public DiceRoller diceRoller;
@@ -31,6 +32,7 @@ public class MapManager : MonoBehaviour
         currentNode = mapArrow.GetComponent<MapArrow>().currentNode;
         if(currentNode.childrenNodes.Contains(newNode)) {
             Debug.Log("nextNode match found!");
+            mapAudio.PlayHitDestination();
             var go = Resources.Load<GameObject>("Map Destinations/Checkmark");
             Instantiate(go, mapArrow.GetComponent<MapArrow>().currentNode.transform);
             mapArrow.GetComponent<MapArrow>().currentNode = newNode;
