@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 60fae22ebb06d59468efa52111edaf29, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 21d23b99a47c4244390248ec8ba140b7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -137,6 +137,7 @@ MonoBehaviour:
   artworkImage: {fileID: 4555329298012418988}
   cardBase: {fileID: 9025964313170119594}
   rarityImage: {fileID: 0}
+  glowImage: {fileID: 2138775931044311742}
   manaText: {fileID: 7403409098324837400}
   attackText: {fileID: 0}
   defendText: {fileID: 0}
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   removalUISelector: {fileID: 0}
   originalPosition: {x: 0, y: 0, z: 0}
+  isSelected: 0
   scaleMultiplier: 1.2
   finalCardPosition: {x: 60, y: 60, z: 60}
   deckIndex: 0

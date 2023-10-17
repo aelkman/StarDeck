@@ -752,6 +752,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void EndPlayerTurn() {
+        AudioManager.Instance.PlayButtonPress();
         endTurnButton.interactable = false;
         isPlayerTurn = false;
         ResetEnemyShields();

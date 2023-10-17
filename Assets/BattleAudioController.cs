@@ -5,6 +5,11 @@ using UnityEngine;
 public class BattleAudioController : MonoBehaviour
 {
     public AudioSource negativeFeedback;
+    public AudioSource buttonPress;
+    public AudioSource coins;
+    public AudioSource takeItem;
+    public AudioSource heal;
+
     // Start is called before the first frame update
     void Start()
     {

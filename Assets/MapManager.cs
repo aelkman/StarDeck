@@ -67,6 +67,10 @@ public class MapManager : MonoBehaviour
     }
 
     public void LoadNextLevel(string destinationName) {
+        // for testing dice rolls
+        // if(destinationName != "ChestScene" && destinationName != "Chest") {
+        //     destinationName = "Unknown";
+        // }
         if(destinationName == "Boss") {
             MainManager.Instance.isBossBattle = true;
             MainManager.Instance.HealPlayer(0.30);

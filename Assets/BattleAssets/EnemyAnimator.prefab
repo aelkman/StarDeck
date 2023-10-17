@@ -193,7 +193,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 6edf7bc7e5d197f4d8cce9c21ddda83e, type: 2}
-  m_audioClip: {fileID: 8300000, guid: c30127de271695946b277e6ba7dcf7c6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9500937d6415dea40ae5fb44bf7b3f18, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -768,6 +768,7 @@ MonoBehaviour:
   singleTargetManager: {fileID: 0}
   enemyPrefabInstance: {fileID: 0}
   actions: []
+  cameraShake: {fileID: 0}
 --- !u!1 &4254911735686161093
 GameObject:
   m_ObjectHideFlags: 0

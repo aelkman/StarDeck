@@ -37,7 +37,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     // Start is called before the first frame update
     void Start()
     {   
-        glowImage.SetActive(false);
+        // glowImage.SetActive(false);
         removalUISelector = GameObject.Find("ScrollCanvas").GetComponent<RemovalUISelector>();
         // load all cards and pick one at random
         cardDisplay = GetComponent<CardDisplay>();
@@ -52,18 +52,18 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 isSelected = !isSelected;
                 if(isSelected) {
                     removalUISelector.SelectCard(gameObject);
-                    glowImage.SetActive(true);
+                    cardDisplay.glowImage.gameObject.SetActive(true);
                 }
                 else {
                     removalUISelector.selectedCard = null;
-                    glowImage.SetActive(false);  
+                    cardDisplay.glowImage.gameObject.SetActive(false);  
                 }
             }
         }
     }
 
     public void CardPlay() {
-        glowImage.SetActive(false);
+        cardDisplay.glowImage.gameObject.SetActive(false);
         StartCoroutine(CardPlayAnimation(0.05f));
     }
 

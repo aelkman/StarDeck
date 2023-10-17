@@ -15,6 +15,7 @@ public class CardDisplay : MonoBehaviour
     public Image artworkImage;
     public Image cardBase;
     public Image rarityImage;
+    public Image glowImage;
     public TextMeshProUGUI manaText;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defendText;

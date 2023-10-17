@@ -25,8 +25,9 @@ public class HealButton : MonoBehaviour
     }
 
     public void HealClick() {
+        AudioManager.Instance.PlayHeal();
         MainManager.Instance.HealPlayer(0.20);
-        MainManager.Instance.playerHealth = playerStats.health;
+        playerStats.health = MainManager.Instance.playerHealth;
         healButton.interactable = false;
         cardSelectorGroup.alpha = 0.5f;
         // cardSelectorGroup.interactable = false;

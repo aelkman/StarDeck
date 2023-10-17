@@ -23,6 +23,7 @@ public class LeaveButton : MonoBehaviour
     }
 
     IEnumerator LeaveCoroutine() {
+        AudioManager.Instance.PlayButtonPress();
         crossfade.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);

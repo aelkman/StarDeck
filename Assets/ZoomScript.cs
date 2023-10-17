@@ -10,6 +10,7 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     // [SerializeField] float startSize = 1;
     [SerializeField] float minSize = 0.5f;
     [SerializeField] float maxSize = 1;
+    public float initialZoom = 1.5f;
  
     [SerializeField] private float zoomRate = 5;
     private float currentScale = 0f;
@@ -30,7 +31,7 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         float time = 0.01667f;
         float totTime = 1.5f;
         for(float i = 0; i < totTime; i+= time) {
-            var zoomVal = Mathf.Lerp(1, 2, Mathf.SmoothStep(0,1, i/totTime));
+            var zoomVal = Mathf.Lerp(1, initialZoom, Mathf.SmoothStep(0,1, i/totTime));
             SetZoom(zoomVal);
             //960, 510 localPos of rectTransform
             var newPos = new Vector3(Mathf.Lerp(rt.localPosition.x, 960, Mathf.SmoothStep(0,1,i/totTime)),

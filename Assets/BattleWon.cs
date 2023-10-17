@@ -5,10 +5,11 @@ using UnityEngine;
 public class BattleWon : MonoBehaviour
 {
     public PointsEarned pointsEarned;
+    // public GameObject cardsButtons;
     // Start is called before the first frame update
     void Start()
     {
-        
+        // cardsButtons.SetActive(false);
     }
 
     // Update is called once per frame

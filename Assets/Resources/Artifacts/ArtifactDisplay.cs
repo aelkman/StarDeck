@@ -69,6 +69,7 @@ public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private void OnMouseOver() {
         if(!isIcon) {
             if(Input.GetMouseButtonUp(0)) {
+                AudioManager.Instance.PlayCardRustling();
                 artifactViewer.AddArtifact(artifact);
                 MainManager.Instance.AddArtifact(artifact.codeName);
                 // spriteRenderer.enabled = false;

@@ -29,7 +29,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Vector3 finalCardPosition = new Vector3(60,60,60);
     private bool mouse_over = false;
     public int deckIndex;
-    public GameObject glowImage;
+    // public GameObject glowImage;
 
     Coroutine start;
     Coroutine stop;
@@ -37,7 +37,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // Start is called before the first frame update
     void Start()
     {   
-        glowImage.SetActive(false);
+        // glowImage.SetActive(false);
         scryUISelector = GameObject.Find("ScryUISelector").GetComponent<ScryUISelector>();
         // load all cards and pick one at random
         cardDisplay = GetComponent<CardDisplay>();
@@ -69,7 +69,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 isSelected = !isSelected;
                 if(isSelected) {
                     scryUISelector.selectedCards.Add(gameObject);
-                    glowImage.SetActive(true);
+                    cardDisplay.glowImage.gameObject.SetActive(true);
                 }
                 else {
                     // for(int i = 0; i < scryUISelector.selectedCards.Count; i++) {
@@ -78,7 +78,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     //     }
                     // }
                     scryUISelector.selectedCards.Remove(gameObject);
-                    glowImage.SetActive(false);  
+                    cardDisplay.glowImage.gameObject.SetActive(false);  
                 }
                             // perform card selection & add to deck
                 // }
@@ -99,7 +99,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // }
 
     public void CardPlay() {
-        glowImage.SetActive(false);
+        cardDisplay.glowImage.gameObject.SetActive(false);
         StartCoroutine(CardPlayAnimation(0.05f));
     }
 

@@ -21,6 +21,7 @@ public class WinTransition : MonoBehaviour
 
     public void LoadMapOnWin() {
         UpdatePlayerStats();
+        AudioManager.Instance.PlayButtonPress();
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex - 1));
     }
 

@@ -77,7 +77,7 @@ public class MainManager : MonoBehaviour, IDisposable
     }
 
     public void HealPlayer(double percent) {
-        playerHealth += (int)(playerHealth * percent);
+        playerHealth += (int)(playerMaxHealth * percent);
         if(playerHealth > playerMaxHealth) {
             playerHealth = playerMaxHealth;
         }

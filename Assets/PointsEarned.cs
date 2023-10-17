@@ -8,11 +8,13 @@ using TMPro;
 public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private bool mouse_over;
-    public int coinsEarned;
+    // public int coinsEarned;
     public TextMeshProUGUI coinsText;
     public TextMeshProUGUI pointsText;
     public BattleManager battleManager;
     public BattleEnemyManager BEM;
+    public GameObject cardsRewards;
+    public CoinsEarned coinsEarned;
     private float noDamageMultiplier = 1.5f;
     private int enemyCount;
     private int miniBossCount;
@@ -24,17 +26,18 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     // Start is called before the first frame update
     void Start()
     {
+        cardsRewards.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (mouse_over) {
-            if (Input.GetMouseButtonUp(0)) {
-                gameObject.SetActive(false);
-                MainManager.Instance.coinCount += coinsEarned;
-            }
-        }
+        // if (mouse_over) {
+        //     if (Input.GetMouseButtonUp(0)) {
+        //         gameObject.SetActive(false);
+        //         MainManager.Instance.coinCount += coinsEarned;
+        //     }
+        // }
     }
 
     public void SetData() {
@@ -81,14 +84,14 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         int enemyCoins = (enemyCount * enemyValue) + (miniBossCount * miniBossValue) + (bossCount * bossValue);
 
         if(battleManager.noDamageTaken) {
-            coinsEarned = (int)(enemyCoins * noDamageMultiplier);
+            coinsEarned.coinsEarned = (int)(enemyCoins * noDamageMultiplier);
             pointsText.text += "Perfect Bonus " + noDamageMultiplier + "x<br>";
         }
         else {
-            coinsEarned = enemyCoins;
+            coinsEarned.coinsEarned = enemyCoins;
         }
-        pointsText.text += "<br>" + coinsEarned + " gold earned";
-        coinsText.text = coinsEarned.ToString();
+        pointsText.text += "<br>" + coinsEarned.coinsEarned + " gold earned";
+        coinsText.text = coinsEarned.coinsEarned.ToString();
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData) {
@@ -98,6 +101,12 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         mouse_over = false;
+    }
+
+    public void ClickContinue() {
+        AudioManager.Instance.PlayButtonPress();
+        gameObject.SetActive(false);
+        cardsRewards.SetActive(true);
     }
 
 }

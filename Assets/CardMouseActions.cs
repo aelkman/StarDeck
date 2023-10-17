@@ -13,7 +13,6 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private GameObject cursorFollowerInstance;
     private SingleTargetManager STM;
     private CardDisplay cardDisplay;
-    public float expandSize;
     private Quaternion originalRotation;
     private Vector3 originalScale;
     public Vector3 originalPosition;
@@ -29,7 +28,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private bool isCardPlayed = false;
     private bool isFirstEnter = true;
     private bool expandAllowed = true;
-    public float scaleMultiplier = 1.6f;
+    public float scaleMultiplier = 1.3f;
+    public float hoverYOffset = 37f;
     public ScryUISelector scryUISelector;
 
     Coroutine start;
@@ -38,6 +38,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     // Start is called before the first frame update
     void Start()
     {   
+        cardDisplay = GetComponent<CardDisplay>();
         handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
         STM = GameObject.Find("SingleTargetManager").GetComponent<SingleTargetManager>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
@@ -233,6 +234,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     private void ExitResetSequence() {
+        cardDisplay.glowImage.gameObject.SetActive(false);
         if (!isCardPlayed) {
             transform.SetSiblingIndex(siblingIndexOriginal);
             // Debug.Log("sibling index: " + transform.GetSiblingIndex());
@@ -247,9 +249,9 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        cardDisplay.glowImage.gameObject.SetActive(true);
         if (!isCardPlayed) {
             // check if it's a Target card first
-            cardDisplay = GetComponent<CardDisplay>();
             isTarget = cardDisplay.card.isTarget;
             // Debug.Log("isTarget: " + isTarget);
 
@@ -337,7 +339,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         Vector3 currentScale = transform.localScale;
         // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
-            transform.localPosition = new Vector3(currentPosition.x, Mathf.Lerp(currentPosition.y, 75, Mathf.SmoothStep(0, 1, i)), currentPosition.z);
+            transform.localPosition = new Vector3(currentPosition.x, Mathf.Lerp(currentPosition.y, hoverYOffset, Mathf.SmoothStep(0, 1, i)), currentPosition.z);
 
             transform.localScale = new Vector3(
                 (Mathf.Lerp(currentScale.x, expandedScale.x, Mathf.SmoothStep(0f, 1f, i))),

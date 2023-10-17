@@ -114,6 +114,7 @@ public class CardUISelector : MonoBehaviour
 
     public bool AddToDeck(Card card) {
         if (addedCount < 1) {
+            AudioManager.Instance.PlayCardRustling();
             var cardInstance = Instantiate(card);
             deck.AddCard(cardInstance);
             addedCount++;

@@ -204,6 +204,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        cardDisplay.glowImage.gameObject.SetActive(true);
         mouse_over = true;
         isSelected = true;
         if (!isCardPlayed) {
@@ -228,6 +229,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void OnPointerExit(PointerEventData pointerEventData)
     {
+        cardDisplay.glowImage.gameObject.SetActive(false);
         mouse_over = false;
         isSelected = false;
         ExitResetSequence();

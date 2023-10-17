@@ -18,7 +18,7 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public int price;
     public CanvasGroup canvasGroup;
     public ShopAudio shopAudio;
-    private bool mouse_over = false;
+    public bool mouse_over = false;
 
     // Start is called before the first frame update
     void Start()

@@ -48,7 +48,7 @@ public class ScryUISelector : MonoBehaviour
 
     
     public void ContinueClick() {
-        int indexModifier = 0;
+        AudioManager.Instance.PlayCardRustling();
         for(int i = selectedCards.Count - 1; i >= 0; i--) {
             int artificialIndex = deckCopy.cardStack.Count();
         // foreach(GameObject go in selectedCards) {

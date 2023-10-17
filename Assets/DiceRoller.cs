@@ -24,8 +24,9 @@ public class DiceRoller : MonoBehaviour
     public string eventName;
     public MeshRenderer diceRenderer;
     private bool isFirstRun = true;
+    public AudioSource diceHit;
 
-    List<string> FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
+    List<string> FaceRepresent;
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -36,10 +37,11 @@ public class DiceRoller : MonoBehaviour
         isRollFinished = false;
         if(eventName == "Unknown") {
             diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
+            FaceRepresent = new List<string>() {"", "Mini-Boss", "Enemy", "Event", "Shop", "Event", "Chest"};
         }
         else if(eventName == "Chest") {
             diceRenderer.material = Resources.Load<Material>("Dice Material Chest");
-            FaceRepresent = new List<string>() {"", "Chest", "Chest", "Chest", "Enemy", "Enemy", "Chest"};
+            FaceRepresent = new List<string>() {"", "Chest", "Chest", "Enemy", "Enemy", "Chest", "Chest"};
         }
         else {
             diceRenderer.material = Resources.Load<Material>("Dice Material Unknown Event");
@@ -116,9 +118,12 @@ public class DiceRoller : MonoBehaviour
         }
         else {
             if (timeElapsed > 0.05f && (rb.velocity.magnitude < 0.1) && (rb.angularVelocity.magnitude < 0.1)) {
-                Debug.Log("roll finished!");
+                // Debug.Log("roll finished!");
                 isRollFinished = true;
                 continueButton.interactable = true;
+                if(UpperSideTxt.text == "Chest" && eventName == "Unknown") {
+                    continueButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Chest?";
+                }
                 if(rerollRemaining > 0) {
                     rerollButton.interactable = true;
                 }
@@ -130,19 +135,23 @@ public class DiceRoller : MonoBehaviour
     }
 
     public void ThrowDice() {
+        continueButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Continue";
+        AudioManager.Instance.PlayButtonPress();
         continueButton.interactable = false;
         rerollButton.interactable = false;
         rerollRemaining -= 1;
         rerollCountText.text = rerollRemaining.ToString();
-        // if(rerollRemaining <= 0) {
-        //     rerollButton.interactable = false;
-        // }
+        if(rerollRemaining <= 0) {
+            rerollButton.interactable = false;
+        }
 
         DiceRoll();
     }
 
     public void ContinueClick() {
+        continueButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Continue";
         string nextLevel = UpperSideTxt.text;
+        AudioManager.Instance.PlayButtonPress();
         if(eventName == "Chest") {
             if(UpperSideTxt.text == "Enemy") {
                 MainManager.Instance.currentNode.enemies.Add("Chest");
@@ -171,5 +180,28 @@ public class DiceRoller : MonoBehaviour
         Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
         diceContainer.SetActive(false);
         mapManager.LoadNextLevel(nextLevel);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Debug.Log("collision dice!");
+        diceHit.Stop();
+        diceHit.volume = 1;
+        diceHit.Play();
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        // Debug.Log("collision stay dice!");
+        var totalImpulse = Mathf.Abs(collision.impulse.x) + Mathf.Abs(collision.impulse.y) + Mathf.Abs(collision.impulse.z);
+        var force = totalImpulse/Time.deltaTime;
+        // Debug.Log("force is " + force);
+        if(force > 8) {
+            // Debug.Log("sitting force: " + force);
+            diceHit.Stop();
+            diceHit.volume = Mathf.Lerp(0, 1, force/33);
+            diceHit.Play();
+        }
+
     }
 }
