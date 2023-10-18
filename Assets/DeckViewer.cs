@@ -15,6 +15,7 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject cancelButton;
     public RemovalUISelector removalUISelector;
     public ShopAudio shopAudio;
+    public bool isRemovalEvent = false;
     int price = 0;
     // Start is called before the first frame update
     void Start()
@@ -32,7 +33,6 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             }
         }
         if(isRemoval) {
-            shopAudio = GameObject.Find("ShopAudio").GetComponent<ShopAudio>();
             removalButton.SetActive(true);
             cancelButton.SetActive(true);
         }
@@ -73,12 +73,24 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public IEnumerator RemovalButtonTimed() {
         if(MainManager.Instance.coinCount >= price) {
-            shopAudio.PlayPurchaseAudio();
+            if(isRemovalEvent) {
+                AudioManager.Instance.PlayCardRustling();
+            }
+            else {
+                AudioManager.Instance.PlayCoins();
+            }
             MainManager.Instance.coinCount -= price;
             removalUISelector.selectedCard.GetComponent<RemovalUIActions>().CardPlay();
             yield return new WaitForSeconds(1.0f);
             deck.cardStack.items.Remove(removalUISelector.selectedCard.GetComponent<CardDisplay>().card);
             // ToggleActive();
+            if(isRemovalEvent) {
+                yield return new WaitForSeconds(0.5f);
+                ToggleActive();
+                // now, callback to the new card window
+                var tradeCardWindow = GameObject.Find("NightMarket").GetComponent<NightMarket>().tradeCardViewer;
+                tradeCardWindow.SetActive(true);
+            }
         }
     }
 

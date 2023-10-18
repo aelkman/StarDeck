@@ -120,7 +120,9 @@ public class CardUISelector : MonoBehaviour
             addedCount++;
             canvasGroup.alpha = 0.5f;
             canvasGroup.blocksRaycasts = false;
-            healButton.interactable = false;
+            if(healButton != null) {
+                healButton.interactable = false;
+            }
             return true;
         }
         else {

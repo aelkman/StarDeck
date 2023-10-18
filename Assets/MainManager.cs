@@ -12,6 +12,7 @@ public class MainManager : MonoBehaviour, IDisposable
 
     public int playerHealth = 50;
     public int playerMaxHealth = 50;
+    public List<string> weapons = new List<string>() {"Blaster"};
     public int coinCount = 50;
     public int level = 1;
     public int maxCharges = 3;

@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource buttonPress;
     public AudioSource cardRustling;
     public AudioSource heal;
+    public AudioSource coins;
+    public AudioSource blood;
     private void Awake()
     {
         // start of new code
@@ -44,5 +46,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayHeal() {
         heal.Play();
+    }
+
+    public void PlayCoins() {
+        coins.Play();
+    }
+
+    public void PlayBlood() {
+        blood.Play();
     }
 }

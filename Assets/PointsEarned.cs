@@ -14,7 +14,11 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public BattleManager battleManager;
     public BattleEnemyManager BEM;
     public GameObject cardsRewards;
+    public GameObject coinsReward;
+    public GameObject items;
+    public PotionRewardButton potionRewardButton;
     public CoinsEarned coinsEarned;
+    public List<GameObject> rewards;
     private float noDamageMultiplier = 1.5f;
     private int enemyCount;
     private int miniBossCount;
@@ -22,11 +26,46 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private int enemyValue = 10;
     private int miniBossValue = 50;
     private int bossValue = 100;
+    public float itemDisplacement = 200f;
 
     // Start is called before the first frame update
     void Start()
     {
+        rewards = new List<GameObject>();
+        rewards.Add(coinsReward);
+        if(WillRewardHavePotion()) {
+            potionRewardButton.gameObject.SetActive(true);
+            rewards.Add(potionRewardButton.gameObject);
+        }
+        else {
+            potionRewardButton.gameObject.SetActive(false);
+        }
+
+        PlaceRewards();
         cardsRewards.SetActive(false);
+    }
+
+    private void PlaceRewards() {
+        for(int i = 0; i < rewards.Count; i++) {
+            var reward = rewards[i];
+            reward.transform.localPosition = new Vector3(i*itemDisplacement, 0f, 0f);
+        }
+        var itemsPos = items.transform.localPosition;
+        items.transform.localPosition = new Vector3((rewards.Count-1) * -itemDisplacement/2, itemsPos.y, 0f);
+    }
+
+    private bool WillRewardHavePotion() {
+        int chance = 0;
+        if(MainManager.Instance.currentNode.destinationName == "Enemy") {
+            chance += 1;
+        }
+        else if(MainManager.Instance.currentNode.destinationName == "Mini-Boss"){
+            chance += 5;
+        }
+        else if(MainManager.Instance.currentNode.destinationName == "Boss"){
+            chance += 10;
+        }
+        return Random.Range(0, 10) < chance;
     }
 
     // Update is called once per frame

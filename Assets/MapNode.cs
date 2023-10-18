@@ -18,7 +18,8 @@ public class MapNode : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public string destinationName;
     public Animator destinationAnimator;
-    public bool isBoss = false;
+    public bool isBossTest = false;
+    public bool isMiniBossTest = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,14 +39,17 @@ public class MapNode : MonoBehaviour
         level = transform.parent.GetComponent<TreeTraversal>().level;
         GameObject prefabInstance;
 
-        if (transform.parent.GetComponent<TreeTraversal>().nextLevel == null || isBoss) {
+        if (transform.parent.GetComponent<TreeTraversal>().nextLevel == null || isBossTest) {
                 // this is a boss
                 destinationName = "Boss";
                 GenerateBossGroup("Boss");
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Boss Icon Animator");
         }
         else {
-            if (transform.GetComponent<MapNode>().parentNodes.Count != 0) {
+            if(isMiniBossTest) {
+                destinationName = "Mini-Boss";
+            }
+            else if (transform.GetComponent<MapNode>().parentNodes.Count != 0) {
                 destinationName = destinationsController.AssignPopDestination();
             }
             else {

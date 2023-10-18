@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2684152718352266624}
   - component: {fileID: 1440226141389163306}
   - component: {fileID: -385071719546057879}
-  - component: {fileID: 3424222286846791786}
   - component: {fileID: 7845905066052756474}
   - component: {fileID: 8460370030376676746}
   m_Layer: 5
@@ -91,23 +90,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7080940e851160040bf90c3560fb5106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childrenNodes: 
-  parentNodes: 
+  childrenNodes: []
+  parentNodes: []
   mapManager: {fileID: 0}
+  destination: {fileID: 0}
+  enemies: []
+  destinationsController: {fileID: 0}
   instanceId: 0
+  level: 0
   spriteRenderer: {fileID: 0}
---- !u!210 &3424222286846791786
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6101316612726742922}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
-  m_SortAtRoot: 0
+  destinationName: 
+  destinationAnimator: {fileID: 0}
+  isBossTest: 0
+  isMiniBossTest: 0
 --- !u!212 &7845905066052756474
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,7 +123,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8cc26d19fffeee54c82d95f990097d6b, type: 2}
+  - {fileID: 2100000, guid: 3d5771ab0c2918440ba1f3872b80595a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,7 +143,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 4fb3969a40e03f048b9bdd393265909b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

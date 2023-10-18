@@ -25,9 +25,11 @@ public class HandManager : MonoBehaviour
     public BattleEnemyManager BEM;
     public AudioSource drawAudio;
     public AudioSource damageAudio;
+    private CanvasGroup canvasGroup;
     // Start is called before the first frame update
     void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
         scryViewer.SetActive(false);
         expelCards = new List<CardDisplay>();
         handCards = new List<CardDisplay>();
@@ -58,6 +60,9 @@ public class HandManager : MonoBehaviour
     }
 
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
+
+        canvasGroup.blocksRaycasts = false;
+
         List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
             Debug.Log("drawing card: " + i+1);
@@ -105,6 +110,7 @@ public class HandManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
+        canvasGroup.blocksRaycasts = true;
         cardsCallback(cards);
     }
 

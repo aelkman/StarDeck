@@ -5,10 +5,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System.Linq;
 
 public class PotionRewardButton : PotionShopButton, IPointerEnterHandler, IPointerExitHandler
 {
     public AudioSource takeItemAudio;
+
+    void Start()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        potionUI = GameObject.Find("PotionUI").GetComponent<PotionUI>();
+        potion = GetRandomPotion();
+        SetPotion(potion);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -19,8 +29,22 @@ public class PotionRewardButton : PotionShopButton, IPointerEnterHandler, IPoint
         }
     }
 
+    private Potion GetRandomPotion() {
+        var potions = Resources.LoadAll<Potion>("Consumeables/General").ToList();
+        foreach(var weapon in MainManager.Instance.weapons) {
+            if(weapon == "Blaster") {
+                var blastPots = Resources.LoadAll<Potion>("Consumeables/Blaster");
+                foreach(var pot in blastPots) {
+                    potions.Add(pot);
+                }
+            }
+        }
+        int randomIndex = UnityEngine.Random.Range(0, potions.Count);
+        return potions[randomIndex];
+    }
+
     public void TakePotion() {
-        if(MainManager.Instance.potions.Count <= 2 && MainManager.Instance.coinCount >= potion.price) {
+        if(MainManager.Instance.potions.Count <= 2) {
             takeItemAudio.Play();
             // canvasGroup.alpha = 0.3f;
             // canvasGroup.interactable = false;

@@ -35,6 +35,8 @@ public class ATMScript : MonoBehaviour
         deck.AddCard(virusInstance2);
         option1.interactable = false;
         option2.interactable = false;
+        leave.interactable = false;
+        StartCoroutine(LeaveCoroutine());
     }
 
     public void Option2Click() {
@@ -42,14 +44,20 @@ public class ATMScript : MonoBehaviour
         mainManager.coinCount += 50;
         option1.interactable = false;
         option2.interactable = false;
+        leave.interactable = false;
+        StartCoroutine(LeaveCoroutine());
     }
 
     public void Leave() {
+        option1.interactable = false;
+        option2.interactable = false;
+        leave.interactable = false;
         StartCoroutine(LeaveCoroutine());
     }
 
     IEnumerator LeaveCoroutine() {
         AudioManager.Instance.PlayButtonPress();
+        yield return new WaitForSeconds(0.5f);
         crossfade.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);

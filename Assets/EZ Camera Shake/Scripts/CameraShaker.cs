@@ -31,7 +31,7 @@ namespace EZCameraShake
 
         Vector3 posAddShake, rotAddShake;
 
-        List<CameraShakeInstance> cameraShakeInstances = new List<CameraShakeInstance>();
+        public List<CameraShakeInstance> cameraShakeInstances = new List<CameraShakeInstance>();
 
         void Awake()
         {
@@ -104,7 +104,7 @@ namespace EZCameraShake
         /// <param name="fadeOutTime">How long to fade out the shake, in seconds.</param>
         /// <returns>A CameraShakeInstance that can be used to alter the shake's properties.</returns>
         public CameraShakeInstance ShakeOnce(float magnitude, float roughness, float fadeInTime, float fadeOutTime)
-        {
+        {            
             CameraShakeInstance shake = new CameraShakeInstance(magnitude, roughness, fadeInTime, fadeOutTime);
             shake.PositionInfluence = DefaultPosInfluence;
             shake.RotationInfluence = DefaultRotInfluence;

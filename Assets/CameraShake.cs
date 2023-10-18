@@ -54,6 +54,7 @@ public class CameraShake : MonoBehaviour
     {
         if (start) {
             start = false;
+            // CameraShaker.Instance.cameraShakeInstances.Clear();
             CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
             // StartCoroutine(Shaking());
         }

@@ -9,11 +9,13 @@ public class Deck : MonoBehaviour
     public StackList<Card> cardStack;
     public CardDisplayCanvas cardDisplayCanvas;
     public bool isInitialized = false;
+    public List<Card> cards;
     // Start is called before the first frame update
 
     void Start()
     {
         cardStack = new StackList<Card>();
+        cards = cardStack.items;
         foreach(Card card in startingDeck.cardList) {
             Card cardInstance = Instantiate(card);
             cardStack.Push(cardInstance);

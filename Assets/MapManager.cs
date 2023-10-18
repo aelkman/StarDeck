@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,8 @@ public class MapManager : MonoBehaviour
     public GameObject diceContainer;
     public DiceRoller diceRoller;
     public ZoomScript zoomScript;
+    public bool sceneTest;
+    public string sceneNameOverride;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +74,10 @@ public class MapManager : MonoBehaviour
         // if(destinationName != "ChestScene" && destinationName != "Chest") {
         //     destinationName = "Unknown";
         // }
+        if(sceneTest) {
+            destinationName = sceneNameOverride;
+        }
+
         if(destinationName == "Boss") {
             MainManager.Instance.isBossBattle = true;
             MainManager.Instance.HealPlayer(0.30);
@@ -78,6 +85,17 @@ public class MapManager : MonoBehaviour
         if(destinationName == "Enemy" || destinationName == "Mini-Boss" || destinationName == "Boss") {
             destinationName = "Battle";
             StartCoroutine(LoadLevel(destinationName));
+        }
+        else if(destinationName == "Event") {
+            var scenes = EditorBuildSettings.scenes
+                .Where( scene => scene.enabled )
+                .Where( scene => scene.path.Contains("Event"))
+                .Select( scene => System.IO.Path.GetFileNameWithoutExtension(scene.path))
+                .ToList();
+            Debug.Log(scenes);
+            var randIndex = Random.Range(0, scenes.Count);
+            // StartCoroutine(LoadLevel(scenes[randIndex]));
+            StartCoroutine(LoadLevel("NightMarket"));
         }
         else if(destinationName == "Unknown") {
             diceRoller.eventName = "Unknown";
@@ -97,6 +115,7 @@ public class MapManager : MonoBehaviour
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
+
         SceneManager.LoadScene(sceneName);
     }
 
