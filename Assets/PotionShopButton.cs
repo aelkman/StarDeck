@@ -27,11 +27,6 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
         potionUI = GameObject.Find("PotionUI").GetComponent<PotionUI>();
         if(potion != null) {
             SetPotion(potion);
-            price = potion.price;
-            if(MainManager.Instance.artifacts.Contains("CRED")) {
-                price = (int)Math.Round(0.75 * price);
-            }
-            priceText.text = potion.price.ToString();
         }
     }
 
@@ -45,8 +40,19 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
+    private void SetPrice(int price) {
+        if(MainManager.Instance.artifacts.Contains("CRED")) {
+                this.price = (int)Math.Round(0.75 * price);
+        }
+        else {
+            this.price = price;
+        }
+        priceText.text = this.price.ToString();
+    }
+
     public void SetPotion(Potion potion) {
         this.potion = potion;
+        SetPrice(potion.price);
         image = GetComponent<Image>();
         image.sprite = potion.spriteStore;
         // button = GetComponent<Button>();
@@ -90,8 +96,7 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
             canvasGroup.alpha = 0.3f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            MainManager.Instance.potions.Add(potion);
-            potionUI.EquipPotion(potion);
+            MainManager.Instance.EquipPotion(potion);
             MainManager.Instance.coinCount -= price;
         }
     }

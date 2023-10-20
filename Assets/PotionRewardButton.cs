@@ -49,8 +49,7 @@ public class PotionRewardButton : PotionShopButton, IPointerEnterHandler, IPoint
             // canvasGroup.alpha = 0.3f;
             // canvasGroup.interactable = false;
             // canvasGroup.blocksRaycasts = false;
-            MainManager.Instance.potions.Add(potion);
-            potionUI.EquipPotion(potion);
+            MainManager.Instance.EquipPotion(potion);
             gameObject.SetActive(false);
         }
     }

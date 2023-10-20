@@ -8,9 +8,11 @@ public class CharacterAnimator : MonoBehaviour
     public AudioSource shieldAudio;
     public AudioSource shockAudio;
     public BattleManager bem;
+    public UIAudio uiAudio;
     // Start is called before the first frame update
     void Start()
     {
+        uiAudio = GameObject.Find("UIAudio").GetComponent<UIAudio>();
         animator = GetComponent<Animator>();
         bem = GameObject.Find("BattleManager").GetComponent<BattleManager>();
     }
@@ -31,6 +33,10 @@ public class CharacterAnimator : MonoBehaviour
 
     public void DamageAnimation() {
         animator.SetTrigger("TakeDamage");
+    }
+
+    public void BlasterAttackAnimation() {
+        animator.SetTrigger("Blaster");
     }
 
     public void AttackAnimation() {

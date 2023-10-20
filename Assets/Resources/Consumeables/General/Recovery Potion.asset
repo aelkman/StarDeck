@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2122f40b29d5c4cb68310c3f4470db, type: 3}
+  m_Name: Recovery Potion
+  m_EditorClassIdentifier: 
+  spriteUI: {fileID: 21300000, guid: a06d526a76fc6024a853c893db4e78a2, type: 3}
+  spriteUISelected: {fileID: 21300000, guid: b7bef4e1f1131514c9b872f4f8d91519, type: 3}
+  spriteStore: {fileID: 21300000, guid: cf5f80b6792c230459c085d7c241d487, type: 3}
+  spriteStoreSelected: {fileID: 21300000, guid: 2dd5f5edf4b4aed448426e545f7f39c4, type: 3}
+  spriteStoreDisabled: {fileID: 0}
+  name: Recovery Flask
+  codeName: RECOVERY_POT
+  description: Grape flavored!<br><br>Recover from all negative status effects
+  price: 50

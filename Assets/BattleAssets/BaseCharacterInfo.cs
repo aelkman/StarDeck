@@ -6,6 +6,7 @@ using UnityEngine;
 public class BaseCharacterInfo : MonoBehaviour
 {
     public ParticleSystem shieldSystem;
+    public ParticleSystem iceSystem;
     public GameObject damageText;
     public ShieldAnimator shieldAnimator;
     public HealthBar healthBar;
@@ -22,8 +23,10 @@ public class BaseCharacterInfo : MonoBehaviour
     public int stunnedTurns = 0;
     public bool isDead = false;
     public int atkMod;
+    public int frostStacks;
     public float nextMoveYOffset;
     public bool isTaunter = false;
+    public bool frozenTurn = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -139,5 +142,35 @@ public class BaseCharacterInfo : MonoBehaviour
     public void ShockAnimation() {
         shockPlayer.StartShock();
         characterAnimator.ShockAnimation();
+    }
+
+    public void FreezeAnimation() {
+        characterAnimator.GetComponent<Animator>().speed = 0;
+    }
+
+    public void UnfreezeAnimation() {
+        characterAnimator.GetComponent<Animator>().speed = 1;
+        iceSystem.Stop();
+    }
+
+    public void AddFrost(int frost) {
+        for(int i = 0; i < frost; i++) {
+            frostStacks += 1;
+            if(frostStacks >= 3) {
+                // delay reset on frost counter
+                StartCoroutine(delayedFrostReset());
+                // trigger freeze on enemy
+                FreezeAnimation();
+                iceSystem.Clear();
+                iceSystem.Play();
+                stunnedTurns += 1;
+                frozenTurn = true;
+            }
+        }
+    }
+
+    private IEnumerator delayedFrostReset() {
+        yield return new WaitForSeconds(0.5f);
+        frostStacks = 0;
     }
 }

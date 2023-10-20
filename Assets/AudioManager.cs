@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource heal;
     public AudioSource coins;
     public AudioSource blood;
+    public AudioSource frozen;
     private void Awake()
     {
         // start of new code
@@ -54,5 +55,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBlood() {
         blood.Play();
+    }
+
+    public void PlayFrozen() {
+        frozen.Play();
     }
 }

@@ -239,7 +239,6 @@ public class BattleManager : MonoBehaviour
                         }
 
                         bool isLast = i == (multi - 1);
-                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                         // weapon animations here
                         switch(cardType) {
                             case "Blaster":
@@ -247,6 +246,9 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case "Blaster_All":
                                 StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false, isLast));
+                                break;
+                            case "Hammer":
+                                HammerAttack();
                                 break;
                             default:
                                 break;
@@ -256,6 +258,10 @@ public class BattleManager : MonoBehaviour
                             int damage = (int)Math.Round((float)attack * atkMod);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
+                                // if player using hammer, then add a stack
+                                if(cardType == "Hammer") {
+                                    STM.GetTarget().AddFrost(1);
+                                }
                                 StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
@@ -336,9 +342,7 @@ public class BattleManager : MonoBehaviour
                 case "HACK":
                     // perform hacking animation here
                     if(item.Value == "SHIELD") {
-                        if(STM.GetTarget().block <= 10) {
-                            STM.GetTarget().resetBlock();
-                        }
+                        STM.GetTarget().resetBlock();
                     }
                     break;
                 case "QUICKDRAW":
@@ -414,7 +418,7 @@ public class BattleManager : MonoBehaviour
                         }
 
                         bool isLast = i == (multiplier - 1);
-                        playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
+                        // playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
                         
                         // weapon animations here
                         switch(cardType) {
@@ -499,8 +503,14 @@ public class BattleManager : MonoBehaviour
         playerStats.shieldAnimator.StartForceField();
     }
 
+    private void HammerAttack() {
+        playerStats.HoldWeapon("Hammer");
+        playerStats.transform.parent.GetComponent<PlayerAnimator>().HammerAttackAnimation();
+    }
+
     private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card, bool useCharge, bool isLast) {
-        playerStats.HoldWeapon();
+        playerStats.HoldWeapon("Blaster");
+        playerStats.transform.parent.GetComponent<PlayerAnimator>().BlasterAttackAnimation();
         yield return new WaitForSeconds(attackDelay);
 
         // reduce the charges in the ammo container
@@ -529,7 +539,7 @@ public class BattleManager : MonoBehaviour
         }
         Destroy(newLaser);
         if(isLast) {
-            playerStats.RemoveWeapon();
+            playerStats.RemoveWeapon("Blaster");
         }
     }
 
@@ -592,7 +602,12 @@ public class BattleManager : MonoBehaviour
 
                 if (battleEnemy.stunnedTurns > 0) {
                     // play stun animation
-                    battleEnemy.ShockAnimation();
+                    if(battleEnemy.frozenTurn) {
+                        AudioManager.Instance.PlayFrozen();
+                    }
+                    else {
+                        battleEnemy.ShockAnimation();
+                    }
                     battleEnemy.stunnedTurns -= 1; 
                 }
                 else {
@@ -778,6 +793,10 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(playerStats.shieldAnimator.stopTime);
         handManager.DrawCards(5);
         foreach(BattleEnemyContainer be in battleEnemies) {
+            if(be.frozenTurn) {
+                be.UnfreezeAnimation();
+                be.frozenTurn = false;
+            }
             be.RemoveSingleVuln();
             be.RemoveSingleBlind();
         }

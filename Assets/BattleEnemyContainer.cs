@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Rendering.Universal;
 
 public class BattleEnemyContainer : BaseCharacterInfo
 {
@@ -81,12 +82,26 @@ public class BattleEnemyContainer : BaseCharacterInfo
             enemyAnimator.DeathAnimation();
             BEM.EnemyDeath(this);
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
+            enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>().enabled = false;
+            var sprites = enemyPrefabInstance.GetComponentsInChildren<SpriteRenderer>();
+            foreach(var sprite in sprites) {
+                StartCoroutine(FadeEnemyDeath(sprite));
+            }
             isDead = true;
             isDeadCallback(true);
         }
         else {
             StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
             isDeadCallback(false);
+        }
+    }
+
+    public IEnumerator FadeEnemyDeath(SpriteRenderer sr) {
+        float timeInterval = 0.0165f;
+        for(float i = 0; i < 2f; i+= timeInterval) {
+            var color = new Color(1f, 1f, 1f, Mathf.Lerp(1, 0, i/2f));
+            sr.color = color;
+            yield return new WaitForSeconds(timeInterval);
         }
     }
 

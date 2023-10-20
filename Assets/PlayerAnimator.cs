@@ -8,6 +8,8 @@ public class PlayerAnimator : CharacterAnimator
     public AudioSource reloadAudio;
     public AudioSource deathAudio;
     public AudioSource blasterAudio;
+    public AudioSource hammerAudio;
+    public PlayerStats playerStats;
     // private Animator animator;
     // Start is called before the first frame update
     // void Start()
@@ -53,10 +55,30 @@ public class PlayerAnimator : CharacterAnimator
     }
 
     private IEnumerator ReloadTimed(PlayerStats ps) {
-        ps.HoldWeapon();
+        ps.HoldWeapon("Blaster");
         animator.SetTrigger("Reload");
         yield return new WaitUntil(() => reloadFinished);
-        ps.RemoveWeapon();
+        ps.RemoveWeapon("Blaster");
         reloadFinished = false;
+    }
+
+    public void DrinkPotionAnimation() {
+        animator.SetTrigger("Drink");
+    }
+
+    public void DrinkPotionAudio() {
+        uiAudio.PlayPotionAudio();
+    }
+
+    public void PlayHammerAudio() {
+        hammerAudio.Play();
+    }
+
+    public void HammerAttackAnimation() {
+        animator.SetTrigger("Hammer");
+    }
+
+    public void RemoveHammer() {
+        playerStats.RemoveWeapon("Hammer");
     }
 }

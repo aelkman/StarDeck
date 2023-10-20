@@ -22,10 +22,7 @@ public class MainManager : MonoBehaviour, IDisposable
     public List<string> artifacts = new List<string>();
     public List<Potion> potions = new List<Potion>();
     public List<string> possibleArtifacts;
-    public Texture2D mouseTexture;
-    public Texture2D mouseClickTex;
-    private CursorMode cursorMode = CursorMode.ForceSoftware;
-    private Vector2 hotSpot;
+
     public bool isBossBattle = false;
 
     private void Awake()
@@ -46,8 +43,6 @@ public class MainManager : MonoBehaviour, IDisposable
             possibleArtifacts.Add(artifact.codeName);
         }
 
-        hotSpot = new Vector2(mouseTexture.width/2, mouseTexture.height/2);
-        Cursor.SetCursor(mouseTexture, hotSpot, cursorMode);
     }
 
     public void AddArtifact(string codeName){
@@ -58,15 +53,6 @@ public class MainManager : MonoBehaviour, IDisposable
             maxCharges += 1;
         }
         artifacts.Add(codeName);
-    }
-
-    void Update() {
-        if(Input.GetMouseButtonDown(0)) {
-            Cursor.SetCursor(mouseClickTex, hotSpot, cursorMode);
-        }
-        if(Input.GetMouseButtonUp(0)) {
-            Cursor.SetCursor(mouseTexture, hotSpot, cursorMode);
-        }
     }
 
     void OnDestroy() {
@@ -82,5 +68,10 @@ public class MainManager : MonoBehaviour, IDisposable
         if(playerHealth > playerMaxHealth) {
             playerHealth = playerMaxHealth;
         }
+    }
+
+    public void EquipPotion(Potion potion) {
+        potions.Add(potion);
+        PotionUI.Instance.EquipPotion(potion);
     }
 }

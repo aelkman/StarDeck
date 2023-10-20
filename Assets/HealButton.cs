@@ -8,14 +8,16 @@ public class HealButton : MonoBehaviour
 {
     public CanvasGroup cardSelectorGroup;
     public TextMeshProUGUI descriptionText;
-    private int twentyPercentMax;
+    private int healthHealing;
     public Button healButton;
     public PlayerStats playerStats;
+    public float healPercent = 0.3333f;
     // Start is called before the first frame update
     void Start()
     {
-        twentyPercentMax = (int)System.Math.Round(MainManager.Instance.playerMaxHealth * 0.20);
-        descriptionText.text += "+" + twentyPercentMax.ToString() + " HP";
+        healthHealing = (int)System.Math.Round(MainManager.Instance.playerMaxHealth * healPercent);
+        descriptionText.text = "Gain 1/3 max health<br>";
+        descriptionText.text += "+" + healthHealing.ToString() + " HP";
     }
 
     // Update is called once per frame
@@ -26,7 +28,7 @@ public class HealButton : MonoBehaviour
 
     public void HealClick() {
         AudioManager.Instance.PlayHeal();
-        MainManager.Instance.HealPlayer(0.20);
+        MainManager.Instance.HealPlayer(healPercent);
         playerStats.health = MainManager.Instance.playerHealth;
         healButton.interactable = false;
         cardSelectorGroup.alpha = 0.5f;

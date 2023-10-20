@@ -11,6 +11,25 @@ public class PotionUI : MonoBehaviour
     public GameObject potionUIButtonPrefab;
     public List<GameObject> potionSlots;
     public List<GameObject> potionsInstances;
+    private static PotionUI _instance;
+
+    public static PotionUI Instance 
+    { 
+        get { return _instance; } 
+    } 
+
+
+    void Awake()
+    {
+        if (_instance != null && _instance != this) 
+        { 
+            Destroy(this.gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     
     // Start is called before the first frame update
     void Start()

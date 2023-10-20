@@ -660,6 +660,7 @@ MonoBehaviour:
   price: 0
   canvasGroup: {fileID: 0}
   shopAudio: {fileID: 1145919688}
+  mouse_over: 0
 --- !u!1 &25351236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1306,7 @@ MonoBehaviour:
   price: 0
   canvasGroup: {fileID: 0}
   shopAudio: {fileID: 1145919688}
+  mouse_over: 0
 --- !u!1 &616514569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,6 +2201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212053627}
+  - component: {fileID: 1212053628}
   m_Layer: 5
   m_Name: Potions
   m_TagString: Untagged
@@ -2229,6 +2232,30 @@ RectTransform:
   m_AnchoredPosition: {x: 481, y: 149}
   m_SizeDelta: {x: 543.4159, y: 554.93}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1212053628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212053626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9cdf4c76da8b1a43872a09fd453808e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  potion1: {fileID: 732614896083804063}
+  potion2: {fileID: 12323357}
+  potion3: {fileID: 587551813}
+  potion4: {fileID: 1241681571}
+  gauranteedPots:
+  - {fileID: 11400000, guid: b175c9cc2944ba54c88c11cfce69cbd6, type: 2}
+  - {fileID: 11400000, guid: 0dfef42ad01282d42930cae43942aa43, type: 2}
+  randomPots:
+  - {fileID: 11400000, guid: 41b08a54ce77f184bb77703e72853e22, type: 2}
+  - {fileID: 11400000, guid: cc037531e57e46f40a85d6434b671f27, type: 2}
+  - {fileID: 11400000, guid: aee87beeb04b8b74389eb70759e1e15b, type: 2}
+  maxStorePots: 4
 --- !u!1001 &1241681566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2498,6 +2525,7 @@ MonoBehaviour:
   price: 0
   canvasGroup: {fileID: 0}
   shopAudio: {fileID: 1145919688}
+  mouse_over: 0
 --- !u!1001 &1468357935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4066,6 +4094,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22e6d8f08319ee04e922c4dd2671c136, type: 3}
+--- !u!114 &732614896083804063 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1704695763255843611, guid: 22e6d8f08319ee04e922c4dd2671c136, type: 3}
+  m_PrefabInstance: {fileID: 732614896083804062}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164ff730ce4d08a4494f4ec13bc87854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &800045530473959057 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2306933501660624061, guid: 22e6d8f08319ee04e922c4dd2671c136, type: 3}

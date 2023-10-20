@@ -17,6 +17,7 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public int slot;
     public PotionUI potionUI;
     public UIAudio uiAudio;
+    public float healPercent = 0.3333f;
 
     // Start is called before the first frame update
     void Start()
@@ -85,26 +86,44 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         bool usePotion;
 
         if(potion.codeName == "HEALTH_POT") {
-            uiAudio.PlayPotionAudio();
-            MainManager.Instance.HealPlayer(0.30);
+            // uiAudio.PlayPotionAudio();
+            MainManager.Instance.HealPlayer(healPercent);
+            var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+            ps.playerAnimator.DrinkPotionAnimation();
             usePotion = true;
         }
         else if(potion.codeName == "ENERGY_POT") {
             if(GameObject.Find("PlayerContainer") != null){
-                uiAudio.PlayPotionAudio();
+                // uiAudio.PlayPotionAudio();
                 var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+                ps.playerAnimator.DrinkPotionAnimation();
                 ps.resetMana();
                 usePotion = true;
             }
             else {
                 usePotion = false;
             }
-
+        }
+        else if(potion.codeName == "RECOVERY_POT") {
+            if(GameObject.Find("PlayerContainer") != null){
+                // uiAudio.PlayPotionAudio();
+                var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+                ps.playerAnimator.DrinkPotionAnimation();
+                ps.tauntTurns = 0;
+                ps.blind = 0;
+                ps.vuln = 0;
+                usePotion = true;
+            }
+            else {
+                usePotion = false;
+            }
         }
         else if(potion.codeName == "RELOAD_BAT"){
             if(GameObject.Find("AmmoController") != null){
-                uiAudio.PlayReloadAudio();
+                // uiAudio.PlayReloadAudio();
                 var ammoCon = GameObject.Find("AmmoController").GetComponent<AmmoController>();
+                var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+                ps.playerAnimator.ReloadAnimation(ps);
                 ammoCon.FullCharge();
                 usePotion = true;
             }
@@ -114,7 +133,9 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
         else if(potion.codeName == "CLIP_EXT") {
             if(GameObject.Find("AmmoController") != null){
-                uiAudio.PlayReloadAudio();
+                // uiAudio.PlayReloadAudio();
+                var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+                ps.playerAnimator.ReloadAnimation(ps);
                 var ammoCon = GameObject.Find("AmmoController").GetComponent<AmmoController>();
                 ammoCon.ExpandSlots(1, false);
                 usePotion = true;

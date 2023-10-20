@@ -16,6 +16,8 @@ public class PlayerStats : BaseCharacterInfo
     public List<string> weapons;
     public GameObject blasterHeld;
     public GameObject blasterHip;
+    public GameObject hammerHeld;
+    public GameObject hammerHip;
     public BattleEnemyContainer tauntingEnemy;
     public int tauntTurns = 0;
     public CameraShake cameraShake;
@@ -24,7 +26,8 @@ public class PlayerStats : BaseCharacterInfo
     void Start()
     {
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
-        RemoveWeapon();
+        RemoveWeapon("Blaster");
+        RemoveWeapon("Hammer");
         nextMoveYOffset = 0;
         if (MainManager.Instance != null) {
             health = (int)MainManager.Instance.playerHealth;
@@ -97,14 +100,27 @@ public class PlayerStats : BaseCharacterInfo
         damageParticles.Play();
     }
 
-    public void HoldWeapon() {
-        blasterHip.SetActive(false);
-        blasterHeld.SetActive(true);
+    public void HoldWeapon(string weaponType) {
+        if(weaponType == "Blaster") {
+            blasterHip.SetActive(false);
+            blasterHeld.SetActive(true);
+        }
+        else if(weaponType == "Hammer") {
+            hammerHip.SetActive(false);
+            hammerHeld.SetActive(true);
+        }
     }
 
-    public void RemoveWeapon() {
-        blasterHip.SetActive(true);
-        blasterHeld.SetActive(false);
+    public void RemoveWeapon(string weapon) {
+        if(weapon == "Blaster") {
+            blasterHip.SetActive(true);
+            blasterHeld.SetActive(false);
+        }
+        else if(weapon == "Hammer") {
+            hammerHip.SetActive(true);
+            hammerHeld.SetActive(false);
+        }
+
     }
 
     public void RemoveSingleTaunt() {
