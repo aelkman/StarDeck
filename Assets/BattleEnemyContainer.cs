@@ -23,6 +23,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
+            // iceSystem.transform.localPosition = new Vector3(iceSystem.transform.localPosition.x, iceSystem.transform.localPosition.y - battleEnemy.yOffset, iceSystem.transform.localPosition.z);
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         nextMoveYOffset = battleEnemy.nextMoveYOffset;
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
@@ -82,10 +83,15 @@ public class BattleEnemyContainer : BaseCharacterInfo
             enemyAnimator.DeathAnimation();
             BEM.EnemyDeath(this);
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
-            enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>().enabled = false;
+            if(enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>() != null) {
+                enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>().enabled = false;
+            }
             var sprites = enemyPrefabInstance.GetComponentsInChildren<SpriteRenderer>();
             foreach(var sprite in sprites) {
                 StartCoroutine(FadeEnemyDeath(sprite));
+            }
+            if(frozenTurn) {
+                UnfreezeAnimation();
             }
             isDead = true;
             isDeadCallback(true);

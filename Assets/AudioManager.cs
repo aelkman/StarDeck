@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource coins;
     public AudioSource blood;
     public AudioSource frozen;
+    public AudioSource freeze;
     private void Awake()
     {
         // start of new code
@@ -59,5 +60,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFrozen() {
         frozen.Play();
+    }
+
+    public void PlayFreeze() {
+        freeze.Play();
     }
 }

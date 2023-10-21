@@ -10,6 +10,7 @@ public class PlayerAnimator : CharacterAnimator
     public AudioSource blasterAudio;
     public AudioSource hammerAudio;
     public PlayerStats playerStats;
+    private float hammerClipLength;
     // private Animator animator;
     // Start is called before the first frame update
     // void Start()
@@ -22,6 +23,27 @@ public class PlayerAnimator : CharacterAnimator
     // {
         
     // }
+    void Start()
+    {
+        uiAudio = GameObject.Find("UIAudio").GetComponent<UIAudio>();
+        animator = GetComponent<Animator>();
+        bem = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        UpdateAnimClipTimes();
+    }
+
+    public void UpdateAnimClipTimes()
+    {
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+        foreach(AnimationClip clip in clips)
+        {
+            switch(clip.name)
+            {
+                case "Hammer":
+                    hammerClipLength = clip.length;
+                    break;
+            }
+        }
+    }
 
     public void ReloadFinished()
     {
@@ -75,8 +97,15 @@ public class PlayerAnimator : CharacterAnimator
     }
 
     public void HammerAttackAnimation() {
+        playerStats.HoldWeapon("Hammer");
         animator.SetTrigger("Hammer");
+        // StartCoroutine(HammerAttackAnimationTimed());
     }
+
+    // public IEnumerator HammerAttackAnimationTimed() {
+
+    //     yield return new WaitForSeconds(hammerClipLength);
+    // }
 
     public void RemoveHammer() {
         playerStats.RemoveWeapon("Hammer");

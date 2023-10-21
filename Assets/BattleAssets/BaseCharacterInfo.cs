@@ -150,7 +150,7 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void UnfreezeAnimation() {
         characterAnimator.GetComponent<Animator>().speed = 1;
-        iceSystem.Stop();
+        iceSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     public void AddFrost(int frost) {
@@ -160,17 +160,19 @@ public class BaseCharacterInfo : MonoBehaviour
                 // delay reset on frost counter
                 StartCoroutine(delayedFrostReset());
                 // trigger freeze on enemy
-                FreezeAnimation();
-                iceSystem.Clear();
-                iceSystem.Play();
-                stunnedTurns += 1;
-                frozenTurn = true;
+
             }
         }
     }
 
     private IEnumerator delayedFrostReset() {
         yield return new WaitForSeconds(0.5f);
+        AudioManager.Instance.PlayFreeze();
+        FreezeAnimation();
+        iceSystem.Clear();
+        iceSystem.Play();
+        stunnedTurns += 1;
+        frozenTurn = true;
         frostStacks = 0;
     }
 }

@@ -761,6 +761,7 @@ MonoBehaviour:
   frostStacks: 0
   nextMoveYOffset: 0
   isTaunter: 0
+  frozenTurn: 0
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 808569400213747451}
   characterHUD: {fileID: 1414547864159836435}
@@ -2018,7 +2019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1875405133082443225, guid: 2c7e1a2539fcb2a4e84fa765f361a3ff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -146
+      value: -178
       objectReference: {fileID: 0}
     - target: {fileID: 1875405133082443225, guid: 2c7e1a2539fcb2a4e84fa765f361a3ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
