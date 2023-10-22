@@ -16,6 +16,7 @@ public class CardDisplay : MonoBehaviour
     public Image cardBase;
     public Image rarityImage;
     public Image glowImage;
+    public Image typeImage;
     public TextMeshProUGUI manaText;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defendText;
@@ -38,6 +39,17 @@ public class CardDisplay : MonoBehaviour
             manaText.color = Color.white;
             cardBase.sprite = Resources.Load<Sprite>("Card_base_black");
         }
+
+        if(card.type == "Hammer") {
+            typeImage.sprite = Resources.Load<Sprite>("Images/hammer icon");
+        }
+        else if(card.type == "Blaster") {
+            typeImage.sprite = Resources.Load<Sprite>("Images/blaster icon");
+        }
+        else {
+            typeImage.enabled = false;
+        }
+
         nameText.text = card.name;
         descriptionText.text = card.description + "<br>" + DescriptionParser();
         artworkImage.sprite = card.artwork;
@@ -142,6 +154,9 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "EXPEL":
                     descriptionAdditional += "<br>Expel";
+                    break;
+                case "COUNTER":
+                    descriptionAdditional += "<br>Counter";
                     break;
                 default:
                     break;

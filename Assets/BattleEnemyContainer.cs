@@ -80,6 +80,9 @@ public class BattleEnemyContainer : BaseCharacterInfo
         if (health <= 0) {
             // death animation here, disable the NextAction as well
             nextActionText.SetText("", null, null);
+            if(frozenTurn) {
+                UnfreezeAnimation();
+            }
             enemyAnimator.DeathAnimation();
             BEM.EnemyDeath(this);
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
@@ -90,9 +93,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             foreach(var sprite in sprites) {
                 StartCoroutine(FadeEnemyDeath(sprite));
             }
-            if(frozenTurn) {
-                UnfreezeAnimation();
-            }
+
             isDead = true;
             isDeadCallback(true);
         }

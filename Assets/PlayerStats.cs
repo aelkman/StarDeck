@@ -12,6 +12,7 @@ public class PlayerStats : BaseCharacterInfo
     public BattleManager battleManager;
     public ManaBar manaBar;
     public ParticleSystem damageParticles;
+    public ParticleSystem iceAura;
     public GameObject forceField;
     public List<string> weapons;
     public GameObject blasterHeld;

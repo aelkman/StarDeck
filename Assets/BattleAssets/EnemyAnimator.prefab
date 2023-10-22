@@ -759,6 +759,7 @@ MonoBehaviour:
   isDead: 0
   atkMod: 0
   frostStacks: 0
+  iceStacks: {fileID: 8299089892884247532}
   nextMoveYOffset: 0
   isTaunter: 0
   frozenTurn: 0
@@ -2068,6 +2069,14 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2625535343926934739, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625535343926934739, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 414
+      objectReference: {fileID: 0}
     - target: {fileID: 2828570521442285784, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SortingLayer
       value: 2
@@ -2188,6 +2197,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterHUD
       objectReference: {fileID: 0}
+    - target: {fileID: 8149459771572752470, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2212,5 +2225,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c30753f69b290d64e98640158f268eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8299089892884247532 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 698828115874814171, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+  m_PrefabInstance: {fileID: 8835770211503205175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88947c90b8bab3649a072cb5b27696e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Frost Ward
   m_EditorClassIdentifier: 
   name: Frost Ward
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: ba30dca2d09cf1040b1b7b76b2101d09, type: 3}
   manaCost: 2
   actionKeys:
   - POWER
+  - EXPEL
   actionValues:
   - FROST_WARD
+  - 
   description: When an enemy would attack, first gain +2 block
   type: Hammer
   subType: 

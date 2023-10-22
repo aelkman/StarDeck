@@ -55,6 +55,8 @@ public class BattleEnemyManager : MonoBehaviour
             }
             Vector3 nextActionPos = battleEnemyContainer.nextAction.transform.localPosition;
             battleEnemyContainer.nextAction.transform.localPosition = new Vector3(nextActionPos.x, nextActionPos.y + battleEnemy.nextMoveYOffset, nextActionPos.z);
+            Vector3 iceStacksPos = battleEnemyContainer.iceStacks.transform.localPosition;
+            battleEnemyContainer.iceStacks.transform.localPosition = new Vector3(iceStacksPos.x, iceStacksPos.y + battleEnemy.nextMoveYOffset, iceStacksPos.z);
             battleEnemies.Add(battleEnemyContainer);
             battleEnemiesStarting.Add(battleEnemyContainer);
             // battleEnemyContainer.rectTransform.localScale = new Vector3(0.21334f, 0.21334f, 0.21334f);

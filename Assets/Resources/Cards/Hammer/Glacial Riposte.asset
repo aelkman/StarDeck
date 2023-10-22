@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: Glacial Riposte
   m_EditorClassIdentifier: 
   name: Glacial Riposte
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 5772d437f713724449192cb6fdacb912, type: 3}
   manaCost: 1
   actionKeys:
-  - COUNTER_1
-  - COUNTER_2
+  - DEF
+  - COUNTER
+  - ATK
   actionValues:
-  - ATK, 5
-  - DEF, 8
-  description: When you would be attacked next, gain 5 shield and deal 5 damage
+  - 8
+  - 
+  - 6,1
+  description: 
   type: Hammer
   subType: 
   category: 

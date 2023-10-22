@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource blood;
     public AudioSource frozen;
     public AudioSource freeze;
+    public AudioSource arcanePower;
+    public AudioSource shield;
     private void Awake()
     {
         // start of new code
@@ -64,5 +66,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFreeze() {
         freeze.Play();
+    }
+
+    public void PlayArcanePower() {
+        arcanePower.Play();
+    }
+
+    public void PlayShield() {
+        shield.Play();
     }
 }

@@ -24,13 +24,13 @@ public class BaseCharacterInfo : MonoBehaviour
     public bool isDead = false;
     public int atkMod;
     public int frostStacks;
+    public IceStacks iceStacks;
     public float nextMoveYOffset;
     public bool isTaunter = false;
     public bool frozenTurn = false;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -149,13 +149,21 @@ public class BaseCharacterInfo : MonoBehaviour
     }
 
     public void UnfreezeAnimation() {
+        characterAnimator.animator.Rebind();
+        characterAnimator.animator.Update(0f);
         characterAnimator.GetComponent<Animator>().speed = 1;
         iceSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
-    public void AddFrost(int frost) {
+    public void AddFrost(int frost, float timeDelay) {
+        StartCoroutine(AddFrostTimed(frost, timeDelay));
+    }
+
+    public IEnumerator AddFrostTimed(int frost, float timeDelay) {
         for(int i = 0; i < frost; i++) {
+            yield return new WaitForSeconds(timeDelay);
             frostStacks += 1;
+            iceStacks.SetStacks(frostStacks);
             if(frostStacks >= 3) {
                 // delay reset on frost counter
                 StartCoroutine(delayedFrostReset());
@@ -174,5 +182,6 @@ public class BaseCharacterInfo : MonoBehaviour
         stunnedTurns += 1;
         frozenTurn = true;
         frostStacks = 0;
+        iceStacks.RemoveStacks();
     }
 }

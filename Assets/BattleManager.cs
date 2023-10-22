@@ -36,6 +36,7 @@ public class BattleManager : MonoBehaviour
     private bool isPocketGenerator = false;
     private bool isPowerSurge = false;
     private bool isPulseAmplifier = false;
+    private bool isFrostWard = false;
     private bool hasReloaded = false;
     private bool isFirstEnemyAttack = true;
     public bool isCharacterMissing = false;
@@ -43,9 +44,15 @@ public class BattleManager : MonoBehaviour
     public ScryUISelector scryUISelector;
     public bool isScryComplete = false;
     public Button endTurnButton;
+    private StackList<KeyValuePair<string, string>> counterQueue;
+    private StackList<string> counterTypes;
+    private float hammerAttackTime = 0.5f;
+    private float blasterAttackTime = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
+        counterQueue = new StackList<KeyValuePair<string, string>>();
+        counterTypes = new StackList<string>();
         ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
@@ -189,7 +196,9 @@ public class BattleManager : MonoBehaviour
         // first, consume card mana
         playerStats.useMana(card.manaCost);
 
-        foreach(var item in card.actions) {
+        for(int x = 0; x < card.actions.Count; x++ ) {
+        // foreach(var item in card.actions) {
+            var item = card.actions.ToList()[x];
             switch(item.Key) {
                 case "ATK":
                     int attack;
@@ -248,7 +257,7 @@ public class BattleManager : MonoBehaviour
                                 StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false, isLast));
                                 break;
                             case "Hammer":
-                                HammerAttack();
+                                HammerAttack(isLast);
                                 break;
                             default:
                                 break;
@@ -260,7 +269,7 @@ public class BattleManager : MonoBehaviour
                             if(STM.GetTarget() is BattleEnemyContainer) {
                                 // if player using hammer, then add a stack
                                 if(cardType == "Hammer") {
-                                    STM.GetTarget().AddFrost(1);
+                                    STM.GetTarget().AddFrost(1, hammerAttackTime);
                                 }
                                 StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
@@ -458,15 +467,24 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "POWER":
+                    playerStats.characterAnimator.CastAnimation();
                     if (item.Value == "POCK_GEN") {
+                        AudioManager.Instance.PlayArcanePower();
                         ammoController.FullCharge();
                         isPocketGenerator = true;
                     }
                     else if(item.Value == "POWER_SURGE"){
+                        AudioManager.Instance.PlayArcanePower();
                         isPowerSurge = true;
                     }
                     else if(item.Value == "PULSE_AMPLIFIER") {
+                        AudioManager.Instance.PlayArcanePower();
                         isPulseAmplifier = true;
+                    }
+                    else if(item.Value == "FROST_WARD") {
+                        playerStats.iceAura.Play();
+                        AudioManager.Instance.PlayFreeze();
+                        isFrostWard = true;
                     }
                     break;
                 case "CAST":
@@ -479,6 +497,13 @@ public class BattleManager : MonoBehaviour
                     yield return new WaitForSeconds(1f);
                     // isScryComplete = true;
                     Debug.Log("ending scry");
+                    break;
+                case "COUNTER": 
+                    var nextAction = card.actions.ToList()[x+1];
+                    counterQueue.Push(nextAction);
+                    counterTypes.Push(cardType);
+                    // now, skip the next action in the loop
+                    x+=1;
                     break;
                 default:
                     break;
@@ -497,15 +522,33 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(1);
     }
 
+    public void CreateActionFromPair(KeyValuePair<string, string> keyValuePair, string type, BattleEnemyContainer be) {
+        Card newCard = ScriptableObject.CreateInstance<Card>();
+        newCard.manaCost = 0;
+        newCard.type = type;
+        newCard.actions = new Dictionary<string, string>();
+        newCard.actions[keyValuePair.Key] = keyValuePair.Value;
+        STM.SetTarget(be);
+        StartCoroutine(CardAction(newCard));
+    }
+
     private IEnumerator PlayerShieldSequence() {
         playerStats.playerAnimator.BlockAnimation();
         yield return new WaitForSeconds(0.5f);
         playerStats.shieldAnimator.StartForceField();
     }
 
-    private void HammerAttack() {
+    private void HammerAttack(bool isLast) {
+        StartCoroutine(HammerAttackTimed(isLast));
+    }
+
+    private IEnumerator HammerAttackTimed(bool isLast) {
         playerStats.HoldWeapon("Hammer");
         playerStats.transform.parent.GetComponent<PlayerAnimator>().HammerAttackAnimation();
+        yield return new WaitForSeconds(hammerAttackTime);
+        if(isLast) {
+            playerStats.RemoveWeapon("Hammer");
+        }
     }
 
     private IEnumerator BlasterAttack(Vector3 STMPos, float timeInterval, Card card, bool useCharge, bool isLast) {
@@ -592,8 +635,12 @@ public class BattleManager : MonoBehaviour
     }
 
     private IEnumerator ProcessEnemyAction(List<BattleEnemyContainer> battleEnemies) {
-        foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
+        for(int x = 0; x < enemyActions.Count; x++) {
+        // foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
             if (!isGameOver) {
+
+                var enemyActionPair = enemyActions[x];
+                var id = enemyActions[x].Item1.gameObject.GetInstanceID().ToString();
 
                 yield return new WaitForSecondsRealtime(0.75f);
 
@@ -629,6 +676,50 @@ public class BattleManager : MonoBehaviour
                                 multi = multiAttack[1];
 
                                 // float atkMod = 1.0f;
+
+                                if(isFrostWard) {
+                                    AudioManager.Instance.PlayFreeze();
+                                    playerStats.addBlock(2);
+                                    playerStats.shieldAnimator.StartForceField();
+                                    yield return new WaitForSeconds(0.5f);
+                                }
+
+                                if(counterQueue.Count() > 0) {
+                                    while(counterQueue.Count() > 0) {
+                                        var counter = counterQueue.Pop();
+                                        var type = counterTypes.Pop();
+                                        CreateActionFromPair(counter, type, battleEnemy);
+                                        if(type == "Hammer") {
+                                            yield return new WaitForSeconds(hammerAttackTime);
+                                        }
+                                        else if(type == "Blaster") {
+                                            yield return new WaitForSeconds(blasterAttackTime);
+                                        }
+                                        else {
+                                            yield return new WaitForSeconds(0.5f);
+                                        }
+
+                                        // if enemy died or is last, then break
+                                        if(enemyActions.Count <= x) {
+                                            break;
+                                        }
+                                        var newId3 = enemyActions[x].Item1.gameObject.GetInstanceID().ToString();
+                                        if(id != newId3) {
+                                            // if enemy died, then break out and stopp attacking
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // check if the enemy died, if it did go to the next
+                                if(enemyActions.Count <= x) {
+                                    break;
+                                }
+                                var newId = enemyActions[x].Item1.gameObject.GetInstanceID().ToString();
+                                if(id != newId) {
+                                    x-=1;
+                                    continue;
+                                }
 
                                 for (int i = 0; i < multi; i++) {
                                     // Vector3 STMPos;
@@ -679,6 +770,51 @@ public class BattleManager : MonoBehaviour
                                     throw new Exception("Invalid ATK_RND attributes! Must be 2 ints comma separated.");
                                 }
                                 else {
+
+                                    if(isFrostWard) {
+                                        AudioManager.Instance.PlayFreeze();
+                                        playerStats.addBlock(2);
+                                        playerStats.shieldAnimator.StartForceField();
+                                        yield return new WaitForSeconds(0.5f);
+                                    }
+
+                                    if(counterQueue.Count() > 0) {
+                                        while(counterQueue.Count() > 0) {
+                                            var counter = counterQueue.Pop();
+                                            var type = counterTypes.Pop();
+                                            CreateActionFromPair(counter, type, battleEnemy);
+                                            if(type == "Hammer") {
+                                                yield return new WaitForSeconds(hammerAttackTime);
+                                            }
+                                            else if(type == "Blaster") {
+                                                yield return new WaitForSeconds(blasterAttackTime);
+                                            }
+                                            else {
+                                                yield return new WaitForSeconds(0.5f);
+                                            }
+
+                                            // if enemy died or is last, then break
+                                            if(enemyActions.Count <= x) {
+                                                break;
+                                            }
+                                            var newId3 = enemyActions[x].Item1.gameObject.GetInstanceID().ToString();
+                                            if(id != newId3) {
+                                                // if enemy died, then break out and stopp attacking
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    // check if the enemy died, if it did go to the next
+                                    if(enemyActions.Count <= x) {
+                                        break;
+                                    }
+                                    var newId2 = enemyActions[x].Item1.gameObject.GetInstanceID().ToString();
+                                    if(id != newId2) {
+                                        x-=1;
+                                        continue;
+                                    }
+
                                     int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
                                     atkDmg += battleEnemy.getAtkMod();
                                     Debug.Log("attack action: " + atkDmg);

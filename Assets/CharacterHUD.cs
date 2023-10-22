@@ -11,6 +11,7 @@ public class CharacterHUD : MonoBehaviour
     public GameObject vulnDisplay;
     public GameObject blindDisplay;
     public GameObject tauntDisplay;
+    public GameObject iceHUD;
     private SpriteRenderer spriteRenderer;
     public GameObject damageUp;
     public VulneratibiltyHoverDescription vhd;
@@ -75,6 +76,13 @@ public class CharacterHUD : MonoBehaviour
         }
         else {
             tauntDisplay.SetActive(false);
+        }
+
+        if(baseCharacterInfo.frostStacks > 0) {
+            iceHUD.SetActive(true);
+        }
+        else {
+            iceHUD.SetActive(false);
         }
     }
 }
