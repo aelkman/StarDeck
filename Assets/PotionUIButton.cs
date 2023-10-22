@@ -82,19 +82,27 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         hoverTextGO.SetActive(false);
     }
 
+    // private IEnumerator PotionAudioTimed() {
+    //     yield return new WaitForSeconds(0.2f);
+    //     uiAudio.PlayPotionAudio();
+    // }
+
     public void ClickUseButton() {
         bool usePotion;
 
         if(potion.codeName == "HEALTH_POT") {
             // uiAudio.PlayPotionAudio();
             MainManager.Instance.HealPlayer(healPercent);
-            var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
-            ps.playerAnimator.DrinkPotionAnimation();
+            uiAudio.PlayPotionAudio();
+            if(GameObject.Find("PlayerContainer") != null) {
+                var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+                ps.playerAnimator.DrinkPotionAnimation();
+            }
             usePotion = true;
         }
         else if(potion.codeName == "ENERGY_POT") {
             if(GameObject.Find("PlayerContainer") != null){
-                // uiAudio.PlayPotionAudio();
+                uiAudio.PlayPotionAudio();
                 var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
                 ps.playerAnimator.DrinkPotionAnimation();
                 ps.resetMana();
@@ -106,7 +114,7 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
         else if(potion.codeName == "RECOVERY_POT") {
             if(GameObject.Find("PlayerContainer") != null){
-                // uiAudio.PlayPotionAudio();
+                uiAudio.PlayPotionAudio();
                 var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
                 ps.playerAnimator.DrinkPotionAnimation();
                 ps.tauntTurns = 0;
@@ -148,14 +156,12 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             usePotion = false;
         }
         if(usePotion) {
-            MainManager.Instance.potions.Remove(potion);
-            potionUI.UsePotion(slot);
+            MainManager.Instance.UsePotion(potion, slot);
         }
     }
 
     public void ClickTossButton() {
         uiAudio.PlayDiscardAudio();
-        MainManager.Instance.potions.Remove(potion);
-        potionUI.UsePotion(slot);
+        MainManager.Instance.UsePotion(potion, slot);
     }
 }

@@ -74,4 +74,9 @@ public class MainManager : MonoBehaviour, IDisposable
         potions.Add(potion);
         PotionUI.Instance.EquipPotion(potion);
     }
+
+    public void UsePotion(Potion potion, int slot) {
+        MainManager.Instance.potions.Remove(potion);
+        PotionUI.Instance.UsePotion(slot);
+    }
 }

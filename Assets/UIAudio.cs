@@ -20,7 +20,7 @@ public class UIAudio : MonoBehaviour
     }
 
     public void PlayPotionAudio() {
-        potionAudio.Play();
+        StartCoroutine(PotionAudioTimed());
     }
 
     public void PlayDiscardAudio() {
@@ -29,5 +29,10 @@ public class UIAudio : MonoBehaviour
 
     public void PlayReloadAudio() {
         reloadAudio.Play();
+    }
+
+    private IEnumerator PotionAudioTimed() {
+        yield return new WaitForSeconds(0.3f);
+        potionAudio.Play();
     }
 }

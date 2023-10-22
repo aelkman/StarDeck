@@ -37,6 +37,7 @@ public class BattleManager : MonoBehaviour
     private bool isPowerSurge = false;
     private bool isPulseAmplifier = false;
     private bool isFrostWard = false;
+    private bool isFyornsResolve = false;
     private bool hasReloaded = false;
     private bool isFirstEnemyAttack = true;
     public bool isCharacterMissing = false;
@@ -126,7 +127,8 @@ public class BattleManager : MonoBehaviour
         int requiredCharges = 0;
 
         if((cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster")
-            || (cardDisplay.card.actions.ContainsKey("ATK_ALL") && cardType == "Blaster")) {
+            || (cardDisplay.card.actions.ContainsKey("ATK_ALL") && cardType == "Blaster")
+            || (cardDisplay.card.actions.ContainsKey("FINAL_BLOW") && cardType == "Blaster")) {
             if(isPocketGenerator && cardDisplay.card.subType == "Shot") {
                 requiredCharges = 0;
             }
@@ -245,6 +247,11 @@ public class BattleManager : MonoBehaviour
                                 atkMod += 0.2f;
                             }
                             STMPos = STM.GetTarget().transform.position;
+                        }
+
+                        if(isFyornsResolve) {
+                            playerStats.addBlock(1);
+                            StartCoroutine(PlayerShieldSequence());
                         }
 
                         bool isLast = i == (multi - 1);
@@ -486,6 +493,11 @@ public class BattleManager : MonoBehaviour
                         AudioManager.Instance.PlayFreeze();
                         isFrostWard = true;
                     }
+                    else if(item.Value == "FYORNS_RESOLVE") {
+                        playerStats.iceAura.Play();
+                        AudioManager.Instance.PlayFreeze();
+                        isFyornsResolve = true;
+                    }
                     break;
                 case "CAST":
                     playerStats.playerAnimator.CastAnimation();
@@ -681,7 +693,7 @@ public class BattleManager : MonoBehaviour
                                     AudioManager.Instance.PlayFreeze();
                                     playerStats.addBlock(2);
                                     playerStats.shieldAnimator.StartForceField();
-                                    yield return new WaitForSeconds(0.5f);
+                                    yield return new WaitForSeconds(1.0f);
                                 }
 
                                 if(counterQueue.Count() > 0) {
@@ -775,7 +787,7 @@ public class BattleManager : MonoBehaviour
                                         AudioManager.Instance.PlayFreeze();
                                         playerStats.addBlock(2);
                                         playerStats.shieldAnimator.StartForceField();
-                                        yield return new WaitForSeconds(0.5f);
+                                        yield return new WaitForSeconds(1.0f);
                                     }
 
                                     if(counterQueue.Count() > 0) {

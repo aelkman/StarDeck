@@ -88,9 +88,9 @@ public class PlayerAnimator : CharacterAnimator
         animator.SetTrigger("Drink");
     }
 
-    public void DrinkPotionAudio() {
-        uiAudio.PlayPotionAudio();
-    }
+    // public void DrinkPotionAudio() {
+    //     // uiAudio.PlayPotionAudio();
+    // }
 
     public void PlayHammerAudio() {
         hammerAudio.Play();
