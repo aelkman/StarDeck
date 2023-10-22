@@ -179,7 +179,8 @@ public class BaseCharacterInfo : MonoBehaviour
         FreezeAnimation();
         iceSystem.Clear();
         iceSystem.Play();
-        stunnedTurns += 1;
+        // max of 1 stun turn, don't allow stacking
+        stunnedTurns = 1;
         frozenTurn = true;
         frostStacks = 0;
         iceStacks.RemoveStacks();

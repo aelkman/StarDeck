@@ -371,14 +371,16 @@ public class BattleManager : MonoBehaviour
                     }));
                     break;
                 case "STN":
-                    STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
+                    // STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
+                    STM.GetTarget().stunnedTurns = 1;
                     Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
                     STM.GetTarget().ShockAnimation();
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
                     break;
                 case "STN_ALL":
                     foreach(var be in battleEnemies) {
-                        be.stunnedTurns += Int32.Parse(item.Value);
+                        // be.stunnedTurns += Int32.Parse(item.Value);
+                        be.stunnedTurns = 1;
                         be.ShockAnimation();
                     }
                     break;

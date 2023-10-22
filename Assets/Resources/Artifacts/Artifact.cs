@@ -10,4 +10,5 @@ public class Artifact : ScriptableObject
     public new string name;
     public string description;
     public Sprite artwork;
+    public string type;
 }
