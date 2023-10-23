@@ -87,27 +87,9 @@ public class MapManager : MonoBehaviour
             StartCoroutine(LoadLevel(destinationName));
         }
         else if(destinationName == "Event") {
-
-            // int sceneCount = SceneManager.sceneCountInBuildSettings;     
-            // string[] scenes = new string[sceneCount];
-            // for( int i = 0; i < sceneCount; i++ )
-            // {
-            //     scenes[i] = SceneUtility.GetScenePathByBuildIndex( i );
-            //     // .Where( scene => scene.Contains("Event")));
-            // }
-
             List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket" };
-
-            // var scenesList = scenes.ToList();
-            // var scenes = SceneUtility.G
-            //     .Where( scene => scene.enabled )
-            //     .Where( scene => scene.path.Contains("Event"))
-            //     .Select( scene => System.IO.Path.GetFileNameWithoutExtension(scene.path))
-            //     .ToList();
-            // Debug.Log(scenesList);
             var randIndex = Random.Range(0, eventScenes.Count);
             StartCoroutine(LoadLevel(eventScenes[randIndex]));
-            // StartCoroutine(LoadLevel("NightMarket"));
         }
         else if(destinationName == "Unknown") {
             diceRoller.eventName = "Unknown";

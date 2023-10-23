@@ -27,7 +27,9 @@ public class CardUIActions : CardActions
             cardUISelector = GameObject.Find("CardUISelector").GetComponent<CardUISelector>();
         }
         // handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
-        battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        if(GameObject.Find("BattleManager") != null) {
+            battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        }
         siblingIndexOriginal = transform.GetSiblingIndex();
     }
 
@@ -90,7 +92,13 @@ public class CardUIActions : CardActions
         }
         // move card to discard pile
         Vector3 currentPosition = transform.position;
-        Vector3 discardPosition = battleManager.discardDeck.transform.position;
+        Vector3 discardPosition;
+        if(battleManager != null) {
+            discardPosition = battleManager.discardDeck.transform.position;
+        }
+        else {
+            discardPosition = PersistentHUD.Instance.discardLocation.transform.localPosition;
+        }
         for (float i = 0f; i <= 1f; i+= timeInterval) {
             transform.eulerAngles = new Vector3(
                 0f,

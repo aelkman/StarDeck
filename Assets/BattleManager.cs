@@ -627,12 +627,8 @@ public class BattleManager : MonoBehaviour
                 }
                 // pass the action back to the enemy to display
                 string actionText = randomAction.name;
-                Dictionary<string, string> actions = new Dictionary<string, string>();
-                foreach(KeyValuePair<string, string> entry in randomAction.actions) {
-                    actionText += "<br>" + entry.Key + " " + entry.Value;
-                    actions.Add(entry.Key, entry.Value);
-                }
-                battleEnemy.SetNextActionText(actionText, actions, randomAction);
+                // Dictionary<string, string> actions = new Dictionary<string, string>();
+                battleEnemy.SetNextActionText(randomAction);
                 enemyActions.Add(new Tuple<BattleEnemyContainer,Card>(battleEnemy, randomAction));
             }
         }
@@ -829,7 +825,7 @@ public class BattleManager : MonoBehaviour
                                         continue;
                                     }
 
-                                    int atkDmg = UnityEngine.Random.Range(randAttack[0] - randAttack[1], randAttack[0] + randAttack[1] + 1);
+                                    int atkDmg = UnityEngine.Random.Range(randAttack[0], randAttack[1] + 1);
                                     atkDmg += battleEnemy.getAtkMod();
                                     Debug.Log("attack action: " + atkDmg);
                                     switch(battleEnemy.battleEnemy.name) {
@@ -866,7 +862,7 @@ public class BattleManager : MonoBehaviour
                                     throw new Exception("Invalid DEF_RND attributes! Must be 2 ints comma separated.");
                                 }
                                 else {
-                                    int block = UnityEngine.Random.Range(randBlock[0] - randBlock[1], randBlock[0] + randBlock[1] + 1);
+                                    int block = UnityEngine.Random.Range(randBlock[0], randBlock[1] + 1);
                                     // to-do, defMod bonus
                                     // block += etc
                                     Debug.Log("block action: " + block);

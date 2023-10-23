@@ -17,6 +17,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public CharacterAnimator characterAnimator;
     public int block = 0;
     public int vuln = 0;
+    public int weak = 0;
     public int blind = 0;
     public int maxHealth;
     public int health;
@@ -99,6 +100,12 @@ public class BaseCharacterInfo : MonoBehaviour
     public void RemoveSingleBlind() {
         if (blind > 0) {
             blind -= 1;
+        }
+    }
+
+    public void RemoveSingleWeak() {
+        if (weak > 0) {
+            weak -= 1;
         }
     }
 

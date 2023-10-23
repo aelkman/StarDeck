@@ -728,7 +728,7 @@ MonoBehaviour:
   playerMaxHealth: 50
   weapons:
   - Blaster
-  coinCount: 100
+  coinCount: 10000
   level: 1
   maxCharges: 3
   currentNode: {fileID: 0}
@@ -3235,6 +3235,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
+--- !u!1 &982302294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 982302295}
+  - component: {fileID: 982302297}
+  - component: {fileID: 982302296}
+  m_Layer: 0
+  m_Name: DiscardLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &982302295
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982302294}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1956427575}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 886, y: -466}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &982302296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982302294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &982302297
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982302294}
+  m_CullTransparentMesh: 1
 --- !u!1 &993384442
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,17 +3394,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1039166124 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5143993795690212511, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
-  m_PrefabInstance: {fileID: 924000814248844654}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164769262}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac3ea812e3031f478ad625436093177, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1042498724
 GameObject:
   m_ObjectHideFlags: 0
@@ -4418,7 +4482,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168185040}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4445,6 +4509,7 @@ MonoBehaviour:
   deck: {fileID: 1645324030}
   cardUIPrefab: {fileID: 7047921888491794437, guid: 1c214e0594eb906449a2b65b3b38ad25, type: 3}
   canvasGO: {fileID: 1164769262}
+  dictCount: 0
 --- !u!1 &1177130878
 GameObject:
   m_ObjectHideFlags: 0
@@ -6864,13 +6929,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1645324030}
     - target: {fileID: 5143993795690212511, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: canvasGO
+      value: 
+      objectReference: {fileID: 1164769262}
+    - target: {fileID: 5143993795690212511, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5943955679120874558, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: cardDisplayCanvas
       value: 
-      objectReference: {fileID: 1039166124}
+      objectReference: {fileID: 1168185042}
     - target: {fileID: 6154329696483624486, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: cancelButton
       value: 
@@ -6887,6 +6956,10 @@ PrefabInstance:
       propertyPath: deckViewer
       value: 
       objectReference: {fileID: 2102752542}
+    - target: {fileID: 6319559946795641357, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: discardLocation
+      value: 
+      objectReference: {fileID: 982302294}
     - target: {fileID: 6487154791137799336, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.7458927
@@ -7021,11 +7094,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 159981541438176893, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+    - {fileID: 5143993795690212511, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8723475806085749317, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9119610226449247676, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 1168185041}
     - targetCorrespondingSourceObject: {fileID: 9119610226449247676, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       insertIndex: -1
@@ -7033,6 +7107,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9119610226449247676, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1396686765}
+    - targetCorrespondingSourceObject: {fileID: 9119610226449247676, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 982302295}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9164656884526259795, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       insertIndex: -1
@@ -7423,7 +7500,7 @@ PrefabInstance:
       objectReference: {fileID: 178923858}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: sceneTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: diceRoller
@@ -7447,7 +7524,7 @@ PrefabInstance:
       objectReference: {fileID: 582516097}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: sceneNameOverride
-      value: Shop
+      value: ATM
       objectReference: {fileID: 0}
     - target: {fileID: 7635219133682918943, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: m_Pivot.x

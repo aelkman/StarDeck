@@ -752,6 +752,7 @@ MonoBehaviour:
   characterAnimator: {fileID: 3392223236374336481}
   block: 0
   vuln: 0
+  weak: 0
   blind: 0
   maxHealth: 0
   health: 0
@@ -1439,6 +1440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextActionText: {fileID: 7645357941746893177}
   card: {fileID: 0}
+  battleEnemy: {fileID: 2705109504883580851}
 --- !u!114 &5996850347724053765
 MonoBehaviour:
   m_ObjectHideFlags: 0

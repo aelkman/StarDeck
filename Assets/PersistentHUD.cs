@@ -6,6 +6,7 @@ public class PersistentHUD : MonoBehaviour
 {
     private static PersistentHUD _instance;
     public DeckViewer deckViewer;
+    public GameObject discardLocation;
 
     public static PersistentHUD Instance 
     { 

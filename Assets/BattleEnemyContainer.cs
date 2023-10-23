@@ -79,7 +79,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (health <= 0) {
             // death animation here, disable the NextAction as well
-            nextActionText.SetText("", null, null);
+            nextActionText.SetText(null);
             if(frozenTurn) {
                 UnfreezeAnimation();
             }
@@ -148,7 +148,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 possibleActions.RemoveAll(x => x.actions.ContainsKey("TAUNT"));
                 var attackCard = new Card();
                 attackCard.actions = new Dictionary<string, string>();
-                attackCard.actions.Add("ATK_RND", "8, 4");
+                attackCard.actions.Add("ATK_RND", "8, 12");
                 possibleActions.Add(attackCard);
             }
         }
@@ -164,8 +164,8 @@ public class BattleEnemyContainer : BaseCharacterInfo
         return nextCard;
     }
 
-    public void SetNextActionText(string text, Dictionary<string, string> actions, Card card) {
-        nextActionText.SetText(text, actions, card);
+    public void SetNextActionText(Card card) {
+        nextActionText.SetText(card);
     }
 
     public void BlockSequence(int block) {
