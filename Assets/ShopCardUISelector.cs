@@ -16,7 +16,7 @@ public class ShopCardUISelector : CardUISelector
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();
         foreach(Card card in cards) {
-            if (card.category != "Starter") {
+            if (!card.isStarter) {
                 cardsListFiltered.Add(card);
             }
         }

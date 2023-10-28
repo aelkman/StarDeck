@@ -11,6 +11,9 @@ public class MainMenu : MonoBehaviour
     public Button option3;
     public Button option4;
     public Animator crossfade;
+    public Animator shipAnimator;
+    public ParticleSystem rocket1;
+    public ParticleSystem rocket2;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,9 @@ public class MainMenu : MonoBehaviour
 
     public void Option1Click() {
         AudioManager.Instance.PlayButtonPress();
+        shipAnimator.SetTrigger("Start");
+        rocket1.Play();
+        rocket2.Play();
         Leave();
     }
 
@@ -52,11 +58,11 @@ public class MainMenu : MonoBehaviour
     }
 
     IEnumerator LeaveCoroutine() {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
         crossfade.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("OpeningScene1");
     }
 }

@@ -58,6 +58,28 @@ public class NextActionText : MonoBehaviour
                     name = "Attack buff";
                     description = entry.Value;
                 }
+                else if(entry.Key == "REMOVE_DEBUFF") {
+                    name = "Remove Debuffs";
+                    description = "";
+                }
+                else if(entry.Key == "ANTI_STUN") {
+                    if(name != "") {
+                        name += ", ";
+                    }
+                    name += "Anti-Stun";
+                    if(description != "") {
+                        description += ", ";
+                    }
+                    description += "Anti-Stun +2 turns";
+                }
+                else if(entry.Key == "WEAKEN") {
+                    name = "Weaken";
+                    description = "+" + entry.Value + " turns";
+                }
+                else if(entry.Key == "VULN") {
+                    name = "Mark vulnerable";
+                    description = "Target vulnerable +" + entry.Value + " turns";
+                }
                 else {
                     name = entry.Key;
                     description = entry.Value;

@@ -32,6 +32,7 @@ public class MapNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
     }
 
     private IEnumerator WaitForLoad() {
@@ -150,7 +151,7 @@ public class MapNode : MonoBehaviour
     }
 
     private void OnMouseOver() {
-        if (Input.GetMouseButtonUp (0)) {
+        if (Input.GetMouseButtonUp (0) && MapManager.Instance.destinationsClickable) {
             Debug.Log("clicked node id: " + instanceId);
             mapManager.SetMovementSelection(this);
         }

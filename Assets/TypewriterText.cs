@@ -13,6 +13,7 @@ public class TypewriterText : MonoBehaviour
     private List<string> words;
     public AudioSource typewriter;
     public AudioClip typewriterClip;
+    public bool doneTyping = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +58,7 @@ public class TypewriterText : MonoBehaviour
             }
         }
 
-
+        doneTyping = true;
     }
 
     // Update is called once per frame

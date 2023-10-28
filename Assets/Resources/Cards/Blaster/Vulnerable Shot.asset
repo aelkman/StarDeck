@@ -16,15 +16,17 @@ MonoBehaviour:
   artwork: {fileID: 21300000, guid: 87b6e1443a8663e4facf48c936ce941f, type: 3}
   manaCost: 1
   actionKeys:
-  - ATK
   - VULN
+  - ATK
   actionValues:
-  - 7,1
   - 1
+  - 7,1
   description: 
   type: Blaster
   subType: Shot
-  category: 
   isTarget: 1
   isAttack: 1
+  isPower: 0
+  isSkill: 0
+  isStarter: 0
   rarity: C

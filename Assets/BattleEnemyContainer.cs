@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering.Universal;
+using System.Linq;
 
 public class BattleEnemyContainer : BaseCharacterInfo
 {
@@ -12,7 +13,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject nextAction;
     public GameObject damagePrefab;
     public GameObject healPrefab;
-    private BattleEnemyManager BEM;
     public ParticleSystem effectSystem;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
@@ -23,13 +23,17 @@ public class BattleEnemyContainer : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
+        counterQueue = new StackList<KeyValuePair<string, string>>();
+        counterTypes = new StackList<string>();
+        battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        BEM = transform.parent.parent.GetComponent<BattleEnemyManager>();
             // iceSystem.transform.localPosition = new Vector3(iceSystem.transform.localPosition.x, iceSystem.transform.localPosition.y - battleEnemy.yOffset, iceSystem.transform.localPosition.z);
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         nextMoveYOffset = battleEnemy.nextMoveYOffset;
         enemyAnimator = transform.parent.GetComponent<EnemyAnimator>();
         shieldSystem.Stop();
-        BEM = transform.parent.parent.GetComponent<BattleEnemyManager>();
-        actions = battleEnemy.actions;
+        actions = Resources.LoadAll<Card>("BattleEnemies/BattleEnemyActions/" + battleEnemy.name).ToList();
+        // actions = battleEnemy.actions;
         singleTargetManagerGO = GameObject.Find("SingleTargetManager");
         singleTargetManager = singleTargetManagerGO.GetComponent<SingleTargetManager>();
         // healthBarGO = Instantiate(healthBarPrefab);
@@ -148,7 +152,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 possibleActions.RemoveAll(x => x.actions.ContainsKey("TAUNT"));
                 var attackCard = new Card();
                 attackCard.actions = new Dictionary<string, string>();
-                attackCard.actions.Add("ATK_RND", "8, 12");
+                attackCard.actions.Add("ATK_RND", "8, 20");
                 possibleActions.Add(attackCard);
             }
         }

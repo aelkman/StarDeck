@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource freeze;
     public AudioSource arcanePower;
     public AudioSource shield;
+    public AudioSource glassBreak;
+    public AudioSource counter;
     private void Awake()
     {
         // start of new code
@@ -74,5 +76,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayShield() {
         shield.Play();
+    }
+
+    public void PlayGlassBreak() {
+        glassBreak.Play();
+    }
+
+    public void PlayCounter() {
+        counter.Play();
     }
 }

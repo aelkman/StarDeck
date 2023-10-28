@@ -8,6 +8,11 @@ public class HealthBar : MonoBehaviour
 
 	public Slider slider;
 	public Image fill;
+	public GameObject health;
+
+	void Start() {
+		health.GetComponent<Canvas>().sortingLayerName = "Character Layer";
+	}
 
 	public void SetMaxHealth(int health)
 	{

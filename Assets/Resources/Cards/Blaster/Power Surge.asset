@@ -26,7 +26,9 @@ MonoBehaviour:
   description: When you reload, gain 1 mana, and draw 1 card
   type: Blaster
   subType: 
-  category: Power
   isTarget: 0
   isAttack: 0
+  isPower: 1
+  isSkill: 0
+  isStarter: 0
   rarity: R

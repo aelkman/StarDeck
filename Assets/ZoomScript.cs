@@ -11,6 +11,8 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] float minSize = 0.5f;
     [SerializeField] float maxSize = 1;
     public float initialZoom = 1.5f;
+    public Animator mapIntroText;
+    public GameObject introText;
  
     [SerializeField] private float zoomRate = 5;
     private float currentScale = 0f;
@@ -40,6 +42,10 @@ public class ZoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             rt.localPosition = newPos;
             yield return new WaitForSeconds(time);
         }
+
+        mapIntroText.SetTrigger("Start");
+        yield return new WaitForSeconds(0.5f);
+        introText.SetActive(true);
     }
 
     public void LerpToPos(Vector3 pos) {

@@ -179,6 +179,7 @@ public class DiceRoller : MonoBehaviour
         }
         Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
         diceContainer.SetActive(false);
+        mapManager.destinationsClickable = true;
         mapManager.LoadNextLevel(nextLevel);
     }
 

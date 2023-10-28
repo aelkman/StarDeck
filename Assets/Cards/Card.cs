@@ -15,9 +15,11 @@ public class Card : ScriptableObject, ISerializationCallbackReceiver
     public string description;
     public string type;
     public string subType;
-    public string category;
     public bool isTarget;
     public bool isAttack;
+    public bool isPower;
+    public bool isSkill;
+    public bool isStarter;
     public string rarity;
 
     public void OnBeforeSerialize()

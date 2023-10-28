@@ -120,6 +120,7 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 ps.tauntTurns = 0;
                 ps.blind = 0;
                 ps.vuln = 0;
+                ps.weak = 0;
                 usePotion = true;
             }
             else {

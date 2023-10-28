@@ -25,7 +25,7 @@ public class CardUISelector : MonoBehaviour
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();
         foreach(Card card in cards) {
-            if (card.category != "Starter") {
+            if (!card.isStarter) {
                 cardsListFiltered.Add(card);
             }
         }
@@ -53,24 +53,24 @@ public class CardUISelector : MonoBehaviour
         int rarityDiff_C = 0;
         int rarityDiff_U = 0;
         if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
-            rarityDiff_C = 2;
-            rarityDiff_U = 1;
+            rarityDiff_C = 10;
+            rarityDiff_U = 5;
         }
 
-        // current odds: 66.66/25/8.33
-        // golden ticket odds: 50/33.33/16.66
+        // current odds: 70/25/5
+        // golden ticket odds: 60/30/10
 
-        var rarityIndex = Random.Range(0, 13);
+        var rarityIndex = Random.Range(0, 99);
         Debug.Log("random card index: " + rarityIndex);
-        if(rarityIndex >= 0 && rarityIndex <= 8 - rarityDiff_C) {
+        if(rarityIndex >= 0 && rarityIndex <= 69 - rarityDiff_C) {
             // common type
             return (Card)commonCards[Random.Range(0, commonCards.Count)];
         }
-        else if(rarityIndex > 8 - rarityDiff_C && rarityIndex <= 11 - rarityDiff_U) {
+        else if(rarityIndex >= 70 - rarityDiff_C && rarityIndex <= 94 - rarityDiff_U) {
             // uncommon type
             return (Card)uncommonCards[Random.Range(0, uncommonCards.Count)];
         }
-        else if(rarityIndex >= 12 - rarityDiff_U) {
+        else if(rarityIndex >= 95 - rarityDiff_U) {
             // rare type
             return (Card)rareCards[Random.Range(0, rareCards.Count)];
         }

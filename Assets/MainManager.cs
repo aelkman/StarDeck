@@ -18,6 +18,8 @@ public class MainManager : MonoBehaviour, IDisposable
     public int maxCharges = 3;
     public MapNode currentNode;
     public float vulnerableModifier = 1.5f;
+    public float tauntBonus = 0.0f;
+    public float weakenedModifier = 0.5f;
 
     public List<string> artifacts = new List<string>();
     public List<Potion> potions = new List<Potion>();
@@ -52,6 +54,9 @@ public class MainManager : MonoBehaviour, IDisposable
         if(codeName == "EXTRA_CHARGE") {
             maxCharges += 1;
         }
+        if(codeName == "TAUNT_IRE") {
+            tauntBonus = 0.5f;
+        }
         artifacts.Add(codeName);
     }
 
@@ -67,6 +72,10 @@ public class MainManager : MonoBehaviour, IDisposable
         playerHealth += (int)(playerMaxHealth * percent);
         if(playerHealth > playerMaxHealth) {
             playerHealth = playerMaxHealth;
+        }
+        if(GameObject.Find("PlayerContainer") != null) {
+            var playerStats = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+            playerStats.health = MainManager.Instance.playerHealth;
         }
     }
 

@@ -81,7 +81,7 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             }
             MainManager.Instance.coinCount -= price;
             removalUISelector.selectedCard.GetComponent<RemovalUIActions>().CardPlay();
-            // deck.cardStack.items.Remove(removalUISelector.selectedCard.GetComponent<CardDisplay>().card);
+            deck.cardStack.items.Remove(removalUISelector.selectedCard.GetComponent<CardDisplay>().card);
             yield return new WaitForSeconds(1.0f);
             // ToggleActive();
             if(isRemovalEvent) {

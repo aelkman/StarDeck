@@ -12,9 +12,13 @@ public class BaseCharacterInfo : MonoBehaviour
     public HealthBar healthBar;
     public GameObject swordPrefab;
     public GameObject vulnPrefab;
+    public GameObject weakenPrefab;
     public GameObject tauntPrefab;
+    public GameObject counterPrefab;
     public ShockPlayer shockPlayer;
     public CharacterAnimator characterAnimator;
+    public BattleEnemyManager BEM;
+    public BattleManager battleManager;
     public int block = 0;
     public int vuln = 0;
     public int weak = 0;
@@ -22,6 +26,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public int maxHealth;
     public int health;
     public int stunnedTurns = 0;
+    public int antiStunTurns = 0;
     public bool isDead = false;
     public int atkMod;
     public int frostStacks;
@@ -29,6 +34,8 @@ public class BaseCharacterInfo : MonoBehaviour
     public float nextMoveYOffset;
     public bool isTaunter = false;
     public bool frozenTurn = false;
+    public StackList<KeyValuePair<string, string>> counterQueue;
+    public StackList<string> counterTypes;
     // Start is called before the first frame update
     void Start()
     {
@@ -109,6 +116,12 @@ public class BaseCharacterInfo : MonoBehaviour
         }
     }
 
+    public void RemoveSingleAntiStun() {
+        if (antiStunTurns > 0) {
+            antiStunTurns -= 1;
+        }
+    }
+
     public void SwordAnimation() {
         GameObject swordAnimationInsance = Instantiate(swordPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
         swordAnimationInsance.transform.localPosition = new Vector3(swordAnimationInsance.transform.localPosition.x, swordAnimationInsance.transform.localPosition.y + nextMoveYOffset, swordAnimationInsance.transform.localPosition.z);
@@ -119,9 +132,19 @@ public class BaseCharacterInfo : MonoBehaviour
         vulnAnimationInsance.transform.localPosition = new Vector3(vulnAnimationInsance.transform.localPosition.x, vulnAnimationInsance.transform.localPosition.y + nextMoveYOffset, vulnAnimationInsance.transform.localPosition.z);
     }
 
+    public void WeakenAnimation() {
+        GameObject weakenAnimationInsance = Instantiate(weakenPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        weakenAnimationInsance.transform.localPosition = new Vector3(weakenAnimationInsance.transform.localPosition.x, weakenAnimationInsance.transform.localPosition.y + nextMoveYOffset, weakenAnimationInsance.transform.localPosition.z);
+    }
+
     public void TauntAnimation() {
         GameObject tauntAnimationInsance = Instantiate(tauntPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
         tauntAnimationInsance.transform.localPosition = new Vector3(tauntAnimationInsance.transform.localPosition.x, tauntAnimationInsance.transform.localPosition.y + nextMoveYOffset, tauntAnimationInsance.transform.localPosition.z);
+    }
+
+    public void CounterAnimation() {
+        GameObject counterAnimationInsance = Instantiate(counterPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        // counterAnimationInsance.transform.localPosition = new Vector3(counterAnimationInsance.transform.localPosition.x, counterAnimationInsance.transform.localPosition.y + nextMoveYOffset, counterAnimationInsance.transform.localPosition.z);
     }
 
     public void RemoveSingleVuln() {
@@ -162,20 +185,34 @@ public class BaseCharacterInfo : MonoBehaviour
         iceSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
-    public void AddFrost(int frost, float timeDelay) {
-        StartCoroutine(AddFrostTimed(frost, timeDelay));
+    public void AddFrost(int frost, float timeDelay, bool addAudio) {
+        StartCoroutine(AddFrostTimed(frost, timeDelay, addAudio));
     }
 
-    public IEnumerator AddFrostTimed(int frost, float timeDelay) {
-        for(int i = 0; i < frost; i++) {
+    public IEnumerator AddFrostTimed(int frost, float timeDelay, bool addAudio) {
+        if(!frozenTurn) {
             yield return new WaitForSeconds(timeDelay);
-            frostStacks += 1;
+            frostStacks += frost;
+            if(frostStacks > 3) {
+                frostStacks = 3;
+            }
+            if(addAudio && frostStacks < 3) {
+                AudioManager.Instance.PlayFreeze();
+            }
             iceStacks.SetStacks(frostStacks);
-            if(frostStacks >= 3) {
+            if(frostStacks == 3) {
+                if(antiStunTurns == 0) {
+                    // frostStacks = 0;
+                    frozenTurn = true;
+                    stunnedTurns = 1;
+                    StartCoroutine(delayedFrostReset());
+                }
+                else {
+                    frostStacks = 0;
+                    iceStacks.RemoveStacks();
+                }
                 // delay reset on frost counter
-                StartCoroutine(delayedFrostReset());
                 // trigger freeze on enemy
-
             }
         }
     }
@@ -187,9 +224,19 @@ public class BaseCharacterInfo : MonoBehaviour
         iceSystem.Clear();
         iceSystem.Play();
         // max of 1 stun turn, don't allow stacking
-        stunnedTurns = 1;
-        frozenTurn = true;
+        // frozenTurn = true;
         frostStacks = 0;
         iceStacks.RemoveStacks();
+    }
+
+    public void CharacterShield(int block) {
+        StartCoroutine(CharacterShieldSequence(block));
+    }
+
+    private IEnumerator CharacterShieldSequence(int block) {
+        addBlock(block);
+        characterAnimator.BlockAnimation();
+        yield return new WaitForSeconds(0.5f);
+        shieldAnimator.StartForceField();
     }
 }

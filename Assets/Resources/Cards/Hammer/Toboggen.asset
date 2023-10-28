@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
+  m_Name: Toboggen
+  m_EditorClassIdentifier: 
+  name: Toboggan
+  artwork: {fileID: 21300000, guid: fb14df13cd9fde74593c4a9c82729103, type: 3}
+  manaCost: 1
+  actionKeys:
+  - TOBOGGAN
+  actionValues:
+  - 3
+  description: Wheeee!<br><br>Draw 3 cards, for each skill drawn, gain +1 mana
+  type: Hammer
+  subType: 
+  isTarget: 0
+  isAttack: 0
+  isPower: 0
+  isSkill: 1
+  isStarter: 0
+  rarity: U

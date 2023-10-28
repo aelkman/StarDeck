@@ -38,6 +38,7 @@ public class BattleManager : MonoBehaviour
     private bool isPulseAmplifier = false;
     private bool isFrostWard = false;
     private bool isFyornsResolve = false;
+    public bool isIceBarricade = false;
     private bool hasReloaded = false;
     private bool isFirstEnemyAttack = true;
     public bool isCharacterMissing = false;
@@ -45,15 +46,13 @@ public class BattleManager : MonoBehaviour
     public ScryUISelector scryUISelector;
     public bool isScryComplete = false;
     public Button endTurnButton;
-    private StackList<KeyValuePair<string, string>> counterQueue;
-    private StackList<string> counterTypes;
+
     private float hammerAttackTime = 0.5f;
-    private float blasterAttackTime = 0.1f;
+    private float blasterAttackTime = 0.3f;
+    public FlashImage flashImage;
     // Start is called before the first frame update
     void Start()
     {
-        counterQueue = new StackList<KeyValuePair<string, string>>();
-        counterTypes = new StackList<string>();
         ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
@@ -139,10 +138,15 @@ public class BattleManager : MonoBehaviour
                 if(cardDisplay.card.actions.ContainsKey("ATK")){
                     strings = cardDisplay.card.actions["ATK"].Split(',').ToList();
                 } 
-                else {
+                else if(cardDisplay.card.actions.ContainsKey("ATK_ALL")){
                     strings = cardDisplay.card.actions["ATK_ALL"].Split(',').ToList();
                 }
-                // attack = Int32.Parse(strings[0]);
+                else if(cardDisplay.card.actions.ContainsKey("FINAL_BLOW")){
+                    strings = cardDisplay.card.actions["FINAL_BLOW"].Split(',').ToList();
+                }
+                else {
+                    throw new Exception("Invalid actions type for Blaster CheckCanAct! " + string.Join(Environment.NewLine, cardDisplay.card.actions));
+                }
 
                 if(strings[1] == "X"){
                     multi = playerStats.stats.mana;
@@ -244,14 +248,13 @@ public class BattleManager : MonoBehaviour
                         else {
                             if(playerStats.tauntTurns > 0) {
                                 STM.SetTarget(playerStats.tauntingEnemy);
-                                atkMod += 0.2f;
+                                atkMod += MainManager.Instance.tauntBonus;
                             }
                             STMPos = STM.GetTarget().transform.position;
                         }
 
                         if(isFyornsResolve) {
-                            playerStats.addBlock(1);
-                            StartCoroutine(PlayerShieldSequence());
+                            playerStats.CharacterShield(1);
                         }
 
                         bool isLast = i == (multi - 1);
@@ -271,12 +274,16 @@ public class BattleManager : MonoBehaviour
                         }
 
                         if(!isCharacterMissing) {
-                            int damage = (int)Math.Round((float)attack * atkMod);
+                            int damage = (int)Math.Round(((float)attack + playerStats.getAtkMod()) * atkMod);
+                            damage = WeakenedDamage(damage, playerStats);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
                                 // if player using hammer, then add a stack
                                 if(cardType == "Hammer") {
-                                    STM.GetTarget().AddFrost(1, hammerAttackTime);
+                                    if(isIceBarricade && STM.GetTarget().frostStacks + 1 >= 3) {
+                                        playerStats.CharacterShield(5);
+                                    }
+                                    STM.GetTarget().AddFrost(1, hammerAttackTime, false);
                                 }
                                 StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
@@ -333,8 +340,7 @@ public class BattleManager : MonoBehaviour
                         playerStats.DoubleBlock();
                     }
                     else{
-                        playerStats.addBlock(Int32.Parse(item.Value));
-                        StartCoroutine(PlayerShieldSequence());
+                        playerStats.CharacterShield(Int32.Parse(item.Value));
                     }
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
                     break;
@@ -347,13 +353,17 @@ public class BattleManager : MonoBehaviour
                         playerStats.addBlock(blocks[0]);
                     }
 
-                    StartCoroutine(PlayerShieldSequence());
+                    playerStats.CharacterShield(0);
                     break;
                 case "DRAW":
                     handManager.DrawCards(Int32.Parse(item.Value));
                     break;
                 case "DRAW_PULSE":
                     DrawPulse();
+                    break;
+                case "ICE_STACK":
+                    playerStats.playerAnimator.CastAnimation();
+                    STM.GetTarget().AddFrost(Int32.Parse(item.Value), 0.5f, true);
                     break;
                 case "HACK":
                     // perform hacking animation here
@@ -370,18 +380,31 @@ public class BattleManager : MonoBehaviour
                         }
                     }));
                     break;
+                case "TOBOGGAN":
+                    StartCoroutine(handManager.DrawCardsTimed(Int32.Parse(item.Value), cardsReturnValue => {
+                        foreach(Card card in cardsReturnValue) {
+                            if (card.isSkill) {
+                                playerStats.addMana(1);
+                            }
+                        }
+                    }));
+                    break;
                 case "STN":
                     // STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
-                    STM.GetTarget().stunnedTurns = 1;
-                    Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
-                    STM.GetTarget().ShockAnimation();
+                    if(STM.GetTarget().antiStunTurns == 0) {
+                        STM.GetTarget().stunnedTurns = 1;
+                        Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
+                        STM.GetTarget().ShockAnimation();
+                    }
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
                     break;
                 case "STN_ALL":
                     foreach(var be in battleEnemies) {
+                        if(be.antiStunTurns == 0) {
+                            be.stunnedTurns = 1;
+                            be.ShockAnimation();
+                        }
                         // be.stunnedTurns += Int32.Parse(item.Value);
-                        be.stunnedTurns = 1;
-                        be.ShockAnimation();
                     }
                     break;
                 case "VULN":
@@ -419,7 +442,8 @@ public class BattleManager : MonoBehaviour
                     //     throw new Exception("Invalid FINAL_BLOW attributes! Must be 4 strings comma separated.");
                     // }
 
-                    int dmg = Int32.Parse(finalBlow[0]);
+                    int dmg = Int32.Parse(finalBlow[0]) + playerStats.getAtkMod();
+                    dmg = WeakenedDamage(dmg, playerStats);
                     int multiplier = Int32.Parse(finalBlow[1]);
 
                     // unfortunate code copying, but refacting is too much work
@@ -500,6 +524,11 @@ public class BattleManager : MonoBehaviour
                         AudioManager.Instance.PlayFreeze();
                         isFyornsResolve = true;
                     }
+                    else if(item.Value == "ICE_BARRICADE") {
+                        playerStats.iceAura.Play();
+                        AudioManager.Instance.PlayFreeze();
+                        isIceBarricade = true;
+                    }
                     break;
                 case "CAST":
                     playerStats.playerAnimator.CastAnimation();
@@ -514,10 +543,23 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "COUNTER": 
                     var nextAction = card.actions.ToList()[x+1];
-                    counterQueue.Push(nextAction);
-                    counterTypes.Push(cardType);
+                    playerStats.counterQueue.Push(nextAction);
+                    playerStats.counterTypes.Push(cardType);
                     // now, skip the next action in the loop
                     x+=1;
+                    break;
+                case "WEAKEN":
+                    playerStats.playerAnimator.CastAnimation();
+                    STM.GetTarget().WeakenAnimation();
+                    yield return new WaitForSeconds(0.3f);
+                    AudioManager.Instance.PlayGlassBreak();
+                    STM.GetTarget().weak += Int32.Parse(item.Value);
+                    break;
+                case "WEAKEN_ALL":
+                    foreach(var be in battleEnemies) {
+                        be.weak += Int32.Parse(item.Value);
+                        // hail vfx here?
+                    }
                     break;
                 default:
                     break;
@@ -543,14 +585,18 @@ public class BattleManager : MonoBehaviour
         newCard.actions = new Dictionary<string, string>();
         newCard.actions[keyValuePair.Key] = keyValuePair.Value;
         STM.SetTarget(be);
+        AudioManager.Instance.PlayCounter();
+        playerStats.CounterAnimation();
+        flashImage.Flash(0.2f, 0f, 0.3f, Color.black);
         StartCoroutine(CardAction(newCard));
     }
 
-    private IEnumerator PlayerShieldSequence() {
-        playerStats.playerAnimator.BlockAnimation();
-        yield return new WaitForSeconds(0.5f);
-        playerStats.shieldAnimator.StartForceField();
-    }
+    // deprecated, moved to BaseCharacterInfo as CharacterShield()
+    // private IEnumerator PlayerShieldSequence() {
+    //     playerStats.playerAnimator.BlockAnimation();
+    //     yield return new WaitForSeconds(0.5f);
+    //     playerStats.shieldAnimator.StartForceField();
+    // }
 
     private void HammerAttack(bool isLast) {
         StartCoroutine(HammerAttackTimed(isLast));
@@ -665,7 +711,6 @@ public class BattleManager : MonoBehaviour
                     else {
                         battleEnemy.ShockAnimation();
                     }
-                    battleEnemy.stunnedTurns -= 1; 
                 }
                 else {
                     foreach(var item in randomAction.actions) {
@@ -694,20 +739,21 @@ public class BattleManager : MonoBehaviour
                                     yield return new WaitForSeconds(1.0f);
                                 }
 
-                                if(counterQueue.Count() > 0) {
-                                    while(counterQueue.Count() > 0) {
-                                        var counter = counterQueue.Pop();
-                                        var type = counterTypes.Pop();
+                                if(playerStats.counterQueue.Count() > 0) {
+                                    while(playerStats.counterQueue.Count() > 0) {
+                                        var counter = playerStats.counterQueue.Pop();
+                                        var type = playerStats.counterTypes.Pop();
                                         CreateActionFromPair(counter, type, battleEnemy);
-                                        if(type == "Hammer") {
-                                            yield return new WaitForSeconds(hammerAttackTime);
-                                        }
-                                        else if(type == "Blaster") {
-                                            yield return new WaitForSeconds(blasterAttackTime);
-                                        }
-                                        else {
-                                            yield return new WaitForSeconds(0.5f);
-                                        }
+                                        // if(type == "Hammer") {
+                                        //     yield return new WaitForSeconds(hammerAttackTime);
+                                        // }
+                                        // else if(type == "Blaster") {
+                                        //     yield return new WaitForSeconds(blasterAttackTime);
+                                        // }
+                                        // else {
+                                        //     yield return new WaitForSeconds(0.5f);
+                                        // }
+                                        yield return new WaitForSeconds(1.0f);
 
                                         // if enemy died or is last, then break
                                         if(enemyActions.Count <= x) {
@@ -731,46 +777,51 @@ public class BattleManager : MonoBehaviour
                                     continue;
                                 }
 
-                                for (int i = 0; i < multi; i++) {
-                                    // Vector3 STMPos;
-                                    isCharacterMissing = DidTargetMiss(battleEnemy);
-                                    // if(isCharacterMissing) {
-                                    //     Vector3 targPos = playerStats.transform.position;
-                                    //     STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
-                                    // }
+                                if(battleEnemy.stunnedTurns == 0) {
+                                    for (int i = 0; i < multi; i++) {
+                                        // Vector3 STMPos;
+                                        isCharacterMissing = DidTargetMiss(battleEnemy);
+                                        // if(isCharacterMissing) {
+                                        //     Vector3 targPos = playerStats.transform.position;
+                                        //     STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
+                                        // }
 
-                                    battleEnemy.characterAnimator.AttackAnimation();
+                                        battleEnemy.characterAnimator.AttackAnimation();
 
-                                    bool isLast = i == (multi - 1);
+                                        bool isLast = i == (multi - 1);
 
-                                    if(!isCharacterMissing) {
+                                        if(!isCharacterMissing) {
 
-                                        var atkDmg = attack;
+                                            var atkDmg = attack + battleEnemy.getAtkMod();
+                                            atkDmg = WeakenedDamage(atkDmg, battleEnemy);
 
-                                        if(playerStats.hasBlock()) {
-                                            if(playerStats.getBlock() <= atkDmg) {
-                                                atkDmg = atkDmg - playerStats.getBlock();
-                                                playerStats.setBlock(0);
-                                                playerStats.shieldAnimator.StopForceField();
+                                            if(playerStats.hasBlock()) {
+                                                if(playerStats.getBlock() <= atkDmg) {
+                                                    atkDmg = atkDmg - playerStats.getBlock();
+                                                    playerStats.setBlock(0);
+                                                    playerStats.shieldAnimator.StopForceField();
+                                                }
+                                                else {
+                                                    playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                                    atkDmg = 0;
+                                                }
                                             }
-                                            else {
-                                                playerStats.setBlock(playerStats.getBlock() - atkDmg);
-                                                atkDmg = 0;
-                                            }
+                                            playerStats.takeDamage(atkDmg);
+                                            playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                                         }
-                                        playerStats.takeDamage(atkDmg);
-                                        playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
-                                    }
-                                    if(playerStats.isDead) {
-                                        // should work since its not a coroutine to take damage
-                                        isLast = true;
-                                        i = multi;
-                                    }
+                                        if(playerStats.isDead) {
+                                            // should work since its not a coroutine to take damage
+                                            isLast = true;
+                                            i = multi;
+                                        }
 
-                                    if (!isLast) {
-                                        yield return new WaitForSeconds(0.2f);
+                                        if (!isLast) {
+                                            yield return new WaitForSeconds(0.2f);
+                                        }
                                     }
                                 }
+
+
                                 break;
                             case "ATK_RND":
 
@@ -788,20 +839,21 @@ public class BattleManager : MonoBehaviour
                                         yield return new WaitForSeconds(1.0f);
                                     }
 
-                                    if(counterQueue.Count() > 0) {
-                                        while(counterQueue.Count() > 0) {
-                                            var counter = counterQueue.Pop();
-                                            var type = counterTypes.Pop();
+                                    if(playerStats.counterQueue.Count() > 0) {
+                                        while(playerStats.counterQueue.Count() > 0) {
+                                            var counter = playerStats.counterQueue.Pop();
+                                            var type = playerStats.counterTypes.Pop();
                                             CreateActionFromPair(counter, type, battleEnemy);
-                                            if(type == "Hammer") {
-                                                yield return new WaitForSeconds(hammerAttackTime);
-                                            }
-                                            else if(type == "Blaster") {
-                                                yield return new WaitForSeconds(blasterAttackTime);
-                                            }
-                                            else {
-                                                yield return new WaitForSeconds(0.5f);
-                                            }
+                                            // if(type == "Hammer") {
+                                            //     yield return new WaitForSeconds(hammerAttackTime);
+                                            // }
+                                            // else if(type == "Blaster") {
+                                            //     yield return new WaitForSeconds(blasterAttackTime);
+                                            // }
+                                            // else {
+                                            //     yield return new WaitForSeconds(0.5f);
+                                            // }
+                                            yield return new WaitForSeconds(1.0f);
 
                                             // if enemy died or is last, then break
                                             if(enemyActions.Count <= x) {
@@ -825,33 +877,39 @@ public class BattleManager : MonoBehaviour
                                         continue;
                                     }
 
-                                    int atkDmg = UnityEngine.Random.Range(randAttack[0], randAttack[1] + 1);
-                                    atkDmg += battleEnemy.getAtkMod();
-                                    Debug.Log("attack action: " + atkDmg);
-                                    switch(battleEnemy.battleEnemy.name) {
-                                        case "GoldBot":
-                                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().GoldBot_Melee_1();
-                                            yield return new WaitForSeconds(0.75f);
-                                            break;
-                                        default:
-                                            battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
-                                            break;
-                                    }
-                                    isCharacterMissing = DidTargetMiss(battleEnemy);
-                                    if(!isCharacterMissing) {
-                                        if(playerStats.hasBlock()) {
-                                            if(playerStats.getBlock() <= atkDmg) {
-                                                atkDmg = atkDmg - playerStats.getBlock();
-                                                playerStats.setBlock(0);
-                                                playerStats.shieldAnimator.StopForceField();
-                                            }
-                                            else {
-                                                playerStats.setBlock(playerStats.getBlock() - atkDmg);
-                                                atkDmg = 0;
-                                            }
+                                    if(battleEnemy.stunnedTurns == 0) {
+
+
+                                        int atkDmg = UnityEngine.Random.Range(randAttack[0], randAttack[1] + 1);
+                                        atkDmg += battleEnemy.getAtkMod();
+                                        atkDmg = WeakenedDamage(atkDmg, battleEnemy);
+                                        Debug.Log("attack action: " + atkDmg);
+
+                                        switch(battleEnemy.battleEnemy.name) {
+                                            case "GoldBot":
+                                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().GoldBot_Melee_1();
+                                                yield return new WaitForSeconds(0.75f);
+                                                break;
+                                            default:
+                                                battleEnemy.transform.parent.GetComponent<EnemyAnimator>().AttackAnimation();
+                                                break;
                                         }
-                                        playerStats.takeDamage(atkDmg);
-                                        playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                                        isCharacterMissing = DidTargetMiss(battleEnemy);
+                                        if(!isCharacterMissing) {
+                                            if(playerStats.hasBlock()) {
+                                                if(playerStats.getBlock() <= atkDmg) {
+                                                    atkDmg = atkDmg - playerStats.getBlock();
+                                                    playerStats.setBlock(0);
+                                                    playerStats.shieldAnimator.StopForceField();
+                                                }
+                                                else {
+                                                    playerStats.setBlock(playerStats.getBlock() - atkDmg);
+                                                    atkDmg = 0;
+                                                }
+                                            }
+                                            playerStats.takeDamage(atkDmg);
+                                            playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
+                                        }
                                     }
                                 }
                                 break;
@@ -899,6 +957,29 @@ public class BattleManager : MonoBehaviour
                             case "LAUGH":
                                 ((EnemyAnimator)battleEnemy.characterAnimator).LaughAnimation();
                                 break;
+                            case "REMOVE_DEBUFF":
+                                battleEnemy.characterAnimator.CastAnimation();
+                                AudioManager.Instance.PlayArcanePower();
+                                battleEnemy.frostStacks = 0;
+                                battleEnemy.vuln = 0;
+                                battleEnemy.weak = 0;
+                                battleEnemy.blind = 0;
+                                break;
+                            case "ANTI_STUN":
+                                battleEnemy.antiStunTurns += 2;
+                                break;
+                            case "VULN":
+                                playerStats.VulnerableAnimation();
+                                playerStats.AddVuln(1);
+                                battleEnemy.characterAnimator.CastAnimation();
+                                AudioManager.Instance.PlayGlassBreak();
+                                break;
+                            case "WEAKEN":
+                                battleEnemy.characterAnimator.CastAnimation();
+                                AudioManager.Instance.PlayGlassBreak();
+                                playerStats.weak += Int32.Parse(item.Value);
+                                playerStats.WeakenAnimation();
+                                break;
                             default:
                                 break;
                         }
@@ -912,6 +993,13 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(EndEnemyTurn());
     }
 
+    public int WeakenedDamage(int damage, BaseCharacterInfo attacker) {
+        if(attacker.weak > 0) {
+            return (int)Mathf.Round(damage * MainManager.Instance.weakenedModifier);
+        }
+        else return damage;
+    }
+
     public void EndPlayerTurn() {
         AudioManager.Instance.PlayButtonPress();
         endTurnButton.interactable = false;
@@ -920,6 +1008,7 @@ public class BattleManager : MonoBehaviour
         playerStats.RemoveSingleBlind();
         playerStats.RemoveSingleVuln();
         playerStats.RemoveSingleTaunt();
+        playerStats.RemoveSingleWeak();
     }
 
     public IEnumerator EndEnemyTurn() {
@@ -945,6 +1034,9 @@ public class BattleManager : MonoBehaviour
             }
             be.RemoveSingleVuln();
             be.RemoveSingleBlind();
+            be.RemoveSingleWeak();
+            be.RemoveSingleAntiStun();
+            be.stunnedTurns = 0;
         }
         endTurnButton.interactable = true;
     }

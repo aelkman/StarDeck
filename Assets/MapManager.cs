@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MapManager : MonoBehaviour
 {
     public GameObject mapArrow;
+    public CanvasGroup destinationsCG;
     private MapNode currentNode;
     public MainManager mainManager;
     public MapNode movementSelection;
@@ -18,6 +19,28 @@ public class MapManager : MonoBehaviour
     public ZoomScript zoomScript;
     public bool sceneTest;
     public string sceneNameOverride;
+    public bool destinationsClickable = true;
+    public List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket" }; 
+
+    private static MapManager _instance;
+
+    public static MapManager Instance 
+    { 
+        get { return _instance; } 
+    } 
+
+    void Awake()
+    {
+        if (_instance != null && _instance != this) 
+        { 
+            Destroy(this.gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,17 +110,18 @@ public class MapManager : MonoBehaviour
             StartCoroutine(LoadLevel(destinationName));
         }
         else if(destinationName == "Event") {
-            List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket" };
             var randIndex = Random.Range(0, eventScenes.Count);
             StartCoroutine(LoadLevel(eventScenes[randIndex]));
         }
         else if(destinationName == "Unknown") {
             diceRoller.eventName = "Unknown";
             diceContainer.SetActive(true);
+            destinationsClickable = false;
         }
         else if(destinationName == "Chest") {
             diceRoller.eventName = "Chest";
             diceContainer.SetActive(true);
+            destinationsClickable = false;
         }
         else {         
             StartCoroutine(LoadLevel(destinationName));

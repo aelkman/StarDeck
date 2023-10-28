@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class CardDisplay : MonoBehaviour
 {
     public Card card;
-
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
     public Image artworkImage;
@@ -51,7 +50,13 @@ public class CardDisplay : MonoBehaviour
         }
 
         nameText.text = card.name;
-        descriptionText.text = card.description + "<br>" + DescriptionParser();
+        if(card.description != "") {
+            descriptionText.text = card.description + "<br>";
+        }
+        else {
+            descriptionText.text = "";
+        }
+        descriptionText.text += DescriptionParser();
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
         // if (card.actions.ContainsKey("ATK")) {
@@ -120,7 +125,7 @@ public class CardDisplay : MonoBehaviour
                     descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
                     break;
                 case "BLIND_ALL":
-                    descriptionAdditional += "<br>Blind " + item.Value + " turn";
+                    descriptionAdditional += "<br>Blind ALL" + item.Value + " turn";
                     break;
                 case "DEF":
                     if(item.Value == "2X") {
@@ -130,14 +135,22 @@ public class CardDisplay : MonoBehaviour
                         descriptionAdditional += "<br>Block " + item.Value + "";
                     }
                     break;
+                case "ICE_STACK":
+                    descriptionAdditional += "<br>Apply " + item.Value + " ice stacks";
+                    break;
                 case "STN":
                     descriptionAdditional += "<br>Stun " + item.Value + " turn";
                     break;
                 case "STN_ALL":
-                    descriptionAdditional += "<br>Stun " + item.Value + " turn";
+                    descriptionAdditional += "<br>Stun ALL " + item.Value + " turn";
                     break;  
                 case "VULN":
-                    descriptionAdditional += "<br>Vulnerable " + item.Value + " turn";
+                    if(card.isTarget) {
+                        descriptionAdditional += "<br>Target vulnerable " + item.Value + " turn";
+                    }
+                    else {
+                        descriptionAdditional += "<br>Self vulnerable " + item.Value + " turn";
+                    }
                     break;
                 case "RELOAD":
                     descriptionAdditional += "<br>Reload";
@@ -157,6 +170,12 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "COUNTER":
                     descriptionAdditional += "<br>Counter";
+                    break;
+                case "WEAKEN":
+                    descriptionAdditional += "<br>Weaken target " + item.Value + " turn";
+                    break;
+                case "WEAKEN_ALL":
+                    descriptionAdditional += "<br>Weaken ALL " + item.Value + " turn";
                     break;
                 default:
                     break;
