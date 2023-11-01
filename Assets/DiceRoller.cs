@@ -155,22 +155,25 @@ public class DiceRoller : MonoBehaviour
         if(eventName == "Chest") {
             if(UpperSideTxt.text == "Enemy") {
                 MainManager.Instance.currentNode.enemies.Add("Chest");
+                MainManager.Instance.currentNode.destinationName = "Enemy";
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
                     Debug.Log("enemy: " + e);
                 }
             }
             else {
-                nextLevel = "ChestScene";
+                nextLevel = "Chest";
             }
         }
         else if(eventName == "Unknown") {
             if(UpperSideTxt.text == "Enemy") {
+                MainManager.Instance.currentNode.destinationName = "Enemy";
                 MainManager.Instance.currentNode.GenerateEnemyGroup();
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
                     Debug.Log("enemy: " + e);
                 }
             }
             else if(UpperSideTxt.text == "Mini-Boss") {
+                MainManager.Instance.currentNode.destinationName = "Mini-Boss";
                 MainManager.Instance.currentNode.GenerateBossGroup("MiniBoss");
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
                     Debug.Log("enemy: " + e);

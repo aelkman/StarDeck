@@ -17,7 +17,7 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public GameObject coinsReward;
     public GameObject items;
     public PotionRewardButton potionRewardButton;
-    public ArtifactDisplay artifactDisplay;
+    public GameObject artifactDisplay;
     public CoinsEarned coinsEarned;
     public List<GameObject> rewards;
     private float noDamageMultiplier = 1.5f;
@@ -43,25 +43,25 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
 
         if(MainManager.Instance.currentNode.destinationName == "Mini-Boss") {
-            artifactDisplay.gameObject.SetActive(true);
-            rewards.Add(artifactDisplay.gameObject);
+            artifactDisplay.SetActive(true);
+            rewards.Add(artifactDisplay);
         }
         else {
-            artifactDisplay.gameObject.SetActive(false);
+            artifactDisplay.SetActive(false);
         }
 
-        PlaceRewards();
+        // PlaceRewards();
         cardsRewards.SetActive(false);
     }
 
-    private void PlaceRewards() {
-        for(int i = 0; i < rewards.Count; i++) {
-            var reward = rewards[i];
-            reward.transform.localPosition = new Vector3(i*itemDisplacement, 0f, 0f);
-        }
-        var itemsPos = items.transform.localPosition;
-        items.transform.localPosition = new Vector3((rewards.Count-1) * -itemDisplacement/2, itemsPos.y, 0f);
-    }
+    // private void PlaceRewards() {
+    //     for(int i = 0; i < rewards.Count; i++) {
+    //         var reward = rewards[i];
+    //         reward.transform.localPosition = new Vector3(i*itemDisplacement, 0f, 0f);
+    //     }
+    //     var itemsPos = items.transform.localPosition;
+    //     items.transform.localPosition = new Vector3((rewards.Count-1) * -itemDisplacement/2, itemsPos.y, 0f);
+    // }
 
     private bool WillRewardHavePotion() {
         int chance = 0;

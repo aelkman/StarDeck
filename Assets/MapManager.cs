@@ -95,7 +95,7 @@ public class MapManager : MonoBehaviour
 
     public void LoadNextLevel(string destinationName) {
         // for testing dice rolls
-        // if(destinationName != "ChestScene" && destinationName != "Chest") {
+        // if(destinationName != "Chest" && destinationName != "Chest") {
         //     destinationName = "Unknown";
         // }
         if(sceneTest) {
@@ -121,7 +121,7 @@ public class MapManager : MonoBehaviour
             diceContainer.SetActive(true);
             destinationsClickable = false;
         }
-        else if(destinationName == "Chest") {
+        else if(destinationName == "ChestRoll") {
             diceRoller.eventName = "Chest";
             diceContainer.SetActive(true);
             destinationsClickable = false;

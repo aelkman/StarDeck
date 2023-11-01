@@ -77,7 +77,7 @@ public class MapNode : MonoBehaviour
             else if (destinationName == "Event") {
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Event Icon Animator");
             }
-            else if (destinationName == "Chest") {
+            else if (destinationName == "ChestRoll") {
                 prefabInstance = Resources.Load<GameObject>("Map Destinations/Chest Icon Animator");
             }
             else {

@@ -18,6 +18,8 @@ public class BattleManager : MonoBehaviour
     public GameOver gameOver;
     public BattleWon battleWon;
     public BattleAudioController bac;
+    public GameObject mainCanvas;
+    public GameObject bossDialoguePrefab;
     public PlayerStats playerStats;
     public GameObject ammoControllerInstance;
     public GameObject shakeHolder;
@@ -53,6 +55,9 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(MainManager.Instance.isBossBattle) {
+            Instantiate(bossDialoguePrefab, mainCanvas.transform);
+        }
         ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         STM = targetManager.GetComponent<SingleTargetManager>();
@@ -254,7 +259,7 @@ public class BattleManager : MonoBehaviour
                         }
 
                         if(isFyornsResolve) {
-                            playerStats.CharacterShield(1);
+                            playerStats.CharacterShield(3);
                         }
 
                         bool isLast = i == (multi - 1);
@@ -718,16 +723,16 @@ public class BattleManager : MonoBehaviour
 
                 // next action should not be the same as last
                 Card randomAction;
-                if(battleEnemy.battleEnemy.name == "KingBot" && isFirstEnemyAttack) {
-                    var laughCard = new Card();
-                    laughCard.actions = new Dictionary<string, string>();
-                    laughCard.actions.Add("LAUGH", "");
-                    randomAction = laughCard;
-                    isFirstEnemyAttack = false;
-                }
-                else {
-                    randomAction = battleEnemy.RandomAction();
-                }
+                // if(battleEnemy.battleEnemy.name == "KingBot" && isFirstEnemyAttack) {
+                //     var laughCard = new Card();
+                //     laughCard.actions = new Dictionary<string, string>();
+                //     laughCard.actions.Add("LAUGH", "");
+                //     randomAction = laughCard;
+                //     isFirstEnemyAttack = false;
+                // }
+                // else {
+                randomAction = battleEnemy.RandomAction();
+                // }
                 // pass the action back to the enemy to display
                 string actionText = randomAction.name;
                 // Dictionary<string, string> actions = new Dictionary<string, string>();

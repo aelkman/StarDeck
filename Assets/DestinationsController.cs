@@ -47,7 +47,7 @@ public class DestinationsController : MonoBehaviour
                     destinations.Add("Unknown");
                 }
                 if(i == 3) {
-                    destinations.Add("Chest");
+                    destinations.Add("ChestRoll");
                 }
             }
         }
@@ -103,7 +103,7 @@ public class DestinationsController : MonoBehaviour
 
         // sadly this doesnt work due to the undefined instantiation of all the nodes
         // will need to post-process the data later, this is something worth investigation another time
-        
+
         // int tries = 0;
         // if(node.parentNodes.Where((node) => node.destinationName == "Mini-Boss").Count() > 0) {
         //     Debug.Log("parent was Mini-Boss! cannot be mini-boss");
