@@ -19,6 +19,7 @@ public class Deck : MonoBehaviour
         foreach(Card card in startingDeck.cardList) {
             Card cardInstance = Instantiate(card);
             cardStack.Push(cardInstance);
+            cardDisplayCanvas.AddCard(cardInstance);
         }
         Debug.Log("you have " + cardStack.Count() + " cards in the deck");
         isInitialized = true;

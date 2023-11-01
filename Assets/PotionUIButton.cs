@@ -92,7 +92,7 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if(potion.codeName == "HEALTH_POT") {
             // uiAudio.PlayPotionAudio();
-            MainManager.Instance.HealPlayer(healPercent);
+            MainManager.Instance.HealPlayerPercent(healPercent);
             uiAudio.PlayPotionAudio();
             if(GameObject.Find("PlayerContainer") != null) {
                 var ps = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();

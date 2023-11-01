@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DestinationsController : MonoBehaviour
 {
@@ -89,9 +90,33 @@ public class DestinationsController : MonoBehaviour
         // now, assign the destinations to the GOs
     }
 
-    public string AssignPopDestination() {
+    public string AssignPopDestination(int level, MapNode node) {
+        Debug.Log(node.name);
         var index = Random.Range(0, destinations.Count);
         string destination = destinations[index];
+        if(level < 3) {
+            while(destination == "Mini-Boss") {
+                index = Random.Range(0, destinations.Count);
+                destination = destinations[index];
+            }
+        }
+
+        // sadly this doesnt work due to the undefined instantiation of all the nodes
+        // will need to post-process the data later, this is something worth investigation another time
+        
+        // int tries = 0;
+        // if(node.parentNodes.Where((node) => node.destinationName == "Mini-Boss").Count() > 0) {
+        //     Debug.Log("parent was Mini-Boss! cannot be mini-boss");
+        //     while(destination == "Mini-Boss") {
+        //         index = Random.Range(0, destinations.Count);
+        //         destination = destinations[index];
+        //         tries += 1;
+        //         if(tries > 100) {
+        //             Debug.Log("edge case for destinations mini-boss reached!");
+        //             destination = "Enemy";
+        //         }
+        //     }
+        // }
         destinations.Remove(destination);
         return destination;
     }

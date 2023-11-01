@@ -38,16 +38,16 @@ public class NextActionText : MonoBehaviour
                     name = "Attack";
                     var multiAttack = entry.Value.Split(',').Select(int.Parse).ToList();
                     if(multiAttack[1] == 1) {
-                        description = multiAttack[0] + battleEnemy.atkMod + " damage";
+                        description = multiAttack[0] + " damage";
                     }
                     else {
-                        description = (multiAttack[0] + battleEnemy.atkMod) + "X" + multiAttack[1] + " damage";
+                        description = (multiAttack[0]) + "X" + multiAttack[1] + " damage";
                     }
                 }
                 else if(entry.Key == "ATK_RND") {
                     name = "Attack";
                     var randAttack = entry.Value.Split(',').Select(int.Parse).ToList();
-                    description = (randAttack[0] + battleEnemy.atkMod) + "-" + (randAttack[1] + battleEnemy.atkMod) + " damage";
+                    description = (randAttack[0]) + "-" + (randAttack[1]) + " damage";
                 }
                 else if(entry.Key == "DEF_RND") {
                     name = "Block";

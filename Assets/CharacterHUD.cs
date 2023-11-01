@@ -14,8 +14,11 @@ public class CharacterHUD : MonoBehaviour
     public GameObject tauntDisplay;
     public GameObject counterDisplay;
     public GameObject attackMod;
+    public GameObject attackNegative;
+    public GameObject attackPositive;
     public GameObject stunDisplay;
     public GameObject iceHUD;
+    public HealthBar healthBar;
     private SpriteRenderer spriteRenderer;
  
     public StatusHoverDescription shd;
@@ -31,6 +34,8 @@ public class CharacterHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        healthBar.slider.value = baseCharacterInfo.health;
+
         if (isGlowUp) {
             fade += Time.deltaTime * 2f;
         }
@@ -56,8 +61,16 @@ public class CharacterHUD : MonoBehaviour
             shd.blockText.gameObject.SetActive(false);
         }
 
-        if(baseCharacterInfo.atkMod > 0) {
+        if(baseCharacterInfo.atkMod != 0) {
             attackMod.SetActive(true);
+            if(baseCharacterInfo.atkMod > 0) {
+                attackNegative.SetActive(false);
+                attackPositive.SetActive(true);
+            }
+            else if(baseCharacterInfo.atkMod < 0) {
+                attackNegative.SetActive(true);
+                attackPositive.SetActive(false);
+            }
             shd.attackText.gameObject.SetActive(true);
             string sign = "";
             if(baseCharacterInfo.atkMod > 0) {
@@ -143,5 +156,7 @@ public class CharacterHUD : MonoBehaviour
             counterDisplay.SetActive(false);
             shd.counterText.gameObject.SetActive(false);
         }
+
+
     }
 }

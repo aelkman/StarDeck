@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 4446853137735817809}
   - component: {fileID: 7225814152654401001}
   - component: {fileID: 2010477473836623395}
+  - component: {fileID: 4163533597946313226}
   m_Layer: 5
   m_Name: ShopCardUISelector
   m_TagString: Untagged
@@ -94,5 +95,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deck: {fileID: 0}
+  addedCount: 0
   prefab: {fileID: 366997572262266720, guid: 73bfc85226a5841469a1df41bcaaa628, type: 3}
+  cards: []
+  cardsSelectable: []
   selectionCount: 3
+  canvasGroup: {fileID: 4163533597946313226}
+  healButton: {fileID: 0}
+  coinCount: {fileID: 0}
+  areSpecificCards: 0
+  specificCards: []
+  cardsPurchased: 0
+  purchaseLimit: 99
+  limitReached: 0
+--- !u!225 &4163533597946313226
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2612500465277084701}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

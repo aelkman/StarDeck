@@ -14,7 +14,6 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject removalButton;
     public GameObject cancelButton;
     public RemovalUISelector removalUISelector;
-    public ShopAudio shopAudio;
     public bool isRemovalEvent = false;
     int price = 0;
     // Start is called before the first frame update

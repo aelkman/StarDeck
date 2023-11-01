@@ -5,6 +5,7 @@ using UnityEngine;
 public class TreeTraversal : MonoBehaviour
 {
     public GameObject nextLevel;
+    public GameObject previousLevel;
     public GameObject treeLine;
     public TreeMapManager treeMapManager;
     public int level;
@@ -40,18 +41,33 @@ public class TreeTraversal : MonoBehaviour
         if (nextLevel != null && !treeMapManager.isDone) {
             for (int i = 0; i < transform.childCount; i++) {
                 MapNode childMapNode = transform.GetChild(i).GetComponent<MapNode>();
-                DFS(i);
                 for(int j=0; j < nextLevel.transform.childCount; j++) {
                     Transform grandChild = nextLevel.transform.GetChild(j);
                     if (grandChild.GetComponent<MapNode>().parentNodes.Count == 0) {
-                        childMapNode.childrenNodes.Add(grandChild.GetComponent<MapNode>());
-                        grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(i).GetComponent<MapNode>());
+                        int index1 = j - 1;
+                        if(index1 < 0) {
+                            index1 = 0;
+                        }
+                        int index2 = j + 2;
+                        if(transform.childCount - 1 < index2 - 1) {
+                            index2 = transform.childCount;
+                        }
+                        // old code without semi-randomized index
+                        // childMapNode.childrenNodes.Add(grandChild.GetComponent<MapNode>());
+                        // grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(i).GetComponent<MapNode>());
+                        // lr.SetPosition(0, transform.GetChild(i).localPosition);
+                        // lr.SetPosition(1, grandChild.localPosition);
+
+                        var parentIndex = Random.Range(index1, index2);
+
+                        transform.GetChild(parentIndex).GetComponent<MapNode>().childrenNodes.Add(grandChild.GetComponent<MapNode>());
+                        grandChild.GetComponent<MapNode>().parentNodes.Add(transform.GetChild(parentIndex).GetComponent<MapNode>());
 
                         GameObject newLine = Instantiate(treeLine, transform.parent.transform);
                         LineRenderer lr = newLine.GetComponent<LineRenderer>();
-                        lr.SetPosition(0, transform.GetChild(i).localPosition);
+                        lr.SetPosition(0, transform.GetChild(parentIndex).localPosition);
                         lr.SetPosition(1, grandChild.localPosition);
-                        nextLevel.GetComponent<TreeTraversal>().DFS(j);
+                        // nextLevel.GetComponent<TreeTraversal>().DFS(j);
                         // nextLevel.GetComponent<TreeTraversal>().DFS(Random.Range(0, nextLevel.transform.childCount));
                     }
                     // if (childMapNode.childrenNodes.Count == 0) {
@@ -61,8 +77,9 @@ public class TreeTraversal : MonoBehaviour
                     CheckIfComplete(childMapNode);
                     CheckIfComplete(grandChild.GetComponent<MapNode>());
                 }
-                nextLevel.GetComponent<TreeTraversal>().CreateTree();
+                DFS(i);
             }
+            nextLevel.GetComponent<TreeTraversal>().CreateTree();
         }
         // potentially unsafe timing issues
         
@@ -84,29 +101,53 @@ public class TreeTraversal : MonoBehaviour
     }
 
     private void DFS(int index) {
-        if (nextLevel != null) {
+        if (nextLevel != null && transform.GetChild(index).GetComponent<MapNode>().childrenNodes.Count < 1) {
             int nextChildIndex = 0;
+
+            int index1 = index - 1;
+            if(index1 < 0) {
+                index1 = 0;
+            }
+            int index2 = index + 2;
+            if(nextLevel.transform.childCount - 1 < index2 - 1) {
+                index2 = nextLevel.transform.childCount;
+            }
+            nextChildIndex = Random.Range(index1, index2);
+
+            if (index == 0 || nextLevel.transform.childCount == 1) {
+                nextChildIndex = 0;
+            }
+
+
             // if next level has more children, then first & last can choose any of 2 options
-            if (nextLevel.transform.childCount <= transform.childCount) {
-                nextChildIndex = Random.Range(index, index + 2);
-                if (index == 0 || nextLevel.transform.childCount == 1) {
-                    nextChildIndex = 0;
-                }
-                else if (index >= nextLevel.transform.childCount - 1) {
-                    nextChildIndex = nextLevel.transform.childCount - 1;
-                }
-                else {
-                    if (nextChildIndex >= nextLevel.transform.childCount) {
-                        nextChildIndex = index;
-                    }
-                }
-            }
-            else {
-                nextChildIndex = Random.Range(index, index + 2);
-                if (nextLevel.transform.childCount - 1 < nextChildIndex) {
-                    nextChildIndex -= 1;
-                }
-            }
+            // if (nextLevel.transform.childCount <= transform.childCount) {
+            //     int index1 = index - 1;
+            //     if(index1 < 0) {
+            //         index1 = 0;
+            //     }
+            //     int index2 = index + 2;
+            //     if(nextLevel.transform.childCount - 1 < index2 - 1) {
+            //         index2 = nextLevel.transform.childCount - 1;
+            //     }
+            //     nextChildIndex = Random.Range(index1, index2);
+            //     if (index == 0 || nextLevel.transform.childCount == 1) {
+            //         nextChildIndex = 0;
+            //     }
+            //     // else if (index >= nextLevel.transform.childCount - 1) {
+            //     //     nextChildIndex = nextLevel.transform.childCount - 1;
+            //     // }
+            //     // else {
+            //     //     if (nextChildIndex >= nextLevel.transform.childCount) {
+            //     //         nextChildIndex = index;
+            //     //     }
+            //     // }
+            // }
+            // else {
+            //     nextChildIndex = Random.Range(index, index + 2);
+            //     if (nextLevel.transform.childCount - 1 < nextChildIndex) {
+            //         nextChildIndex -= 1;
+            //     }
+            // }
 
             // this works, but it is too random, it makes it look very crazy
             // nextChildIndex = Random.Range(0, nextLevel.transform.childCount);

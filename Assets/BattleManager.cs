@@ -275,6 +275,9 @@ public class BattleManager : MonoBehaviour
 
                         if(!isCharacterMissing) {
                             int damage = (int)Math.Round(((float)attack + playerStats.getAtkMod()) * atkMod);
+                            if(damage < 0) {
+                                damage = 0;
+                            }
                             damage = WeakenedDamage(damage, playerStats);
                             // check target type
                             if(STM.GetTarget() is BattleEnemyContainer) {
@@ -326,6 +329,37 @@ public class BattleManager : MonoBehaviour
                         StartCoroutine(CardAction(newCard));
                     }
                     break;
+                case "ATK_MOD":
+                    playerStats.atkMod += Int32.Parse(item.Value);
+                    if(card.name == "Lil Schnukles") {
+                        playerStats.playerAnimator.DrinkPotionAnimation();
+                        AudioManager.Instance.PlayMunchin();
+                    }
+                    else {
+                        playerStats.playerAnimator.CastAnimation();
+                        AudioManager.Instance.PlayArcanePower();
+                    }
+                    playerStats.SwordAnimation();
+                    break;
+                case "ATK_MOD_TEMP":
+                    List<int> atkTemp = item.Value.Split(',').Select(int.Parse).ToList();
+                    playerStats.playerAnimator.CastAnimation();
+
+                    if(card.isTarget) {
+                        STM.GetTarget().atkModTemp += atkTemp[0];
+                        STM.GetTarget().atkModTempTurns = atkTemp[1];
+                        STM.GetTarget().atkMod += atkTemp[0];
+                        AudioManager.Instance.PlayGlassBreak();
+                        STM.GetTarget().WeakenAnimation();
+                    }
+                    else {
+                        playerStats.atkModTemp += atkTemp[0];
+                        playerStats.atkModTempTurns = atkTemp[1];
+                        playerStats.atkMod += atkTemp[0];
+                        playerStats.SwordAnimation();
+                    }
+
+                    break;
                 case "BLIND_ALL":
                     foreach(var battleEnemy in battleEnemies) {
                         battleEnemy.blind += 1;
@@ -333,6 +367,19 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "BLIND":
                     STM.GetTarget().blind += 1;
+                    break;
+                case "CLEAR_DEBUFF":
+                    if(card.name == "Gorga Snax") {
+                        AudioManager.Instance.PlayMunchin();
+                        playerStats.playerAnimator.DrinkPotionAnimation();
+                    }
+                    playerStats.tauntTurns = 0;
+                    playerStats.blind = 0;
+                    playerStats.vuln = 0;
+                    playerStats.weak = 0;
+                    if(playerStats.atkMod < 0) {
+                        playerStats.atkMod = 0;
+                    }
                     break;
                 case "DEF":
                     if(item.Value == "2X") {
@@ -370,6 +417,13 @@ public class BattleManager : MonoBehaviour
                     if(item.Value == "SHIELD") {
                         STM.GetTarget().resetBlock();
                     }
+                    break;
+                case "HEAL":
+                    playerStats.playerAnimator.DrinkPotionAnimation();
+                    if(card.name == "Jingus Jerky") {
+                        AudioManager.Instance.PlayMunchin();
+                    }
+                    playerStats.HealSelf(Int32.Parse(item.Value));
                     break;
                 case "QUICKDRAW":
                     StartCoroutine(handManager.DrawCardsTimed(3, cardsReturnValue => {
@@ -443,6 +497,9 @@ public class BattleManager : MonoBehaviour
                     // }
 
                     int dmg = Int32.Parse(finalBlow[0]) + playerStats.getAtkMod();
+                    if(dmg < 0) {
+                        dmg = 0;
+                    }
                     dmg = WeakenedDamage(dmg, playerStats);
                     int multiplier = Int32.Parse(finalBlow[1]);
 
@@ -793,6 +850,9 @@ public class BattleManager : MonoBehaviour
                                         if(!isCharacterMissing) {
 
                                             var atkDmg = attack + battleEnemy.getAtkMod();
+                                            if(atkDmg < 0) {
+                                                atkDmg = 0;
+                                            }
                                             atkDmg = WeakenedDamage(atkDmg, battleEnemy);
 
                                             if(playerStats.hasBlock()) {
@@ -882,6 +942,9 @@ public class BattleManager : MonoBehaviour
 
                                         int atkDmg = UnityEngine.Random.Range(randAttack[0], randAttack[1] + 1);
                                         atkDmg += battleEnemy.getAtkMod();
+                                        if(atkDmg < 0) {
+                                            atkDmg = 0;
+                                        }
                                         atkDmg = WeakenedDamage(atkDmg, battleEnemy);
                                         Debug.Log("attack action: " + atkDmg);
 
@@ -1009,6 +1072,13 @@ public class BattleManager : MonoBehaviour
         playerStats.RemoveSingleVuln();
         playerStats.RemoveSingleTaunt();
         playerStats.RemoveSingleWeak();
+        if(playerStats.atkModTempTurns > 0) {
+            playerStats.atkModTempTurns -= 1;
+            if(playerStats.atkModTempTurns == 0) {
+                playerStats.atkMod -= playerStats.atkModTemp;
+                playerStats.atkModTemp = 0;
+            }
+        }
     }
 
     public IEnumerator EndEnemyTurn() {
@@ -1036,6 +1106,13 @@ public class BattleManager : MonoBehaviour
             be.RemoveSingleBlind();
             be.RemoveSingleWeak();
             be.RemoveSingleAntiStun();
+            if(be.atkModTempTurns > 0) {
+                be.atkModTempTurns -= 1;
+                if(be.atkModTempTurns == 0) {
+                    be.atkMod -= be.atkModTemp;
+                    be.atkModTemp = 0;
+                }
+            }
             be.stunnedTurns = 0;
         }
         endTurnButton.interactable = true;

@@ -38,6 +38,9 @@ public class CardDisplay : MonoBehaviour
             manaText.color = Color.white;
             cardBase.sprite = Resources.Load<Sprite>("Card_base_black");
         }
+        else if (card.rarity == "E") {
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_event");
+        }
 
         if(card.type == "Hammer") {
             typeImage.sprite = Resources.Load<Sprite>("Images/hammer icon");
@@ -124,8 +127,14 @@ public class CardDisplay : MonoBehaviour
                     }
                     descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
                     break;
+                case "ATK_MOD":
+                    descriptionAdditional += "<br>Gain +" + item.Value + " attack";
+                    break;
                 case "BLIND_ALL":
                     descriptionAdditional += "<br>Blind ALL" + item.Value + " turn";
+                    break;
+                case "CLEAR_DEBUFF":
+                    descriptionAdditional += "<br>Clear all debuffs";
                     break;
                 case "DEF":
                     if(item.Value == "2X") {
@@ -176,6 +185,9 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "WEAKEN_ALL":
                     descriptionAdditional += "<br>Weaken ALL " + item.Value + " turn";
+                    break;
+                case "HEAL":
+                    descriptionAdditional += "<br>Heal " + item.Value;
                     break;
                 default:
                     break;

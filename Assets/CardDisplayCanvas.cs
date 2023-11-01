@@ -46,9 +46,9 @@ public class CardDisplayCanvas : MonoBehaviour
         if(!cardInstances.ContainsKey(card)) {
             GameObject cardInstance = Instantiate(cardUIPrefab, canvasGO.transform);
             // Instantiate the card here so it's unique
-            Card cardCopy = Instantiate(card);
-            cardInstance.GetComponent<CardDisplay>().card = cardCopy;
-            cardInstances.Add(cardCopy, cardInstance);
+            // Card cardCopy = Instantiate(card);
+            cardInstance.GetComponent<CardDisplay>().card = card;
+            cardInstances.Add(card, cardInstance);
         }
     }
 

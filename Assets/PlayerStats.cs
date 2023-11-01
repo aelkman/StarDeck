@@ -82,7 +82,7 @@ public class PlayerStats : BaseCharacterInfo
         }
         MainManager.Instance.playerHealth -= damage;
         StartCoroutine(damageAnimation(.2f));
-        healthBar.SetHealth(health);
+        // healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damageText, transform);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
         if (health <= 0) {
@@ -133,6 +133,13 @@ public class PlayerStats : BaseCharacterInfo
         if(tauntTurns >= 1) {
             tauntTurns -= 1;
         }
+    }
+
+    public void HealSelf(int heal) {
+        GameObject healTextInstance = Instantiate(healPrefab, transform.position, Quaternion.identity, transform);
+        healTextInstance.transform.localPosition = new Vector3(healTextInstance.transform.localPosition.x, healTextInstance.transform.localPosition.y, healTextInstance.transform.localPosition.z);
+        healTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = heal.ToString();  
+        MainManager.Instance.HealPlayer(heal);
     }
 
 }

@@ -51,7 +51,7 @@ public class MapNode : MonoBehaviour
                 destinationName = "Mini-Boss";
             }
             else if (transform.GetComponent<MapNode>().parentNodes.Count != 0) {
-                destinationName = destinationsController.AssignPopDestination();
+                destinationName = destinationsController.AssignPopDestination(level, this);
             }
             else {
                 // if it's the child node

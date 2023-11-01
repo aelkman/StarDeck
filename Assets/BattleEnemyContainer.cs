@@ -12,7 +12,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject characterHUD;
     public GameObject nextAction;
     public GameObject damagePrefab;
-    public GameObject healPrefab;
     public ParticleSystem effectSystem;
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
@@ -77,7 +76,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         }
         health -= damage;
         StartCoroutine(particleDelay(0f));
-        healthBar.SetHealth(health);
+        // healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damagePrefab, transform);
         damageTextInstance.transform.localPosition = new Vector3(damageTextInstance.transform.localPosition.x, damageTextInstance.transform.localPosition.y + battleEnemy.nextMoveYOffset, damageTextInstance.transform.localPosition.z);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
@@ -186,7 +185,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             var target = damagedEnemies[randIndex];
             GameObject healTextInstance = Instantiate(healPrefab, target.transform.position, Quaternion.identity, target.transform);
             healTextInstance.transform.localPosition = new Vector3(healTextInstance.transform.localPosition.x, healTextInstance.transform.localPosition.y + target.battleEnemy.nextMoveYOffset, healTextInstance.transform.localPosition.z);
-            healTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = heal.ToString();
+            healTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = heal.ToString();  
             target.Heal(heal);
         }
         else {

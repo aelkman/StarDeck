@@ -12,6 +12,7 @@ public class DeckCopy : Deck
         cardDisplayCanvas = GameObject.Find("CardDisplayCanvas").GetComponent<CardDisplayCanvas>();
         deckOriginal = GameObject.Find("Deck").GetComponent<Deck>();
         cardStack = new StackList<Card>();
+        cards = cardStack.items;
         foreach (Card card in deckOriginal.cardStack.items) {
             var newInstance = Instantiate(card);
             cardStack.Push(newInstance);

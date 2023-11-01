@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource shield;
     public AudioSource glassBreak;
     public AudioSource counter;
+    public AudioSource munchin;
+    public AudioSource purchase;
     private void Awake()
     {
         // start of new code
@@ -84,5 +86,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCounter() {
         counter.Play();
+    }
+
+    public void PlayMunchin() {
+        munchin.Play();
+    }
+
+    public void PlayPurchase() {
+        purchase.Play();
     }
 }

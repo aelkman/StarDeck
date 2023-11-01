@@ -68,8 +68,19 @@ public class MainManager : MonoBehaviour, IDisposable
         Instance = null;
     }
 
-    public void HealPlayer(double percent) {
+    public void HealPlayerPercent(double percent) {
         playerHealth += (int)(playerMaxHealth * percent);
+        if(playerHealth > playerMaxHealth) {
+            playerHealth = playerMaxHealth;
+        }
+        if(GameObject.Find("PlayerContainer") != null) {
+            var playerStats = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+            playerStats.health = MainManager.Instance.playerHealth;
+        }
+    }
+
+    public void HealPlayer(int heal) {
+        playerHealth += heal;
         if(playerHealth > playerMaxHealth) {
             playerHealth = playerMaxHealth;
         }

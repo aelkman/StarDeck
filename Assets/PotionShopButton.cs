@@ -17,7 +17,6 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public PotionUI potionUI;
     public int price;
     public CanvasGroup canvasGroup;
-    public ShopAudio shopAudio;
     public bool mouse_over = false;
 
     // Start is called before the first frame update
@@ -92,7 +91,7 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void PurchasePotion() {
         if(MainManager.Instance.potions.Count <= 2 && MainManager.Instance.coinCount >= potion.price) {
-            shopAudio.PlayPurchaseAudio();
+            AudioManager.Instance.PlayPurchase();
             canvasGroup.alpha = 0.3f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;

@@ -14,7 +14,8 @@ public class ItemCost : MonoBehaviour
     {
         if (item.GetComponent<CardDisplay>() != null) {
             var card = item.GetComponent<CardDisplay>();
-            if(card.card.rarity == "C") {
+            // for vending machine for now, Event card will cost 50
+            if(card.card.rarity == "C" || card.card.rarity == "E") {
                 price = 50;
             }
             else if (card.card.rarity == "U") {

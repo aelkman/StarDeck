@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BaseCharacterInfo : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public GameObject weakenPrefab;
     public GameObject tauntPrefab;
     public GameObject counterPrefab;
+    public GameObject healPrefab;
     public ShockPlayer shockPlayer;
     public CharacterAnimator characterAnimator;
     public BattleEnemyManager BEM;
@@ -34,6 +36,8 @@ public class BaseCharacterInfo : MonoBehaviour
     public float nextMoveYOffset;
     public bool isTaunter = false;
     public bool frozenTurn = false;
+    public int atkModTemp = 0;
+    public int atkModTempTurns = 0;
     public StackList<KeyValuePair<string, string>> counterQueue;
     public StackList<string> counterTypes;
     // Start is called before the first frame update
@@ -54,7 +58,7 @@ public class BaseCharacterInfo : MonoBehaviour
         else {
             health += heal;
         }
-        healthBar.SetHealth(health);
+        // healthBar.SetHealth(health);
     }
 
     public void addBlock(int block) {

@@ -20,7 +20,7 @@ public class MapManager : MonoBehaviour
     public bool sceneTest;
     public string sceneNameOverride;
     public bool destinationsClickable = true;
-    public List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket" }; 
+    public List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket", "Dojo", "VendingMachines" }; 
 
     private static MapManager _instance;
 
@@ -39,6 +39,7 @@ public class MapManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket", "Dojo", "VendingMachines" };
     }
 
     // Start is called before the first frame update
@@ -103,7 +104,7 @@ public class MapManager : MonoBehaviour
 
         if(destinationName == "Boss") {
             MainManager.Instance.isBossBattle = true;
-            MainManager.Instance.HealPlayer(0.30);
+            MainManager.Instance.HealPlayerPercent(0.30);
         }
         if(destinationName == "Enemy" || destinationName == "Mini-Boss" || destinationName == "Boss") {
             destinationName = "Battle";
@@ -111,7 +112,9 @@ public class MapManager : MonoBehaviour
         }
         else if(destinationName == "Event") {
             var randIndex = Random.Range(0, eventScenes.Count);
-            StartCoroutine(LoadLevel(eventScenes[randIndex]));
+            var randEvent = eventScenes[randIndex];
+            eventScenes.Remove(randEvent);
+            StartCoroutine(LoadLevel(randEvent));
         }
         else if(destinationName == "Unknown") {
             diceRoller.eventName = "Unknown";
