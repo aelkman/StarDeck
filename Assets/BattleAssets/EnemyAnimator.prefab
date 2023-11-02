@@ -750,6 +750,7 @@ MonoBehaviour:
   weakenPrefab: {fileID: 8175952742522311240, guid: bc7b3b33814dff24eb29a57cbd7edd1a, type: 3}
   tauntPrefab: {fileID: 0}
   counterPrefab: {fileID: 0}
+  healPrefab: {fileID: 6726857980285676640, guid: f1e4ac079959a884194d3e05b497a4a7, type: 3}
   shockPlayer: {fileID: 2066619198428004193}
   characterAnimator: {fileID: 3392223236374336481}
   BEM: {fileID: 0}
@@ -769,12 +770,13 @@ MonoBehaviour:
   nextMoveYOffset: 0
   isTaunter: 0
   frozenTurn: 0
+  atkModTemp: 0
+  atkModTempTurns: 0
   battleEnemy: {fileID: 0}
   nextActionText: {fileID: 808569400213747451}
   characterHUD: {fileID: 1414547864159836435}
   nextAction: {fileID: 2000603611772570230}
   damagePrefab: {fileID: 6726857980285676640, guid: 1ec8af9b858663942bcba576eed7a483, type: 3}
-  healPrefab: {fileID: 6726857980285676640, guid: f1e4ac079959a884194d3e05b497a4a7, type: 3}
   effectSystem: {fileID: 2587277430470127724}
   singleTargetManager: {fileID: 0}
   enemyPrefabInstance: {fileID: 0}
@@ -2116,6 +2118,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1245705790810084448, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1429474185752776830, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2247,6 +2253,14 @@ PrefabInstance:
     - target: {fileID: 3244731253187906698, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3393108291107738427, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623752445404377169, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3759989900953688023, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: baseCharacterInfo
@@ -2436,6 +2450,10 @@ PrefabInstance:
       propertyPath: descriptionHover
       value: 
       objectReference: {fileID: 5469313036071748240}
+    - target: {fileID: 6932034425699700374, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6989046939153243659, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2467,6 +2485,10 @@ PrefabInstance:
     - target: {fileID: 7368364522580149814, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464875569685052829, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7467314042024516266, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: m_AnchorMax.y
