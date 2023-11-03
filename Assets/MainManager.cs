@@ -90,6 +90,17 @@ public class MainManager : MonoBehaviour, IDisposable
         }
     }
 
+    public void IncreaseMaxHealth(int health) {
+        playerMaxHealth += health;
+        playerHealth += health;
+
+        if(GameObject.Find("PlayerContainer") != null) {
+            var playerStats = GameObject.Find("PlayerContainer").GetComponent<PlayerStats>();
+            playerStats.health = playerHealth;
+            playerStats.maxHealth = playerMaxHealth;
+        }
+    }
+
     public void EquipPotion(Potion potion) {
         potions.Add(potion);
         PotionUI.Instance.EquipPotion(potion);

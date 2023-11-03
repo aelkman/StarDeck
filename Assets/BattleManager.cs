@@ -19,7 +19,8 @@ public class BattleManager : MonoBehaviour
     public BattleWon battleWon;
     public BattleAudioController bac;
     public GameObject mainCanvas;
-    public GameObject bossDialoguePrefab;
+    public GameObject kingBotStartingDialogue;
+    public GameObject kingBotWinDialogue;
     public PlayerStats playerStats;
     public GameObject ammoControllerInstance;
     public GameObject shakeHolder;
@@ -56,7 +57,7 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         if(MainManager.Instance.isBossBattle) {
-            Instantiate(bossDialoguePrefab, mainCanvas.transform);
+            Instantiate(kingBotStartingDialogue, mainCanvas.transform);
         }
         ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
@@ -96,6 +97,20 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator StartBossWinDialogue(BattleEnemyContainer thisEnemy) {
+        GameObject go;
+        if(thisEnemy.battleEnemy.name == "KingBot") {
+            go = Instantiate(kingBotWinDialogue, mainCanvas.transform);
+            var winDialogue = go.GetComponent<KingBotBossWinDialogue>();
+            yield return new WaitUntil(() => winDialogue.isFinished);
+        }
+        else {
+            go = new GameObject();
+        }
+        // after dialogue is finished
+        BEM.EnemyDeath(thisEnemy);
     }
 
     public void GameOver() {

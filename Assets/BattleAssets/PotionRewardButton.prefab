@@ -180,8 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potion: {fileID: 0}
-  hoverTextGO: {fileID: 0}
-  hoverDescription: {fileID: 0}
+  hoverTextGO: {fileID: 4034346237132212888}
+  hoverDescription: {fileID: 5181547602398786328}
   priceText: {fileID: 836878626526255390}
   potionUI: {fileID: 0}
   price: 0
@@ -294,6 +294,22 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2870194400946314156, guid: cd6ad1c486a5a5d4da5803020dc2b70d, type: 3}
   m_PrefabInstance: {fileID: 3591670681951307655}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4034346237132212888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 442705110017477919, guid: cd6ad1c486a5a5d4da5803020dc2b70d, type: 3}
+  m_PrefabInstance: {fileID: 3591670681951307655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5181547602398786328 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8516486544312579231, guid: cd6ad1c486a5a5d4da5803020dc2b70d, type: 3}
+  m_PrefabInstance: {fileID: 3591670681951307655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3732761073923883552
 PrefabInstance:
   m_ObjectHideFlags: 0

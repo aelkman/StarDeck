@@ -131,7 +131,7 @@ public class CardDisplay : MonoBehaviour
                     descriptionAdditional += "<br>Gain +" + item.Value + " attack";
                     break;
                 case "BLIND_ALL":
-                    descriptionAdditional += "<br>Blind ALL" + item.Value + " turn";
+                    descriptionAdditional += "<br>Blind ALL " + item.Value + " turn";
                     break;
                 case "CLEAR_DEBUFF":
                     descriptionAdditional += "<br>Clear all debuffs";

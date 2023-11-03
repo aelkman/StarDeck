@@ -18,6 +18,7 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public GameObject items;
     public PotionRewardButton potionRewardButton;
     public GameObject artifactDisplay;
+    public GameObject heartContainer;
     public CoinsEarned coinsEarned;
     public List<GameObject> rewards;
     private float noDamageMultiplier = 1.5f;
@@ -42,12 +43,18 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             potionRewardButton.gameObject.SetActive(false);
         }
 
-        if(MainManager.Instance.currentNode.destinationName == "Mini-Boss") {
+        if(MainManager.Instance.currentNode.destinationName == "Mini-Boss" ) {
             artifactDisplay.SetActive(true);
+            rewards.Add(artifactDisplay);
+        }
+        else if(MainManager.Instance.currentNode.destinationName == "Boss") {
+            artifactDisplay.SetActive(true);
+            heartContainer.SetActive(true);
             rewards.Add(artifactDisplay);
         }
         else {
             artifactDisplay.SetActive(false);
+            heartContainer.SetActive(false);
         }
 
         // PlaceRewards();

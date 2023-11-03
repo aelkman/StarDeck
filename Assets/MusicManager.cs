@@ -7,6 +7,7 @@ public class MusicManager : MonoBehaviour
     public AudioSource regularBattle;
     public AudioSource bossBattle;
     public AudioSource kingbotIntro; 
+    public AudioSource kingbotWin;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,13 +25,12 @@ public class MusicManager : MonoBehaviour
         
     }
 
-    public IEnumerator StartKingbotBattle(float fadeOutTime) {
+    public IEnumerator FadeTracksInOut(float fadeOutTime, AudioSource fadeOut, AudioSource fadeIn) {
 
-        yield return StartCoroutine(FadeAudioSource.StartFade(kingbotIntro, fadeOutTime/2, 0));
-        bossBattle.volume = 0f;
-        bossBattle.Play();
-        StartCoroutine(FadeAudioSource.StartFade(bossBattle, fadeOutTime/2, 1));
-        kingbotIntro.Stop();
-        bossBattle.Play();
+        yield return StartCoroutine(FadeAudioSource.StartFade(fadeOut, fadeOutTime/2, 0));
+        fadeIn.volume = 0f;
+        fadeIn.Play();
+        StartCoroutine(FadeAudioSource.StartFade(fadeIn, fadeOutTime/2, 1));
+        fadeOut.Stop();
     }
 }

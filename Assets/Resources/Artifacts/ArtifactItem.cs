@@ -12,6 +12,8 @@ public class ArtifactItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public Artifact artifact;
     public string artifactName;
     public Image image;
+    private Sprite regularImage;
+    private Sprite highlightedImage;
     public TextMeshProUGUI flavorText;
     public ArtifactViewer artifactViewer;
     public GameObject hoverText;
@@ -29,7 +31,9 @@ public class ArtifactItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
         artifact = Resources.Load<Artifact>("Artifacts/" + artifactName);
         artifactName = artifact.name;
-        image.sprite = artifact.artwork;
+        regularImage = artifact.artwork;
+        image.sprite = regularImage;
+        highlightedImage = artifact.artworkHighlighted;
         flavorText.text = artifactName + " - " + artifact.description;
     }
 
@@ -48,6 +52,7 @@ public class ArtifactItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         mouseOver = true;
+        image.sprite = highlightedImage;
         hoverText.SetActive(true);
         hoverText.GetComponent<ArtifactHoverDescription>().flavorText.text = artifactName + " - " + artifact.description;
     }
@@ -55,6 +60,7 @@ public class ArtifactItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         mouseOver = false;
+        image.sprite = regularImage;
         hoverText.SetActive(false);
     }
 

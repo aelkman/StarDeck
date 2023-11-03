@@ -6772,7 +6772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a18d9bb2b43774f9742674ec156c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingDeck: {fileID: 11400000, guid: 309795a15ffd6ff4abc93191cca30bb0, type: 2}
+  startingDeck: {fileID: 11400000, guid: a3500f3c4463ee544b13d05cecb71b7f, type: 2}
   cardDisplayCanvas: {fileID: 1168185042}
   isInitialized: 0
   cards: []
@@ -8007,6 +8007,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3358419504791486313, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -652
+      objectReference: {fileID: 0}
     - target: {fileID: 3501121841658480750, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_Name
       value: PersistentHUD
@@ -8083,6 +8087,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5900748632367290387, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -861.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5943955679120874558, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: cardDisplayCanvas
       value: 
@@ -8119,6 +8127,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.7458927
       objectReference: {fileID: 0}
+    - target: {fileID: 6487154791137799336, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -721.28357
+      objectReference: {fileID: 0}
     - target: {fileID: 6619408300040743198, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -331
@@ -8138,6 +8150,14 @@ PrefabInstance:
     - target: {fileID: 7858074560741364477, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015735155211701779, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: m_text
+      value: 50/50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015735155211701779, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8303828874571464536, guid: 9f8c218b64422d2438a3abb2f968a748, type: 3}
       propertyPath: m_Sprite

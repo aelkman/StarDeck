@@ -57,6 +57,11 @@ public class CardUISelector : MonoBehaviour
             rarityDiff_U = 5;
         }
 
+        // for bosses, rewards are all rare
+        if(MainManager.Instance.isBossBattle) {
+            return (Card)rareCards[Random.Range(0, rareCards.Count)];
+        }
+
         // current odds: 70/25/5
         // golden ticket odds: 60/30/10
 

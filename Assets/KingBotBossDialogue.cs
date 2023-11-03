@@ -39,9 +39,10 @@ public class KingBotBossDialogue : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         playerDialogue.SetActive(false);
         bossDialogue.SetActive(false);
-        StartCoroutine(musicManager.StartKingbotBattle(2.0f));
+        StartCoroutine(musicManager.FadeTracksInOut(2.0f, musicManager.kingbotIntro, musicManager.bossBattle));
         yield return new WaitForSeconds(1.0f);
         bem.battleEnemies[0].nextAction.SetActive(true);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame

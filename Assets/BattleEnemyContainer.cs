@@ -16,6 +16,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     private GameObject singleTargetManagerGO;
     public SingleTargetManager singleTargetManager;
     public GameObject enemyPrefabInstance;
+    public GameObject kingbotWinDialogue;
     public List<Card> actions;
     private EnemyAnimator enemyAnimator;  
     public CameraShake cameraShake;
@@ -87,15 +88,21 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 UnfreezeAnimation();
             }
             enemyAnimator.DeathAnimation();
-            BEM.EnemyDeath(this);
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
             if(enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>() != null) {
                 enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>().enabled = false;
             }
             var sprites = enemyPrefabInstance.GetComponentsInChildren<SpriteRenderer>();
-            foreach(var sprite in sprites) {
-                StartCoroutine(FadeEnemyDeath(sprite));
+            if(!battleEnemy.isBoss) {
+                BEM.EnemyDeath(this);
+                foreach(var sprite in sprites) {
+                    StartCoroutine(FadeEnemyDeath(sprite));
+                }
             }
+            else {
+                StartCoroutine(battleManager.StartBossWinDialogue(this));
+            }
+
 
             isDead = true;
             isDeadCallback(true);
