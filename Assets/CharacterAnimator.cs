@@ -55,6 +55,10 @@ public class CharacterAnimator : MonoBehaviour
         animator.SetTrigger("Shock");
     }
 
+    public void ShockTauntAnimation() {
+        animator.SetTrigger("ShockTaunt");
+    }
+
     public void CastAnimation() {
         Debug.Log("enemy cast animation trigger!");
         animator.SetTrigger("Cast");

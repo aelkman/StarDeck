@@ -47,7 +47,6 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     void Update () {
         if(mouse_over) {
-            Debug.Log("mouse over");
             if (Input.GetMouseButtonUp(0)) {
                 isSelected = !isSelected;
                 if(isSelected) {

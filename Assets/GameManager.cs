@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private CursorMode cursorMode = CursorMode.ForceSoftware;
     private Vector2 hotSpot;
     private static GameManager _instance;
+    public bool demoComplete = false;
 
     public static GameManager Instance 
     { 
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartGame() {
+    public void ResetGame() {
         MainManager.Instance.Dispose();
         MapSingleton.Instance.Dispose();
         var allTransforms = FindObjectsOfType<Transform>().ToList();
@@ -68,7 +69,17 @@ public class GameManager : MonoBehaviour
                 Destroy(tr.gameObject);
             }
         }
+
+    }
+
+    public void RestartGame() {
+        ResetGame();
         // then load the map again
         SceneManager.LoadScene("Map");
+    }
+
+    public void RestartFromMainMenu() {
+        ResetGame();
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -11,6 +11,7 @@ public class PlayerStats : BaseCharacterInfo
     public GameDataManager gdm;
     public ManaBar manaBar;
     public ParticleSystem damageParticles;
+    public ParticleSystem counterParticles;
     public ParticleSystem iceAura;
     public GameObject forceField;
     public List<string> weapons;
@@ -25,8 +26,8 @@ public class PlayerStats : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
-        counterQueue = new StackList<KeyValuePair<string, string>>();
-        counterTypes = new StackList<string>();
+        counterQueue = new QueueList<KeyValuePair<string, string>>();
+        counterTypes = new QueueList<string>();
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         RemoveWeapon("Blaster");
         RemoveWeapon("Hammer");

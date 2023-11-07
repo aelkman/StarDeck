@@ -22,15 +22,21 @@ public class WinTransition : MonoBehaviour
     public void LoadMapOnWin() {
         UpdatePlayerStats();
         AudioManager.Instance.PlayButtonPress();
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex - 1));
+        if(MainManager.Instance.isBossBattle) {
+            GameManager.Instance.demoComplete = true;
+            GameManager.Instance.RestartFromMainMenu();
+        }
+        else {
+            StartCoroutine(LoadLevel("Map"));
+        }
     }
 
-    IEnumerator LoadLevel(int sceneIndex) {
+    IEnumerator LoadLevel(string sceneName) {
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene(sceneName);
         
     }
 

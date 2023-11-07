@@ -8388,7 +8388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 94481005515357776, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: isBossTest
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94481005515357776, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: isMiniBossTest
@@ -8799,6 +8799,10 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+      propertyPath: destinationsClickable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430172222874268503, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: eventScenes.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -8976,6 +8980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4048833897734355457, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
+    - {fileID: 1970874840607811091, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
     m_RemovedGameObjects:
     - {fileID: 2691374828757717580, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
     m_AddedGameObjects:

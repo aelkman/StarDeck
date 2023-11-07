@@ -21,6 +21,7 @@ public class Card : ScriptableObject, ISerializationCallbackReceiver
     public bool isSkill;
     public bool isStarter;
     public string rarity;
+    public BaseCharacterInfo target;
 
     public void OnBeforeSerialize()
     {

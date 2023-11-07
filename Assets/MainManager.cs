@@ -24,7 +24,6 @@ public class MainManager : MonoBehaviour, IDisposable
     public List<string> artifacts = new List<string>();
     public List<Potion> potions = new List<Potion>();
     public List<string> possibleArtifacts;
-
     public bool isBossBattle = false;
 
     private void Awake()

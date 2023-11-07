@@ -74,3 +74,32 @@ public class StackList<T>
         return items.Count;
     }
 }
+
+public class QueueList<T>
+{
+    public List<T> items = new List<T>();
+
+    public void Push(T item)
+    {
+        items.Add(item);
+    }
+    public T Pop()
+    {
+        if (items.Count > 0)
+        {
+            T temp = items[0];
+            items.RemoveAt(0);
+            return temp;
+        }
+        else
+            return default(T);
+    }
+    public void Remove(int itemAtPosition)
+    {
+        items.RemoveAt(itemAtPosition);
+    }
+
+    public int Count() {
+        return items.Count;
+    }
+}

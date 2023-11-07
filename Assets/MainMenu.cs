@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     public Animator shipAnimator;
     public ParticleSystem rocket1;
     public ParticleSystem rocket2;
+    public GameObject demoComplete;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,10 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(GameManager.Instance.demoComplete) {
+            demoComplete.SetActive(true);
+            GameManager.Instance.demoComplete = false;
+        }
     }
 
     public void Option1Click() {

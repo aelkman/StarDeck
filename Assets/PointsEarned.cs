@@ -45,6 +45,7 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         if(MainManager.Instance.currentNode.destinationName == "Mini-Boss" ) {
             artifactDisplay.SetActive(true);
+            heartContainer.SetActive(false);
             rewards.Add(artifactDisplay);
         }
         else if(MainManager.Instance.currentNode.destinationName == "Boss") {

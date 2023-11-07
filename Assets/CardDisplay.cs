@@ -125,7 +125,12 @@ public class CardDisplay : MonoBehaviour
                     if (attackAll.Count != 2) {
                         throw new Exception("Invalid ATK_ALL attributes! Must be 2 ints comma separated");
                     }
-                    descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
+                    if(attackAll[1] != 1) {
+                        descriptionAdditional += "<br>Deal " + attackAll[0] + " damage  " + attackAll[1] + " times to ALL enemies";
+                    }
+                    else {
+                        descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
+                    }
                     break;
                 case "ATK_MOD":
                     descriptionAdditional += "<br>Gain +" + item.Value + " attack";
@@ -154,7 +159,7 @@ public class CardDisplay : MonoBehaviour
                     descriptionAdditional += "<br>Stun ALL " + item.Value + " turn";
                     break;  
                 case "VULN":
-                    if(card.isTarget) {
+                    if(card.isTarget || card.actions.ContainsKey("COUNTER")) {
                         descriptionAdditional += "<br>Target vulnerable " + item.Value + " turn";
                     }
                     else {

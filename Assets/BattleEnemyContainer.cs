@@ -23,8 +23,8 @@ public class BattleEnemyContainer : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
-        counterQueue = new StackList<KeyValuePair<string, string>>();
-        counterTypes = new StackList<string>();
+        counterQueue = new QueueList<KeyValuePair<string, string>>();
+        counterTypes = new QueueList<string>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         BEM = transform.parent.parent.GetComponent<BattleEnemyManager>();
             // iceSystem.transform.localPosition = new Vector3(iceSystem.transform.localPosition.x, iceSystem.transform.localPosition.y - battleEnemy.yOffset, iceSystem.transform.localPosition.z);
@@ -85,6 +85,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             // death animation here, disable the NextAction as well
             nextActionText.SetText(null);
             if(frozenTurn) {
+                characterHUD.GetComponent<CharacterHUD>().iceHUD.SetActive(false);
                 UnfreezeAnimation();
             }
             enemyAnimator.DeathAnimation();
@@ -103,12 +104,16 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 StartCoroutine(battleManager.StartBossWinDialogue(this));
             }
 
-
             isDead = true;
             isDeadCallback(true);
         }
         else {
-            StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
+            if(isTaunter) {
+                enemyAnimator.TakeDamageTaunting();
+            }
+            else {
+                StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
+            }
             isDeadCallback(false);
         }
     }

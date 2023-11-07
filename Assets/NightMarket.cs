@@ -31,6 +31,7 @@ public class NightMarket : MonoBehaviour
 
     public void Option2Click() {
         AudioManager.Instance.PlayButtonPress();
+        deckViewer.isRemovalEvent = false;
         Leave();
     }
 

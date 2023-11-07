@@ -97,6 +97,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                         // if it's a target card, then lock the STM
                         if (isTarget) {
                             STM.targetLocked = true;
+                            // this line of code is hugely important
+                            cardDisplay.card.target = STM.GetTarget();
                         }
                         isSelected = false;
                         isCardPlayed = true;

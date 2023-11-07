@@ -47,6 +47,10 @@ public class EnemyAnimator : CharacterAnimator
         animator.SetTrigger("TakeDamage");
     }
 
+    public void TakeDamageTaunting() {
+        animator.SetTrigger("TakeDamageTaunt");
+    }
+
     public void GoldBot_Melee_1() {
         animator.SetTrigger("GoldBot_Melee1");
     }

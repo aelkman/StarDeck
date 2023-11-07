@@ -20,6 +20,7 @@ public class BattleManager : MonoBehaviour
     public BattleAudioController bac;
     public GameObject mainCanvas;
     public GameObject kingBotStartingDialogue;
+    private KingBotBossDialogue kingBotBossDialogue;
     public GameObject kingBotWinDialogue;
     public PlayerStats playerStats;
     public GameObject ammoControllerInstance;
@@ -57,7 +58,7 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         if(MainManager.Instance.isBossBattle) {
-            Instantiate(kingBotStartingDialogue, mainCanvas.transform);
+            kingBotBossDialogue = Instantiate(kingBotStartingDialogue, mainCanvas.transform).GetComponent<KingBotBossDialogue>();
         }
         ammoController = ammoControllerInstance.GetComponent<AmmoController>();
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
@@ -72,28 +73,33 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(BEM.isInitialized){
-            battleEnemies = BEM.GetEnemies();
+        if(MainManager.Instance.isBossBattle && kingBotBossDialogue != null) {
+            // wait for dialogue to finish
+        }
+        else {
+            if(BEM.isInitialized) {
+                battleEnemies = BEM.GetEnemies();
 
-            if(!isBattleWon) {
-                if(isPlayerTurn) {
-                    // enable the TargetManager
-                    // possibly use TargetManager prefab and SetActive(true)? 
-                    // then disable TargetManager otherwise
-                    if(!areEnemyActionsDecided) {
-                        GenerateEnemyActions(battleEnemies);
-                        areEnemyActionsDecided = true;
+                if(!isBattleWon) {
+                    if(isPlayerTurn) {
+                        // enable the TargetManager
+                        // possibly use TargetManager prefab and SetActive(true)? 
+                        // then disable TargetManager otherwise
+                        if(!areEnemyActionsDecided) {
+                            GenerateEnemyActions(battleEnemies);
+                            areEnemyActionsDecided = true;
+                        }
+                        if (!isHandDealt) {
+                            handManager.DrawCards(5);
+                            isHandDealt = true;
+                        }
                     }
-                    if (!isHandDealt) {
-                        handManager.DrawCards(5);
-                        isHandDealt = true;
+                    else {
+                        // enemy turn
+                        // make GetEnemies filter out dead enemies
+                        StartCoroutine(ProcessEnemyAction(battleEnemies));
+                        isPlayerTurn = true;
                     }
-                }
-                else {
-                    // enemy turn
-                    // make GetEnemies filter out dead enemies
-                    StartCoroutine(ProcessEnemyAction(battleEnemies));
-                    isPlayerTurn = true;
                 }
             }
         }
@@ -125,6 +131,8 @@ public class BattleManager : MonoBehaviour
     }
 
     public bool CheckCanAct(Card card) {
+        // this must stay as STM.GetTarget() since the card.target is not yet assigned 
+        // in CardActions.cs
         if(STM.GetTarget() == null && card.isTarget) {
             return false;
         }
@@ -262,15 +270,15 @@ public class BattleManager : MonoBehaviour
                         Vector3 STMPos;
                         isCharacterMissing = DidTargetMiss(playerStats);
                         if(isCharacterMissing) {
-                            Vector3 targPos = STM.GetTarget().transform.position;
+                            Vector3 targPos = card.target.transform.position;
                             STMPos = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
                         else {
                             if(playerStats.tauntTurns > 0) {
-                                STM.SetTarget(playerStats.tauntingEnemy);
+                                card.target = playerStats.tauntingEnemy;
                                 atkMod += MainManager.Instance.tauntBonus;
                             }
-                            STMPos = STM.GetTarget().transform.position;
+                            STMPos = card.target.transform.position;
                         }
 
                         if(isFyornsResolve) {
@@ -300,15 +308,15 @@ public class BattleManager : MonoBehaviour
                             }
                             damage = WeakenedDamage(damage, playerStats);
                             // check target type
-                            if(STM.GetTarget() is BattleEnemyContainer) {
+                            if(card.target is BattleEnemyContainer) {
                                 // if player using hammer, then add a stack
                                 if(cardType == "Hammer") {
-                                    if(isIceBarricade && STM.GetTarget().frostStacks + 1 >= 3) {
+                                    if(isIceBarricade && card.target.frostStacks + 1 >= 3) {
                                         playerStats.CharacterShield(5);
                                     }
-                                    STM.GetTarget().AddFrost(1, hammerAttackTime, false);
+                                    card.target.AddFrost(1, hammerAttackTime, false);
                                 }
-                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(damage, attackDelay, isDeadReturnValue => {
+                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(damage, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
                                         isLast = true;
@@ -344,7 +352,8 @@ public class BattleManager : MonoBehaviour
                         newCard.actions = new Dictionary<string, string>();
                         newCard.actions.Add("ATK", item.Value);
                         // hopefully this works
-                        STM.SetTarget(enemy);
+                        // STM.SetTarget(enemy);
+                        newCard.target = enemy;
                         // recursion
                         StartCoroutine(CardAction(newCard));
                     }
@@ -366,11 +375,12 @@ public class BattleManager : MonoBehaviour
                     playerStats.playerAnimator.CastAnimation();
 
                     if(card.isTarget) {
-                        STM.GetTarget().atkModTemp += atkTemp[0];
-                        STM.GetTarget().atkModTempTurns = atkTemp[1];
-                        STM.GetTarget().atkMod += atkTemp[0];
+                        // replace STM.GetTarget() with card.target
+                        card.target.atkModTemp += atkTemp[0];
+                        card.target.atkModTempTurns = atkTemp[1];
+                        card.target.atkMod += atkTemp[0];
                         AudioManager.Instance.PlayGlassBreak();
-                        STM.GetTarget().WeakenAnimation();
+                        card.target.WeakenAnimation();
                     }
                     else {
                         playerStats.atkModTemp += atkTemp[0];
@@ -386,7 +396,7 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "BLIND":
-                    STM.GetTarget().blind += 1;
+                    card.target.blind += 1;
                     break;
                 case "CLEAR_DEBUFF":
                     if(card.name == "Gorga Snax") {
@@ -430,12 +440,12 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "ICE_STACK":
                     playerStats.playerAnimator.CastAnimation();
-                    STM.GetTarget().AddFrost(Int32.Parse(item.Value), 0.5f, true);
+                    card.target.AddFrost(Int32.Parse(item.Value), 0.5f, true);
                     break;
                 case "HACK":
                     // perform hacking animation here
                     if(item.Value == "SHIELD") {
-                        STM.GetTarget().resetBlock();
+                        card.target.resetBlock();
                     }
                     break;
                 case "HEAL":
@@ -464,11 +474,11 @@ public class BattleManager : MonoBehaviour
                     }));
                     break;
                 case "STN":
-                    // STM.GetTarget().stunnedTurns += Int32.Parse(item.Value);
-                    if(STM.GetTarget().antiStunTurns == 0) {
-                        STM.GetTarget().stunnedTurns = 1;
-                        Debug.Log("target stunned: " + STM.GetTarget().stunnedTurns);
-                        STM.GetTarget().ShockAnimation();
+                    // card.target.stunnedTurns += Int32.Parse(item.Value);
+                    if(card.target.antiStunTurns == 0) {
+                        card.target.stunnedTurns = 1;
+                        Debug.Log("target stunned: " + card.target.stunnedTurns);
+                        card.target.ShockAnimation();
                     }
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
                     break;
@@ -483,8 +493,8 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "VULN":
                     if(card.isTarget) {
-                        STM.GetTarget().AddVuln(Int32.Parse(item.Value));
-                        STM.GetTarget().VulnerableAnimation();
+                        card.target.AddVuln(Int32.Parse(item.Value));
+                        card.target.VulnerableAnimation();
                     }
                     else {
                         playerStats.AddVuln(Int32.Parse(item.Value));
@@ -529,11 +539,11 @@ public class BattleManager : MonoBehaviour
                         Vector3 STMPos2;
                         isCharacterMissing = DidTargetMiss(playerStats);
                         if(isCharacterMissing) {
-                            Vector3 targPos = STM.GetTarget().transform.position;
+                            Vector3 targPos = card.target.transform.position;
                             STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
                         }
                         else {
-                            STMPos2 = STM.GetTarget().transform.position;
+                            STMPos2 = card.target.transform.position;
                         }
 
                         bool isLast = i == (multiplier - 1);
@@ -549,8 +559,8 @@ public class BattleManager : MonoBehaviour
                         }
 
                         if(!isCharacterMissing) {
-                            if(STM.GetTarget() is BattleEnemyContainer) {
-                                StartCoroutine(((BattleEnemyContainer)STM.GetTarget()).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
+                            if(card.target is BattleEnemyContainer) {
+                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
                                         string nextAction = finalBlow[2];
@@ -568,7 +578,7 @@ public class BattleManager : MonoBehaviour
                         }
                         // else {
                         //     // player is blind, attack self
-                        //     ((PlayerStats)STM.GetTarget()).takeDamage(dmg);
+                        //     ((PlayerStats)card.target).takeDamage(dmg);
                         // }
 
                         if (!isLast) {
@@ -619,18 +629,24 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("ending scry");
                     break;
                 case "COUNTER": 
-                    var nextAction = card.actions.ToList()[x+1];
-                    playerStats.counterQueue.Push(nextAction);
-                    playerStats.counterTypes.Push(cardType);
-                    // now, skip the next action in the loop
-                    x+=1;
+                    // iterate through all actions after counter and add to counter queue
+                    // counter aura effect here
+                    playerStats.counterParticles.Play();
+                    AudioManager.Instance.PlayPing();
+                    for(int y = x + 1; y < card.actions.Count(); y++) {
+                        var nextAction = card.actions.ToList()[y];
+                        playerStats.counterQueue.Push(nextAction);
+                        playerStats.counterTypes.Push(cardType);
+                        // now, skip the next action in the loop
+                        x+=1;
+                    }
                     break;
                 case "WEAKEN":
                     playerStats.playerAnimator.CastAnimation();
-                    STM.GetTarget().WeakenAnimation();
+                    card.target.WeakenAnimation();
                     yield return new WaitForSeconds(0.3f);
                     AudioManager.Instance.PlayGlassBreak();
-                    STM.GetTarget().weak += Int32.Parse(item.Value);
+                    card.target.weak += Int32.Parse(item.Value);
                     break;
                 case "WEAKEN_ALL":
                     foreach(var be in battleEnemies) {
@@ -655,13 +671,15 @@ public class BattleManager : MonoBehaviour
         handManager.DrawCards(1);
     }
 
-    public void CreateActionFromPair(KeyValuePair<string, string> keyValuePair, string type, BattleEnemyContainer be) {
+    public void CounterActionFromPair(KeyValuePair<string, string> keyValuePair, string type, BattleEnemyContainer be) {
         Card newCard = ScriptableObject.CreateInstance<Card>();
         newCard.manaCost = 0;
         newCard.type = type;
         newCard.actions = new Dictionary<string, string>();
         newCard.actions[keyValuePair.Key] = keyValuePair.Value;
-        STM.SetTarget(be);
+        // STM.SetTarget(be);
+        newCard.target = be;
+        newCard.isTarget = true;
         AudioManager.Instance.PlayCounter();
         playerStats.CounterAnimation();
         flashImage.Flash(0.2f, 0f, 0.3f, Color.black);
@@ -820,7 +838,7 @@ public class BattleManager : MonoBehaviour
                                     while(playerStats.counterQueue.Count() > 0) {
                                         var counter = playerStats.counterQueue.Pop();
                                         var type = playerStats.counterTypes.Pop();
-                                        CreateActionFromPair(counter, type, battleEnemy);
+                                        CounterActionFromPair(counter, type, battleEnemy);
                                         // if(type == "Hammer") {
                                         //     yield return new WaitForSeconds(hammerAttackTime);
                                         // }
@@ -896,7 +914,12 @@ public class BattleManager : MonoBehaviour
                                         }
 
                                         if (!isLast) {
-                                            yield return new WaitForSeconds(0.2f);
+                                            if(battleEnemy.battleEnemy.name == "DroneBot") {
+                                                yield return new WaitForSeconds(0.2f);
+                                            }
+                                            else {
+                                                yield return new WaitForSeconds(0.5f);
+                                            }
                                         }
                                     }
                                 }
@@ -923,7 +946,7 @@ public class BattleManager : MonoBehaviour
                                         while(playerStats.counterQueue.Count() > 0) {
                                             var counter = playerStats.counterQueue.Pop();
                                             var type = playerStats.counterTypes.Pop();
-                                            CreateActionFromPair(counter, type, battleEnemy);
+                                            CounterActionFromPair(counter, type, battleEnemy);
                                             // if(type == "Hammer") {
                                             //     yield return new WaitForSeconds(hammerAttackTime);
                                             // }

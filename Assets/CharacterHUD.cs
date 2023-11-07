@@ -147,9 +147,9 @@ public class CharacterHUD : MonoBehaviour
             counterDisplay.SetActive(true);
             shd.counterText.gameObject.SetActive(true);
             shd.counterText.text = "Countering next attack:";
-            // reverse order since it's a stack
-            for(int i = baseCharacterInfo.counterQueue.items.Count - 1; i >= 0; i--) {
-                shd.counterText.text += "<br>  " + (baseCharacterInfo.counterQueue.items.Count - i) + ") " +  CardUtils.DescriptionParser(baseCharacterInfo.counterQueue.items[i]);
+
+            for(int i = 0; i < baseCharacterInfo.counterQueue.items.Count; i++) {
+                shd.counterText.text += "<br>  " + (i + 1) + ") " +  CardUtils.DescriptionParser(baseCharacterInfo.counterQueue.items[i]);
             } 
         }
         else {

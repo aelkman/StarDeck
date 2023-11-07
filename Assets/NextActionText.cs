@@ -70,7 +70,7 @@ public class NextActionText : MonoBehaviour
                     if(description != "") {
                         description += ", ";
                     }
-                    description += "Anti-Stun +2 turns";
+                    description += "+2 turns";
                 }
                 else if(entry.Key == "WEAKEN") {
                     name = "Weaken";
@@ -78,7 +78,7 @@ public class NextActionText : MonoBehaviour
                 }
                 else if(entry.Key == "VULN") {
                     name = "Mark vulnerable";
-                    description = "Target vulnerable +" + entry.Value + " turns";
+                    description = "+" + entry.Value + " turns";
                 }
                 else {
                     name = entry.Key;

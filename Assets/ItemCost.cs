@@ -24,16 +24,20 @@ public class ItemCost : MonoBehaviour
             else if (card.card.rarity == "R") {
                 price = 200;
             }
-            if(MainManager.Instance.artifacts.Contains("CRED")) {
-                price = (int)Math.Round(0.75 * price);
-            }
         }
         else if (item.GetComponent<ExtractorScript>() != null) {
             price = 75;
-            if(MainManager.Instance.artifacts.Contains("CRED")) {
-                price = (int)Math.Round(0.75 * price);
-            }
+
         }
+        else {
+            price = 999;
+        }
+
+        // discount applied!
+        if(MainManager.Instance.artifacts.Contains("CRED")) {
+                price = (int)Math.Round(0.75 * price);
+        }
+
         tmp.text = price.ToString();
     }
 

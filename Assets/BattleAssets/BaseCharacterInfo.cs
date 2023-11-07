@@ -38,8 +38,8 @@ public class BaseCharacterInfo : MonoBehaviour
     public bool frozenTurn = false;
     public int atkModTemp = 0;
     public int atkModTempTurns = 0;
-    public StackList<KeyValuePair<string, string>> counterQueue;
-    public StackList<string> counterTypes;
+    public QueueList<KeyValuePair<string, string>> counterQueue;
+    public QueueList<string> counterTypes;
     // Start is called before the first frame update
     void Start()
     {
@@ -175,7 +175,12 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void ShockAnimation() {
         shockPlayer.StartShock();
-        characterAnimator.ShockAnimation();
+        if(isTaunter) {
+            characterAnimator.ShockTauntAnimation();
+        }
+        else {
+            characterAnimator.ShockAnimation();
+        }
     }
 
     public void FreezeAnimation() {
@@ -195,28 +200,33 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public IEnumerator AddFrostTimed(int frost, float timeDelay, bool addAudio) {
         if(!frozenTurn) {
+            if(frostStacks + frost >= 3) {
+                frozenTurn = true;
+            }
             yield return new WaitForSeconds(timeDelay);
-            frostStacks += frost;
-            if(frostStacks > 3) {
-                frostStacks = 3;
-            }
-            if(addAudio && frostStacks < 3) {
-                AudioManager.Instance.PlayFreeze();
-            }
-            iceStacks.SetStacks(frostStacks);
-            if(frostStacks == 3) {
-                if(antiStunTurns == 0) {
-                    // frostStacks = 0;
-                    frozenTurn = true;
-                    stunnedTurns = 1;
-                    StartCoroutine(delayedFrostReset());
+            if(!isDead) {
+                frostStacks += frost;
+                if(frostStacks > 3) {
+                    frostStacks = 3;
                 }
-                else {
-                    frostStacks = 0;
-                    iceStacks.RemoveStacks();
+                if(addAudio && frostStacks < 3) {
+                    AudioManager.Instance.PlayFreeze();
                 }
-                // delay reset on frost counter
-                // trigger freeze on enemy
+                iceStacks.SetStacks(frostStacks);
+                if(frostStacks == 3) {
+                    if(antiStunTurns == 0) {
+                        // frostStacks = 0;
+                        // frozenTurn = true;
+                        stunnedTurns = 1;
+                        StartCoroutine(delayedFrostReset());
+                    }
+                    else {
+                        frostStacks = 0;
+                        iceStacks.RemoveStacks();
+                    }
+                    // delay reset on frost counter
+                    // trigger freeze on enemy
+                }
             }
         }
     }
