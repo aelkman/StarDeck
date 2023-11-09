@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class WeaponsManager : MonoBehaviour
 {
     public WeaponWindow weaponWindow1;
     public WeaponWindow weaponWindow2;
     public List<string> weapons = new List<string>() { "", ""};
+    public Button embarkButton;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +21,12 @@ public class WeaponsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(weapons.Contains("")) {
+            embarkButton.interactable = false;
+        }
+        else {
+            embarkButton.interactable = true;
+        }
     }
 
     public void SetWeaponWindow(string weaponName) {

@@ -9,8 +9,6 @@ using System.Linq;
 
 public class PotionRewardButton : PotionShopButton, IPointerEnterHandler, IPointerExitHandler
 {
-    public AudioSource takeItemAudio;
-
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -45,7 +43,7 @@ public class PotionRewardButton : PotionShopButton, IPointerEnterHandler, IPoint
 
     public void TakePotion() {
         if(MainManager.Instance.potions.Count <= 2) {
-            takeItemAudio.Play();
+            AudioManager.Instance.PlayCardRustling();
             // canvasGroup.alpha = 0.3f;
             // canvasGroup.interactable = false;
             // canvasGroup.blocksRaycasts = false;

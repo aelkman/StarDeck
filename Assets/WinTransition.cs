@@ -24,7 +24,7 @@ public class WinTransition : MonoBehaviour
         AudioManager.Instance.PlayButtonPress();
         if(MainManager.Instance.isBossBattle) {
             GameManager.Instance.demoComplete = true;
-            GameManager.Instance.RestartFromMainMenu();
+            GameManager.Instance.RestartToScene("MainMenu", transition);
         }
         else {
             StartCoroutine(LoadLevel("Map"));

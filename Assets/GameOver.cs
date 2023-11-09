@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameOver : MonoBehaviour
 {
+    public Animator transition;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +19,9 @@ public class GameOver : MonoBehaviour
 
     public void Initiate() {
         gameObject.SetActive(true);
+    }
+
+    public void RestartToMainMenu() {
+        GameManager.Instance.RestartToScene("MainMenu", transition);
     }
 }

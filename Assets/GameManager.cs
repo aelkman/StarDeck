@@ -78,8 +78,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Map");
     }
 
-    public void RestartFromMainMenu() {
+    public void RestartToScene(string sceneName, Animator transition) {
         ResetGame();
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(sceneName);
+        // can't load transtion bc its dead :( )
+        // StartCoroutine(LoadLevel(sceneName, transition));
+    }
+
+    private IEnumerator LoadLevel(string sceneName, Animator transition) {
+        AudioManager.Instance.PlayButtonPress();
+        transition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(1.0f);
+
+        SceneManager.LoadScene(sceneName);
     }
 }

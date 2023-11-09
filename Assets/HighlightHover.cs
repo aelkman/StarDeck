@@ -10,12 +10,15 @@ public class HighlightHoverSelect : MonoBehaviour, IPointerEnterHandler, IPointe
     public Sprite regular;
     public Sprite highlighted;
     private Image image;
+    public Image buttonImage;
     private bool selected = false;
     public WeaponsManager weaponsManager;
     public string weaponName;
+    private Color buttonImageColor;
     // Start is called before the first frame update
     void Start()
     {
+        buttonImageColor = buttonImage.color;
         image = GetComponent<Image>();
     }
 
@@ -24,10 +27,15 @@ public class HighlightHoverSelect : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         if(mouse_over && Input.GetMouseButtonUp(0)) {
             selected = !selected;
+            AudioManager.Instance.PlayButtonPress();
             if(selected) {
+                buttonImageColor.a = 1f;
+                buttonImage.color = buttonImageColor;
                 weaponsManager.SetWeaponWindow(weaponName);
             }
             else {
+                buttonImageColor.a = 0.561f;
+                buttonImage.color = buttonImageColor;
                 weaponsManager.RemoveWeaponWindow(weaponName);
             }
         }

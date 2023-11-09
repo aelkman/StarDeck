@@ -92,7 +92,7 @@ public class OpeningScene : MonoBehaviour
     void Update()
     {
         if(skipClick.skip) {
-            StartCoroutine(LoadLevel("Map"));
+            StartCoroutine(LoadLevel("Weapons"));
         }
     }
 

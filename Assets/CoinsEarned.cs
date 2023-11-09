@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class CoinsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public AudioSource coinsAudio;
     public int coinsEarned;
     public Sprite coinSelected;
     public Sprite coinRegular;
@@ -24,7 +23,7 @@ public class CoinsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         if (mouse_over) {
             if (Input.GetMouseButtonUp(0)) {
-                coinsAudio.Play();
+                AudioManager.Instance.PlayCoins();
                 gameObject.SetActive(false);
                 MainManager.Instance.coinCount += coinsEarned;
             }

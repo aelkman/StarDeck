@@ -406,6 +406,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4732848127129047664, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5345937392680819074, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -1088,6 +1092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regular: {fileID: 21300000, guid: 04e1c2033f05f2d42a383c9077100962, type: 3}
   highlighted: {fileID: 21300000, guid: d05d2cd16b100e148b4d251f057fa37d, type: 3}
+  buttonImage: {fileID: 1083298099}
   weaponsManager: {fileID: 616514576}
   weaponName: Blaster
 --- !u!1 &616140075
@@ -1291,6 +1296,7 @@ MonoBehaviour:
   weapons:
   - 
   - 
+  embarkButton: {fileID: 1819375268}
 --- !u!1 &632406624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,6 +1974,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4732848127129047664, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5345937392680819074, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -2252,7 +2262,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1043796554}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8a479500b226d4583e276349f313e8, type: 3}
   m_Name: 
@@ -2274,7 +2284,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 124019512}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8a479500b226d4583e276349f313e8, type: 3}
   m_Name: 
@@ -3404,6 +3414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regular: {fileID: 21300000, guid: f0131f17011794344a691d12932dc0ae, type: 3}
   highlighted: {fileID: 21300000, guid: e47361d31552a0b41b7b12099ec9861b, type: 3}
+  buttonImage: {fileID: 632406627}
   weaponsManager: {fileID: 616514576}
   weaponName: Hammer
 --- !u!1 &1765164064
