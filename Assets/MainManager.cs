@@ -25,6 +25,8 @@ public class MainManager : MonoBehaviour, IDisposable
     public List<Potion> potions = new List<Potion>();
     public List<string> possibleArtifacts;
     public bool isBossBattle = false;
+    public GameObject notEnoughMoneyPrefab;
+    public GameObject tooManyConsumables;
 
     private void Awake()
     {
@@ -108,5 +110,15 @@ public class MainManager : MonoBehaviour, IDisposable
     public void UsePotion(Potion potion, int slot) {
         MainManager.Instance.potions.Remove(potion);
         PotionUI.Instance.UsePotion(slot);
+    }
+
+    public void NotEnoughMoney() {
+        AudioManager.Instance.PlayNegativeFeedback();
+        Instantiate(notEnoughMoneyPrefab, PersistentHUD.Instance.transform);
+    }
+
+    public void TooManyConsumables() {
+    AudioManager.Instance.PlayNegativeFeedback();
+        Instantiate(tooManyConsumables, PersistentHUD.Instance.transform);
     }
 }

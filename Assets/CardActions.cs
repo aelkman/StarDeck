@@ -53,7 +53,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void Update () {
         if(mouse_over) {
-            Debug.Log("mouse over");
+            // Debug.Log("mouse over");
             if (Input.GetMouseButtonDown(1)) {
                         isCancelled = true;
                         if (isSelected) {
@@ -76,11 +76,13 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
                             // add card play animation here
                             if (isShop) {
-                                if (((ShopCardUISelector)cardUISelector).AddToDeck(cardDisplay.card, itemCost.price)){
+                                if (((ShopCardUISelector)cardUISelector).AddToDeck(cardDisplay.card, itemCost.price)) {
                                     StartCoroutine(CardPlayAnimation(0.05f));
                                     isCardPlayed = true;
-
-                            }
+                                }
+                                else {
+                                    MainManager.Instance.NotEnoughMoney();
+                                }
                             }
                             else if (cardUISelector.AddToDeck(cardDisplay.card)){
                                 StartCoroutine(CardPlayAnimation(0.05f));

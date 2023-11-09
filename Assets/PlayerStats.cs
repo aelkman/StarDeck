@@ -26,6 +26,15 @@ public class PlayerStats : BaseCharacterInfo
     // Start is called before the first frame update
     void Start()
     {
+        if(MainManager.Instance.artifacts.Contains("PENNY_PINCH")) {
+            if(MainManager.Instance.coinCount < 100) {
+                atkMod += 2;
+            }
+            else {
+                atkMod -= 1;
+            }
+        }
+
         counterQueue = new QueueList<KeyValuePair<string, string>>();
         counterTypes = new QueueList<string>();
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();

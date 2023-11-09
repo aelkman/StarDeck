@@ -46,7 +46,7 @@ public class ExtractorScript : MonoBehaviour, IPointerEnterHandler, IPointerExit
             deckViewer.StartRemoval(itemCost.price);
         }
         else {
-            Debug.Log("not enough money!");
+            MainManager.Instance.NotEnoughMoney();
         }
     }
 }

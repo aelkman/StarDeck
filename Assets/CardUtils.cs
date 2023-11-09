@@ -105,4 +105,24 @@ public static class CardUtils
         return descriptionAdditional;
     }               
 
+    public static int GetCardPrice(Card card) {
+        int price = 0;
+
+        if(card.rarity == "C") {
+            price = 50;
+        }
+        else if(card.rarity == "U") {
+            price = 100;
+        }
+        else if(card.rarity == "R") {
+            price = 200;
+        }
+
+        if(MainManager.Instance.artifacts.Contains("CRED")) {
+            price = (int)Math.Round(0.75 * price);
+        }
+
+        return price;
+    }
+
 }

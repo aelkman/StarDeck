@@ -19,6 +19,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource munchin;
     public AudioSource purchase;
     public AudioSource ping;
+    public AudioSource negativeFeedback;
     private void Awake()
     {
         // start of new code
@@ -99,5 +100,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayPing() {
         ping.Play();
+    }
+
+    public void PlayNegativeFeedback() {
+        negativeFeedback.Play();
     }
 }

@@ -27,7 +27,6 @@ public class ItemCost : MonoBehaviour
         }
         else if (item.GetComponent<ExtractorScript>() != null) {
             price = 75;
-
         }
         else {
             price = 999;

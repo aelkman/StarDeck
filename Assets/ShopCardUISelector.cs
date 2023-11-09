@@ -63,6 +63,7 @@ public class ShopCardUISelector : CardUISelector
             return true;
         }
         else {
+            // MainManager.Instance.NotEnoughMoney();
             return false;
         }
     }

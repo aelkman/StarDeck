@@ -90,13 +90,21 @@ public class PotionShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     public void PurchasePotion() {
-        if(MainManager.Instance.potions.Count <= 2 && MainManager.Instance.coinCount >= potion.price) {
-            AudioManager.Instance.PlayPurchase();
-            canvasGroup.alpha = 0.3f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-            MainManager.Instance.EquipPotion(potion);
-            MainManager.Instance.coinCount -= price;
+        if(MainManager.Instance.coinCount >= potion.price) {
+            if(MainManager.Instance.potions.Count <= 2) {
+                AudioManager.Instance.PlayPurchase();
+                canvasGroup.alpha = 0.3f;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+                MainManager.Instance.EquipPotion(potion);
+                MainManager.Instance.coinCount -= price;
+            }
+            else {
+                MainManager.Instance.TooManyConsumables();
+            }
+        }
+        else {
+            MainManager.Instance.NotEnoughMoney();
         }
     }
 }

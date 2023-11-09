@@ -17,7 +17,6 @@ public class BattleManager : MonoBehaviour
     public GameObject noEnergyPrefab;
     public GameOver gameOver;
     public BattleWon battleWon;
-    public BattleAudioController bac;
     public GameObject mainCanvas;
     public GameObject kingBotStartingDialogue;
     private KingBotBossDialogue kingBotBossDialogue;
@@ -141,7 +140,7 @@ public class BattleManager : MonoBehaviour
         }
         else {
             // add some ui element to tell user not enough mana
-            bac.PlayNegativeFeedback();
+            AudioManager.Instance.PlayNegativeFeedback();
             Instantiate(noEnergyPrefab, shakeHolder.transform);
             return false;
         }
@@ -199,7 +198,7 @@ public class BattleManager : MonoBehaviour
         }
         else {
             // play noammo UI element
-            bac.PlayNegativeFeedback();
+            AudioManager.Instance.PlayNegativeFeedback();
             Instantiate(noAmmoPrefab, shakeHolder.transform);   
             return false;
         }
