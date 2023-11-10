@@ -780,6 +780,7 @@ MonoBehaviour:
   effectSystem: {fileID: 2587277430470127724}
   singleTargetManager: {fileID: 0}
   enemyPrefabInstance: {fileID: 0}
+  kingbotWinDialogue: {fileID: 0}
   actions: []
   cameraShake: {fileID: 0}
 --- !u!1 &4254911735686161093
@@ -1475,6 +1476,10 @@ PrefabInstance:
     - target: {fileID: 5486458947453235177, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
       propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486458947453235177, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5486458947453235177, guid: 50323960aebb1f443ac19f3251560be8, type: 3}
       propertyPath: m_SortingLayerID

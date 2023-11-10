@@ -101,5 +101,8 @@ public class PersistentHUD : MonoBehaviour
                 mapSingleton.gameObject.SetActive(false);
             }
         }
+        else {
+            mapManager.destinationsClickable = true;
+        }
     }
 }

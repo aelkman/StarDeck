@@ -274,8 +274,13 @@ public class BattleManager : MonoBehaviour
                         }
                         else {
                             if(playerStats.tauntTurns > 0) {
-                                card.target = playerStats.tauntingEnemy;
-                                atkMod += MainManager.Instance.tauntBonus;
+                                if(!playerStats.tauntingEnemy.isDead) {
+                                    card.target = playerStats.tauntingEnemy;
+                                    atkMod += MainManager.Instance.tauntBonus;
+                                }
+                                else {
+                                    playerStats.tauntTurns = 0;
+                                }
                             }
                             STMPos = card.target.transform.position;
                         }

@@ -19,6 +19,7 @@ public class KingBotBossWinDialogue : MonoBehaviour
     public GameObject clickContinueBoss;
     public bool isFinished = false;
     private bool clicked = false;
+    private bool waitForClick = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,11 +30,13 @@ public class KingBotBossWinDialogue : MonoBehaviour
     }
 
     void Update() {
-        if(Input.GetMouseButtonDown(0)) {
-            clicked = true;
-        }
-        else if(Input.GetMouseButtonUp(0)) {
-            clicked = false;
+        if(waitForClick) {
+            if(Input.GetMouseButtonDown(0)) {
+                clicked = true;
+            }
+            else if(Input.GetMouseButtonUp(0)) {
+                clicked = false;
+            }
         }
     }
 
@@ -51,7 +54,9 @@ public class KingBotBossWinDialogue : MonoBehaviour
 
         // wait click
         clickContinuePlayer.SetActive(true);
+        waitForClick = true;
         yield return new WaitUntil(() => clicked);
+        waitForClick = false;
         clickContinuePlayer.SetActive(false);
 
 
@@ -70,7 +75,11 @@ public class KingBotBossWinDialogue : MonoBehaviour
 
         // wait click
         clickContinuePlayer.SetActive(true);
+        
+        waitForClick = true;
         yield return new WaitUntil(() => clicked);
+        waitForClick = false;
+        
         clickContinuePlayer.SetActive(false);
         
         bossText2.gameObject.SetActive(false);
@@ -84,7 +93,11 @@ public class KingBotBossWinDialogue : MonoBehaviour
 
         // wait click
         clickContinuePlayer.SetActive(true);
+        
+        waitForClick = true;
         yield return new WaitUntil(() => clicked);
+        waitForClick = false;
+        
         clickContinuePlayer.SetActive(false);
 
         bossText3.gameObject.SetActive(false);
@@ -94,7 +107,11 @@ public class KingBotBossWinDialogue : MonoBehaviour
 
         // wait click
         clickContinueBoss.SetActive(true);
+        
+        waitForClick = true;
         yield return new WaitUntil(() => clicked);
+        waitForClick = false;
+        
         clickContinueBoss.SetActive(false);
         
         playerDialogue.SetActive(false);

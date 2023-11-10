@@ -14,7 +14,7 @@ public class DiceRoller : MonoBehaviour
     private Vector3Int OpposingDirectionValues;
     private float timeElapsed;
     public TextMeshProUGUI rerollCountText;
-    private int rerollRemaining = 2;
+    private int rerollRemaining = 200;
     public Button rerollButton;
     public Button continueButton;
     private bool isRollFinished;
@@ -179,10 +179,13 @@ public class DiceRoller : MonoBehaviour
                     Debug.Log("enemy: " + e);
                 }
             }
+            else if(UpperSideTxt.text == "Chest") {
+                nextLevel = "ChestRoll";
+            }
         }
-        Debug.Log("continue click: " + UpperSideTxt.text + ", " + eventName);
-        diceContainer.SetActive(false);
+        Debug.Log("continue click: " + nextLevel + ", " + eventName);
         mapManager.destinationsClickable = true;
+        diceContainer.SetActive(false);
         mapManager.LoadNextLevel(nextLevel);
     }
 
