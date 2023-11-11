@@ -141,7 +141,8 @@ public class BattleManager : MonoBehaviour
         else {
             // add some ui element to tell user not enough mana
             AudioManager.Instance.PlayNegativeFeedback();
-            Instantiate(noEnergyPrefab, shakeHolder.transform);
+            var go = Instantiate(noEnergyPrefab, shakeHolder.transform);
+            go.GetComponent<Canvas>().sortingLayerName = "Character Layer";   
             return false;
         }
     }
@@ -199,7 +200,8 @@ public class BattleManager : MonoBehaviour
         else {
             // play noammo UI element
             AudioManager.Instance.PlayNegativeFeedback();
-            Instantiate(noAmmoPrefab, shakeHolder.transform);   
+            var go = Instantiate(noAmmoPrefab, shakeHolder.transform);
+            go.GetComponent<Canvas>().sortingLayerName = "Character Layer";   
             return false;
         }
     }

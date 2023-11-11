@@ -14,7 +14,7 @@ public class DiceRoller : MonoBehaviour
     private Vector3Int OpposingDirectionValues;
     private float timeElapsed;
     public TextMeshProUGUI rerollCountText;
-    private int rerollRemaining = 200;
+    private int rerollRemaining = 2;
     public Button rerollButton;
     public Button continueButton;
     private bool isRollFinished;

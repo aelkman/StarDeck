@@ -2452,6 +2452,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8410237316990425599}
     - target: {fileID: 6762411480120391754, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+      propertyPath: characterHUD
+      value: 
+      objectReference: {fileID: 5670274739332381920}
+    - target: {fileID: 6762411480120391754, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
       propertyPath: descriptionHover
       value: 
       objectReference: {fileID: 5469313036071748240}
@@ -2697,6 +2701,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5670274739332381920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3759989900953688023, guid: 57cea00f27fbd1346b66e94a32163236, type: 3}
+  m_PrefabInstance: {fileID: 8835770211503205175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414547864159836435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27151c559448f4f46819f323837a4c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6994274088202694782 stripped

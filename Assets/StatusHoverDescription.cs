@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.UI;
 
 public class StatusHoverDescription : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject descriptionHover;
+    public CharacterHUD characterHUD;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI blindText;
     public TextMeshProUGUI blockText;
@@ -16,6 +18,7 @@ public class StatusHoverDescription : MonoBehaviour, IPointerEnterHandler, IPoin
     public TextMeshProUGUI tauntText;
     public TextMeshProUGUI vulnText;
     public TextMeshProUGUI weakText;
+    public bool isEmpty;
     
     // Start is called before the first frame update
     void Start()
@@ -31,7 +34,9 @@ public class StatusHoverDescription : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        descriptionHover.SetActive(true);
+        if(characterHUD.statuses.Count > 0) {
+            descriptionHover.SetActive(true);
+        }
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
