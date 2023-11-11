@@ -153,7 +153,7 @@ public class BattleManager : MonoBehaviour
         // for all non attack Blaster cards, they will not use a charge
         int requiredCharges = 0;
 
-        if((cardDisplay.card.actions.ContainsKey("ATK") && cardType == "Blaster")
+        if((cardDisplay.card.isAttack && cardType == "Blaster")
             || (cardDisplay.card.actions.ContainsKey("ATK_ALL") && cardType == "Blaster")
             || (cardDisplay.card.actions.ContainsKey("FINAL_BLOW") && cardType == "Blaster")) {
             if(isPocketGenerator && cardDisplay.card.subType == "Shot") {
@@ -327,6 +327,8 @@ public class BattleManager : MonoBehaviour
                                         // if the enemy was killed, perform the next action
                                         isLast = true;
                                         i = multi;
+                                        // make sure to unfreeze on death
+                                        ((BattleEnemyContainer)card.target).UnfreezeWithoutRebind();
                                     }
                                 }));
                             }
@@ -1147,8 +1149,8 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(playerStats.shieldAnimator.stopTime);
         handManager.DrawCards(5);
         foreach(BattleEnemyContainer be in battleEnemies) {
+            be.UnfreezeAnimation();
             if(be.frozenTurn) {
-                be.UnfreezeAnimation();
                 be.frozenTurn = false;
             }
             be.RemoveSingleVuln();

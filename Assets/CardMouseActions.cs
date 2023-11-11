@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
-public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler
 {
     private HandManager handManager;
     private BattleManager battleManager;
@@ -31,6 +31,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public float scaleMultiplier = 1.3f;
     public float hoverYOffset = 37f;
     public ScryUISelector scryUISelector;
+    private bool mouseOver = false;
 
     Coroutine start;
     Coroutine stop;
@@ -46,79 +47,80 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     void Update () {
-        if (Input.GetMouseButtonDown(1)) {
-            isCancelled = true;
-            if (isSelected) {
-                // Debug.Log("cancelling action (right click)");
-                if(cursorFollowerInstance != null) {
-                    cursorFollowerInstance.SetActive(false);
-                    Cursor.visible = true;
-                }
-                if(!isTarget) {
-                    // for cards that are not target cards, move it back
-                    transform.localPosition = originalPosition;
-                }
-                isSelected = false;
-                isHardReset = true;
-                isCardPlayed = false;
-                // now shrink card back to where it was
-                ExitResetSequence();
-            }
-        }
-        if (Input.GetMouseButtonUp (0)) {
-            if (isSelected && !isHardReset) {
-                // Debug.Log("drag exit");
-                if (cursorFollowerInstance != null) {
+        // if(mouseOver) {
+            if (Input.GetMouseButtonDown(1)) {
+                isCancelled = true;
+                if (isSelected) {
+                    // Debug.Log("cancelling action (right click)");
+                    if(cursorFollowerInstance != null) {
                         cursorFollowerInstance.SetActive(false);
                         Cursor.visible = true;
-                }
-
-                if(!battleManager.CheckCanAct(cardDisplay.card) || 
-                    (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
+                    }
                     if(!isTarget) {
                         // for cards that are not target cards, move it back
                         transform.localPosition = originalPosition;
                     }
                     isSelected = false;
-                    isFollowerPlaced = false;
+                    isHardReset = true;
                     isCardPlayed = false;
-                    // isHardReset = true;
-
+                    // now shrink card back to where it was
+                    ExitResetSequence();
                 }
-                else{
-                    // if it's a target but the STM doesn't have a target, that's bad
-                    if (isTarget && STM.GetTarget() == null) {
+            }
+            if (Input.GetMouseButtonUp (0)) {
+                if (isSelected && !isHardReset) {
+                    // Debug.Log("drag exit");
+                    if (cursorFollowerInstance != null) {
+                            cursorFollowerInstance.SetActive(false);
+                            Cursor.visible = true;
+                    }
+
+                    if(!battleManager.CheckCanAct(cardDisplay.card) || 
+                        (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
+                        if(!isTarget) {
+                            // for cards that are not target cards, move it back
+                            transform.localPosition = originalPosition;
+                        }
                         isSelected = false;
                         isFollowerPlaced = false;
                         isCardPlayed = false;
-                        // ExitResetSequence();
-                    }
-                    else {
-                        // if it's a target card, then lock the STM
-                        if (isTarget) {
-                            STM.targetLocked = true;
-                            // this line of code is hugely important
-                            cardDisplay.card.target = STM.GetTarget();
-                        }
-                        isSelected = false;
-                        isCardPlayed = true;
+                        // isHardReset = true;
 
-                        // add card play animation here
-                        StartCoroutine(CardPlayAnimation(0.05f));
-                        StartCoroutine(CardPlayDelaySequence(0.2f));
+                    }
+                    else{
+                        // if it's a target but the STM doesn't have a target, that's bad
+                        if (isTarget && STM.GetTarget() == null) {
+                            isSelected = false;
+                            isFollowerPlaced = false;
+                            isCardPlayed = false;
+                            // ExitResetSequence();
+                        }
+                        else {
+                            // if it's a target card, then lock the STM
+                            if (isTarget) {
+                                STM.targetLocked = true;
+                                // this line of code is hugely important
+                                cardDisplay.card.target = STM.GetTarget();
+                            }
+                            isSelected = false;
+                            isCardPlayed = true;
+
+                            // add card play animation here
+                            StartCoroutine(CardPlayAnimation(0.05f));
+                            StartCoroutine(CardPlayDelaySequence(0.2f));
+                        }
                     }
                 }
+                else if (isHardReset) {
+                    isSelected = false;
+                    isHardReset = false;
+                    isFollowerPlaced = false;
+                    isCardPlayed = false;
+                    transform.localPosition = originalPosition;
+                }
+                isCancelled = false;
             }
-            else if (isHardReset) {
-                isSelected = false;
-                isHardReset = false;
-                isFollowerPlaced = false;
-                isCardPlayed = false;
-                transform.localPosition = originalPosition;
-            }
-            isCancelled = false;
-        }
-
+        // }
     }
 
     private IEnumerator CardPlayDelaySequence(float time) {
@@ -251,6 +253,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        mouseOver = true;
         cardDisplay.glowImage.gameObject.SetActive(true);
         if (!isCardPlayed) {
             // check if it's a Target card first
@@ -293,10 +296,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
     public void OnPointerExit(PointerEventData pointerEventData)
     {
+        mouseOver = false;
         ExitResetSequence();
     }
 
-    private void OnMouseDrag() {
+    public void OnDrag(PointerEventData eventData)
+    {
         isSelected = true;
         if(!isTarget) {
             // Debug.Log("input y pos: " + Input.mousePosition.y);
@@ -322,6 +327,35 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             transform.position = translatedWorldPosition;
         }
     }
+
+    private void OnMouseDrag() {
+        // isSelected = true;
+        // if(!isTarget) {
+        //     // Debug.Log("input y pos: " + Input.mousePosition.y);
+        //     if(Input.mousePosition.y > 420) {
+        //         isHardReset = false;
+        //     }
+        //     else {
+        //         isHardReset = true;
+        //     }
+        // }
+
+        // if(isTarget) {
+        //     if(!isFollowerPlaced) {
+        //         Cursor.visible = false;
+        //         cursorFollowerInstance.SetActive(true);
+        //         cursorFollowerInstance.transform.localPosition = transform.localPosition;
+        //         isFollowerPlaced = true;
+        //     }
+        // }
+        // else if(!isTarget && !isCancelled) {
+        //     Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        //     Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+        //     transform.position = translatedWorldPosition;
+        // }
+    }
+
+
 
     private static float WrapAngle(float angle)
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameOver : MonoBehaviour
 {
     public Animator transition;
+    public HandManager handManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,7 @@ public class GameOver : MonoBehaviour
 
     public void Initiate() {
         gameObject.SetActive(true);
+        handManager.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void RestartToMainMenu() {

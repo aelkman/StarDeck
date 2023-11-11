@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource purchase;
     public AudioSource ping;
     public AudioSource negativeFeedback;
+    public AudioSource hammer;
     private void Awake()
     {
         // start of new code
@@ -104,5 +105,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayNegativeFeedback() {
         negativeFeedback.Play();
+    }
+
+    public void PlayHammerAudio() {
+        hammer.Play();
     }
 }

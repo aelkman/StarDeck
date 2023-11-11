@@ -98,6 +98,7 @@ public class DestinationsController : MonoBehaviour
             while(destination == "Mini-Boss") {
                 index = Random.Range(0, destinations.Count);
                 destination = destinations[index];
+                Debug.Log("stuck in infinite loop!");
             }
         }
 

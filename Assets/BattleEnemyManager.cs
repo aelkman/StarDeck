@@ -8,6 +8,7 @@ public class BattleEnemyManager : MonoBehaviour
     public GameObject animatorPrefab;
     public List<string> enemyNames;
     public BattleManager battleManager;
+    public HandManager handManager;
     public List<BattleEnemyContainer> battleEnemies;
     public List<BattleEnemyContainer> battleEnemiesStarting;
     public bool isInitialized = false;
@@ -80,6 +81,10 @@ public class BattleEnemyManager : MonoBehaviour
     public void EnemyDeath(BattleEnemyContainer battleEnemy) {
         battleEnemies.Remove(battleEnemy);
         if(battleEnemies.Count == 0) {
+            // fix bug for no hit audio on hammer finish
+            // if(handManager.lastCard.type == "Hammer") {
+            //     AudioManager.Instance.PlayHammerAudio();
+            // }
             StartCoroutine(DelayWin(1.5f));
         }
         battleManager.RemoveEnemyActions(battleEnemy);
@@ -88,6 +93,7 @@ public class BattleEnemyManager : MonoBehaviour
     }
 
     private IEnumerator DelayWin(float time) {
+        yield return new WaitForSeconds(0.5f);
         battleManager.playerStats.playerAnimator.HipThrust();
         yield return new WaitForSeconds(time);
         battleManager.BattleWin();

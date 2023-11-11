@@ -194,6 +194,11 @@ public class BaseCharacterInfo : MonoBehaviour
         iceSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
+    public void UnfreezeWithoutRebind() {
+        characterAnimator.GetComponent<Animator>().speed = 1;
+        iceSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+    }
+
     public void AddFrost(int frost, float timeDelay, bool addAudio) {
         StartCoroutine(AddFrostTimed(frost, timeDelay, addAudio));
     }

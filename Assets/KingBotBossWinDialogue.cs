@@ -30,13 +30,11 @@ public class KingBotBossWinDialogue : MonoBehaviour
     }
 
     void Update() {
-        if(waitForClick) {
-            if(Input.GetMouseButtonDown(0)) {
-                clicked = true;
-            }
-            else if(Input.GetMouseButtonUp(0)) {
-                clicked = false;
-            }
+        if(Input.GetMouseButtonDown(0)) {
+            clicked = true;
+        }
+        if(Input.GetMouseButtonUp(0)) {
+            clicked = false;
         }
     }
 
@@ -54,9 +52,7 @@ public class KingBotBossWinDialogue : MonoBehaviour
 
         // wait click
         clickContinuePlayer.SetActive(true);
-        waitForClick = true;
         yield return new WaitUntil(() => clicked);
-        waitForClick = false;
         clickContinuePlayer.SetActive(false);
 
 
