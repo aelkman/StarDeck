@@ -667,7 +667,7 @@ public class BattleManager : MonoBehaviour
             }
         }
         // unlock the target
-        STM.SetTarget(null);
+        STM.ClearTarget();
         STM.targetLocked = false;
     }
 

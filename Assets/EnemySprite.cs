@@ -57,7 +57,7 @@ public class EnemySprite : MonoBehaviour
         // STM.ClearTarget();
         // Debug.Log("cleared target to SingleTargetManager!");
         if(!STM.targetLocked) {
-            STM.SetTarget(null);
+            STM.ClearTarget();
         }
         // fade = 0f;
         // spriteRenderer.material.SetFloat("_Transparency", fade);

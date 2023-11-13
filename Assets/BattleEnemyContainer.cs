@@ -18,11 +18,15 @@ public class BattleEnemyContainer : BaseCharacterInfo
     public GameObject enemyPrefabInstance;
     public GameObject kingbotWinDialogue;
     public List<Card> actions;
-    private EnemyAnimator enemyAnimator;  
+    private EnemyAnimator enemyAnimator;
+    public Animator selectorAnimator;
     public CameraShake cameraShake;
     // Start is called before the first frame update
     void Start()
     {
+        var pos = selectorAnimator.transform.localPosition;
+        selectorAnimator.transform.localPosition = new Vector3(pos.x + 70, pos.y + battleEnemy.nextMoveYOffset + 150, pos.z);
+        selectorAnimator.gameObject.SetActive(false);
         counterQueue = new QueueList<KeyValuePair<string, string>>();
         counterTypes = new QueueList<string>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();

@@ -37,9 +37,9 @@ public class MainMenu : MonoBehaviour
         Leave();
     }
 
-    public void Option2Click() {
+    public void SettingsClick() {
         AudioManager.Instance.PlayButtonPress();
-
+        Settings.Instance.settingsMenu.SetActive(true);
     }
 
     public void Option3Click() {

@@ -19,11 +19,15 @@ public class SingleTargetManager : MonoBehaviour
     }
 
     public void ClearTarget() {
+        if(currentTarget != null) {
+            ((BattleEnemyContainer)currentTarget).selectorAnimator.gameObject.SetActive(false);
+        }
         currentTarget = null;
     }
 
     public void SetTarget(BaseCharacterInfo target) {
         currentTarget = target;
+        ((BattleEnemyContainer)target).selectorAnimator.gameObject.SetActive(true);
     }
 
     public BaseCharacterInfo GetTarget() {
