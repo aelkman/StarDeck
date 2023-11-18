@@ -28,9 +28,9 @@ public class MusicManager : MonoBehaviour
     public IEnumerator FadeTracksInOut(float fadeOutTime, AudioSource fadeOut, AudioSource fadeIn) {
 
         yield return StartCoroutine(FadeAudioSource.StartFade(fadeOut, fadeOutTime/2, 0));
+        fadeOut.Stop();
         fadeIn.volume = 0f;
         fadeIn.Play();
         StartCoroutine(FadeAudioSource.StartFade(fadeIn, fadeOutTime/2, 1));
-        fadeOut.Stop();
     }
 }

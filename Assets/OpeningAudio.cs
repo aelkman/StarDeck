@@ -38,6 +38,7 @@ public class OpeningAudio : MonoBehaviour
 
     public IEnumerator PlaySong2Timed(float fadeOutTime) {
         yield return StartCoroutine(FadeAudioSource.StartFade(song1, fadeOutTime/2, 0));
+        song1.Stop();
         song2.volume = 0f;
         song2.Play();
         StartCoroutine(FadeAudioSource.StartFade(song2, fadeOutTime/2, 1));

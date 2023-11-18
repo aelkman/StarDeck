@@ -39,6 +39,7 @@ public class PersistentHUD : MonoBehaviour
 
     public void MapButtonClick() {
 
+        AudioManager.Instance.PlayButtonPress();
         if(lastScene == SceneManager.GetActiveScene().name) {
             sameScene = true;
         }

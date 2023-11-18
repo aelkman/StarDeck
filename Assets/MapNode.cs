@@ -20,6 +20,7 @@ public class MapNode : MonoBehaviour
     public Animator destinationAnimator;
     public bool isBossTest = false;
     public bool isMiniBossTest = false;
+    public bool isHealingNode = false;
     // Start is called before the first frame update
     void Start()
     {

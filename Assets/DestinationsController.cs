@@ -95,10 +95,15 @@ public class DestinationsController : MonoBehaviour
         var index = Random.Range(0, destinations.Count);
         string destination = destinations[index];
         if(level < 3) {
+            int count = 0;
             while(destination == "Mini-Boss") {
                 index = Random.Range(0, destinations.Count);
                 destination = destinations[index];
                 Debug.Log("stuck in infinite loop!");
+                count++;
+                if(count > 100) {
+                    destinations.ForEach(p => Debug.Log(p));
+                }
             }
         }
 

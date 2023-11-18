@@ -21,7 +21,6 @@ public class MapManager : MonoBehaviour
     public string sceneNameOverride;
     public bool destinationsClickable = true;
     public List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket", "Dojo", "VendingMachines" }; 
-
     private static MapManager _instance;
 
     public static MapManager Instance 
@@ -104,7 +103,7 @@ public class MapManager : MonoBehaviour
 
         if(destinationName == "Boss") {
             MainManager.Instance.isBossBattle = true;
-            MainManager.Instance.HealPlayerPercent(0.30);
+            MainManager.Instance.HealPlayerPercent(0.3333);
         }
         if(destinationName == "Enemy" || destinationName == "Mini-Boss" || destinationName == "Boss") {
             destinationName = "Battle";

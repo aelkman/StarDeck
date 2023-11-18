@@ -40,6 +40,7 @@ public class NightMarket : MonoBehaviour
     }
 
     IEnumerator LeaveCoroutine() {
+        deckViewer.isRemovalEvent = false;
         yield return new WaitForSeconds(0.5f);
         crossfade.SetTrigger("Start");
 

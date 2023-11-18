@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class DeckViewer : MonoBehaviour
 {
     public Deck deck;
     private bool mouse_over;
@@ -32,11 +32,6 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     // Update is called once per frame
     void Update()
     {
-        if (mouse_over) {
-            if (Input.GetMouseButtonUp(0)) {
-                ToggleActive();
-            }
-        }
         if(isRemoval) {
             cloneCoins.SetActive(false);
             clonerButton.SetActive(false);
@@ -81,16 +76,6 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
-    public void OnPointerEnter(PointerEventData pointerEventData)
-    {
-        mouse_over = true;
-    }
-
-    public void OnPointerExit(PointerEventData pointerEventData)
-    {
-        mouse_over = false;
-    }
-
     private void ToggleActive() {
         deckViewer.SetActive(!deckViewer.activeSelf);
         isRemoval = false;
@@ -115,6 +100,11 @@ public class DeckViewer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void RemovalButtonClick() {
         StartCoroutine(RemovalButtonTimed());
+    }
+
+    public void DeckIconClick() {
+        AudioManager.Instance.PlayButtonPress();
+        ToggleActive();
     }
 
     public IEnumerator RemovalButtonTimed() {

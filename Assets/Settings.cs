@@ -45,6 +45,10 @@ public class Settings : MonoBehaviour
     }
 
     public void LeaveButton() {
+        if(GameObject.Find("ButtonsRight") != null) {
+            var hudButtons = GameObject.Find("ButtonsRight").GetComponent<HUD_Icon_Buttons>();
+            hudButtons.settingsActive = !hudButtons.settingsActive;
+        }
         AudioManager.Instance.PlayButtonPress();
         settingsMenu.SetActive(false);
     }

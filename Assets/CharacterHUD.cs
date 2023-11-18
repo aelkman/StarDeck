@@ -93,7 +93,7 @@ public class CharacterHUD : MonoBehaviour
             vulnDisplay.SetActive(true);
             shd.vulnText.gameObject.SetActive(true);
             shd.vulnText.text = "Vulnerable for " + baseCharacterInfo.GetVuln() + " turns";
-            shd.vulnText.text += "<br>Vulnerable targets take " + MainManager.Instance.vulnerableModifier + "X more damage";
+            shd.vulnText.text += "<br>Vulnerable targets take " + ((MainManager.Instance.vulnerableModifier - 1) * 100) + "% more damage";
             statuses.Add("vuln");
         }
         else {
