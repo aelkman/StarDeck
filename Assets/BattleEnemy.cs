@@ -17,4 +17,5 @@ public class BattleEnemy : ScriptableObject
     public bool isMiniBoss;
     public bool isBoss;
     public List<Card> actions;
+    public AttackEffect attackEffect;
 }

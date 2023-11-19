@@ -83,7 +83,7 @@ public class PlayerStats : BaseCharacterInfo
         manaBar.SetMana(stats.mana, stats.maxMana);
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(int damage, BattleEnemy be) {
         cameraShake.StartShake();
         damage = CalculateDamage(damage);
         health -= damage;
@@ -91,7 +91,7 @@ public class PlayerStats : BaseCharacterInfo
             battleManager.noDamageTaken = false;
         }
         MainManager.Instance.playerHealth -= damage;
-        StartCoroutine(damageAnimation(.2f));
+        StartCoroutine(damageAnimation(.2f, be));
         // healthBar.SetHealth(health);
         GameObject damageTextInstance = Instantiate(damageText, transform);
         damageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().text = damage.ToString();
@@ -107,8 +107,15 @@ public class PlayerStats : BaseCharacterInfo
         battleManager.GameOver();
     }
 
-    public IEnumerator damageAnimation(float time) {
+    public IEnumerator damageAnimation(float time, BattleEnemy be) {
         yield return new WaitForSeconds(time);
+        if(be != null) {
+            var effect = Instantiate(be.attackEffect.prefab, transform);
+            effect.transform.localScale = be.attackEffect.scale;
+            foreach(Transform child in effect.transform) {
+                child.localScale = be.attackEffect.scale;
+            }
+        }
         damageParticles.Play();
     }
 

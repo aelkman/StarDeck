@@ -21,6 +21,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
     private EnemyAnimator enemyAnimator;
     public Animator selectorAnimator;
     public CameraShake cameraShake;
+    public AttackPrefabsController APC;
     // Start is called before the first frame update
     void Start()
     {

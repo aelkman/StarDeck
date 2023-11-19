@@ -185,7 +185,7 @@ public class HandManager : MonoBehaviour
             // duplicate
             discardCards.Add(cardDisplay);
             // deal 5 damage to player
-            playerStats.takeDamage(5);
+            playerStats.takeDamage(5, null);
         }
     }
 

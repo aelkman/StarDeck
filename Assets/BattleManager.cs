@@ -225,6 +225,16 @@ public class BattleManager : MonoBehaviour
         return miss;
     }
 
+    private IEnumerator DeferredPlayerAttackEffect(Card card) {
+        yield return new WaitForSeconds(attackDelay);
+        if(card.type.Contains("Blaster")) {
+            ((BattleEnemyContainer)card.target).APC.InstantiateRandomBlaster();
+        }
+        else if(card.type.Contains("Hammer")) {
+            ((BattleEnemyContainer)card.target).APC.InstantiateRandomHammer();
+        }
+    }
+
     public IEnumerator CardAction(Card card) {
         string cardType = card.type;
 
@@ -322,6 +332,7 @@ public class BattleManager : MonoBehaviour
                                     }
                                     card.target.AddFrost(1, hammerAttackTime, false);
                                 }
+                                StartCoroutine(DeferredPlayerAttackEffect(card));
                                 StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(damage, attackDelay, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
@@ -709,6 +720,7 @@ public class BattleManager : MonoBehaviour
         playerStats.HoldWeapon("Hammer");
         playerStats.transform.parent.GetComponent<PlayerAnimator>().HammerAttackAnimation();
         yield return new WaitForSeconds(hammerAttackTime);
+
         if(isLast) {
             playerStats.RemoveWeapon("Hammer");
         }
@@ -912,7 +924,7 @@ public class BattleManager : MonoBehaviour
                                                     atkDmg = 0;
                                                 }
                                             }
-                                            playerStats.takeDamage(atkDmg);
+                                            playerStats.takeDamage(atkDmg, battleEnemy.battleEnemy);
                                             playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                                         }
                                         if(playerStats.isDead) {
@@ -1021,7 +1033,7 @@ public class BattleManager : MonoBehaviour
                                                     atkDmg = 0;
                                                 }
                                             }
-                                            playerStats.takeDamage(atkDmg);
+                                            playerStats.takeDamage(atkDmg, battleEnemy.battleEnemy);
                                             playerStats.transform.parent.GetComponent<PlayerAnimator>().DamageAnimation();
                                         }
                                     }
