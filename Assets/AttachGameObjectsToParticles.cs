@@ -13,7 +13,9 @@ public class AttachGameObjectsToParticles : MonoBehaviour
     private List<GameObject> m_Instances = new List<GameObject>();
     private List<bool> lightAnimating = new List<bool>();
     private ParticleSystem.Particle[] m_Particles;
-    public float startingIntensity = 12f;
+    public float maxIntensity = 6f;
+    public float minStartingSize = 0.02f;
+    public float maxStartingSize = 0.03f;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +45,8 @@ public class AttachGameObjectsToParticles : MonoBehaviour
                 // Debug.Log("delta: " +  (m_Particles[i].startLifetime - m_Particles[i].remainingLifetime));
                 var light2D = m_Instances[i].GetComponent<Light2D>();
                 var fract = (m_Particles[i].startLifetime - m_Particles[i].remainingLifetime) / m_Particles[i].startLifetime;
-                light2D.intensity = 6 * Mathf.Sin(Mathf.Lerp(0, Mathf.PI, fract));
+                // * Mathf.Sin(Mathf.Lerp(0, Mathf.PI, fract));
+                light2D.intensity = maxIntensity * m_Particles[i].startSize/maxStartingSize * m_Particles[i].GetCurrentSize(m_ParticleSystem)/m_Particles[i].startSize;
                 // if(m_ParticleSystem.main.startLifetime.constant - m_Particles[i].remainingLifetime <= 0.2f && !lightAnimating[i]) {
                 //     StartCoroutine(FadeLight(m_Instances[i], i));
                 // }
