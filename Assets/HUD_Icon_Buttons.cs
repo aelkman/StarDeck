@@ -5,10 +5,11 @@ using UnityEngine;
 public class HUD_Icon_Buttons : MonoBehaviour
 {
     public bool settingsActive = false;
+    public bool optionsActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -21,5 +22,11 @@ public class HUD_Icon_Buttons : MonoBehaviour
         settingsActive = !settingsActive;
         AudioManager.Instance.PlayButtonPress();
         Settings.Instance.settingsMenu.SetActive(settingsActive);
+    }
+
+    public void ClickOptionsIcon() {
+        optionsActive = !optionsActive;
+        AudioManager.Instance.PlayButtonPress();
+        OptionsMenu.Instance.ToggleButton();
     }
 }

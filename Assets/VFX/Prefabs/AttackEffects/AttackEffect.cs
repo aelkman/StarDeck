@@ -7,4 +7,5 @@ public class AttackEffect : ScriptableObject
 {
     public GameObject prefab;
     public Vector3 scale;
+    public Vector3 position;
 }

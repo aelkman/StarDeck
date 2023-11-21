@@ -21,6 +21,7 @@ public class TreeTraversal : MonoBehaviour
                 TreeTraversal ttNext = ttThis.nextLevel.GetComponent<TreeTraversal>();
                 ttNext.level = ttThis.level + 1;
                 ttThis = ttNext;
+                Debug.Log("stuck in an infinite loop! from TreeTraversal line 20");
             }
             StartCoroutine(WaitForLoad());
         }

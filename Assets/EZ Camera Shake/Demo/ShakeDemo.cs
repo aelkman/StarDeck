@@ -19,7 +19,7 @@ public class ShakeDemo : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            // GameManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         Slider s = delegate(float val, string prefix, float min, float max, int pad)

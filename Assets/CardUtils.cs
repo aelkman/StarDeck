@@ -117,6 +117,9 @@ public static class CardUtils
         else if(card.rarity == "R") {
             price = 200;
         }
+        else if(card.rarity == "E") {
+            price = 999;
+        }
 
         if(MainManager.Instance.artifacts.Contains("CRED")) {
             price = (int)Math.Round(0.75 * price);

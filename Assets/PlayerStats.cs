@@ -112,6 +112,7 @@ public class PlayerStats : BaseCharacterInfo
         if(be != null) {
             var effect = Instantiate(be.attackEffect.prefab, transform);
             effect.transform.localScale = be.attackEffect.scale;
+            effect.transform.localPosition = be.attackEffect.position;
             foreach(Transform child in effect.transform) {
                 child.localScale = be.attackEffect.scale;
             }
@@ -145,6 +146,7 @@ public class PlayerStats : BaseCharacterInfo
     public void RemoveSingleTaunt() {
         if(tauntTurns == 1) {
             tauntingEnemy.isTaunter = false;
+            Debug.Log("ending taunt animation");
             ((EnemyAnimator)tauntingEnemy.characterAnimator).EndTauntAnimation();
         }
         if(tauntTurns >= 1) {

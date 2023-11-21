@@ -40,6 +40,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public int atkModTempTurns = 0;
     public QueueList<KeyValuePair<string, string>> counterQueue;
     public QueueList<string> counterTypes;
+    public bool iceActing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -237,6 +238,7 @@ public class BaseCharacterInfo : MonoBehaviour
     }
 
     private IEnumerator delayedFrostReset() {
+        iceActing = true;
         yield return new WaitForSeconds(0.5f);
         AudioManager.Instance.PlayFreeze();
         FreezeAnimation();
@@ -246,6 +248,7 @@ public class BaseCharacterInfo : MonoBehaviour
         // frozenTurn = true;
         frostStacks = 0;
         iceStacks.RemoveStacks();
+        iceActing = false;
     }
 
     public void CharacterShield(int block) {

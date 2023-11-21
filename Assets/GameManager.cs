@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private Vector2 hotSpot;
     private static GameManager _instance;
     public bool demoComplete = false;
+    public int currentSceneUID = 0;
 
     public static GameManager Instance 
     { 
@@ -52,7 +53,10 @@ public class GameManager : MonoBehaviour
 
         var audioManager = GameObject.Find("AudioManager");
         var gameManager = GameObject.Find("GameManager");
+        var settings = GameObject.Find("Settings");
+        var options = GameObject.Find("Options");
 
+        // save all audio manager children
         HashSet<Transform> audioChildren = new HashSet<Transform>();
         foreach(Transform child in audioManager.transform) {
             audioChildren.Add(child);
@@ -62,8 +66,9 @@ public class GameManager : MonoBehaviour
 
         foreach( var tr in allTransforms)
         {
-            if(tr.gameObject == audioManager || tr.gameObject == gameManager) {
-                Debug.Log("found audio or game manager! not destroying");
+            if(tr.gameObject == audioManager || tr.gameObject == gameManager || tr.gameObject == settings
+                || tr.gameObject == options) {
+                Debug.Log("found an important object! not destroying");
             }
             else {
                 Destroy(tr.gameObject);
@@ -75,12 +80,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame() {
         ResetGame();
         // then load the map again
-        SceneManager.LoadScene("Map");
+        GameManager.Instance.LoadScene("Weapons");
     }
 
     public void RestartToScene(string sceneName, Animator transition) {
         ResetGame();
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.LoadScene(sceneName);
         // can't load transtion bc its dead :( )
         // StartCoroutine(LoadLevel(sceneName, transition));
     }
@@ -91,6 +96,11 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.LoadScene(sceneName);
+    }
+
+    public void LoadScene(string name) {
+        currentSceneUID += 1;
+        SceneManager.LoadScene(name);
     }
 }

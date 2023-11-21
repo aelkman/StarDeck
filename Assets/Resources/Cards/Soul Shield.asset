@@ -17,10 +17,8 @@ MonoBehaviour:
   manaCost: 1
   actionKeys:
   - DEF
-  - WEAKEN
   actionValues:
-  - 12
-  - 2
+  - 10
   description: 
   type: General
   subType: 
@@ -30,3 +28,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: U
+  target: {fileID: 0}

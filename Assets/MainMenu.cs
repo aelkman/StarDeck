@@ -67,6 +67,6 @@ public class MainMenu : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene("OpeningScene1");
+        GameManager.Instance.LoadScene("OpeningScene1");
     }
 }

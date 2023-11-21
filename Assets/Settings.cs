@@ -10,7 +10,7 @@ public class Settings : MonoBehaviour
     public AudioMixer sfxMixer;
     public AudioMixer musicMixer;
     public GameObject settingsMenu;
-
+    private bool isFullScreen = true;
     private void Awake()
     {
         // start of new code
@@ -34,6 +34,27 @@ public class Settings : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void WindowedToggle() {
+        // Screen.fullScreen = !Screen.fullScreen;
+        isFullScreen = !isFullScreen;
+        FullScreenMode mode;
+        if(isFullScreen) {
+            mode = FullScreenMode.ExclusiveFullScreen;
+        }
+        else {
+            mode = FullScreenMode.Windowed;
+        }
+        Screen.fullScreenMode = mode;
+        // StartCoroutine(SwitchToWindowed(mode));
+    }
+
+    private IEnumerator SwitchToWindowed(FullScreenMode mode)
+    {
+        Screen.SetResolution(1920, 1080, mode);
+        yield return null;
+        // App.LogWarning("Screen mode has been set to: " + Screen.fullScreenMode);
     }
 
     public void SetSfxVolume(float sliderValue) {

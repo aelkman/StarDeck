@@ -15,8 +15,8 @@ public class PersistentHUD : MonoBehaviour
     private MapManager mapManager;
     private List<Light2D> lights;
     private GameObject eventMain;
-    private string lastScene = "";
-    private bool sameScene = false;
+    // private string lastScene = "";
+    // private bool sameScene = false;
 
     public static PersistentHUD Instance 
     { 
@@ -40,13 +40,13 @@ public class PersistentHUD : MonoBehaviour
     public void MapButtonClick() {
 
         AudioManager.Instance.PlayButtonPress();
-        if(lastScene == SceneManager.GetActiveScene().name) {
-            sameScene = true;
-        }
-        else {
-            sameScene = false;
-        }
-        lastScene = SceneManager.GetActiveScene().name;
+        // if(lastScene == SceneManager.GetActiveScene().name) {
+        //     sameScene = true;
+        // }
+        // else {
+        //     sameScene = false;
+        // }
+        // lastScene = SceneManager.GetActiveScene().name;
 
         // if in any other than map, change the camera settings to show map
         // else, we'll have to do something with the dice roller refactor (later)
@@ -61,12 +61,12 @@ public class PersistentHUD : MonoBehaviour
 
             mapOpen = !mapOpen;
 
-            if(!sameScene) {
-                lights = new List<Light2D>();
-                foreach (Light2D light in FindObjectsOfType(typeof(Light2D))) {
-                    lights.Add(light);
-                }
+            // if(!sameScene) {
+            lights = new List<Light2D>();
+            foreach (Light2D light in FindObjectsOfType(typeof(Light2D))) {
+                lights.Add(light);
             }
+            // }
 
             if(GameObject.Find("Main") != null) {
                 eventMain = GameObject.Find("Main");
@@ -82,7 +82,8 @@ public class PersistentHUD : MonoBehaviour
                 // remove lights if they exist
                 if(lights != null) {
                     foreach (Light2D light in lights) {
-                        light.gameObject.SetActive(false);
+                        // light.gameObject.SetActive(false);
+                        light.enabled = false;
                     }
                 }
                 mainCamera.gameObject.SetActive(false);
@@ -95,7 +96,8 @@ public class PersistentHUD : MonoBehaviour
                 mapManager.destinationsClickable = true;
                 if(lights != null) {
                     foreach (Light2D light in lights) {
-                        light.gameObject.SetActive(true);
+                        // light.gameObject.SetActive(true);
+                        light.enabled = true;
                     }
                 }
                 mainCamera.gameObject.SetActive(true);

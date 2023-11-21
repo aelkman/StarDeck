@@ -46,6 +46,6 @@ public class NightMarket : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene("Map");
+        GameManager.Instance.LoadScene("Map");
     }
 }

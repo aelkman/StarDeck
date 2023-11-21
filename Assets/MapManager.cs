@@ -136,7 +136,7 @@ public class MapManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.LoadScene(sceneName);
     }
 
     private void OnSceneUnloaded(Scene current)

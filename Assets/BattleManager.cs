@@ -53,6 +53,8 @@ public class BattleManager : MonoBehaviour
     private float hammerAttackTime = 0.5f;
     private float blasterAttackTime = 0.3f;
     public FlashImage flashImage;
+    private int lastStandBonus = 0;
+    private bool cardActionActing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -236,6 +238,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public IEnumerator CardAction(Card card) {
+        cardActionActing = true;
         string cardType = card.type;
 
         // first, consume card mana
@@ -511,6 +514,7 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 case "VULN":
+                    AudioManager.Instance.PlayGlassBreak();
                     if(card.isTarget) {
                         card.target.AddVuln(Int32.Parse(item.Value));
                         card.target.VulnerableAnimation();
@@ -680,6 +684,7 @@ public class BattleManager : MonoBehaviour
         // unlock the target
         STM.ClearTarget();
         STM.targetLocked = false;
+        cardActionActing = false;
     }
 
     private void DrawPulse()
@@ -764,9 +769,6 @@ public class BattleManager : MonoBehaviour
     private void GenerateEnemyActions(List<BattleEnemyContainer> battleEnemies) {
         foreach (BattleEnemyContainer battleEnemy in battleEnemies) {
 
-            // while(battleEnemy.actions.Length == 0) {
-            //     // wait until it loads
-            // }
             if(battleEnemy.actions.Count > 0){
                 // if(battleEnemy.name == "ArmorBot") {
                 //     if(battleEnemy.nextActionText.actions.ContainsKey("TAUNT")) {
@@ -1160,8 +1162,12 @@ public class BattleManager : MonoBehaviour
         // for situation with DEF_DRAW artifact
         yield return new WaitForSeconds(playerStats.shieldAnimator.stopTime);
         handManager.DrawCards(5);
+        
         foreach(BattleEnemyContainer be in battleEnemies) {
-            be.UnfreezeAnimation();
+            yield return new WaitUntil(() => !be.iceActing);
+            if(be.frozenTurn) {
+                be.UnfreezeAnimation();
+            }
             if(be.frozenTurn) {
                 be.frozenTurn = false;
             }
@@ -1177,6 +1183,27 @@ public class BattleManager : MonoBehaviour
                 }
             }
             be.stunnedTurns = 0;
+        }
+        // process artifacts that start on beginning of player turn here
+        // emergency shield
+        if(MainManager.Instance.artifacts.Contains("EMER_SHIELD")) {
+            if(MainManager.Instance.playerHealth <= (MainManager.Instance.playerMaxHealth * 0.2)) {
+                if(playerStats.block < 1) {
+                    playerStats.characterAnimator.BlockAnimation();
+                    playerStats.shieldAnimator.StartForceField();
+                }
+                playerStats.addBlock(5);
+            }
+        }
+        playerStats.atkMod -= lastStandBonus;
+        if(MainManager.Instance.artifacts.Contains("LAST_STAND")) {
+            if(MainManager.Instance.playerHealth <= (MainManager.Instance.playerMaxHealth * 0.2)) {
+                lastStandBonus = 2;
+            }
+            else {
+                lastStandBonus = 0;
+            }
+            playerStats.atkMod += lastStandBonus;
         }
         endTurnButton.interactable = true;
     }

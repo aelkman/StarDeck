@@ -29,6 +29,7 @@ public class DestinationsController : MonoBehaviour
         // miniboss should be 15%
         // unkmown should be 10%
         // chest should be 10%
+        Debug.Log("treeMapManager.childCount: " + treeMapManager.childCount);
         int totalVisitableNodes = treeMapManager.childCount - 2;
         Debug.Log("total visitable nodes (excluding first and last): " + totalVisitableNodes);
         int tenPercent = (int)System.Math.Round((double)totalVisitableNodes/(double)10);
@@ -54,6 +55,7 @@ public class DestinationsController : MonoBehaviour
 
         // check how many we have left now
         totalVisitableNodes -= destinations.Count;
+        Debug.Log("new visitable nodes: " + totalVisitableNodes);
         int fifteenPercent = (int)System.Math.Round(totalVisitableNodes * 0.25);
         for(int i = 0; i < fifteenPercent; i++) {
             destinations.Add("Mini-Boss");
@@ -88,6 +90,10 @@ public class DestinationsController : MonoBehaviour
         // }
 
         // now, assign the destinations to the GOs
+        Debug.Log("destinations: ");
+        foreach(string d in destinations) {
+            Debug.Log(d);
+        }
     }
 
     public string AssignPopDestination(int level, MapNode node) {
@@ -102,27 +108,13 @@ public class DestinationsController : MonoBehaviour
                 Debug.Log("stuck in infinite loop!");
                 count++;
                 if(count > 100) {
-                    destinations.ForEach(p => Debug.Log(p));
+                    destination = "Enemy";
                 }
             }
         }
 
         // sadly this doesnt work due to the undefined instantiation of all the nodes
         // will need to post-process the data later, this is something worth investigation another time
-
-        // int tries = 0;
-        // if(node.parentNodes.Where((node) => node.destinationName == "Mini-Boss").Count() > 0) {
-        //     Debug.Log("parent was Mini-Boss! cannot be mini-boss");
-        //     while(destination == "Mini-Boss") {
-        //         index = Random.Range(0, destinations.Count);
-        //         destination = destinations[index];
-        //         tries += 1;
-        //         if(tries > 100) {
-        //             Debug.Log("edge case for destinations mini-boss reached!");
-        //             destination = "Enemy";
-        //         }
-        //     }
-        // }
         destinations.Remove(destination);
         return destination;
     }

@@ -36,7 +36,7 @@ public class WinTransition : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.LoadScene(sceneName);
         
     }
 
