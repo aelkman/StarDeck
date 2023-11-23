@@ -3650,6 +3650,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8959913809823964823, guid: b693bfa83de114d46b71bc8f25aeaa40, type: 3}
   m_PrefabInstance: {fileID: 574390529}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &574390531 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4880769586154411416, guid: b693bfa83de114d46b71bc8f25aeaa40, type: 3}
+  m_PrefabInstance: {fileID: 574390529}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &582516097
 GameObject:
   m_ObjectHideFlags: 0
@@ -10069,6 +10074,7 @@ MonoBehaviour:
   introTextContainer: {fileID: 1393151490}
   introText: {fileID: 1393151488}
   introTextAnimator: {fileID: 1870918216}
+  mapTitle: {fileID: 574390531}
   introTypewriter: {fileID: 1393151489}
 --- !u!1 &2088010404 stripped
 GameObject:

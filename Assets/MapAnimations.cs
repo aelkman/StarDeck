@@ -9,6 +9,7 @@ public class MapAnimations : MonoBehaviour
     public GameObject introTextContainer;
     public GameObject introText;
     public Animator introTextAnimator;
+    public GameObject mapTitle;
     public TypewriterText introTypewriter;
     private bool clicked = false;
 
@@ -46,6 +47,9 @@ public class MapAnimations : MonoBehaviour
     void Update() {
         if(SceneManager.GetActiveScene().name != "Map") {
             Destroy(introTextContainer);
+            if(mapTitle != null) {
+                Destroy(mapTitle);
+            }
         }
         if(Input.GetMouseButtonDown(0)) {
             clicked = true;
