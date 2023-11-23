@@ -71,7 +71,7 @@ public class OpeningScene : MonoBehaviour
         ButtonEnabled(true);
         yield return new WaitUntil(() => continueClicked);
 
-        StartCoroutine(LoadLevel("Map"));
+        StartCoroutine(LoadLevel("Weapons"));
     }
 
     private void ButtonEnabled(bool enabled) {
@@ -97,6 +97,7 @@ public class OpeningScene : MonoBehaviour
     }
 
     public void ClickContinue() {
+        AudioManager.Instance.PlayButtonPress();
         continueClicked = true;
     }
 }

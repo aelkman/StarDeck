@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
-public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler
+public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler
 {
     private HandManager handManager;
     private BattleManager battleManager;
@@ -302,6 +302,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnDrag(PointerEventData eventData)
     {
+        cardDisplay.cardHoverDescription.pointerDown = true;
         isSelected = true;
         if(!isTarget) {
             // Debug.Log("input y pos: " + Input.mousePosition.y);
@@ -326,6 +327,10 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
             transform.position = translatedWorldPosition;
         }
+    }
+
+    public void OnEndDrag(PointerEventData pointerEventData) {
+        cardDisplay.cardHoverDescription.pointerDown = false;
     }
 
     private void OnMouseDrag() {

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public bool demoComplete = false;
     public int currentSceneUID = 0;
+    public bool cardHoverDetails = true;
 
     public static GameManager Instance 
     { 

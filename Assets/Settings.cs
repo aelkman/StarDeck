@@ -36,6 +36,10 @@ public class Settings : MonoBehaviour
         
     }
 
+    public void CardHoverDetailsToggle() {
+        GameManager.Instance.cardHoverDetails = !GameManager.Instance.cardHoverDetails;
+    }
+
     public void WindowedToggle() {
         // Screen.fullScreen = !Screen.fullScreen;
         isFullScreen = !isFullScreen;

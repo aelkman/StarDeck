@@ -20,6 +20,9 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defendText;
     public GameObject pointerBoundary;
+    public GameObject hoverTextGO;
+    public TextMeshProUGUI hoverText;
+    public CardHoverDescription cardHoverDescription;
     // Start is called before the first frame update
     void Start()
     {
@@ -137,6 +140,7 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "BLIND_ALL":
                     descriptionAdditional += "<br>Blind ALL " + item.Value + " turn";
+                    hoverText.text += "Blind - 50% chance to miss all attacks<br><br>";
                     break;
                 case "CLEAR_DEBUFF":
                     descriptionAdditional += "<br>Clear all debuffs";
@@ -151,9 +155,11 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "ICE_STACK":
                     descriptionAdditional += "<br>Apply " + item.Value + " ice stacks";
+                    hoverText.text += "Ice Stacks - When a character gains 3 ice stacks, they are frozen for 1 turn<br><br>";
                     break;
                 case "STN":
                     descriptionAdditional += "<br>Stun " + item.Value + " turn";
+                    hoverText.text += "Stun - Target cannot act their current turn<br><br>";
                     break;
                 case "STN_ALL":
                     descriptionAdditional += "<br>Stun ALL " + item.Value + " turn";
@@ -165,9 +171,11 @@ public class CardDisplay : MonoBehaviour
                     else {
                         descriptionAdditional += "<br>Self vulnerable " + item.Value + " turn";
                     }
+                    hoverText.text += "Vulnerable - Take " + ((MainManager.Instance.vulnerableModifier - 1) * 100) + "% more damage<br><br>";
                     break;
                 case "RELOAD":
                     descriptionAdditional += "<br>Reload";
+                    hoverText.text += "Reload - Replenish your ammo to max capacity<br><br>";
                     break;
                 case "DRAW":
                     string cardText = " card";
@@ -178,15 +186,19 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "SCRY":
                     descriptionAdditional += "<br>Foresight " + item.Value;
+                    hoverText.text += "Foresight - Look at the next X cards in your deck, discard as many as you want<br><br>";
                     break;
                 case "EXPEL":
                     descriptionAdditional += "<br>Expel";
+                    hoverText.text += "Expel - When played, remove this card from deck for the rest of battle<br><br>";
                     break;
                 case "COUNTER":
                     descriptionAdditional += "<br>Counter";
+                    hoverText.text += "Counter - Action text below Counter on this card will be played BEFORE next enemy attack<br><br>";
                     break;
                 case "WEAKEN":
                     descriptionAdditional += "<br>Weaken target " + item.Value + " turn";
+                    hoverText.text += "Weaken - Deal " + (MainManager.Instance.weakenedModifier * 100) + "% less damage<br><br>";
                     break;
                 case "WEAKEN_ALL":
                     descriptionAdditional += "<br>Weaken ALL " + item.Value + " turn";
