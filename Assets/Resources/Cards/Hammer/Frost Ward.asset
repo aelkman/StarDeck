@@ -22,6 +22,7 @@ MonoBehaviour:
   - FROST_WARD
   - 
   description: When an enemy would attack, first gain +2 block
+  flavorText: Warden of my song, frost of the North
   type: Hammer
   subType: 
   isTarget: 0
@@ -30,3 +31,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: U
+  target: {fileID: 0}

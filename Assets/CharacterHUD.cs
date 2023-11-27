@@ -8,6 +8,7 @@ public class CharacterHUD : MonoBehaviour
     public BaseCharacterInfo baseCharacterInfo;
     public GameObject blockSprite;
     public BlockText blockText;
+    public GameObject powersDisplay;
     public GameObject vulnDisplay;
     public GameObject blindDisplay;
     public GameObject weakDisplay;
@@ -50,6 +51,22 @@ public class CharacterHUD : MonoBehaviour
             isGlowUp = true;
         }
         spriteRenderer.material.SetFloat("_Transparency", fade);
+
+        if(baseCharacterInfo.powers.Count > 0) {
+            powersDisplay.SetActive(true);
+            shd.powersText.gameObject.SetActive(true);
+            shd.powersText.text = "Active Powers:";
+
+            for(int i = 0; i < baseCharacterInfo.powers.Count; i++) {
+                shd.powersText.text += "<br>  " + baseCharacterInfo.powers[i].Key + " - " +  baseCharacterInfo.powers[i].Value;
+            }
+            statuses.Add("powers");
+        }
+        else {
+            powersDisplay.SetActive(false);
+            shd.powersText.gameObject.SetActive(false);
+            statuses.Remove("powers");
+        }
 
         if(baseCharacterInfo.getBlock() > 0) {
             blockText.setText(baseCharacterInfo.getBlock().ToString());

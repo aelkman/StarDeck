@@ -19,7 +19,8 @@ MonoBehaviour:
   - HACK
   actionValues:
   - SHIELD
-  description: L337 skills pay the bills <br><br>Deactivate target's shield
+  description: Deactivate target's shield
+  flavorText: L337 skills pay the bills
   type: General
   subType: 
   isTarget: 1
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: U
+  target: {fileID: 0}

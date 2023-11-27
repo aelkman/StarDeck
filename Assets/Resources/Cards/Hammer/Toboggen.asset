@@ -19,7 +19,8 @@ MonoBehaviour:
   - TOBOGGAN
   actionValues:
   - 3
-  description: Wheeee!<br><br>Draw 3 cards, for each skill drawn, gain +1 mana
+  description: Draw 3 cards, for each skill drawn, gain 1 energy
+  flavorText: Wheeee!
   type: Hammer
   subType: 
   isTarget: 0
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: U
+  target: {fileID: 0}

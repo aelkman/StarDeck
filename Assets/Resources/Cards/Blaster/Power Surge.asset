@@ -23,7 +23,8 @@ MonoBehaviour:
   - POWER_SURGE
   - 
   - 
-  description: When you reload, gain 1 mana, and draw 1 card
+  description: When you reload, gain 1 energy, and draw 1 card
+  flavorText: 
   type: Blaster
   subType: 
   isTarget: 0
@@ -32,3 +33,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: R
+  target: {fileID: 0}

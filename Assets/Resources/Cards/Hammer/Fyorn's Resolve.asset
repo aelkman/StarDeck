@@ -21,8 +21,8 @@ MonoBehaviour:
   actionValues:
   - FYORNS_RESOLVE
   - 
-  description: The power of the blistering cold<br><br>Any time you attack, gain
-    +3 block
+  description: Any time you attack, gain +3 block
+  flavorText: The power of the blistering cold
   type: Hammer
   subType: 
   isTarget: 0
@@ -31,3 +31,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: R
+  target: {fileID: 0}

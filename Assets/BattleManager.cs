@@ -336,7 +336,7 @@ public class BattleManager : MonoBehaviour
                                     card.target.AddFrost(1, hammerAttackTime, false);
                                 }
                                 StartCoroutine(DeferredPlayerAttackEffect(card));
-                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(damage, attackDelay, isDeadReturnValue => {
+                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(damage, attackDelay, cardType, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
                                         isLast = true;
@@ -583,7 +583,7 @@ public class BattleManager : MonoBehaviour
 
                         if(!isCharacterMissing) {
                             if(card.target is BattleEnemyContainer) {
-                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(dmg, attackDelay, isDeadReturnValue => {
+                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(dmg, attackDelay, cardType, isDeadReturnValue => {
                                     if(isDeadReturnValue) {
                                         // if the enemy was killed, perform the next action
                                         string nextAction = finalBlow[2];
@@ -639,6 +639,8 @@ public class BattleManager : MonoBehaviour
                         AudioManager.Instance.PlayFreeze();
                         isIceBarricade = true;
                     }
+                    KeyValuePair<string, string> power = new KeyValuePair<string, string>(card.name, card.description);
+                    playerStats.powers.Add(power);
                     break;
                 case "CAST":
                     playerStats.playerAnimator.CastAnimation();

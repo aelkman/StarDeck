@@ -78,7 +78,7 @@ public class HandManager : MonoBehaviour
                 var randTarget = BEM.GetBattleEnemies()[randIndex];
                 damageAudio.Stop();
                 damageAudio.Play();
-                StartCoroutine(randTarget.TakeDamage(1, 0.2f,  returnValue => {}));
+                StartCoroutine(randTarget.TakeDamage(1, 0.2f, "Artifacts", returnValue => {}));
             }
             else {
                 drawAudio.Play();

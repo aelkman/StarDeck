@@ -19,7 +19,8 @@ MonoBehaviour:
   - QUICKDRAW
   actionValues:
   - ' '
-  description: Adios, partner! <br>Draw 3, gain 1 mana for each Attack you drew
+  description: Draw 3, gain 1 energy for each Attack you drew
+  flavorText: Adios, partner!
   type: Blaster
   subType: 
   isTarget: 0
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: U
+  target: {fileID: 0}

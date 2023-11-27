@@ -19,10 +19,14 @@ MonoBehaviour:
   - ATK
   actionValues:
   - 5,2
-  description: Coffee or liquor, which is quicker?
+  description: 
+  flavorText: Coffee or liquor, which is quicker?
   type: Blaster
   subType: Shot
-  category: 
   isTarget: 1
   isAttack: 1
+  isPower: 0
+  isSkill: 0
+  isStarter: 0
   rarity: C
+  target: {fileID: 0}

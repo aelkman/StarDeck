@@ -21,8 +21,8 @@ MonoBehaviour:
   actionValues:
   - ICE_BARRICADE
   - 
-  description: A sheet of ice, between you and I<br><br>When you freeze an enemy,
-    gain +5 block
+  description: When you freeze an enemy, gain +5 block
+  flavorText: A sheet of ice, between you and I
   type: Hammer
   subType: 
   isTarget: 0
@@ -31,3 +31,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: R
+  target: {fileID: 0}

@@ -17,11 +17,14 @@ MonoBehaviour:
   manaCost: 2
   actionKeys:
   - POWER
+  - RELOAD
   - EXPEL
   actionValues:
   - POCK_GEN
   - 
-  description: It's glowing...? <br><br>Shots no longer use ammo<br>Reload
+  - 
+  description: Shots no longer use ammo
+  flavorText: It's glowing...?
   type: Blaster
   subType: 
   isTarget: 0
@@ -30,3 +33,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: R
+  target: {fileID: 0}

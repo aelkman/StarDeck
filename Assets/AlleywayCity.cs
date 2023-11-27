@@ -15,6 +15,12 @@ public class AlleywayCity : MonoBehaviour
     void Start()
     {
         deck = GameObject.Find("Deck").GetComponent<Deck>();
+        if(MainManager.Instance.playerHealth <= 15) {
+            option3.interactable = false;
+        }
+        if(MainManager.Instance.coinCount < 100) {
+            option1.interactable = false;
+        }
     }
 
     // Update is called once per frame

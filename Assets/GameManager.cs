@@ -14,11 +14,18 @@ public class GameManager : MonoBehaviour
     public bool demoComplete = false;
     public int currentSceneUID = 0;
     public bool cardHoverDetails = true;
+    public Dictionary<string, int> weaponDamage = new Dictionary<string, int>();
 
     public static GameManager Instance 
     { 
         get { return _instance; } 
     } 
+
+    void Start() {
+        weaponDamage.Add("Hammer", 0);
+        weaponDamage.Add("Blaster", 0);
+        weaponDamage.Add("Artifacts", 0);
+    }
 
     void Awake()
     {

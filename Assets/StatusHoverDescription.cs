@@ -10,6 +10,7 @@ public class StatusHoverDescription : MonoBehaviour, IPointerEnterHandler, IPoin
 {
     public GameObject descriptionHover;
     public CharacterHUD characterHUD;
+    public TextMeshProUGUI powersText;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI blindText;
     public TextMeshProUGUI blockText;

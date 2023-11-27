@@ -19,8 +19,8 @@ MonoBehaviour:
   - ATK
   actionValues:
   - DEF
-  description: The best offense is a good defense!<br><br>Deal damage equal to your
-    block
+  description: Deal damage equal to your block
+  flavorText: The best offense is a good defense!
   type: General
   subType: 
   isTarget: 1
@@ -29,3 +29,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 0
   rarity: C
+  target: {fileID: 0}

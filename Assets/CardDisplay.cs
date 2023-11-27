@@ -56,27 +56,71 @@ public class CardDisplay : MonoBehaviour
         }
 
         nameText.text = card.name;
-        if(card.description != "") {
-            descriptionText.text = card.description + "<br>";
+
+        descriptionText.alignment = TextAlignmentOptions.Center;
+        descriptionText.text = "";
+
+        if(card.flavorText != null && card.flavorText.Length > 1) {
+            descriptionText.text = "<i>" + card.flavorText + "</i>";
+            descriptionText.text += "<line-height=140%><br></line-height>";
         }
-        else {
-            descriptionText.text = "";
+
+        if(card.description.Length > 1) {
+            descriptionText.text += card.description + "<br>";
         }
         descriptionText.text += DescriptionParser();
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
-        // if (card.actions.ContainsKey("ATK")) {
-        //     attackText.text = card.actions["ATK"];
-        // }
-        // else {
-        //     attackText.text = "";
-        // }
-        // if (card.actions.ContainsKey("DEF")) {
-        //     defendText.text = card.actions["DEF"];
-        // }
-        // else {
-        //     defendText.text = "";
-        // }
+    }
+
+    public void UpdateCard() {
+        typeImage.enabled = true;
+        hoverText.text = "";
+                if(card.rarity == "C") {
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_blue");
+        }
+        else if (card.rarity == "U") {
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_purple");
+        }
+        else if (card.rarity == "R") {
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_gold_2");
+        }
+        else if (card.rarity == "N") {
+            descriptionText.color = Color.white;
+            nameText.color = Color.white;
+            manaText.color = Color.white;
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_black");
+        }
+        else if (card.rarity == "E") {
+            cardBase.sprite = Resources.Load<Sprite>("Card_base_event");
+        }
+
+        if(card.type == "Hammer") {
+            typeImage.sprite = Resources.Load<Sprite>("Images/hammer icon");
+        }
+        else if(card.type == "Blaster") {
+            typeImage.sprite = Resources.Load<Sprite>("Images/blaster icon");
+        }
+        else {
+            typeImage.enabled = false;
+        }
+
+        nameText.text = card.name;
+
+        descriptionText.alignment = TextAlignmentOptions.Center;
+        descriptionText.text = "";
+
+        if(card.flavorText != null && card.flavorText.Length > 1) {
+            descriptionText.text = "<i>" + card.flavorText + "</i>";
+            descriptionText.text += "<line-height=140%><br></line-height>";
+        }
+
+        if(card.description.Length > 1) {
+            descriptionText.text += card.description + "<br>";
+        }
+        descriptionText.text += DescriptionParser();
+        artworkImage.sprite = card.artwork;
+        manaText.text = card.manaCost.ToString();
     }
 
     public void BaseToBack() {
@@ -116,10 +160,10 @@ public class CardDisplay : MonoBehaviour
                         }
 
                         if (multi == "1") {
-                            descriptionAdditional += "<br>Deal " + attack + " damage";
+                            descriptionAdditional += "Deal " + attack + " damage";
                         }
                         else {
-                            descriptionAdditional = "<br>Deal " + attack + " damage " + multi + " times";
+                            descriptionAdditional = "Deal " + attack + " damage " + multi + " times";
                         }
                     }
                     break;
@@ -129,52 +173,52 @@ public class CardDisplay : MonoBehaviour
                         throw new Exception("Invalid ATK_ALL attributes! Must be 2 ints comma separated");
                     }
                     if(attackAll[1] != 1) {
-                        descriptionAdditional += "<br>Deal " + attackAll[0] + " damage  " + attackAll[1] + " times to ALL enemies";
+                        descriptionAdditional += "Deal " + attackAll[0] + " damage  " + attackAll[1] + " times to ALL enemies";
                     }
                     else {
-                        descriptionAdditional += "<br>Deal " + attackAll[0] + " damage to ALL enemies";
+                        descriptionAdditional += "Deal " + attackAll[0] + " damage to ALL enemies";
                     }
                     break;
                 case "ATK_MOD":
-                    descriptionAdditional += "<br>Gain +" + item.Value + " attack";
+                    descriptionAdditional += "Gain +" + item.Value + " attack";
                     break;
                 case "BLIND_ALL":
-                    descriptionAdditional += "<br>Blind ALL " + item.Value + " turn";
+                    descriptionAdditional += "Blind ALL " + item.Value + " turn";
                     hoverText.text += "Blind - 50% chance to miss all attacks<br><br>";
                     break;
                 case "CLEAR_DEBUFF":
-                    descriptionAdditional += "<br>Clear all debuffs";
+                    descriptionAdditional += "Clear all debuffs";
                     break;
                 case "DEF":
                     if(item.Value == "2X") {
-                        descriptionAdditional += "<br>Double your block";
+                        descriptionAdditional += "Double your block";
                     }
                     else {
-                        descriptionAdditional += "<br>Block " + item.Value + "";
+                        descriptionAdditional += "Block " + item.Value + "";
                     }
                     break;
                 case "ICE_STACK":
-                    descriptionAdditional += "<br>Apply " + item.Value + " ice stacks";
+                    descriptionAdditional += "Apply " + item.Value + " ice stacks";
                     hoverText.text += "Ice Stacks - When a character gains 3 ice stacks, they are frozen for 1 turn<br><br>";
                     break;
                 case "STN":
-                    descriptionAdditional += "<br>Stun " + item.Value + " turn";
+                    descriptionAdditional += "Stun " + item.Value + " turn";
                     hoverText.text += "Stun - Target cannot act their current turn<br><br>";
                     break;
                 case "STN_ALL":
-                    descriptionAdditional += "<br>Stun ALL " + item.Value + " turn";
+                    descriptionAdditional += "Stun ALL " + item.Value + " turn";
                     break;  
                 case "VULN":
                     if(card.isTarget || card.actions.ContainsKey("COUNTER")) {
-                        descriptionAdditional += "<br>Target vulnerable " + item.Value + " turn";
+                        descriptionAdditional += "Target vulnerable " + item.Value + " turn";
                     }
                     else {
-                        descriptionAdditional += "<br>Self vulnerable " + item.Value + " turn";
+                        descriptionAdditional += "Self vulnerable " + item.Value + " turn";
                     }
                     hoverText.text += "Vulnerable - Take " + ((MainManager.Instance.vulnerableModifier - 1) * 100) + "% more damage<br><br>";
                     break;
                 case "RELOAD":
-                    descriptionAdditional += "<br>Reload";
+                    descriptionAdditional += "Reload";
                     hoverText.text += "Reload - Replenish your ammo to max capacity<br><br>";
                     break;
                 case "DRAW":
@@ -182,32 +226,38 @@ public class CardDisplay : MonoBehaviour
                     if(Int32.Parse(item.Value) > 1) {
                         cardText += "s";
                     }
-                    descriptionAdditional += "<br>Draw " + item.Value + cardText;
+                    descriptionAdditional += "Draw " + item.Value + cardText;
                     break;
                 case "SCRY":
-                    descriptionAdditional += "<br>Foresight " + item.Value;
+                    descriptionAdditional += "Foresight " + item.Value;
                     hoverText.text += "Foresight - Look at the next X cards in your deck, discard as many as you want<br><br>";
                     break;
                 case "EXPEL":
-                    descriptionAdditional += "<br>Expel";
+                    descriptionAdditional += "Expel";
                     hoverText.text += "Expel - When played, remove this card from deck for the rest of battle<br><br>";
                     break;
+                case "FINAL_BLOW":
+                    hoverText.text += "Final Blow - If you defeat an enemy with this attack, perform the following action<br><br>";
+                    break;
                 case "COUNTER":
-                    descriptionAdditional += "<br>Counter";
+                    descriptionAdditional += "Counter";
                     hoverText.text += "Counter - Action text below Counter on this card will be played BEFORE next enemy attack<br><br>";
                     break;
                 case "WEAKEN":
-                    descriptionAdditional += "<br>Weaken target " + item.Value + " turn";
+                    descriptionAdditional += "Weaken target " + item.Value + " turn";
                     hoverText.text += "Weaken - Deal " + (MainManager.Instance.weakenedModifier * 100) + "% less damage<br><br>";
                     break;
                 case "WEAKEN_ALL":
-                    descriptionAdditional += "<br>Weaken ALL " + item.Value + " turn";
+                    descriptionAdditional += "Weaken ALL " + item.Value + " turn";
                     break;
                 case "HEAL":
-                    descriptionAdditional += "<br>Heal " + item.Value;
+                    descriptionAdditional += "Heal " + item.Value;
                     break;
                 default:
                     break;
+            }
+            if(item.Key != "POWER" && item.Key != "ATK_MOD_TEMP" && item.Key != "CAST") {
+                descriptionAdditional += "<br>";
             }
         }
 

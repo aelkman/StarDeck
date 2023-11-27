@@ -19,7 +19,8 @@ MonoBehaviour:
   - ATK
   actionValues:
   - 5,1
-  description: ZAP!!!!
+  description: 
+  flavorText: ZAP!!!!
   type: Blaster
   subType: Shot
   isTarget: 1
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 1
   rarity: C
+  target: {fileID: 0}

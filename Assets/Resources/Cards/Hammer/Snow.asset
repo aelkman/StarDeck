@@ -19,7 +19,8 @@ MonoBehaviour:
   - ICE_STACK
   actionValues:
   - 1
-  description: Tastes like snowflakes!
+  description: 
+  flavorText: Tastes like snowflakes!
   type: Hammer
   subType: 
   isTarget: 1
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: C
+  target: {fileID: 0}

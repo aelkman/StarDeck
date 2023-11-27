@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
   m_Name: Slam
   m_EditorClassIdentifier: 
-  name: Slam
+  name: Frost Slam
   artwork: {fileID: 21300000, guid: 7d61734198dbb554fbcf92a55c1fe87a, type: 3}
   manaCost: 1
   actionKeys:
   - ATK
   actionValues:
   - 4,1
-  description: Hit em hard
+  description: 
+  flavorText: Hit em hard
   type: Hammer
   subType: 
   isTarget: 1
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 0
   isStarter: 1
   rarity: C
+  target: {fileID: 0}

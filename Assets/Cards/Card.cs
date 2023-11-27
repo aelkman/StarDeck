@@ -13,6 +13,7 @@ public class Card : ScriptableObject, ISerializationCallbackReceiver
     public List<string> actionValues;
     public Dictionary<string,string> actions;
     public string description;
+    public string flavorText;
     public string type;
     public string subType;
     public bool isTarget;

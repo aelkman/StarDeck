@@ -103,7 +103,34 @@ public static class CardUtils
             }
 
         return descriptionAdditional;
-    }               
+    }     
+
+    // public static string PowersParser(KeyValuePair<string, string> power) {
+    //     string powerDescription = "";
+    //     switch(power.Key) {
+    //         case "POCK_GEN":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Pocket Generator").description;
+    //             break;
+    //         case "POWER_SURGE":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Power Surge").description;
+    //             break;
+    //         case "PULSE_AMPLIFIER":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Pulse Amplifier").description;
+    //             break;
+    //         case "FROST_WARD":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Frost Ward").description;
+    //             break;
+    //         case "FYORNS_RESOLVE":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Fyorns Resolve").description;
+    //             break;
+    //         case "ICE_BARRICADE":
+    //             powerDescription = Resources.Load<Card>("Cards/Blaster/Ice Barricade").description;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     return powerDescription;
+    // }          
 
     public static int GetCardPrice(Card card) {
         int price = 0;

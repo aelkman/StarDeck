@@ -19,7 +19,8 @@ MonoBehaviour:
   - RELOAD
   actionValues:
   - 
-  description: I ain't no energizer bunny!
+  description: 
+  flavorText: I ain't no energizer bunny!
   type: Blaster
   subType: 
   isTarget: 0
@@ -28,3 +29,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 1
   rarity: C
+  target: {fileID: 0}

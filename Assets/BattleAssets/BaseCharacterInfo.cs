@@ -21,6 +21,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public CharacterAnimator characterAnimator;
     public BattleEnemyManager BEM;
     public BattleManager battleManager;
+    public List<KeyValuePair<string, string>> powers = new List<KeyValuePair<string, string>>();
     public int block = 0;
     public int vuln = 0;
     public int weak = 0;

@@ -21,7 +21,8 @@ MonoBehaviour:
   actionValues:
   - 0
   - 2
-  description: Steady aim makes the claim
+  description: 
+  flavorText: Steady aim makes the claim
   type: Blaster
   subType: 
   isTarget: 1
@@ -30,3 +31,4 @@ MonoBehaviour:
   isSkill: 1
   isStarter: 0
   rarity: C
+  target: {fileID: 0}

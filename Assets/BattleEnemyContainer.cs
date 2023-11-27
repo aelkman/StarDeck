@@ -65,9 +65,11 @@ public class BattleEnemyContainer : BaseCharacterInfo
 
     
 
-    public IEnumerator TakeDamage(int damage, float timeDelay, System.Action<bool> isDeadCallback) {
+    public IEnumerator TakeDamage(int damage, float timeDelay,  string type, System.Action<bool> isDeadCallback) {
         yield return new WaitForSeconds(timeDelay);
         damage = CalculateDamage(damage);
+        GameManager.Instance.weaponDamage[type] += damage;
+        Debug.Log(type + " damage: " + GameManager.Instance.weaponDamage[type]);
         cameraShake.StartShake();
         if (block >= damage) {
             block -= damage;
