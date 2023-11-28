@@ -24,7 +24,7 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     public void ShieldAudioPlay() {
-        shieldAudio.Play();
+        AudioManager.Instance.PlayShield();
     }
 
     public void ShockAudioPlay() {

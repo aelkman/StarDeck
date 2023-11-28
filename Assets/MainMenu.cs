@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
     public ParticleSystem rocket1;
     public ParticleSystem rocket2;
     public GameObject demoComplete;
+    public AudioSource mainMusic;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +45,6 @@ public class MainMenu : MonoBehaviour
 
     public void Option3Click() {
         AudioManager.Instance.PlayButtonPress();
-
     }
 
     public void QuitClick() {
@@ -64,7 +64,7 @@ public class MainMenu : MonoBehaviour
     IEnumerator LeaveCoroutine() {
         yield return new WaitForSeconds(2.5f);
         crossfade.SetTrigger("Start");
-
+        StartCoroutine(FadeAudioSource.StartFade(mainMusic, 1, 0));
         yield return new WaitForSeconds(1.0f);
 
         GameManager.Instance.LoadScene("OpeningScene1");

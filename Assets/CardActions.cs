@@ -29,6 +29,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Vector3 finalCardPosition = new Vector3(60,60,60);
     private bool mouse_over = false;
     public ItemCost itemCost;
+    public int siblingIndex;
 
     Coroutine start;
     Coroutine stop;
@@ -52,6 +53,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     void Update () {
+        siblingIndex = transform.GetSiblingIndex();
         if(mouse_over) {
             // Debug.Log("mouse over");
             if (Input.GetMouseButtonDown(1)) {

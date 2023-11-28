@@ -124,8 +124,10 @@ public class DeckViewer : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 ToggleActive();
                 // now, callback to the new card window
-                var tradeCardWindow = GameObject.Find("NightMarket").GetComponent<NightMarket>().tradeCardViewer;
-                tradeCardWindow.SetActive(true);
+                if(GameObject.Find("NightMarket") != null) {
+                    var tradeCardWindow = GameObject.Find("NightMarket").GetComponent<NightMarket>().tradeCardViewer;
+                    tradeCardWindow.SetActive(true);
+                }
             }
         }
         else {

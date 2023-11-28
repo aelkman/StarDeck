@@ -21,6 +21,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource ping;
     public AudioSource negativeFeedback;
     public AudioSource hammer;
+    public AudioSource currentBattleMusic;
     private void Awake()
     {
         // start of new code

@@ -22,6 +22,7 @@ public class MapManager : MonoBehaviour
     public bool destinationsClickable = true;
     public List<string> eventScenes = new List<string>() { "Alleyway", "ATM", "NightMarket", "Dojo", "VendingMachines" }; 
     private static MapManager _instance;
+    public AudioSource mapMusic;
 
     public static MapManager Instance 
     { 
@@ -133,6 +134,8 @@ public class MapManager : MonoBehaviour
     IEnumerator LoadLevel(string sceneName) {
         transition = GameObject.Find("Crossfade").GetComponent<Animator>();
         transition.SetTrigger("Start");
+        mapMusic = GameObject.Find("MapMusic").GetComponent<AudioSource>();
+        StartCoroutine(FadeAudioSource.StartFade(mapMusic, 1, 0));
 
         yield return new WaitForSeconds(1.0f);
 

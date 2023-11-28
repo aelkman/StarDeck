@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LeaveButton : MonoBehaviour
 {
     public Animator crossfade;
+    public AudioSource music;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class LeaveButton : MonoBehaviour
     IEnumerator LeaveCoroutine() {
         AudioManager.Instance.PlayButtonPress();
         crossfade.SetTrigger("Start");
-
+        StartCoroutine(FadeAudioSource.StartFade(music, 1, 0));
         yield return new WaitForSeconds(1.0f);
 
         GameManager.Instance.LoadScene("Map");

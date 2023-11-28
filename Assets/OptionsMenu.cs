@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class OptionsMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Escape)) {
+        if(Input.GetKeyUp(KeyCode.Escape) && SceneManager.GetActiveScene().name != "MainMenu") {
             AudioManager.Instance.PlayButtonPress();
             menuActive = !menuActive;
             menu.SetActive(menuActive);

@@ -10,6 +10,8 @@ public class Settings : MonoBehaviour
     public AudioMixer sfxMixer;
     public AudioMixer musicMixer;
     public GameObject settingsMenu;
+    public GameObject damageAnalytics;
+    private bool showDamageAnalytics = false;
     private bool isFullScreen = true;
     private void Awake()
     {
@@ -38,6 +40,11 @@ public class Settings : MonoBehaviour
 
     public void CardHoverDetailsToggle() {
         GameManager.Instance.cardHoverDetails = !GameManager.Instance.cardHoverDetails;
+    }
+
+    public void AnalyticsDamageToggle() {
+        showDamageAnalytics = !showDamageAnalytics;
+        damageAnalytics.SetActive(showDamageAnalytics);
     }
 
     public void WindowedToggle() {

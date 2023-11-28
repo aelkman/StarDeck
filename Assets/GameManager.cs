@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         weaponDamage.Add("Hammer", 0);
         weaponDamage.Add("Blaster", 0);
         weaponDamage.Add("Artifacts", 0);
+        weaponDamage.Add("General", 0);
     }
 
     void Awake()
@@ -52,8 +53,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void ResetGame() {
-        MainManager.Instance.Dispose();
-        MapSingleton.Instance.Dispose();
+        if(MainManager.Instance != null) {
+            MainManager.Instance.Dispose();
+        }
+        if(MapSingleton.Instance != null) {
+            MapSingleton.Instance.Dispose();
+        }
         var allTransforms = FindObjectsOfType<Transform>().ToList();
         var mapCam = GameObject.Find("Map Camera");
         var crossFade = GameObject.Find("Crossfade");

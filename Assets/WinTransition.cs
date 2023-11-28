@@ -33,7 +33,7 @@ public class WinTransition : MonoBehaviour
 
     IEnumerator LoadLevel(string sceneName) {
         transition.SetTrigger("Start");
-
+        StartCoroutine(FadeAudioSource.StartFade(AudioManager.Instance.currentBattleMusic, 1, 0));
         yield return new WaitForSeconds(1.0f);
 
         GameManager.Instance.LoadScene(sceneName);
