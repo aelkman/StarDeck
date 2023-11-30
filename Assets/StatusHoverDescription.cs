@@ -12,6 +12,7 @@ public class StatusHoverDescription : MonoBehaviour, IPointerEnterHandler, IPoin
     public CharacterHUD characterHUD;
     public TextMeshProUGUI powersText;
     public TextMeshProUGUI attackText;
+    public TextMeshProUGUI blasterText;
     public TextMeshProUGUI blindText;
     public TextMeshProUGUI blockText;
     public TextMeshProUGUI counterText;

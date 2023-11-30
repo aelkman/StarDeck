@@ -6,12 +6,14 @@ using UnityEngine.EventSystems;
 public class CardHoverDescription : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public CardDisplay cardDisplay;
+    public GameObject cardMiniPreview;
     private bool mouseOver = false;
     public bool pointerDown = false;
     // Start is called before the first frame update
     void Start()
     {
         cardDisplay.hoverTextGO.SetActive(false);
+        cardMiniPreview.SetActive(false);
     }
 
     // Update is called once per frame
@@ -20,13 +22,20 @@ public class CardHoverDescription : MonoBehaviour, IPointerEnterHandler, IPointe
         if(mouseOver && GameManager.Instance.cardHoverDetails) {
             if(pointerDown) {
                 cardDisplay.hoverTextGO.SetActive(false);
+                cardMiniPreview.SetActive(false);
             }
-            else if(cardDisplay.hoverText.text.Length > 0) {
-                cardDisplay.hoverTextGO.SetActive(true);
+            else {
+                if(cardDisplay.hoverText.text.Length > 0) {
+                    cardDisplay.hoverTextGO.SetActive(true);
+                }
+                if(cardDisplay.previewCard != null) {
+                    cardMiniPreview.SetActive(true);
+                }
             }
         }
         else {
             cardDisplay.hoverTextGO.SetActive(false);
+            cardMiniPreview.SetActive(false);
         }
     }
 

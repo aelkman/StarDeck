@@ -510,6 +510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 11400000, guid: bbc7e50415a60334aa506715bb03e32e, type: 2}
+  previewCard: {fileID: 0}
   nameText: {fileID: 107548890259919085}
   descriptionText: {fileID: 8438397898398758896}
   artworkImage: {fileID: 1426499380258694309}
@@ -1248,6 +1249,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4967283217890203636}
     m_Modifications:
+    - target: {fileID: 1909124061995622382, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 75.4
+      objectReference: {fileID: 0}
     - target: {fileID: 2837884905240008165, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
       propertyPath: m_Name
       value: CardHoverDescription
@@ -1356,9 +1361,17 @@ PrefabInstance:
       propertyPath: cardDisplay
       value: 
       objectReference: {fileID: 1885395679662133533}
+    - target: {fileID: 8679310455063098796, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: cardMiniPreview
+      value: 
+      objectReference: {fileID: 7191249272725493622}
     - target: {fileID: 8874277957866265018, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095802278145606532, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1397,6 +1410,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7191249272725493622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221201873347100150, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+  m_PrefabInstance: {fileID: 6438119563736902272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9005590093942154274
 PrefabInstance:
   m_ObjectHideFlags: 0

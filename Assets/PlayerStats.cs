@@ -22,6 +22,8 @@ public class PlayerStats : BaseCharacterInfo
     public BattleEnemyContainer tauntingEnemy;
     public int tauntTurns = 0;
     public CameraShake cameraShake;
+    public float blastMultiplier = 1.0f;
+    public int blasterAddition = 0;
 
     // Start is called before the first frame update
     void Start()

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc69b21dcf91bd4c9ec2ad82b7ce994, type: 3}
+  m_Name: Pulse Charge
+  m_EditorClassIdentifier: 
+  name: Pulse Charge
+  artwork: {fileID: 21300000, guid: c78246890cf0bf847ba60ee1a74d93f9, type: 3}
+  manaCost: 1
+  actionKeys:
+  - POWER
+  - CARD_PREVIEW
+  actionValues:
+  - PULSE_CHARGE
+  - Cards_Special/Blaster/Pulse
+  onDrawKeys: []
+  onDrawValues: []
+  description: When you play a Pulse, gain +1 ammo
+  flavorText: Recycled energy at it's finest
+  type: Blaster
+  subType: 
+  isTarget: 0
+  isAttack: 0
+  isPower: 1
+  isSkill: 0
+  isStarter: 0
+  isFinalBlow: 0
+  rarity: U
+  target: {fileID: 0}

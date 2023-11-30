@@ -39,6 +39,7 @@ public class BattleManager : MonoBehaviour
     private bool isPocketGenerator = false;
     private bool isPowerSurge = false;
     private bool isPulseAmplifier = false;
+    private bool isPulseCharge = false;
     private bool isFrostWard = false;
     private bool isFyornsResolve = false;
     public bool isIceBarricade = false;
@@ -49,7 +50,6 @@ public class BattleManager : MonoBehaviour
     public ScryUISelector scryUISelector;
     public bool isScryComplete = false;
     public Button endTurnButton;
-
     private float hammerAttackTime = 0.5f;
     private float blasterAttackTime = 0.3f;
     public FlashImage flashImage;
@@ -155,7 +155,7 @@ public class BattleManager : MonoBehaviour
         // for all non attack Blaster cards, they will not use a charge
         int requiredCharges = 0;
 
-        if((cardDisplay.card.isAttack && cardType == "Blaster")
+        if((cardDisplay.card.isAttack && cardType == "Blaster" && cardDisplay.card.subType != "Pulse")
             || (cardDisplay.card.actions.ContainsKey("ATK_ALL") && cardType == "Blaster")
             || (cardDisplay.card.actions.ContainsKey("FINAL_BLOW") && cardType == "Blaster")) {
             if(isPocketGenerator && cardDisplay.card.subType == "Shot") {
@@ -249,8 +249,12 @@ public class BattleManager : MonoBehaviour
             var item = card.actions.ToList()[x];
             switch(item.Key) {
                 case "ATK":
+                    if(isPulseCharge && card.name == "Pulse") {
+                        ammoController.Charge(1);
+                    }
                     int attack;
                     int multi;
+                    var strings = item.Value.Split(',').ToList();
                     // List<int> multiAttack = new List<int>();
                     if(item.Value == "DEF") {
                         attack = playerStats.block;
@@ -259,7 +263,6 @@ public class BattleManager : MonoBehaviour
                         // multiAttack.Add(1);
                     }
                     else {
-                        var strings = item.Value.Split(',').ToList();
                         attack = Int32.Parse(strings[0]);
 
                         if(strings[1] == "X"){
@@ -308,7 +311,12 @@ public class BattleManager : MonoBehaviour
                         // weapon animations here
                         switch(cardType) {
                             case "Blaster":
-                                StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true, isLast));
+                                if(card.subType == "Pulse") {
+                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false, isLast));
+                                }
+                                else {
+                                    StartCoroutine(BlasterAttack(STMPos, 0.1f, card, true, isLast));
+                                }
                                 break;
                             case "Blaster_All":
                                 StartCoroutine(BlasterAttack(STMPos, 0.1f, card, false, isLast));
@@ -321,10 +329,22 @@ public class BattleManager : MonoBehaviour
                         }
 
                         if(!isCharacterMissing) {
-                            int damage = (int)Math.Round(((float)attack + playerStats.getAtkMod()) * atkMod);
+                            int damage;
+                            if(card.type == "Blaster") {
+                                damage = (int)Math.Round(((float)attack + playerStats.getAtkMod() + playerStats.blasterAddition) * atkMod);
+                            }
+                            else {
+                                damage = (int)Math.Round(((float)attack + playerStats.getAtkMod()) * atkMod);
+                            }
                             if(damage < 0) {
                                 damage = 0;
                             }
+
+                            if(cardType == "Blaster" && playerStats.blastMultiplier != 1) {
+                                damage = (int)Math.Round(damage * playerStats.blastMultiplier);
+                                playerStats.blastMultiplier = 1;
+                            }
+
                             damage = WeakenedDamage(damage, playerStats);
                             // check target type
                             if(card.target is BattleEnemyContainer) {
@@ -343,6 +363,19 @@ public class BattleManager : MonoBehaviour
                                         i = multi;
                                         // make sure to unfreeze on death
                                         ((BattleEnemyContainer)card.target).UnfreezeWithoutRebind();
+
+                                        if(card.isFinalBlow) {
+                                            string nextAction = strings[2];
+                                            // for now, this only works with RELOAD... will have to fix later
+                                            Card newCard = ScriptableObject.CreateInstance<Card>();
+                                            newCard.type = cardType;
+                                            newCard.manaCost = 0;
+                                            newCard.actions = new Dictionary<string, string>();
+                                            newCard.actions.Add(strings[2], strings[3]);
+                                            // recursion
+                                            StartCoroutine(CardAction(newCard));
+                                        }
+
                                     }
                                 }));
                             }
@@ -412,6 +445,14 @@ public class BattleManager : MonoBehaviour
                     }
 
                     break;
+                case "BLAST_ADD":
+                    playerStats.blasterAddition += Int32.Parse(item.Value);
+                    playerStats.playerAnimator.ReloadAnimation(playerStats);
+                    break;
+                case "BLAST_MULT":
+                    playerStats.blastMultiplier = Int32.Parse(item.Value);
+                    playerStats.playerAnimator.ReloadAnimation(playerStats);
+                    break;
                 case "BLIND_ALL":
                     foreach(var battleEnemy in battleEnemies) {
                         battleEnemy.blind += 1;
@@ -456,6 +497,12 @@ public class BattleManager : MonoBehaviour
                     break;
                 case "DRAW":
                     handManager.DrawCards(Int32.Parse(item.Value));
+                    break;
+                case "DRAW_SPECIFIC":
+                    // drawInfo[0]: resource location
+                    // drawInfo[1]: number to draw
+                    var drawInfo = item.Value.Split(',').ToList();
+                    handManager.DrawSpecificCard(drawInfo[0], Int32.Parse(drawInfo[1]));
                     break;
                 case "DRAW_PULSE":
                     DrawPulse();
@@ -542,73 +589,6 @@ public class BattleManager : MonoBehaviour
                     }
                     playerStats.playerAnimator.ReloadAnimation(playerStats);
                     break;
-                case "FINAL_BLOW":
-                    List<string> finalBlow = card.actions["FINAL_BLOW"].Split(',').ToList();
-
-                    // if (finalBlow.Count != 4) {
-                    //     throw new Exception("Invalid FINAL_BLOW attributes! Must be 4 strings comma separated.");
-                    // }
-
-                    int dmg = Int32.Parse(finalBlow[0]) + playerStats.getAtkMod();
-                    if(dmg < 0) {
-                        dmg = 0;
-                    }
-                    dmg = WeakenedDamage(dmg, playerStats);
-                    int multiplier = Int32.Parse(finalBlow[1]);
-
-                    // unfortunate code copying, but refacting is too much work
-                    for (int i = 0; i < multiplier; i++) {
-
-                        Vector3 STMPos2;
-                        isCharacterMissing = DidTargetMiss(playerStats);
-                        if(isCharacterMissing) {
-                            Vector3 targPos = card.target.transform.position;
-                            STMPos2 = new Vector3(targPos.x, targPos.y + 100f, targPos.z);
-                        }
-                        else {
-                            STMPos2 = card.target.transform.position;
-                        }
-
-                        bool isLast = i == (multiplier - 1);
-                        // playerStats.transform.parent.GetComponent<PlayerAnimator>().AttackAnimation();
-                        
-                        // weapon animations here
-                        switch(cardType) {
-                            case "Blaster":
-                                StartCoroutine(BlasterAttack(STMPos2, 0.1f, card, true, isLast));
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if(!isCharacterMissing) {
-                            if(card.target is BattleEnemyContainer) {
-                                StartCoroutine(((BattleEnemyContainer)card.target).TakeDamage(dmg, attackDelay, cardType, isDeadReturnValue => {
-                                    if(isDeadReturnValue) {
-                                        // if the enemy was killed, perform the next action
-                                        string nextAction = finalBlow[2];
-                                        // for now, this only works with RELOAD... will have to fix later
-                                        Card newCard = ScriptableObject.CreateInstance<Card>();
-                                        newCard.type = "Blaster";
-                                        newCard.manaCost = 0;
-                                        newCard.actions = new Dictionary<string, string>();
-                                        newCard.actions.Add(finalBlow[2], finalBlow[3]);
-                                        // recursion
-                                        StartCoroutine(CardAction(newCard));
-                                    }
-                                }));
-                            }
-                        }
-                        // else {
-                        //     // player is blind, attack self
-                        //     ((PlayerStats)card.target).takeDamage(dmg);
-                        // }
-
-                        if (!isLast) {
-                            yield return new WaitForSeconds(0.5f);
-                        }
-                    }
-                    break;
                 case "POWER":
                     playerStats.characterAnimator.CastAnimation();
                     if (item.Value == "POCK_GEN") {
@@ -623,6 +603,10 @@ public class BattleManager : MonoBehaviour
                     else if(item.Value == "PULSE_AMPLIFIER") {
                         AudioManager.Instance.PlayArcanePower();
                         isPulseAmplifier = true;
+                    }
+                    else if(item.Value == "PULSE_CHARGE") {
+                        AudioManager.Instance.PlayArcanePower();
+                        isPulseCharge = true;
                     }
                     else if(item.Value == "FROST_WARD") {
                         playerStats.iceAura.Play();
@@ -639,6 +623,7 @@ public class BattleManager : MonoBehaviour
                         AudioManager.Instance.PlayFreeze();
                         isIceBarricade = true;
                     }
+
                     KeyValuePair<string, string> power = new KeyValuePair<string, string>(card.name, card.description);
                     playerStats.powers.Add(power);
                     break;
@@ -1135,6 +1120,7 @@ public class BattleManager : MonoBehaviour
         endTurnButton.interactable = false;
         isPlayerTurn = false;
         ResetEnemyShields();
+        playerStats.blasterAddition = 0;
         playerStats.RemoveSingleBlind();
         playerStats.RemoveSingleVuln();
         playerStats.RemoveSingleTaunt();

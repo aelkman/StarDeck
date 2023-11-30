@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 11400000, guid: 2e41173054dc53d419931967f0e30a0b, type: 2}
+  previewCard: {fileID: 0}
   nameText: {fileID: 1295147999388794104}
   descriptionText: {fileID: 5143325410798973325}
   artworkImage: {fileID: 8009744958637436839}
@@ -1281,6 +1282,10 @@ PrefabInstance:
       propertyPath: cardDisplay
       value: 
       objectReference: {fileID: 337626750929364469}
+    - target: {fileID: 8679310455063098796, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: cardMiniPreview
+      value: 
+      objectReference: {fileID: 6393437020635171472}
     - target: {fileID: 8874277957866265018, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1309,6 +1314,11 @@ GameObject:
 --- !u!224 &3193953847765289163 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5655819367268581293, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+  m_PrefabInstance: {fileID: 7074791787182405478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6393437020635171472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221201873347100150, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
   m_PrefabInstance: {fileID: 7074791787182405478}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7634672036574434753 stripped

@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 11400000, guid: 2e41173054dc53d419931967f0e30a0b, type: 2}
+  previewCard: {fileID: 0}
   nameText: {fileID: 5297640178880641984}
   descriptionText: {fileID: 529331762016226245}
   artworkImage: {fileID: 3467225186674606540}
@@ -140,6 +141,7 @@ MonoBehaviour:
   isShop: 0
   finalCardPosition: {x: 60, y: 60, z: 60}
   itemCost: {fileID: 8560878259281508120}
+  siblingIndex: 0
 --- !u!1 &722953584722247416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,6 +1178,10 @@ PrefabInstance:
       propertyPath: cardDisplay
       value: 
       objectReference: {fileID: 366997572262266720}
+    - target: {fileID: 8679310455063098796, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: cardMiniPreview
+      value: 
+      objectReference: {fileID: 9217193015196349040}
     - target: {fileID: 8874277957866265018, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1217,6 +1223,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &9217193015196349040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221201873347100150, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+  m_PrefabInstance: {fileID: 5007638345898807174}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5528699128427311609
 PrefabInstance:
   m_ObjectHideFlags: 0

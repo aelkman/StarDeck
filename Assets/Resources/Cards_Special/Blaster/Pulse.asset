@@ -13,18 +13,25 @@ MonoBehaviour:
   m_Name: Pulse
   m_EditorClassIdentifier: 
   name: Pulse
-  artwork: {fileID: 21300000, guid: 59b98a2ac3485c544b85fc218d664905, type: 3}
+  artwork: {fileID: 21300000, guid: 0d95ca550fc2293428b34b37c7e86d6d, type: 3}
   manaCost: 0
   actionKeys:
   - ATK
   - EXPEL
   actionValues:
   - 5,1
-  - 5,1
-  description: 
+  - 
+  onDrawKeys: []
+  onDrawValues: []
+  description: No ammo required
+  flavorText: A laser's echo
   type: Blaster
-  subType: 
-  category: 
+  subType: Pulse
   isTarget: 1
   isAttack: 1
+  isPower: 0
+  isSkill: 0
+  isStarter: 0
+  isFinalBlow: 0
   rarity: C
+  target: {fileID: 0}

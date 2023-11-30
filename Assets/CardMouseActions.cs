@@ -106,7 +106,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                             isCardPlayed = true;
 
                             // add card play animation here
-                            StartCoroutine(CardPlayAnimation(0.05f));
+                            StartCoroutine(CardPlayAnimation(0.05f, true));
                             StartCoroutine(CardPlayDelaySequence(0.2f));
                         }
                     }
@@ -136,10 +136,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         isCardPlayed = false;
     }
 
-    private IEnumerator CardPlayAnimation(float timeInterval) {
+    public IEnumerator CardPlayAnimation(float timeInterval, bool isHandCard) {
         // play card now, but defer the deletion for 1.7s
-        handManager.PlayCard(cardDisplay);
-        handManager.lastCard = cardDisplay.card;
+        if(isHandCard) {
+            handManager.PlayCard(cardDisplay);
+            handManager.lastCard = cardDisplay.card;
+        }
         Vector3 startingPosition = transform.position;
         // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
@@ -270,7 +272,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                     cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
                     cursorFollowerInstance.SetActive(false);
                     cursorFollowerInstance.transform.parent = transform.parent;
-                    cursorFollowerInstance.transform.SetSiblingIndex(50);
+                    cursorFollowerInstance.transform.SetSiblingIndex(9999);
                     cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
                     followerCreated = true;
                 }
@@ -374,7 +376,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private IEnumerator HoverPulse() {
         expandAllowed = false;
         // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
-        transform.SetSiblingIndex(20);
+        transform.SetSiblingIndex(9998);
 
         Vector3 currentPosition = transform.localPosition;
         Vector3 currentScale = transform.localScale;

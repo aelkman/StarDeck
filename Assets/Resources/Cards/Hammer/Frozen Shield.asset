@@ -19,6 +19,8 @@ MonoBehaviour:
   - DEF
   actionValues:
   - 8
+  onDrawKeys: []
+  onDrawValues: []
   description: 
   flavorText: Try and break this ice!
   type: Hammer
@@ -27,6 +29,7 @@ MonoBehaviour:
   isAttack: 0
   isPower: 1
   isSkill: 1
-  isStarter: 1
+  isStarter: 0
+  isFinalBlow: 0
   rarity: C
   target: {fileID: 0}

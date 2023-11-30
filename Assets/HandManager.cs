@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class HandManager : MonoBehaviour
 {
@@ -97,6 +98,10 @@ public class HandManager : MonoBehaviour
                 currentCard.manaCost = 0;
                 currentCard.actions.Add("EXPEL", "");
             }
+            // perform card draw actions here
+            if(currentCard.onDrawActions.Count > 0) {
+                PerformDrawAction(currentCard);
+            }
             cards.Add(currentCard);
 
             prefab.card = currentCard;
@@ -112,6 +117,34 @@ public class HandManager : MonoBehaviour
 
         canvasGroup.blocksRaycasts = true;
         cardsCallback(cards);
+    }
+
+    public void PerformDrawAction(Card card) {
+        for(int x = 0; x < card.onDrawActions.Count; x++ ) {
+        // foreach(var item in card.actions) {
+            var item = card.onDrawActions.ToList()[x];
+            switch(item.Key) {
+                case "ADD_DISCARD":
+                    Card newCard = Resources.Load<Card>(item.Value);
+                    prefab.card = newCard;
+                    CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+                    cardInstance.transform.localScale = new Vector3(3.0f, 3.0f, 0f);
+                    discardCards.Add(cardInstance);
+                    StartCoroutine(cardInstance.gameObject.GetComponent<CardMouseActions>().CardPlayAnimation(0.05f, false));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void DrawSpecificCard(string cardLocation, int count) {
+        for(int i = 0; i < count; i++) {
+            Card newCard = Resources.Load<Card>(cardLocation);
+            deckCopy.AddCard(newCard);
+        }
+
+        DrawCards(count);
     }
 
     void Update() {

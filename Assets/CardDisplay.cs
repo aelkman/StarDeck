@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class CardDisplay : MonoBehaviour
 {
     public Card card;
+    public Card previewCard;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
     public Image artworkImage;
@@ -68,7 +69,7 @@ public class CardDisplay : MonoBehaviour
         if(card.description.Length > 1) {
             descriptionText.text += card.description + "<br>";
         }
-        descriptionText.text += DescriptionParser();
+        descriptionText.text += DescriptionParser(card);
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
     }
@@ -118,7 +119,7 @@ public class CardDisplay : MonoBehaviour
         if(card.description.Length > 1) {
             descriptionText.text += card.description + "<br>";
         }
-        descriptionText.text += DescriptionParser();
+        descriptionText.text += DescriptionParser(card);
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
     }
@@ -132,7 +133,7 @@ public class CardDisplay : MonoBehaviour
         cardBase.sprite = sprite;
     }
 
-    private string DescriptionParser() {
+    private string DescriptionParser(Card card) {
         string descriptionAdditional = "";
         foreach(var item in card.actions) {
             switch(item.Key) {
@@ -140,30 +141,28 @@ public class CardDisplay : MonoBehaviour
                     if(item.Value != "DEF") {
                         int attack;
                         string multi;
-                        if(item.Value.Contains("X") || item.Value.Contains("A")) {
-                            var multiAttackStrings = item.Value.Split(',').ToList();
-                            attack = Int32.Parse(multiAttackStrings[0]);
-                            if(multiAttackStrings[1] != "X" && multiAttackStrings[1] != "A") {
-                                throw new Exception("Invalid string found in ATK value! " + multiAttackStrings[1]);
-                            }
-                            else {
-                                multi = multiAttackStrings[1];
-                            }
-                        }
-                        else {
-                            List<int> multiAttack = card.actions["ATK"].Split(',').Select(int.Parse).ToList();
-                            if (multiAttack.Count != 2) {
-                                throw new Exception("Invalid ATK attributes! Must be 2 ints comma separated");
-                            }
-                            attack = multiAttack[0];
-                            multi = multiAttack[1].ToString();
-                        }
+                        List<string> multiAttack = card.actions["ATK"].Split(',').ToList();
+                        attack = Int32.Parse(multiAttack[0]);
+                        multi = multiAttack[1].ToString();
+                        // }
 
                         if (multi == "1") {
                             descriptionAdditional += "Deal " + attack + " damage";
                         }
                         else {
                             descriptionAdditional = "Deal " + attack + " damage " + multi + " times";
+                        }
+
+                        if(card.isFinalBlow) {
+                            Card newCard = ScriptableObject.CreateInstance<Card>();
+                            newCard.type = card.type;
+                            newCard.manaCost = 0;
+                            newCard.actions = new Dictionary<string, string>();
+                            newCard.actions.Add(multiAttack[2], multiAttack[3]);
+                            // recursion
+                            
+                            descriptionAdditional += "<br>Final Blow: " + DescriptionParser(newCard);
+                            hoverText.text += "Final Blow - If you defeat an enemy with this attack, perform the following action<br><br>";
                         }
                     }
                     break;
@@ -236,12 +235,23 @@ public class CardDisplay : MonoBehaviour
                     descriptionAdditional += "Expel";
                     hoverText.text += "Expel - When played, remove this card from deck for the rest of battle<br><br>";
                     break;
-                case "FINAL_BLOW":
-                    hoverText.text += "Final Blow - If you defeat an enemy with this attack, perform the following action<br><br>";
+                case "CARD_PREVIEW":
+                    Card previewName = Resources.Load<Card>(item.Value);
+                    previewCard = previewName;
+                    cardHoverDescription.cardMiniPreview.GetComponent<CardDisplay>().card = previewCard;
                     break;
                 case "COUNTER":
                     descriptionAdditional += "Counter";
                     hoverText.text += "Counter - Action text below Counter on this card will be played BEFORE next enemy attack<br><br>";
+                    break;
+                case "DRAW_SPECIFIC":
+                    // drawInfo[0]: resource location
+                    // drawInfo[1]: number to draw
+                    var drawInfo = item.Value.Split(',').ToList();
+                    Card drawName = Resources.Load<Card>(drawInfo[0]);
+                    previewCard = drawName;
+                    cardHoverDescription.cardMiniPreview.GetComponent<CardDisplay>().card = previewCard;
+                    descriptionAdditional += "When played, draw " + drawInfo[1] + " " + drawName.name;
                     break;
                 case "WEAKEN":
                     descriptionAdditional += "Weaken target " + item.Value + " turn";
@@ -252,6 +262,12 @@ public class CardDisplay : MonoBehaviour
                     break;
                 case "HEAL":
                     descriptionAdditional += "Heal " + item.Value;
+                    break;
+                case "BLAST_MULT":
+                    descriptionAdditional += item.Value + "X damage on next Blaster attack";
+                    break;
+                case "BLAST_ADD":
+                    descriptionAdditional += "Blaster attacks do +" + item.Value + " damage this turn";
                     break;
                 default:
                     break;

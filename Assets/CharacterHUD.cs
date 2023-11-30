@@ -14,6 +14,7 @@ public class CharacterHUD : MonoBehaviour
     public GameObject weakDisplay;
     public GameObject tauntDisplay;
     public GameObject counterDisplay;
+    public GameObject blasterDisplay;
     public GameObject attackMod;
     public GameObject attackNegative;
     public GameObject attackPositive;
@@ -66,6 +67,41 @@ public class CharacterHUD : MonoBehaviour
             powersDisplay.SetActive(false);
             shd.powersText.gameObject.SetActive(false);
             statuses.Remove("powers");
+        }
+
+        if(baseCharacterInfo is PlayerStats) {
+            PlayerStats ps = (PlayerStats)baseCharacterInfo;
+            bool showBlaster = false;
+            string blasterText = "";
+            if(ps.blastMultiplier != 1) {
+                blasterText = ps.blastMultiplier + "X damage on next Blaster attack";
+                statuses.Add("blaster");
+                showBlaster = true;
+            }
+            if(ps.blasterAddition != 0) {
+                if(blasterText.Length > 0) {
+                    blasterText += "<br>";
+                }
+                blasterText += "Blaster attacks do +" + ps.blasterAddition + " damage this turn";
+                statuses.Add("blaster");
+                showBlaster = true;
+            }
+
+            if(!showBlaster) {
+                blasterDisplay.SetActive(false);
+                shd.blasterText.gameObject.SetActive(false);
+                statuses.Remove("blaster");
+            }
+            else {
+                blasterDisplay.SetActive(true);
+                shd.blasterText.gameObject.SetActive(true);
+                shd.blasterText.text = blasterText;
+            }
+        }
+        else {
+            blasterDisplay.SetActive(false);
+            shd.blasterText.gameObject.SetActive(false);
+            statuses.Remove("blaster");
         }
 
         if(baseCharacterInfo.getBlock() > 0) {

@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 11400000, guid: 2e41173054dc53d419931967f0e30a0b, type: 2}
+  previewCard: {fileID: 0}
   nameText: {fileID: 3355452941473566351}
   descriptionText: {fileID: 4507077662578979796}
   artworkImage: {fileID: 6340968792690136431}
@@ -439,6 +440,7 @@ MonoBehaviour:
   isShop: 0
   finalCardPosition: {x: 60, y: 60, z: 60}
   itemCost: {fileID: 0}
+  siblingIndex: 0
 --- !u!1 &8863816528829765207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1293,10 @@ PrefabInstance:
       propertyPath: cardDisplay
       value: 
       objectReference: {fileID: 337626750929364469}
+    - target: {fileID: 8679310455063098796, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+      propertyPath: cardMiniPreview
+      value: 
+      objectReference: {fileID: 1711683333118158263}
     - target: {fileID: 8874277957866265018, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1300,6 +1306,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+--- !u!1 &1711683333118158263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221201873347100150, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}
+  m_PrefabInstance: {fileID: 3266699971623639105}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2776713471740148454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 854971865942925991, guid: a078e8bb8aeb95e42b015c520051cf6e, type: 3}

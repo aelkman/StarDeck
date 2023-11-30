@@ -66,28 +66,33 @@ public class GameManager : MonoBehaviour
 
         var audioManager = GameObject.Find("AudioManager");
         var gameManager = GameObject.Find("GameManager");
+        // var analytics = GameObject.Find("Analytics");
         var settings = GameObject.Find("Settings");
         var options = GameObject.Find("Options");
 
         // save all audio manager children
-        HashSet<Transform> audioChildren = new HashSet<Transform>();
+        HashSet<Transform> savedChildren = new HashSet<Transform>();
         foreach(Transform child in audioManager.transform) {
-            audioChildren.Add(child);
+            savedChildren.Add(child);
         }
 
-        allTransforms.RemoveAll(x => audioChildren.Contains(x));
+        
+        foreach(Transform child in gameManager.GetComponentsInChildren<Transform>()) {
+            savedChildren.Add(child);
+        }
+
+        allTransforms.RemoveAll(x => savedChildren.Contains(x));
 
         foreach( var tr in allTransforms)
         {
             if(tr.gameObject == audioManager || tr.gameObject == gameManager || tr.gameObject == settings
-                || tr.gameObject == options) {
+                || tr.gameObject == options ) {
                 Debug.Log("found an important object! not destroying");
             }
             else {
                 Destroy(tr.gameObject);
             }
         }
-
     }
 
     public void RestartGame() {

@@ -61,6 +61,15 @@ public class AmmoController : MonoBehaviour
         // charge3.SetActive(true);
     }
 
+    public void Charge(int chargeAdded) {
+        charge += chargeAdded;
+        if(charge > maxCharge) {
+            charge = maxCharge;
+        }
+        slider.value = charge/maxCharge;
+        tmp.text = charge + "/" + maxCharge;
+    }
+
     public void UseCharge(int charge) {
         if(charge > this.charge) {
             throw new System.Exception("attempted charge of " + charge + "was greater than remaining charges of " + this.charge);
