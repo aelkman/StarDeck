@@ -22,6 +22,9 @@ public class MusicManager : MonoBehaviour
         }
         else {
             var track = battleTracks[Random.Range(0, battleTracks.Count)];
+            while(AudioManager.Instance.currentBattleMusic != null && AudioManager.Instance.currentBattleMusic == track) {
+                track = battleTracks[Random.Range(0, battleTracks.Count)];
+            }
             track.volume = 0;
             track.Play();
             StartCoroutine(FadeAudioSource.StartFade(track, 1, 0.8f));

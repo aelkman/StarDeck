@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Loading...
   m_EditorClassIdentifier: 
   name: Loading...
-  artwork: {fileID: 21300000, guid: 505a0b3beb60ba64f8a6c03ac413d265, type: 3}
+  artwork: {fileID: 21300000, guid: a3e95e8b2404fac4da564c3421a79c01, type: 3}
   manaCost: 1
   actionKeys:
   - RELOAD
@@ -21,6 +21,8 @@ MonoBehaviour:
   actionValues:
   - 
   - 1
+  onDrawKeys: []
+  onDrawValues: []
   description: 
   flavorText: It's been 20 minutes, nothing is happening...
   type: Blaster
@@ -30,5 +32,6 @@ MonoBehaviour:
   isPower: 0
   isSkill: 1
   isStarter: 0
+  isFinalBlow: 0
   rarity: C
   target: {fileID: 0}

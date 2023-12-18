@@ -13,12 +13,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private GameObject cursorFollowerInstance;
     private SingleTargetManager STM;
     private CardDisplay cardDisplay;
-    private Quaternion originalRotation;
+    public Quaternion originalRotation;
     private Vector3 originalScale;
     public Vector3 originalPosition;
     private Vector3 expandedScale;
     public CardAnimator cardAnimator;
-    private int siblingIndexOriginal;
+    public int siblingIndexOriginal;
     private bool isSelected = false;
     private bool isFollowerPlaced = false;
     private bool isTarget;
@@ -53,8 +53,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 if (isSelected) {
                     // Debug.Log("cancelling action (right click)");
                     if(cursorFollowerInstance != null) {
-                        cursorFollowerInstance.SetActive(false);
                         Cursor.visible = true;
+                        Destroy(cursorFollowerInstance);
+                        followerCreated = false;
+                        isFollowerPlaced = false;
+                        // cursorFollowerInstance.SetActive(false);
+                        // Cursor.visible = true;
                     }
                     if(!isTarget) {
                         // for cards that are not target cards, move it back
@@ -71,8 +75,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 if (isSelected && !isHardReset) {
                     // Debug.Log("drag exit");
                     if (cursorFollowerInstance != null) {
-                            cursorFollowerInstance.SetActive(false);
                             Cursor.visible = true;
+                            Destroy(cursorFollowerInstance);
+                            followerCreated = false;
+                            isFollowerPlaced = false;
+                            // cursorFollowerInstance.SetActive(false);
+                            // Cursor.visible = true;
                     }
 
                     if(!battleManager.CheckCanAct(cardDisplay.card) || 
@@ -137,6 +145,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     public IEnumerator CardPlayAnimation(float timeInterval, bool isHandCard) {
+        // handManager.canvasGroup.blocksRaycasts = false;
         // play card now, but defer the deletion for 1.7s
         if(isHandCard) {
             handManager.PlayCard(cardDisplay);
@@ -224,7 +233,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             );
             yield return new WaitForSeconds(0.01f);
         }
-
+        // handManager.canvasGroup.blocksRaycasts = true;
         handManager.DeleteCardWithDiscard(cardDisplay, 0f);
     }
 
@@ -255,6 +264,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        // Debug.Log("current index: " + transform.GetSiblingIndex());
+        // Debug.Log("original index: " + siblingIndexOriginal);
         mouseOver = true;
         cardDisplay.glowImage.gameObject.SetActive(true);
         if (!isCardPlayed) {
@@ -263,20 +274,20 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             // Debug.Log("isTarget: " + isTarget);
 
             // if it's a Target, instantiate the CursorFollower prefab
-            if(isTarget) {
-                // if(followerCreated) {
-                //     Destroy(cursorFollowerInstance);
-                //     followerCreated = false;
-                // }
-                if(!followerCreated) {
-                    cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
-                    cursorFollowerInstance.SetActive(false);
-                    cursorFollowerInstance.transform.parent = transform.parent;
-                    cursorFollowerInstance.transform.SetSiblingIndex(9999);
-                    cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
-                    followerCreated = true;
-                }
-            }
+            // if(isTarget) {
+            //     // if(followerCreated) {
+            //     //     Destroy(cursorFollowerInstance);
+            //     //     followerCreated = false;
+            //     // }
+            //     if(!followerCreated) {
+            //         cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
+            //         cursorFollowerInstance.SetActive(false);
+            //         cursorFollowerInstance.transform.parent = transform.parent;
+            //         cursorFollowerInstance.transform.SetSiblingIndex(9999);
+            //         cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
+            //         followerCreated = true;
+            //     }
+            // }
 
             if (stop != null) {
                 StopCoroutine(stop);
@@ -319,10 +330,22 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if(isTarget) {
             if(!isFollowerPlaced) {
                 Cursor.visible = false;
+                cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
                 cursorFollowerInstance.SetActive(true);
+                cursorFollowerInstance.transform.parent = transform.parent;
+                cursorFollowerInstance.transform.SetSiblingIndex(9999);
+                cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
                 cursorFollowerInstance.transform.localPosition = transform.localPosition;
+                followerCreated = true;
                 isFollowerPlaced = true;
             }
+
+            // if(!isFollowerPlaced) {
+            //     Cursor.visible = false;
+            //     cursorFollowerInstance.SetActive(true);
+            //     cursorFollowerInstance.transform.localPosition = transform.localPosition;
+            //     isFollowerPlaced = true;
+            // }
         }
         else if(!isTarget && !isCancelled) {
             Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());

@@ -31,14 +31,14 @@ public class BattleManager : MonoBehaviour
     private List<Tuple<BattleEnemyContainer, Card>> enemyActions;
     private bool areEnemyActionsDecided = false;
     private List<BattleEnemyContainer> battleEnemies;
-    private bool isPlayerTurn;
+    public bool isPlayerTurn;
     private bool isHandDealt = false;
     private bool isGameOver = false;
     private bool isBattleWon = false;
     public float attackDelay = 0.25f;
     private bool isPocketGenerator = false;
     private bool isPowerSurge = false;
-    private bool isPulseAmplifier = false;
+    public bool isPulseAmplifier = false;
     private bool isPulseCharge = false;
     private bool isFrostWard = false;
     private bool isFyornsResolve = false;
@@ -55,6 +55,7 @@ public class BattleManager : MonoBehaviour
     public FlashImage flashImage;
     private int lastStandBonus = 0;
     private bool cardActionActing = false;
+    public bool enemiesActing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -96,6 +97,7 @@ public class BattleManager : MonoBehaviour
                         }
                     }
                     else {
+                        handManager.canvasGroup.blocksRaycasts = false;
                         // enemy turn
                         // make GetEnemies filter out dead enemies
                         StartCoroutine(ProcessEnemyAction(battleEnemies));
@@ -795,6 +797,9 @@ public class BattleManager : MonoBehaviour
     }
 
     private IEnumerator ProcessEnemyAction(List<BattleEnemyContainer> battleEnemies) {
+        
+        enemiesActing = true;
+        
         for(int x = 0; x < enemyActions.Count; x++) {
         // foreach (Tuple<BattleEnemyContainer,Card> enemyActionPair in enemyActions) {
             if (!isGameOver) {
@@ -1120,18 +1125,11 @@ public class BattleManager : MonoBehaviour
         endTurnButton.interactable = false;
         isPlayerTurn = false;
         ResetEnemyShields();
-        playerStats.blasterAddition = 0;
         playerStats.RemoveSingleBlind();
         playerStats.RemoveSingleVuln();
         playerStats.RemoveSingleTaunt();
         playerStats.RemoveSingleWeak();
-        if(playerStats.atkModTempTurns > 0) {
-            playerStats.atkModTempTurns -= 1;
-            if(playerStats.atkModTempTurns == 0) {
-                playerStats.atkMod -= playerStats.atkModTemp;
-                playerStats.atkModTemp = 0;
-            }
-        }
+
     }
 
     public IEnumerator EndEnemyTurn() {
@@ -1140,6 +1138,17 @@ public class BattleManager : MonoBehaviour
         areEnemyActionsDecided = false;
         handManager.DiscardHand();
         playerStats.resetMana();
+
+        playerStats.blasterAddition = 0;
+
+        if(playerStats.atkModTempTurns > 0) {
+            playerStats.atkModTempTurns -= 1;
+            if(playerStats.atkModTempTurns == 0) {
+                playerStats.atkMod -= playerStats.atkModTemp;
+                playerStats.atkModTemp = 0;
+            }
+        }
+
         if(!MainManager.Instance.artifacts.Contains("DEF_PERSIST")) {
             playerStats.resetBlock();
         }
@@ -1194,6 +1203,7 @@ public class BattleManager : MonoBehaviour
             playerStats.atkMod += lastStandBonus;
         }
         endTurnButton.interactable = true;
+        enemiesActing = false;
     }
 
     public void ResetEnemyShields() {

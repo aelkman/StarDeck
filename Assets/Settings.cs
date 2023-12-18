@@ -25,6 +25,14 @@ public class Settings : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        if(Screen.currentResolution.width != 1920 && Screen.currentResolution.height != 1080) {
+            if(isFullScreen) {
+                Screen.SetResolution(1920, 1080, true);
+            }
+            else {
+                Screen.SetResolution(1920, 1080, false);
+            }
+        }
     }
     
     void Start()
@@ -57,7 +65,8 @@ public class Settings : MonoBehaviour
         else {
             mode = FullScreenMode.Windowed;
         }
-        Screen.fullScreenMode = mode;
+        Screen.SetResolution(1920, 1080, mode);
+        // Screen.fullScreenMode = mode;
         // StartCoroutine(SwitchToWindowed(mode));
     }
 

@@ -26,7 +26,10 @@ public class HandManager : MonoBehaviour
     public BattleEnemyManager BEM;
     public AudioSource drawAudio;
     public AudioSource damageAudio;
-    private CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
+    public bool cardsSorted = false;
+    private int drawCardsCalledCount = 0;
+    private Coroutine lastMovement;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,8 +64,10 @@ public class HandManager : MonoBehaviour
     }
 
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
-
+        Debug.Log("calling DrawCardsTimed");
         canvasGroup.blocksRaycasts = false;
+
+        cardsSorted = false;
 
         List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
@@ -94,6 +99,7 @@ public class HandManager : MonoBehaviour
             }
 
             Card currentCard = deckCopy.cardStack.Pop();
+            Debug.Log("drawing card " + currentCard.name);
             if(lastCard != null && lastCard.name == "Meditation") {
                 currentCard.manaCost = 0;
                 currentCard.actions.Add("EXPEL", "");
@@ -111,11 +117,36 @@ public class HandManager : MonoBehaviour
             CardDisplay cardInstance = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
             SetCardDefaultScalePos(cardInstance);
             handCards.Add(cardInstance);
-            SortCards();
+            foreach(var card in handCards) {
+                card.pointerBoundary.SetActive(false);
+            }
+            Debug.Log("sibling index intantiated: " + cardInstance.transform.GetSiblingIndex());
+            cardInstance.transform.SetSiblingIndex(handCards.Count - 1);
+
+            // need to yield for ALL these calls 
+            bool isLastSorting = false;
+            if(i == cardCount - 1) {
+                isLastSorting = true;
+            }
+            SortCardsNotPlayed(isLastSorting);
+
             yield return new WaitForSeconds(0.2f);
         }
+        
+        yield return new WaitUntil(() => cardsSorted);
+        cardsSorted = false;
+        if(!battleManager.enemiesActing) {
+            canvasGroup.blocksRaycasts = true;
+        }
 
-        canvasGroup.blocksRaycasts = true;
+        foreach(var card in handCards) {
+            card.pointerBoundary.SetActive(true);
+        }
+
+        Debug.Log("ending DrawCardsTimed for cards : ");
+        foreach(var card in cards) {
+            Debug.Log(" " + card.name + ",");
+        }
         cardsCallback(cards);
     }
 
@@ -148,7 +179,17 @@ public class HandManager : MonoBehaviour
     }
 
     void Update() {
+        // if(cardsSorted) {
+        //     // foreach(var card in handCards) {
+        //     //     card.pointerBoundary.SetActive(true);
+        //     // }
+        //     // if(!battleManager.enemiesActing) {
+        //     //     canvasGroup.blocksRaycasts = true;
+        //     // }
+        // }
         // SortCards();
+
+
     }
 
     private void SetCardDefaultScalePos(CardDisplay cardInstance) {
@@ -171,8 +212,17 @@ public class HandManager : MonoBehaviour
     public void PlayCard(CardDisplay cardDisplay) {
         // remove from hand, then sort
         // lastCard = cardDisplay.card;
+        // int playedIndex = handCards.IndexOf(cardDisplay);
+        Debug.Log("PlayCard(" + cardDisplay.card.name + ")");
         handCards.Remove(cardDisplay);
-        SortCards();
+        if((battleManager.isPulseAmplifier || cardDisplay.card.actions.ContainsValue("PULSE_AMPLIFIER")) && cardDisplay.card.actions.ContainsKey("RELOAD")
+            && cardDisplay.card.name != "Counter Shot") {
+            
+            SortCardsYielding(true, true);
+        }
+        else {
+            SortCardsYielding(true, false);
+        }
         // defer deletion & removal by 1.7s
         // StartCoroutine(DeferCardDeletion(cardDisplay, 1.7f));
     }
@@ -235,16 +285,64 @@ public class HandManager : MonoBehaviour
         }
     }
 
-    private void SortCards() {
-        for(int i = 0; i < handCards.Count; i++) {
-            float alignResult = i / (handCards.Count - 1.0f);
-            StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f));
-        }
+    private void SortCardsNotPlayed(bool isLastSorting) {
+        // StartCoroutine(SortCardsYielding(isLastSorting));
+        Debug.Log("SortCardsNotPlayed()");
+        SortCardsYielding(isLastSorting, false);
     }
 
-    private IEnumerator MoveCard(CardDisplay cardDisplay, float alignResult, float timeInterval) {
+    // private void SortPlayedCards(bool isLastSorting, int playedIndex) {
 
-        cardDisplay.pointerBoundary.SetActive(false);
+    //     bool isLast = false;
+    //     for(int i = 0; i < handCards.Count; i++) {
+    //         // if(i > playedIndex) {
+    //             handCards[i].gameObject.GetComponent<CardMouseActions>().siblingIndexOriginal = i;
+    //             handCards[i].transform.SetSiblingIndex(i);
+    //             // handCards[i].transform.SetSiblingIndex(handCards[i].gameObject.GetComponent<CardMouseActions>().siblingIndexOriginal);
+    //         // }
+    //         float alignResult = i / (handCards.Count - 1.0f);
+    //         if(i == handCards.Count -1) {
+    //             isLast = true;
+    //         }
+    //         StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f, isLast, isLastSorting));
+    //     }
+    // }
+
+    private void SortCardsYielding(bool isLastSorting, bool isAutoDraw) {
+        // if(isLastSorting) {
+        //     sortCardsYieldingCount += 1;
+        //     Debug.Log("yielding count increase: " + sortCardsYieldingCount);
+        // }
+        // cardsSorted = false;
+        // canvasGroup.blocksRaycasts = false;
+        Debug.Log("SortCardsYielding(isLastSorting = " + isLastSorting + ", isAutoDraw = " + isAutoDraw +")");
+        bool isLast = false;
+        for(int i = 0; i < handCards.Count; i++) {
+            handCards[i].gameObject.GetComponent<CardMouseActions>().siblingIndexOriginal = i;
+            handCards[i].transform.SetSiblingIndex(i);
+            float alignResult = i / (handCards.Count - 1.0f);
+
+            canvasGroup.blocksRaycasts = false;
+            // handCards[i].pointerBoundary.SetActive(false);
+
+            if(i == handCards.Count -1) {
+                isLast = true;
+            }
+            StartCoroutine(MoveCard(handCards[i], alignResult, 0.1f, isLast, isLastSorting, isAutoDraw));
+        }
+
+        // if (isLast && isLastSorting) {
+        //     yield return new WaitUntil(() => cardsSorted);
+        //     foreach(var card in handCards) {
+        //         card.pointerBoundary.SetActive(true);
+        //     }
+        // }
+        // canvasGroup.blocksRaycasts = true;
+
+    }
+
+    private IEnumerator MoveCard(CardDisplay cardDisplay, float alignResult, float timeInterval, bool isLast, bool isLastSorting, bool isAutoDraw) {
+        // cardDisplay.pointerBoundary.SetActive(false);
         int handCardsLess1 = handCards.Count - 1;
         if(handCards.Count == 1) {
             alignResult = 1;
@@ -263,7 +361,8 @@ public class HandManager : MonoBehaviour
             );
 
             float newRotationZ = Mathf.Lerp((handCardsLess1) * zRot, (handCardsLess1) * -zRot, alignResult);
-            Quaternion originalRotation = cardDisplay.transform.rotation;
+            cardDisplay.gameObject.GetComponent<CardMouseActions>().originalRotation = cardDisplay.transform.localRotation;
+            Quaternion originalRotation = cardDisplay.transform.localRotation;
 
             // Debug.Log("newZRot: " + newRotationZ);
             // Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
@@ -274,7 +373,28 @@ public class HandManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         cardDisplay.gameObject.GetComponent<CardMouseActions>().originalPosition = cardDisplay.transform.localPosition;
-        cardDisplay.pointerBoundary.SetActive(true);
+        // cardDisplay.pointerBoundary.SetActive(true);
+
+        if(isLast && isLastSorting) {
+
+            // sortCardsYieldingCount -= 1;
+            // Debug.Log("yielding count decrease: " + sortCardsYieldingCount);
+
+            // if(sortCardsYieldingCount == 0) {
+                // try to catch the case where another draw has occurred, and check if it has
+                // yield return new WaitForSeconds(0.2f);
+                if(!isAutoDraw && !battleManager.enemiesActing) {
+                    cardsSorted = true;
+                    Debug.Log("cardsSorted = true");
+                    canvasGroup.blocksRaycasts = true;
+                    // foreach(var card in handCards) {
+                    //     card.pointerBoundary.SetActive(true);
+                    // }
+                }
+
+
+            // }
+        }
     }
 
     private static float WrapAngle(float angle)
