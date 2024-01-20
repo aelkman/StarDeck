@@ -35,7 +35,7 @@ public class CardUIActions : CardActions
 
     private new IEnumerator CardPlayAnimation(float timeInterval) {
         Vector3 startingPosition = transform.position;
-        // Debug.Log("startingPos: " + startingPosition);
+        // // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
         Vector3 startingScale = transform.localScale;
         for (float i = 0f; i <= 1f; i+= timeInterval) {

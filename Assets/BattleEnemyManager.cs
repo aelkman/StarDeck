@@ -16,11 +16,11 @@ public class BattleEnemyManager : MonoBehaviour
     void Awake() {
         if (MainManager.Instance != null) {
             MapNode currentNode = MainManager.Instance.currentNode;
-            Debug.Log("currentNode enemies: " + currentNode.enemies.Count);
+            // Debug.Log("currentNode enemies: " + currentNode.enemies.Count);
             enemyNames = currentNode.enemies;
         }
         else {
-            Debug.Log("Main Manager not found!");
+            // Debug.Log("Main Manager not found!");
         }
         if(enemyNames.Count == 0) {
             enemyNames = new List<string>() {"MiniBot"};
@@ -85,11 +85,17 @@ public class BattleEnemyManager : MonoBehaviour
             // if(handManager.lastCard.type == "Hammer") {
             //     AudioManager.Instance.PlayHammerAudio();
             // }
+            battleManager.isBattleWon = true;
             StartCoroutine(DelayWin(1.5f));
         }
         battleManager.RemoveEnemyActions(battleEnemy);
         battleEnemy.nextAction.SetActive(false);
         battleEnemy.characterHUD.SetActive(false);
+    }
+
+    public void BossDeath(BattleEnemyContainer battleEnemy) {
+        battleEnemies.Remove(battleEnemy);
+        StartCoroutine(DelayWin(1.5f));
     }
 
     private IEnumerator DelayWin(float time) {

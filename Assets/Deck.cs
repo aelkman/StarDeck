@@ -21,7 +21,7 @@ public class Deck : MonoBehaviour
             cardStack.Push(cardInstance);
             cardDisplayCanvas.AddCard(cardInstance);
         }
-        Debug.Log("you have " + cardStack.Count() + " cards in the deck");
+        // Debug.Log("you have " + cardStack.Count() + " cards in the deck");
         isInitialized = true;
     }
 
@@ -41,8 +41,8 @@ public class Deck : MonoBehaviour
     public void AddCard(Card card) {
         cardStack.Push(card);
         cardDisplayCanvas.AddCard(card);
-        Debug.Log("added " + card.name + " to deck!");
-        Debug.Log(cardStack.Count() + " card in the deck");
+        // Debug.Log("added " + card.name + " to deck!");
+        // Debug.Log(cardStack.Count() + " card in the deck");
     }
 }
 

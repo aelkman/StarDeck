@@ -40,9 +40,9 @@ public class AttachGameObjectsToParticles : MonoBehaviour
             {
                 m_Instances[i].transform.position = m_Particles[i].position;
                 m_Instances[i].SetActive(true);
-                // Debug.Log("lifetime: " + m_Particles[i].startLifetime);
-                // Debug.Log("remaining: " + m_Particles[i].remainingLifetime);
-                // Debug.Log("delta: " +  (m_Particles[i].startLifetime - m_Particles[i].remainingLifetime));
+                // // Debug.Log("lifetime: " + m_Particles[i].startLifetime);
+                // // Debug.Log("remaining: " + m_Particles[i].remainingLifetime);
+                // // Debug.Log("delta: " +  (m_Particles[i].startLifetime - m_Particles[i].remainingLifetime));
                 var light2D = m_Instances[i].GetComponent<Light2D>();
                 var fract = (m_Particles[i].startLifetime - m_Particles[i].remainingLifetime) / m_Particles[i].startLifetime;
                 // * Mathf.Sin(Mathf.Lerp(0, Mathf.PI, fract));
@@ -72,7 +72,7 @@ public class AttachGameObjectsToParticles : MonoBehaviour
     //     }
 
     //     // light2D.intensity = startingIntensity;
-    //     Debug.Log(totalLifetime);
+    //     // Debug.Log(totalLifetime);
 
     //     for(float i = 0; i < halfTime; i+= 0.1f) {
     //         light2D.intensity = startingIntensity * (halfTime - i) / halfTime;

@@ -68,7 +68,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     protected IEnumerator CardPlayAnimation(float timeInterval) {
         Vector3 startingPosition = transform.position;
-        // Debug.Log("startingPos: " + startingPosition);
+        // // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
         Vector3 startingScale = transform.localScale;
         for (float i = 0f; i <= 1f; i+= timeInterval) {
@@ -155,12 +155,12 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     protected void ExitResetSequence() {
         if (!isCardPlayed) {
-            Debug.Log("sibling index: " + transform.GetSiblingIndex());
+            // Debug.Log("sibling index: " + transform.GetSiblingIndex());
             if (start != null) {
                 StopCoroutine(start);
                 start = null;
             }
-            // Debug.Log("exit routine starting");
+            // // Debug.Log("exit routine starting");
             stop = StartCoroutine(ExitShrink());
         }
     }
@@ -183,7 +183,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 isFirstEnter = false;
             }
 
-            Debug.Log("hover routine starting");
+            // Debug.Log("hover routine starting");
             if (expandAllowed) {
                 start = StartCoroutine(HoverPulse());
             }
@@ -210,7 +210,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         Vector3 currentPosition = transform.localPosition;
         Vector3 currentScale = transform.localScale;
-        // Debug.Log("originalScale: " + originalScale);
+        // // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
             transform.localScale = new Vector3(
                 (Mathf.Lerp(currentScale.x, expandedScale.x, Mathf.SmoothStep(0f, 1f, i))),
@@ -220,7 +220,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
             Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), 0f, Mathf.SmoothStep(0, 1, i)));
             transform.eulerAngles = currentAngle;
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
     }
@@ -237,7 +237,7 @@ public class RemovalUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 0
             );
 
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
 

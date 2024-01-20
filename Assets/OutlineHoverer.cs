@@ -19,11 +19,11 @@ public class OutlineHoverer : MonoBehaviour
     }
 
     // private void OnMouseEnter() {
-    //     Debug.Log("targetLocked: " + STM.targetLocked);
+    //     // Debug.Log("targetLocked: " + STM.targetLocked);
     //     if(!STM.targetLocked) {
     //         // add target to STM
     //         STM.SetTarget(transform.parent.GetComponent<BattleEnemyContainer>());
-    //         Debug.Log("set target to SingleTargetManager!");
+    //         // Debug.Log("set target to SingleTargetManager!");
     //     }
     // }
 
@@ -47,7 +47,7 @@ public class OutlineHoverer : MonoBehaviour
     private void OnMouseExit() {
         // remove target from STM
         // STM.ClearTarget();
-        // Debug.Log("cleared target to SingleTargetManager!");
+        // // Debug.Log("cleared target to SingleTargetManager!");
         // if(!STM.targetLocked) {
         //     STM.SetTarget(null);
         // }

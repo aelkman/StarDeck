@@ -44,13 +44,13 @@ public class SceneLoadSingleton : MonoBehaviour
         // cg.blocksRaycasts = true;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        Debug.Log("Start: SceneLoaded1");
+        // Debug.Log("Start: SceneLoaded1");
     }
 
         // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("OnSceneLoaded: " + scene.name);  
+        // Debug.Log("OnSceneLoaded: " + scene.name);  
         
         if (scene.name == "Map") {
             if(mapCanvas != null) {
@@ -64,7 +64,7 @@ public class SceneLoadSingleton : MonoBehaviour
 
     private void OnSceneUnloaded(Scene current)
     {
-        Debug.Log("OnSceneUnloaded: " + current);
+        // Debug.Log("OnSceneUnloaded: " + current);
         if (current.name == "Map") {
             if(mapCanvas != null) {
                 mapCanvas.SetActive(false);
@@ -90,6 +90,6 @@ public class SceneLoadSingleton : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log("OnDestroy");
+        // Debug.Log("OnDestroy");
     }
 }

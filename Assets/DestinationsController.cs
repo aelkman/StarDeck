@@ -29,9 +29,9 @@ public class DestinationsController : MonoBehaviour
         // miniboss should be 15%
         // unkmown should be 10%
         // chest should be 10%
-        Debug.Log("treeMapManager.childCount: " + treeMapManager.childCount);
+        // Debug.Log("treeMapManager.childCount: " + treeMapManager.childCount);
         int totalVisitableNodes = treeMapManager.childCount - 2;
-        Debug.Log("total visitable nodes (excluding first and last): " + totalVisitableNodes);
+        // Debug.Log("total visitable nodes (excluding first and last): " + totalVisitableNodes);
         int tenPercent = (int)System.Math.Round((double)totalVisitableNodes/(double)10);
         for(int i = 0; i < 4; i++) {
             // get random count +/- 1
@@ -55,7 +55,7 @@ public class DestinationsController : MonoBehaviour
 
         // check how many we have left now
         totalVisitableNodes -= destinations.Count;
-        Debug.Log("new visitable nodes: " + totalVisitableNodes);
+        // Debug.Log("new visitable nodes: " + totalVisitableNodes);
         int fifteenPercent = (int)System.Math.Round(totalVisitableNodes * 0.25);
         for(int i = 0; i < fifteenPercent; i++) {
             destinations.Add("Mini-Boss");
@@ -90,14 +90,14 @@ public class DestinationsController : MonoBehaviour
         // }
 
         // now, assign the destinations to the GOs
-        Debug.Log("destinations: ");
+        // Debug.Log("destinations: ");
         foreach(string d in destinations) {
-            Debug.Log(d);
+            // Debug.Log(d);
         }
     }
 
     public string AssignPopDestination(int level, MapNode node) {
-        Debug.Log(node.name);
+        // Debug.Log(node.name);
         var index = Random.Range(0, destinations.Count);
         string destination = destinations[index];
         if(level < 3) {
@@ -105,7 +105,7 @@ public class DestinationsController : MonoBehaviour
             while(destination == "Mini-Boss") {
                 index = Random.Range(0, destinations.Count);
                 destination = destinations[index];
-                Debug.Log("stuck in infinite loop!");
+                // Debug.Log("stuck in infinite loop!");
                 count++;
                 if(count > 100) {
                     destination = "Enemy";

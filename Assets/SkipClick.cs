@@ -23,7 +23,7 @@ public class SkipClick : MonoBehaviour
 
         if(Input.GetMouseButton(0)) {
             skipText.SetActive(true);
-            Debug.Log(timeClicked);
+            // Debug.Log(timeClicked);
             timeClicked += Time.deltaTime;
             fillValue = timeClicked/timeToHold;
             donut.fillAmount = fillValue;

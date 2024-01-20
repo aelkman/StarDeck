@@ -56,11 +56,11 @@ public class BattleEnemyContainer : BaseCharacterInfo
     }
     
     // void OnTriggerEnter2D(Collider2D other) {
-    //     Debug.Log("hovered enemy!");
+    //     // Debug.Log("hovered enemy!");
     // }
 
     // void OnCollisionEnter2D(Collision2D other) {
-    //     Debug.Log("hovered enemy!");
+    //     // Debug.Log("hovered enemy!");
     // }
 
     
@@ -69,7 +69,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
         yield return new WaitForSeconds(timeDelay);
         damage = CalculateDamage(damage);
         GameManager.Instance.weaponDamage[type] += damage;
-        Debug.Log(type + " damage: " + GameManager.Instance.weaponDamage[type]);
+        // Debug.Log(type + " damage: " + GameManager.Instance.weaponDamage[type]);
         cameraShake.StartShake();
         if (block >= damage) {
             block -= damage;
@@ -108,6 +108,10 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 }
             }
             else {
+                battleManager.isBattleWon = true;
+                battleManager.RemoveEnemyActions(this);
+                this.nextAction.SetActive(false);
+                this.characterHUD.SetActive(false);
                 StartCoroutine(battleManager.StartBossWinDialogue(this));
             }
 

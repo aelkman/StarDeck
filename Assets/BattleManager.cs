@@ -34,7 +34,7 @@ public class BattleManager : MonoBehaviour
     public bool isPlayerTurn;
     private bool isHandDealt = false;
     private bool isGameOver = false;
-    private bool isBattleWon = false;
+    public bool isBattleWon = false;
     public float attackDelay = 0.25f;
     private bool isPocketGenerator = false;
     private bool isPowerSurge = false;
@@ -93,6 +93,7 @@ public class BattleManager : MonoBehaviour
                         }
                         if (!isHandDealt) {
                             handManager.DrawCards(5);
+                            // Debug.Log("draw 5 v2");
                             isHandDealt = true;
                         }
                     }
@@ -119,7 +120,7 @@ public class BattleManager : MonoBehaviour
             go = new GameObject();
         }
         // after dialogue is finished
-        BEM.EnemyDeath(thisEnemy);
+        BEM.BossDeath(thisEnemy);
     }
 
     public void GameOver() {
@@ -548,7 +549,7 @@ public class BattleManager : MonoBehaviour
                     // card.target.stunnedTurns += Int32.Parse(item.Value);
                     if(card.target.antiStunTurns == 0) {
                         card.target.stunnedTurns = 1;
-                        Debug.Log("target stunned: " + card.target.stunnedTurns);
+                        // Debug.Log("target stunned: " + card.target.stunnedTurns);
                         card.target.ShockAnimation();
                     }
                     // StartCoroutine(DelayCardDeletion(cardDisplay));
@@ -638,7 +639,7 @@ public class BattleManager : MonoBehaviour
                     yield return new WaitUntil(() => scryUISelector.isComplete);
                     yield return new WaitForSeconds(1f);
                     // isScryComplete = true;
-                    Debug.Log("ending scry");
+                    // Debug.Log("ending scry");
                     break;
                 case "COUNTER": 
                     // iterate through all actions after counter and add to counter queue
@@ -727,17 +728,17 @@ public class BattleManager : MonoBehaviour
 
         // reduce the charges in the ammo container
         if (isPocketGenerator && card.subType == "Shot") {
-            Debug.Log("pocket generator strikes again!");
+            // Debug.Log("pocket generator strikes again!");
         }
         else if (!useCharge) {
-            Debug.Log("don't use charge!");
+            // Debug.Log("don't use charge!");
         }
         else {
-            Debug.Log("using charge for card type: " + card.type + ", name: " + card.name);
+            // Debug.Log("using charge for card type: " + card.type + ", name: " + card.name);
             ammoController.UseCharge(1);
         }
 
-        Debug.Log(playerStats.transform.position.x);
+        // Debug.Log(playerStats.transform.position.x);
         Vector3 startingPosition = new Vector3(playerStats.blasterHeld.transform.position.x + 0.1f, playerStats.blasterHeld.transform.position.y, playerStats.blasterHeld.transform.position.z);
         Vector3 endPosition = STMPos;
         GameObject newLaser = Instantiate(laserAttack, startingPosition, Quaternion.identity, characterSpace.transform);
@@ -1003,7 +1004,7 @@ public class BattleManager : MonoBehaviour
                                             atkDmg = 0;
                                         }
                                         atkDmg = WeakenedDamage(atkDmg, battleEnemy);
-                                        Debug.Log("attack action: " + atkDmg);
+                                        // Debug.Log("attack action: " + atkDmg);
 
                                         switch(battleEnemy.battleEnemy.name) {
                                             case "GoldBot":
@@ -1043,13 +1044,13 @@ public class BattleManager : MonoBehaviour
                                     int block = UnityEngine.Random.Range(randBlock[0], randBlock[1] + 1);
                                     // to-do, defMod bonus
                                     // block += etc
-                                    Debug.Log("block action: " + block);
+                                    // Debug.Log("block action: " + block);
                                     battleEnemy.BlockSequence(block);
                                 }
                                 break;
                             case "ATK_MOD":
                                 int atkMod = Int32.Parse(randomAction.actions["ATK_MOD"]);
-                                Debug.Log("attack mod: " + atkMod.ToString());
+                                // Debug.Log("attack mod: " + atkMod.ToString());
                                 battleEnemy.modifyAtk(atkMod);
                                 battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
                                 battleEnemy.SwordAnimation();
@@ -1136,7 +1137,9 @@ public class BattleManager : MonoBehaviour
         hasReloaded = false;
         enemyActions = new List<Tuple<BattleEnemyContainer, Card>>();
         areEnemyActionsDecided = false;
-        handManager.DiscardHand();
+        if(!isBattleWon) {
+            handManager.DiscardHand();
+        }
         playerStats.resetMana();
 
         playerStats.blasterAddition = 0;
@@ -1158,8 +1161,12 @@ public class BattleManager : MonoBehaviour
         // ok solution for now, need to wait for block off animation to finish
         // for situation with DEF_DRAW artifact
         yield return new WaitForSeconds(playerStats.shieldAnimator.stopTime);
-        handManager.DrawCards(5);
         
+        if(!isBattleWon) {
+            // Debug.Log("draw 5 v1");
+            handManager.DrawCards(5);
+        }
+
         foreach(BattleEnemyContainer be in battleEnemies) {
             yield return new WaitUntil(() => !be.iceActing);
             if(be.frozenTurn) {

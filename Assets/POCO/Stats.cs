@@ -16,7 +16,7 @@ public class Stats {
         weapons = new List<string>();
         weapons.Add("Blaster");
         BaseStats baseStats = new BaseStats();
-        Debug.Log("baseStatsHealth: " + baseStats.health);
+        // Debug.Log("baseStatsHealth: " + baseStats.health);
         health = baseStats.health;
         maxHealth = baseStats.maxHealth;
         mana = baseStats.mana;

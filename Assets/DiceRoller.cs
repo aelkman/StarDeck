@@ -113,12 +113,12 @@ public class DiceRoller : MonoBehaviour
                 }
             }
 
-            // Debug.Log("top side: " + UpperSideTxt);
+            // // Debug.Log("top side: " + UpperSideTxt);
             transform.hasChanged = false;
         }
         else {
             if (timeElapsed > 0.05f && (rb.velocity.magnitude < 0.1) && (rb.angularVelocity.magnitude < 0.1)) {
-                // Debug.Log("roll finished!");
+                // // Debug.Log("roll finished!");
                 isRollFinished = true;
                 continueButton.interactable = true;
                 if(UpperSideTxt.text == "Chest" && eventName == "Unknown") {
@@ -129,7 +129,7 @@ public class DiceRoller : MonoBehaviour
                 }
             }
             // else {
-            //     Debug.Log("not moving but! not finished, time elapsed: " + timeElapsed + " isRolleFinished: " + isRollFinished);
+            //     // Debug.Log("not moving but! not finished, time elapsed: " + timeElapsed + " isRolleFinished: " + isRollFinished);
             // }
         }
     }
@@ -157,7 +157,7 @@ public class DiceRoller : MonoBehaviour
                 MainManager.Instance.currentNode.enemies.Add("Chest");
                 MainManager.Instance.currentNode.destinationName = "Enemy";
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
-                    Debug.Log("enemy: " + e);
+                    // Debug.Log("enemy: " + e);
                 }
             }
             else {
@@ -169,21 +169,21 @@ public class DiceRoller : MonoBehaviour
                 MainManager.Instance.currentNode.destinationName = "Enemy";
                 MainManager.Instance.currentNode.GenerateEnemyGroup();
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
-                    Debug.Log("enemy: " + e);
+                    // Debug.Log("enemy: " + e);
                 }
             }
             else if(UpperSideTxt.text == "Mini-Boss") {
                 MainManager.Instance.currentNode.destinationName = "Mini-Boss";
                 MainManager.Instance.currentNode.GenerateBossGroup("MiniBoss");
                 foreach(string e in MainManager.Instance.currentNode.enemies) {
-                    Debug.Log("enemy: " + e);
+                    // Debug.Log("enemy: " + e);
                 }
             }
             else if(UpperSideTxt.text == "Chest") {
                 nextLevel = "ChestRoll";
             }
         }
-        Debug.Log("continue click: " + nextLevel + ", " + eventName);
+        // Debug.Log("continue click: " + nextLevel + ", " + eventName);
         mapManager.destinationsClickable = true;
         diceContainer.SetActive(false);
         mapManager.LoadNextLevel(nextLevel);
@@ -191,7 +191,7 @@ public class DiceRoller : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Debug.Log("collision dice!");
+        // // Debug.Log("collision dice!");
         diceHit.Stop();
         diceHit.volume = 1;
         diceHit.Play();
@@ -199,12 +199,12 @@ public class DiceRoller : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        // Debug.Log("collision stay dice!");
+        // // Debug.Log("collision stay dice!");
         var totalImpulse = Mathf.Abs(collision.impulse.x) + Mathf.Abs(collision.impulse.y) + Mathf.Abs(collision.impulse.z);
         var force = totalImpulse/Time.deltaTime;
-        // Debug.Log("force is " + force);
+        // // Debug.Log("force is " + force);
         if(force > 8) {
-            // Debug.Log("sitting force: " + force);
+            // // Debug.Log("sitting force: " + force);
             diceHit.Stop();
             diceHit.volume = Mathf.Lerp(0, 1, force/33);
             diceHit.Play();

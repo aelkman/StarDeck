@@ -60,7 +60,7 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     public void CastAnimation() {
-        Debug.Log("enemy cast animation trigger!");
+        // Debug.Log("enemy cast animation trigger!");
         animator.SetTrigger("Cast");
     }
 }

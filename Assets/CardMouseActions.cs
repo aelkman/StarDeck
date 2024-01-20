@@ -53,6 +53,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 if (isSelected) {
                     // Debug.Log("cancelling action (right click)");
                     if(cursorFollowerInstance != null) {
+                        // Debug.Log("cursorFollowerInstance not null, deleting)");
                         Cursor.visible = true;
                         Destroy(cursorFollowerInstance);
                         followerCreated = false;
@@ -73,7 +74,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             }
             if (Input.GetMouseButtonUp (0)) {
                 if (isSelected && !isHardReset) {
-                    // Debug.Log("drag exit");
+                    // // Debug.Log("drag exit");
                     if (cursorFollowerInstance != null) {
                             Cursor.visible = true;
                             Destroy(cursorFollowerInstance);
@@ -84,7 +85,8 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                     }
 
                     if(!battleManager.CheckCanAct(cardDisplay.card) || 
-                        (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster")) {
+                        (!battleManager.CheckBlasterCanAct(cardDisplay) && cardDisplay.card.type == "Blaster") ||
+                        isCancelled) {
                         if(!isTarget) {
                             // for cards that are not target cards, move it back
                             transform.localPosition = originalPosition;
@@ -152,7 +154,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
             handManager.lastCard = cardDisplay.card;
         }
         Vector3 startingPosition = transform.position;
-        // Debug.Log("startingPos: " + startingPosition);
+        // // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
         Vector3 startingScale = transform.localScale;
         for (float i = 0f; i <= 1f; i+= timeInterval) {
@@ -252,26 +254,26 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         cardDisplay.glowImage.gameObject.SetActive(false);
         if (!isCardPlayed) {
             transform.SetSiblingIndex(siblingIndexOriginal);
-            // Debug.Log("sibling index: " + transform.GetSiblingIndex());
+            // // Debug.Log("sibling index: " + transform.GetSiblingIndex());
             if (start != null) {
                 StopCoroutine(start);
                 start = null;
             }
-            // Debug.Log("exit routine starting");
+            // // Debug.Log("exit routine starting");
             stop = StartCoroutine(ExitShrink());
         }
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        // Debug.Log("current index: " + transform.GetSiblingIndex());
-        // Debug.Log("original index: " + siblingIndexOriginal);
+        // // Debug.Log("current index: " + transform.GetSiblingIndex());
+        // // Debug.Log("original index: " + siblingIndexOriginal);
         mouseOver = true;
         cardDisplay.glowImage.gameObject.SetActive(true);
         if (!isCardPlayed) {
             // check if it's a Target card first
             isTarget = cardDisplay.card.isTarget;
-            // Debug.Log("isTarget: " + isTarget);
+            // // Debug.Log("isTarget: " + isTarget);
 
             // if it's a Target, instantiate the CursorFollower prefab
             // if(isTarget) {
@@ -301,7 +303,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 isFirstEnter = false;
             }
 
-            // Debug.Log("hover routine starting");
+            // // Debug.Log("hover routine starting");
             if (expandAllowed) {
                 start = StartCoroutine(HoverPulse());
             }
@@ -318,7 +320,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         cardDisplay.cardHoverDescription.pointerDown = true;
         isSelected = true;
         if(!isTarget) {
-            // Debug.Log("input y pos: " + Input.mousePosition.y);
+            // // Debug.Log("input y pos: " + Input.mousePosition.y);
             if(Input.mousePosition.y > 420) {
                 isHardReset = false;
             }
@@ -328,7 +330,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
 
         if(isTarget) {
-            if(!isFollowerPlaced) {
+            if(!isFollowerPlaced && !isCancelled) {
                 Cursor.visible = false;
                 cursorFollowerInstance = Instantiate(cursorFollowerPrefab);
                 cursorFollowerInstance.SetActive(true);
@@ -361,7 +363,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private void OnMouseDrag() {
         // isSelected = true;
         // if(!isTarget) {
-        //     // Debug.Log("input y pos: " + Input.mousePosition.y);
+        //     // // Debug.Log("input y pos: " + Input.mousePosition.y);
         //     if(Input.mousePosition.y > 420) {
         //         isHardReset = false;
         //     }
@@ -398,12 +400,12 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private IEnumerator HoverPulse() {
         expandAllowed = false;
-        // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
+        // // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
         transform.SetSiblingIndex(9998);
 
         Vector3 currentPosition = transform.localPosition;
         Vector3 currentScale = transform.localScale;
-        // Debug.Log("originalScale: " + originalScale);
+        // // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
             transform.localPosition = new Vector3(currentPosition.x, Mathf.Lerp(currentPosition.y, hoverYOffset, Mathf.SmoothStep(0, 1, i)), currentPosition.z);
 
@@ -415,7 +417,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
             Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), 0f, Mathf.SmoothStep(0, 1, i)));
             transform.eulerAngles = currentAngle;
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
     }
@@ -463,7 +465,7 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 0
             );
 
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
 

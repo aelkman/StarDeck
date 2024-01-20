@@ -65,7 +65,7 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void addBlock(int block) {
         this.block += block;
-        Debug.Log("block is: " + this.block);
+        // Debug.Log("block is: " + this.block);
     }
 
     public void DoubleBlock() {
@@ -74,7 +74,7 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void setBlock(int block) {
         this.block = block;
-        Debug.Log("block is: " + this.block);
+        // Debug.Log("block is: " + this.block);
     }
 
     public int getBlock() {
@@ -103,7 +103,7 @@ public class BaseCharacterInfo : MonoBehaviour
 
     public void modifyAtk(int mod) {
         atkMod += mod;
-        Debug.Log("atkMod modified: " + atkMod);
+        // Debug.Log("atkMod modified: " + atkMod);
     }
     
     public int getAtkMod() {
@@ -170,7 +170,7 @@ public class BaseCharacterInfo : MonoBehaviour
         if (vuln > 0) {
             float extraDamage = (float)damage * MainManager.Instance.vulnerableModifier;
             damage = (int)Math.Round(extraDamage, 0);
-            Debug.Log("vulnerable, new damage: " + damage);
+            // Debug.Log("vulnerable, new damage: " + damage);
         }
         return damage;
     }

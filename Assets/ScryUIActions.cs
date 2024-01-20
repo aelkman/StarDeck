@@ -47,11 +47,11 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void Update () {
         if(mouse_over) {
-            Debug.Log("mouse over");
+            // Debug.Log("mouse over");
             // if (Input.GetMouseButtonDown(1)) {
             //             isCancelled = true;
             //             if (isSelected) {
-            //                 // Debug.Log("cancelling action (right click)");
+            //                 // // Debug.Log("cancelling action (right click)");
             //                 if(!isTarget) {
             //                     // for cards that are not target cards, move it back
             //                     transform.localPosition = originalPosition;
@@ -65,7 +65,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             //         }
             if (Input.GetMouseButtonUp(0)) {
                 // if (isSelected && !isHardReset) {
-                    // Debug.Log("drag exit");
+                    // // Debug.Log("drag exit");
                 isSelected = !isSelected;
                 if(isSelected) {
                     scryUISelector.selectedCards.Add(gameObject);
@@ -94,7 +94,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
 
     // private void OnMouseOver() {
-    //     Debug.Log("onmouse enter");
+    //     // Debug.Log("onmouse enter");
         
     // }
 
@@ -105,7 +105,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     protected IEnumerator CardPlayAnimation(float timeInterval) {
         Vector3 startingPosition = transform.position;
-        // Debug.Log("startingPos: " + startingPosition);
+        // // Debug.Log("startingPos: " + startingPosition);
         transform.rotation = Quaternion.identity;
         Vector3 startingScale = transform.localScale;
         for (float i = 0f; i <= 1f; i+= timeInterval) {
@@ -191,12 +191,12 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     protected void ExitResetSequence() {
         if (!isCardPlayed) {
             transform.SetSiblingIndex(siblingIndexOriginal);
-            Debug.Log("sibling index: " + transform.GetSiblingIndex());
+            // Debug.Log("sibling index: " + transform.GetSiblingIndex());
             if (start != null) {
                 StopCoroutine(start);
                 start = null;
             }
-            // Debug.Log("exit routine starting");
+            // // Debug.Log("exit routine starting");
             stop = StartCoroutine(ExitShrink());
         }
     }
@@ -219,7 +219,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 isFirstEnter = false;
             }
 
-            Debug.Log("hover routine starting");
+            // Debug.Log("hover routine starting");
             if (expandAllowed) {
                 start = StartCoroutine(HoverPulse());
             }
@@ -251,7 +251,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     protected IEnumerator HoverPulse() {
         expandAllowed = false;
-        // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
+        // // Debug.Log("child: " + siblingIndexOriginal + ", enter coroutine");
         transform.SetSiblingIndex(20);
         // Vector3 newScale = originalScale;
         // transform.localScale = originalScale;
@@ -269,7 +269,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         Vector3 currentPosition = transform.localPosition;
         Vector3 currentScale = transform.localScale;
-        // Debug.Log("originalScale: " + originalScale);
+        // // Debug.Log("originalScale: " + originalScale);
         for (float i = 0f; i <= 1f; i+= 0.1f) {
             transform.localPosition = new Vector3(currentPosition.x, Mathf.Lerp(currentPosition.y, 75, Mathf.SmoothStep(0, 1, i)), currentPosition.z);
 
@@ -281,7 +281,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
             Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), 0f, Mathf.SmoothStep(0, 1, i)));
             transform.eulerAngles = currentAngle;
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
     }
@@ -313,10 +313,10 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     protected IEnumerator ExitShrink() {
         // transform.localScale = expandedScale;
         transform.rotation = originalRotation;
-        // Debug.Log("rotation reset: " + originalRotation);
-        // Debug.Log("original position: " + originalPosition);
+        // // Debug.Log("rotation reset: " + originalRotation);
+        // // Debug.Log("original position: " + originalPosition);
         // transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
-        // Debug.Log("expandedScaleFirst: " +  expandedScale);
+        // // Debug.Log("expandedScaleFirst: " +  expandedScale);
 
         // for (int j = 0; j < siblingIndexOriginal; j++) {
         //     StartCoroutine(ShiftCardRight(j));
@@ -341,7 +341,7 @@ public class ScryUIActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 0
             );
 
-            // Debug.Log(transform.localScale);
+            // // Debug.Log(transform.localScale);
             yield return new WaitForSeconds(0.015f);
         }
 

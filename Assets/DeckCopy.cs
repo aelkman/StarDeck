@@ -30,8 +30,8 @@ public class DeckCopy : Deck
     public new void AddCard(Card card) {
         cardStack.Push(card);
         // cardDisplayCanvas.AddCard(card);
-        Debug.Log("added " + card.name + " to deckCopy!");
-        Debug.Log(cardStack.Count() + " card in the deckCopy");
+        // Debug.Log("added " + card.name + " to deckCopy!");
+        // Debug.Log(cardStack.Count() + " card in the deckCopy");
     }
 
     // public void ResetDeckCopy() {

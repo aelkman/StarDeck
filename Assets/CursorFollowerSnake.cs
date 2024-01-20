@@ -25,15 +25,15 @@ public class CursorFollowerSnake : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        Debug.Log("index: " + transform.GetSiblingIndex());
+        // Debug.Log("index: " + transform.GetSiblingIndex());
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
         expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
         originalPosition = transform.localPosition;
-        Debug.Log("original rotation: " + originalRotation);
-        Debug.Log("originalScale: " + originalScale);
+        // Debug.Log("original rotation: " + originalRotation);
+        // Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
 
     }
@@ -43,7 +43,7 @@ public class CursorFollowerSnake : MonoBehaviour
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
         transform.position = translatedWorldPosition;
         float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f + 0.5f;
-        // Debug.Log("calculation: " + calculation);
+        // // Debug.Log("calculation: " + calculation);
         Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
         transform.eulerAngles = currentAngle;
     }
@@ -53,7 +53,7 @@ public class CursorFollowerSnake : MonoBehaviour
     //         StopCoroutine(start);
     //         start = null;
     //     }
-    //     // Debug.Log("exit routine starting");
+    //     // // Debug.Log("exit routine starting");
     //     stop = StartCoroutine(ExitShrink());
     // }
 
@@ -69,17 +69,17 @@ public class CursorFollowerSnake : MonoBehaviour
     //         // float up a bit for hover
     //         // raisedPosition = new Vector3(transform.localPosition.x, 75, 0);
     //         // transform.localPosition = raisedPosition;
-    //         Debug.Log("hover routine starting");
+    //         // Debug.Log("hover routine starting");
     //         start = StartCoroutine(HoverPulse());
     //     // }
     // }
 
     // void OnTriggerEnter2D(Collider2D collider) {
-    //     Debug.Log("hovered enemy!");
+    //     // Debug.Log("hovered enemy!");
     // }
 
     // void OnCollisionEnter2D(Collision2D other) {
-    //     Debug.Log("hovered enemy!");
+    //     // Debug.Log("hovered enemy!");
     // }
 
     private void OnMouseOver() {
@@ -105,7 +105,7 @@ public class CursorFollowerSnake : MonoBehaviour
     //     // Vector3 newScale = originalScale;
     //     // transform.rotation = Quaternion.identity;
 
-    //     // Debug.Log("originalScale: " + originalScale);
+    //     // // Debug.Log("originalScale: " + originalScale);
     //     for (float i = 0f; i <= totTime; i+= timeUnit) {
     //         float fractionalPlace = 1 / (transform.GetSiblingIndex() + 1);
 
@@ -130,27 +130,27 @@ public class CursorFollowerSnake : MonoBehaviour
     //         // // );
     //         // Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), 0f, Mathf.SmoothStep(0, 1, i)));
     //         // transform.eulerAngles = currentAngle;
-    //         // // Debug.Log(transform.localScale);
+    //         // // // Debug.Log(transform.localScale);
     //         // newScale = transform.localScale;
     //         yield return new WaitForSeconds(0.015f);
     //     }
     //     // expandedScale = transform.localScale;
-    //     Debug.Log("finalScale: " + transform.localScale);
+    //     // Debug.Log("finalScale: " + transform.localScale);
     // }
 
     // private IEnumerator ExitShrink() {
     //     transform.localScale = expandedScale;
     //     transform.rotation = originalRotation;
-    //     Debug.Log("rotation reset: " + originalRotation);
+    //     // Debug.Log("rotation reset: " + originalRotation);
     //     transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, 0);
-    //     // Debug.Log("expandedScale: " +  expandedScale);
+    //     // // Debug.Log("expandedScale: " +  expandedScale);
     //     for (float i = 0f; i <= 1f; i+= 0.1f) {
     //         transform.localScale = new Vector3(
     //             (Mathf.Lerp(transform.localScale.x, transform.localScale.x - expandSize, Mathf.SmoothStep(0f, 1f, i))),
     //             (Mathf.Lerp(transform.localScale.y, transform.localScale.y - expandSize, Mathf.SmoothStep(0f, 1f, i))),
     //             0
     //         );
-    //         // Debug.Log(transform.localScale);
+    //         // // Debug.Log(transform.localScale);
     //         yield return new WaitForSeconds(0.015f);
     //     }
     //     coroutineAllowed = true;

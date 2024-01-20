@@ -12,6 +12,7 @@ public class KingBotBossDialogue : MonoBehaviour
     public GameObject bossDialogue;
     private BattleEnemyManager bem;
     private MusicManager musicManager;
+    private float fadeInOutTime = 2.0f;
     public 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +37,11 @@ public class KingBotBossDialogue : MonoBehaviour
         playerText1.gameObject.SetActive(false);
         playerText2.gameObject.SetActive(true);
         yield return new WaitUntil(() => playerText2.doneTyping);
-        yield return new WaitForSeconds(2.0f);
+        StartCoroutine(musicManager.FadeTracksInOut(fadeInOutTime, musicManager.kingbotIntro, musicManager.bossBattle));
+        yield return new WaitForSeconds(fadeInOutTime + 0.01f);
         playerDialogue.SetActive(false);
         bossDialogue.SetActive(false);
-        StartCoroutine(musicManager.FadeTracksInOut(2.0f, musicManager.kingbotIntro, musicManager.bossBattle));
-        yield return new WaitForSeconds(1.0f);
+        // yield return new WaitForSeconds(fadeInOutTime + 0.01f);
         bem.battleEnemies[0].nextAction.SetActive(true);
         Destroy(gameObject);
     }

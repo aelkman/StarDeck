@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         {
             if(tr.gameObject == audioManager || tr.gameObject == gameManager || tr.gameObject == settings
                 || tr.gameObject == options ) {
-                Debug.Log("found an important object! not destroying");
+                // Debug.Log("found an important object! not destroying");
             }
             else {
                 Destroy(tr.gameObject);

@@ -16,7 +16,7 @@ public class GameDataManager : MonoBehaviour
         gameData = new Stats();
         // Update the path once the persistent path exists.
         saveFile = Application.persistentDataPath + "/gamedata.json";
-        Debug.Log("gameDataHealth: " + gameData.health);
+        // Debug.Log("gameDataHealth: " + gameData.health);
     }
 
     public void readFile()

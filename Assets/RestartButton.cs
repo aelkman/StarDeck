@@ -13,7 +13,7 @@ public class RestartButton : MonoBehaviour
 	}
 
 	void TaskOnClick(){
-		Debug.Log ("You have clicked the button!");
+		// Debug.Log ("You have clicked the button!");
         GameManager.Instance.RestartGame();
 	}
 

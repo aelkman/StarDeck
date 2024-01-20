@@ -66,7 +66,7 @@ public class CardUISelector : MonoBehaviour
         // golden ticket odds: 60/30/10
 
         var rarityIndex = Random.Range(0, 99);
-        Debug.Log("random card index: " + rarityIndex);
+        // Debug.Log("random card index: " + rarityIndex);
         if(rarityIndex >= 0 && rarityIndex <= 69 - rarityDiff_C) {
             // common type
             return (Card)commonCards[Random.Range(0, commonCards.Count)];
@@ -80,7 +80,7 @@ public class CardUISelector : MonoBehaviour
             return (Card)rareCards[Random.Range(0, rareCards.Count)];
         }
         else {
-            Debug.Log("GetRandomCard shouldn't be here!");
+            // Debug.Log("GetRandomCard shouldn't be here!");
             return (Card)cardList[Random.Range(0, cardList.Count)];
         }
     }
@@ -103,7 +103,7 @@ public class CardUISelector : MonoBehaviour
             return (Card)rareCards[Random.Range(0, rareCards.Count)];
         }
         else {
-            Debug.Log("GetRandomCardRarity shouldn't be here! Invalid rarity string");
+            // Debug.Log("GetRandomCardRarity shouldn't be here! Invalid rarity string");
             return (Card)cardList[Random.Range(0, cardList.Count)];
         }
     }
@@ -112,7 +112,7 @@ public class CardUISelector : MonoBehaviour
         prefab.card = card;
         CardDisplay cardInstance = Instantiate(prefab, new Vector3(-20f, 30f, 0f), Quaternion.identity, transform.GetChild(0));
         float fract = (float)i/((float)selectionCount - 1f);
-        Debug.Log("fract: " + fract);
+        // Debug.Log("fract: " + fract);
         cardInstance.transform.localPosition = new Vector3(Mathf.Lerp(-305f, 265f, fract), cardInstance.transform.position.y, cardInstance.transform.position.z);
         cardInstance.transform.localScale = new Vector3(3.0f, 3.0f, 0f);
     }
@@ -131,7 +131,7 @@ public class CardUISelector : MonoBehaviour
             return true;
         }
         else {
-            Debug.Log("you already added a card!");
+            // Debug.Log("you already added a card!");
             return false;
         }
     }

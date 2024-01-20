@@ -67,7 +67,7 @@ public class FlashImage : MonoBehaviour
 
         OnCycleStart?.Invoke();
         // flash in
-        Debug.Log("Start Flash");
+        // Debug.Log("Start Flash");
         for (float t = 0f; t <= flashInDuration; t += Time.deltaTime)
         {
             Color newColor = _flashImage.color;

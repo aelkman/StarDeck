@@ -48,7 +48,7 @@ public class PlayerAnimator : CharacterAnimator
     public void ReloadFinished()
     {
         reloadFinished = true;
-        Debug.Log("reload animation finished!");
+        // Debug.Log("reload animation finished!");
     }
 
     public void ReloadAudioPlay() {

@@ -21,7 +21,7 @@ public class ShopPotionManager : MonoBehaviour
             potInstances[i].SetPotion(gauranteedPots[i]);
         }
         for(int j = i; j < maxStorePots; j++) {
-            Debug.Log("j is " + j);
+            // Debug.Log("j is " + j);
             var randomPot = randomPots[Random.Range(0, randomPots.Count)];
             randomPots.Remove(randomPot);
             potInstances[j].SetPotion(randomPot);

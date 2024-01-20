@@ -153,7 +153,7 @@ public class MapNode : MonoBehaviour
 
     private void OnMouseOver() {
         if (Input.GetMouseButtonUp (0) && MapManager.Instance.destinationsClickable) {
-            Debug.Log("clicked node id: " + instanceId);
+            // Debug.Log("clicked node id: " + instanceId);
             mapManager.SetMovementSelection(this);
         }
         
@@ -175,7 +175,7 @@ public class MapNode : MonoBehaviour
     private void OnMouseExit() {
         // remove target from STM
         // STM.ClearTarget();
-        // Debug.Log("cleared target to SingleTargetManager!");
+        // // Debug.Log("cleared target to SingleTargetManager!");
         // if(!STM.targetLocked) {
         //     STM.SetTarget(null);
         // }

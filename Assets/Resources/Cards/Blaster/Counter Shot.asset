@@ -22,7 +22,9 @@ MonoBehaviour:
   actionValues:
   - 
   - 
-  - 10,1
+  - 500,1
+  onDrawKeys: []
+  onDrawValues: []
   description: 
   flavorText: Gotchu on blast!!!
   type: Blaster
@@ -32,5 +34,6 @@ MonoBehaviour:
   isPower: 0
   isSkill: 1
   isStarter: 0
+  isFinalBlow: 0
   rarity: U
   target: {fileID: 0}

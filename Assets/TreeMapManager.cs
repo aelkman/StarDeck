@@ -15,6 +15,6 @@ public class TreeMapManager : MonoBehaviour
 
     public void AddChildren(int children) {
         childCount += children;
-        Debug.Log("child count: " + childCount);
+        // Debug.Log("child count: " + childCount);
     }
 }

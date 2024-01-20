@@ -21,7 +21,7 @@ public class TreeTraversal : MonoBehaviour
                 TreeTraversal ttNext = ttThis.nextLevel.GetComponent<TreeTraversal>();
                 ttNext.level = ttThis.level + 1;
                 ttThis = ttNext;
-                Debug.Log("stuck in an infinite loop! from TreeTraversal line 20");
+                // Debug.Log("stuck in an infinite loop! from TreeTraversal line 20");
             }
             StartCoroutine(WaitForLoad());
         }
@@ -90,14 +90,14 @@ public class TreeTraversal : MonoBehaviour
         if(childMapNode.parentNodes.Count > 0 && childMapNode.childrenNodes.Count > 0) {
             if (!treeMapManager.treeMap.ContainsKey(childMapNode.instanceId)) {
                 treeMapManager.treeMap.Add(childMapNode.instanceId, true);
-                Debug.Log("added to the treeMap! count: " + treeMapManager.treeMap.Count);
+                // Debug.Log("added to the treeMap! count: " + treeMapManager.treeMap.Count);
             }
         }
 
         // first and last do not have both child & parent
         if (treeMapManager.treeMap.Count == treeMapManager.childCount - 2) {
             treeMapManager.isDone = true;
-            Debug.Log("finished!");
+            // Debug.Log("finished!");
         }
     }
 
@@ -169,8 +169,8 @@ public class TreeTraversal : MonoBehaviour
 
             // for (int i = values.Count - 1; i > 0; i--) {
             //     int random = UnityEngine.Random.Range(lowerBound, upperBound + 1);
-            //     Debug.Log("nextlevel childcount: " + nextLevel.transform.childCount);
-            //     Debug.Log("random index: " + random);
+            //     // Debug.Log("nextlevel childcount: " + nextLevel.transform.childCount);
+            //     // Debug.Log("random index: " + random);
             //     if(nextLevel.transform.childCount >= random + 1) {
             //         nextChildIndex = random;
             //         break;

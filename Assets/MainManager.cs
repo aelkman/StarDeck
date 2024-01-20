@@ -62,7 +62,7 @@ public class MainManager : MonoBehaviour, IDisposable
     }
 
     void OnDestroy() {
-        Debug.Log("MainManager destroyed!");
+        // Debug.Log("MainManager destroyed!");
     }
 
     public void Dispose() {

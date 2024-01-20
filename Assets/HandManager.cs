@@ -64,14 +64,14 @@ public class HandManager : MonoBehaviour
     }
 
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
-        Debug.Log("calling DrawCardsTimed");
+        // Debug.Log("calling DrawCardsTimed");
         canvasGroup.blocksRaycasts = false;
 
         cardsSorted = false;
 
         List<Card> cards = new List<Card>();
         for(int i = 0; i < cardCount; i++) {
-            Debug.Log("drawing card: " + i+1);
+            // Debug.Log("drawing card: " + i+1);
             if(MainManager.Instance.artifacts.Contains("DEF_DRAW")) {
                 if(playerStats.block < 1) {
                     playerStats.characterAnimator.BlockAnimation();
@@ -99,7 +99,7 @@ public class HandManager : MonoBehaviour
             }
 
             Card currentCard = deckCopy.cardStack.Pop();
-            Debug.Log("drawing card " + currentCard.name);
+            // Debug.Log("drawing card " + currentCard.name);
             if(lastCard != null && lastCard.name == "Meditation") {
                 currentCard.manaCost = 0;
                 currentCard.actions.Add("EXPEL", "");
@@ -120,7 +120,7 @@ public class HandManager : MonoBehaviour
             foreach(var card in handCards) {
                 card.pointerBoundary.SetActive(false);
             }
-            Debug.Log("sibling index intantiated: " + cardInstance.transform.GetSiblingIndex());
+            // Debug.Log("sibling index intantiated: " + cardInstance.transform.GetSiblingIndex());
             cardInstance.transform.SetSiblingIndex(handCards.Count - 1);
 
             // need to yield for ALL these calls 
@@ -143,9 +143,9 @@ public class HandManager : MonoBehaviour
             card.pointerBoundary.SetActive(true);
         }
 
-        Debug.Log("ending DrawCardsTimed for cards : ");
+        // Debug.Log("ending DrawCardsTimed for cards : ");
         foreach(var card in cards) {
-            Debug.Log(" " + card.name + ",");
+            // Debug.Log(" " + card.name + ",");
         }
         cardsCallback(cards);
     }
@@ -213,7 +213,7 @@ public class HandManager : MonoBehaviour
         // remove from hand, then sort
         // lastCard = cardDisplay.card;
         // int playedIndex = handCards.IndexOf(cardDisplay);
-        Debug.Log("PlayCard(" + cardDisplay.card.name + ")");
+        // Debug.Log("PlayCard(" + cardDisplay.card.name + ")");
         handCards.Remove(cardDisplay);
         if((battleManager.isPulseAmplifier || cardDisplay.card.actions.ContainsValue("PULSE_AMPLIFIER")) && cardDisplay.card.actions.ContainsKey("RELOAD")
             && cardDisplay.card.name != "Counter Shot") {
@@ -287,7 +287,7 @@ public class HandManager : MonoBehaviour
 
     private void SortCardsNotPlayed(bool isLastSorting) {
         // StartCoroutine(SortCardsYielding(isLastSorting));
-        Debug.Log("SortCardsNotPlayed()");
+        // Debug.Log("SortCardsNotPlayed()");
         SortCardsYielding(isLastSorting, false);
     }
 
@@ -311,11 +311,11 @@ public class HandManager : MonoBehaviour
     private void SortCardsYielding(bool isLastSorting, bool isAutoDraw) {
         // if(isLastSorting) {
         //     sortCardsYieldingCount += 1;
-        //     Debug.Log("yielding count increase: " + sortCardsYieldingCount);
+        //     // Debug.Log("yielding count increase: " + sortCardsYieldingCount);
         // }
         // cardsSorted = false;
         // canvasGroup.blocksRaycasts = false;
-        Debug.Log("SortCardsYielding(isLastSorting = " + isLastSorting + ", isAutoDraw = " + isAutoDraw +")");
+        // Debug.Log("SortCardsYielding(isLastSorting = " + isLastSorting + ", isAutoDraw = " + isAutoDraw +")");
         bool isLast = false;
         for(int i = 0; i < handCards.Count; i++) {
             handCards[i].gameObject.GetComponent<CardMouseActions>().siblingIndexOriginal = i;
@@ -364,8 +364,8 @@ public class HandManager : MonoBehaviour
             cardDisplay.gameObject.GetComponent<CardMouseActions>().originalRotation = cardDisplay.transform.localRotation;
             Quaternion originalRotation = cardDisplay.transform.localRotation;
 
-            // Debug.Log("newZRot: " + newRotationZ);
-            // Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
+            // // Debug.Log("newZRot: " + newRotationZ);
+            // // Debug.Log("originalRot: " + originalRotation.eulerAngles.z);
 
             Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(WrapAngle(originalRotation.eulerAngles.z), newRotationZ, Mathf.SmoothStep(0, 1, i)));
             cardDisplay.transform.eulerAngles = currentAngle;
@@ -378,14 +378,14 @@ public class HandManager : MonoBehaviour
         if(isLast && isLastSorting) {
 
             // sortCardsYieldingCount -= 1;
-            // Debug.Log("yielding count decrease: " + sortCardsYieldingCount);
+            // // Debug.Log("yielding count decrease: " + sortCardsYieldingCount);
 
             // if(sortCardsYieldingCount == 0) {
                 // try to catch the case where another draw has occurred, and check if it has
                 // yield return new WaitForSeconds(0.2f);
                 if(!isAutoDraw && !battleManager.enemiesActing) {
                     cardsSorted = true;
-                    Debug.Log("cardsSorted = true");
+                    // Debug.Log("cardsSorted = true");
                     canvasGroup.blocksRaycasts = true;
                     // foreach(var card in handCards) {
                     //     card.pointerBoundary.SetActive(true);

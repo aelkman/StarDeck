@@ -30,12 +30,12 @@ public class ScryUISelector : MonoBehaviour
         yield return new WaitUntil(() => deckCopy.isInitialized);
         if(scryCount > deckCopy.cardStack.Count()) {
             scryCount = deckCopy.cardStack.Count();
-            Debug.Log("scryCount: " + scryCount);
+            // Debug.Log("scryCount: " + scryCount);
         }
         for (int i = 0; i < scryCount; i++) {
             int index = deckCopy.cardStack.Count() - 1 - i;
-            Debug.Log("cardStack size: " + deckCopy.cardStack.Count());
-            Debug.Log("attempted index: " + index);
+            // Debug.Log("cardStack size: " + deckCopy.cardStack.Count());
+            // Debug.Log("attempted index: " + index);
             CreateCard(deckCopy.cardStack.items[index], index, i);
         }
     }
@@ -54,13 +54,13 @@ public class ScryUISelector : MonoBehaviour
         // foreach(GameObject go in selectedCards) {
             GameObject go = selectedCards[i];
             go.GetComponent<ScryUIActions>().CardPlay();
-            // Debug.Log("removing card at deck index: " + go.GetComponent<ScryUIActions>().deckIndex);
+            // // Debug.Log("removing card at deck index: " + go.GetComponent<ScryUIActions>().deckIndex);
             // int newIndex = go.GetComponent<ScryUIActions>().deckIndex - indexModifier;
-            // Debug.Log("selected card: " + selectedCards[i].GetComponent<CardDisplay>().card.name);
-            // Debug.Log("removing deck card " + deckCopy.cardStack.items[newIndex].name);
+            // // Debug.Log("selected card: " + selectedCards[i].GetComponent<CardDisplay>().card.name);
+            // // Debug.Log("removing deck card " + deckCopy.cardStack.items[newIndex].name);
             deckCopy.cardStack.items.Remove(go.GetComponent<CardDisplay>().card);
             // // deckCopy.cardStack.Remove(newIndex);
-            // Debug.Log("removed card at index: " + newIndex);
+            // // Debug.Log("removed card at index: " + newIndex);
             // if (go.GetComponent<ScryUIActions>().deckIndex < i) {
             //     indexModifier += 1;
             // }
@@ -97,7 +97,7 @@ public class ScryUISelector : MonoBehaviour
         else {
             fract = 0.5f;
         }
-        Debug.Log("fract: " + fract);
+        // Debug.Log("fract: " + fract);
         float totalSpace = scryCount * 225f;
         cardInstance.transform.localPosition = new Vector3(Mathf.Lerp(-1f * totalSpace/2, totalSpace/2, fract), cardInstance.transform.position.y, cardInstance.transform.position.z);
         cardInstance.transform.localScale = new Vector3(3.0f, 3.0f, 0f);
@@ -111,7 +111,7 @@ public class ScryUISelector : MonoBehaviour
     //         return true;
     //     }
     //     else {
-    //         Debug.Log("you already added a card!");
+    //         // Debug.Log("you already added a card!");
     //         return false;
     //     }
     // }

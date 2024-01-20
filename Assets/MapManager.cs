@@ -58,7 +58,7 @@ public class MapManager : MonoBehaviour
     public void SetMovementSelection(MapNode newNode) {
         currentNode = mapArrow.GetComponent<MapArrow>().currentNode;
         if(currentNode.childrenNodes.Contains(newNode)) {
-            Debug.Log("nextNode match found!");
+            // Debug.Log("nextNode match found!");
             mapAudio.PlayHitDestination();
             var go = Resources.Load<GameObject>("Map Destinations/Checkmark");
             Instantiate(go, mapArrow.GetComponent<MapArrow>().currentNode.transform);
@@ -89,7 +89,7 @@ public class MapManager : MonoBehaviour
             }
         }
         else {
-            Debug.Log("not a next node!");
+            // Debug.Log("not a next node!");
         }
     }
 
@@ -144,6 +144,6 @@ public class MapManager : MonoBehaviour
 
     private void OnSceneUnloaded(Scene current)
     {
-        Debug.Log("OnSceneUnloaded: " + current);
+        // Debug.Log("OnSceneUnloaded: " + current);
     }
 }
