@@ -26,7 +26,7 @@ public class ATMScript : MonoBehaviour
     }
 
     public void Option1Click() {
-        AudioManager.Instance.PlayButtonPress();
+        AudioManager.Instance.PlayCoins();
         mainManager.coinCount += 250;
         var virus = Resources.Load<Card>("Negative Cards/Virus");
         var virusInstance = Instantiate(virus);
@@ -40,7 +40,7 @@ public class ATMScript : MonoBehaviour
     }
 
     public void Option2Click() {
-        AudioManager.Instance.PlayButtonPress();
+        AudioManager.Instance.PlayCoins();
         mainManager.coinCount += 50;
         option1.interactable = false;
         option2.interactable = false;

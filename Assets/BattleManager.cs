@@ -32,7 +32,7 @@ public class BattleManager : MonoBehaviour
     private bool areEnemyActionsDecided = false;
     private List<BattleEnemyContainer> battleEnemies;
     public bool isPlayerTurn;
-    private bool isHandDealt = false;
+    public bool isHandDealt = false;
     private bool isGameOver = false;
     public bool isBattleWon = false;
     public float attackDelay = 0.25f;
@@ -430,7 +430,7 @@ public class BattleManager : MonoBehaviour
                     }
                     else {
                         playerStats.playerAnimator.CastAnimation();
-                        AudioManager.Instance.PlayArcanePower();
+                        AudioManager.Instance.PlaySword();
                     }
                     playerStats.SwordAnimation();
                     break;
@@ -450,6 +450,7 @@ public class BattleManager : MonoBehaviour
                         playerStats.atkModTemp += atkTemp[0];
                         playerStats.atkModTempTurns = atkTemp[1];
                         playerStats.atkMod += atkTemp[0];
+                        AudioManager.Instance.PlaySword();
                         playerStats.SwordAnimation();
                     }
 
@@ -463,12 +464,14 @@ public class BattleManager : MonoBehaviour
                     playerStats.playerAnimator.ReloadAnimation(playerStats);
                     break;
                 case "BLIND_ALL":
+                    AudioManager.Instance.PlayBlind();
                     foreach(var battleEnemy in battleEnemies) {
                         battleEnemy.blind += 1;
                         battleEnemy.BlindAnimation();
                     }
                     break;
                 case "BLIND":
+                    AudioManager.Instance.PlayBlind();
                     card.target.blind += 1;
                     card.target.BlindAnimation();
                     break;
@@ -1061,10 +1064,12 @@ public class BattleManager : MonoBehaviour
                                 // Debug.Log("attack mod: " + atkMod.ToString());
                                 battleEnemy.modifyAtk(atkMod);
                                 battleEnemy.transform.parent.GetComponent<EnemyAnimator>().CastAnimation();
+                                AudioManager.Instance.PlaySword();
                                 battleEnemy.SwordAnimation();
                                 break;
                             case "TAUNT":
                                 ((EnemyAnimator)battleEnemy.characterAnimator).TauntAnimation();
+                                AudioManager.Instance.PlayTaunt();
                                 battleEnemy.isTaunter = true;
                                 playerStats.TauntAnimation();
                                 playerStats.tauntingEnemy = battleEnemy;
@@ -1075,11 +1080,13 @@ public class BattleManager : MonoBehaviour
                                 battleEnemy.HealRandomTarget(Int32.Parse(item.Value));
                                 break;
                             case "BLIND":
+                                AudioManager.Instance.PlayBlind();
+                                playerStats.BlindAnimation();
                                 if(battleEnemy.battleEnemy.name == "KingBot") {
                                     ((EnemyAnimator)battleEnemy.characterAnimator).PointAnimation();
                                 }
                                 else {
-                                    battleEnemy.characterAnimator.AttackAnimation();
+                                    battleEnemy.characterAnimator.CastAnimation();
                                 }
                                 playerStats.blind += 1;
                                 break;

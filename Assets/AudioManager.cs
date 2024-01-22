@@ -22,6 +22,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource negativeFeedback;
     public AudioSource hammer;
     public AudioSource currentBattleMusic;
+    public AudioSource sword;
+    public AudioSource blind;
+    public AudioSource taunt;
     private void Awake()
     {
         // start of new code
@@ -110,5 +113,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlayHammerAudio() {
         hammer.Play();
+    }
+
+    public void PlayBlind() {
+        blind.Play();
+    }
+
+    public void PlaySword() {
+        sword.Play();
+    }
+
+    public void PlayTaunt() {
+        taunt.Play();
     }
 }

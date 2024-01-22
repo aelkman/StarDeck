@@ -114,7 +114,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 battleManager.isBattleWon = true;
                 battleManager.RemoveEnemyActions(this);
                 this.nextAction.SetActive(false);
-                this.characterHUD.SetActive(false);
+                // this.characterHUD.SetActive(false);
                 StartCoroutine(battleManager.StartBossWinDialogue(this));
             }
 

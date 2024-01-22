@@ -19,7 +19,7 @@ public class DemoComplete : MonoBehaviour
         signature.gameObject.SetActive(true);
         yield return new WaitUntil(() => signature.doneTyping);
         yield return new WaitForSeconds(1.0f);
-        links.SetActive(true);
+        // links.SetActive(true);
     }
 
     // Update is called once per frame

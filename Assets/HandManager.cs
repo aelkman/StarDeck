@@ -65,6 +65,9 @@ public class HandManager : MonoBehaviour
 
     public IEnumerator DrawCardsTimed(int cardCount, System.Action<List<Card>> cardsCallback) {
         // Debug.Log("calling DrawCardsTimed");
+        if(!battleManager.isHandDealt) {
+            yield return new WaitForSeconds(0.3f);
+        }
         canvasGroup.blocksRaycasts = false;
 
         cardsSorted = false;
