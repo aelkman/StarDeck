@@ -11,6 +11,7 @@ public class BaseCharacterInfo : MonoBehaviour
     public GameObject damageText;
     public ShieldAnimator shieldAnimator;
     public HealthBar healthBar;
+    public GameObject blindPrefab;
     public GameObject swordPrefab;
     public GameObject vulnPrefab;
     public GameObject weakenPrefab;
@@ -128,24 +129,34 @@ public class BaseCharacterInfo : MonoBehaviour
         }
     }
 
+    public void BlindAnimation() {
+        GameObject blindAnimationInsance = Instantiate(blindPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        blindAnimationInsance.GetComponent<Canvas>().worldCamera = Camera.main;
+        blindAnimationInsance.transform.localPosition = new Vector3(0, nextMoveYOffset + 250, 0);
+    }
+
     public void SwordAnimation() {
         GameObject swordAnimationInsance = Instantiate(swordPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        swordAnimationInsance.transform.localPosition = new Vector3(swordAnimationInsance.transform.localPosition.x, swordAnimationInsance.transform.localPosition.y + nextMoveYOffset, swordAnimationInsance.transform.localPosition.z);
+        swordAnimationInsance.GetComponent<Canvas>().worldCamera = Camera.main;
+        swordAnimationInsance.transform.localPosition = new Vector3(0, nextMoveYOffset + 250, 0);
     }
 
     public void VulnerableAnimation() {
         GameObject vulnAnimationInsance = Instantiate(vulnPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        vulnAnimationInsance.transform.localPosition = new Vector3(vulnAnimationInsance.transform.localPosition.x, vulnAnimationInsance.transform.localPosition.y + nextMoveYOffset, vulnAnimationInsance.transform.localPosition.z);
+        vulnAnimationInsance.GetComponent<Canvas>().worldCamera = Camera.main;
+        vulnAnimationInsance.transform.localPosition = new Vector3(0, nextMoveYOffset + 250, 0);
     }
 
     public void WeakenAnimation() {
         GameObject weakenAnimationInsance = Instantiate(weakenPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        weakenAnimationInsance.transform.localPosition = new Vector3(weakenAnimationInsance.transform.localPosition.x, weakenAnimationInsance.transform.localPosition.y + nextMoveYOffset, weakenAnimationInsance.transform.localPosition.z);
+        weakenAnimationInsance.GetComponent<Canvas>().worldCamera = Camera.main;
+        weakenAnimationInsance.transform.localPosition = new Vector3(0, nextMoveYOffset + 250, 0);
     }
 
     public void TauntAnimation() {
         GameObject tauntAnimationInsance = Instantiate(tauntPrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        tauntAnimationInsance.transform.localPosition = new Vector3(tauntAnimationInsance.transform.localPosition.x, tauntAnimationInsance.transform.localPosition.y + nextMoveYOffset, tauntAnimationInsance.transform.localPosition.z);
+        tauntAnimationInsance.GetComponent<Canvas>().worldCamera = Camera.main;
+        tauntAnimationInsance.transform.localPosition = new Vector3(0, nextMoveYOffset + 250, 0);
     }
 
     public void CounterAnimation() {

@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class CharacterHUD : MonoBehaviour
 {
     public GameObject blockHUD;
     public BaseCharacterInfo baseCharacterInfo;
-    public GameObject blockSprite;
-    public BlockText blockText;
+    public Image shieldImage;
+    public TextMeshProUGUI blockText;
     public GameObject powersDisplay;
     public GameObject vulnDisplay;
     public GameObject blindDisplay;
@@ -21,7 +23,6 @@ public class CharacterHUD : MonoBehaviour
     public GameObject stunDisplay;
     public GameObject iceHUD;
     public HealthBar healthBar;
-    private SpriteRenderer spriteRenderer;
     public StatusHoverDescription shd;
     private bool isGlowUp = true;
     private float fade = 0f;
@@ -31,7 +32,6 @@ public class CharacterHUD : MonoBehaviour
     void Start()
     {
         statuses = new HashSet<string>();
-        spriteRenderer = blockSprite.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -51,7 +51,6 @@ public class CharacterHUD : MonoBehaviour
         else if (fade <= 0f) {
             isGlowUp = true;
         }
-        spriteRenderer.material.SetFloat("_Transparency", fade);
 
         if(baseCharacterInfo.powers.Count > 0) {
             powersDisplay.SetActive(true);
@@ -105,7 +104,8 @@ public class CharacterHUD : MonoBehaviour
         }
 
         if(baseCharacterInfo.getBlock() > 0) {
-            blockText.setText(baseCharacterInfo.getBlock().ToString());
+            // blockText.setText(baseCharacterInfo.getBlock().ToString());
+            blockText.text = baseCharacterInfo.getBlock().ToString();
             blockHUD.SetActive(true);
             shd.blockText.gameObject.SetActive(true);
             shd.blockText.text = "Blocking the next " + baseCharacterInfo.getBlock() + " damage";

@@ -1,41 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
-    public AudioSource battle1;
-    public AudioSource battle2;
-    public AudioSource battle3;
+    private static MusicManager _instance;
+
+    public static MusicManager Instance 
+    { 
+        get { return _instance; } 
+    } 
     public AudioSource bossBattle;
     public AudioSource kingbotIntro; 
     public AudioSource kingbotWin;
     public List<AudioSource> battleTracks;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
-        if(MainManager.Instance.isBossBattle) {
-            kingbotIntro.volume = 0;
-            kingbotIntro.Play();
-            StartCoroutine(FadeAudioSource.StartFade(kingbotIntro, 1, 1));
-            AudioManager.Instance.currentBattleMusic = kingbotIntro;
+        if (_instance != null && _instance != this) 
+        { 
+            Destroy(this.gameObject);
+            return;
         }
-        else {
-            var track = battleTracks[Random.Range(0, battleTracks.Count)];
-            while(AudioManager.Instance.currentBattleMusic != null && AudioManager.Instance.currentBattleMusic == track) {
-                track = battleTracks[Random.Range(0, battleTracks.Count)];
-            }
-            track.volume = 0;
-            track.Play();
-            StartCoroutine(FadeAudioSource.StartFade(track, 1, 0.8f));
-            AudioManager.Instance.currentBattleMusic = track;
-        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void PlaySong() {
+        if(SceneManager.GetActiveScene().name == "Battle") {
+            if(MainManager.Instance.isBossBattle) {
+                kingbotIntro.volume = 0;
+                kingbotIntro.Play();
+                StartCoroutine(FadeAudioSource.StartFade(kingbotIntro, 1, 1));
+                AudioManager.Instance.currentBattleMusic = kingbotIntro;
+            }
+            else {
+                // if(AudioManager.Instance.currentBattleMusic != null) {
+                //     Debug.Log("last song:" + AudioManager.Instance.currentBattleMusic.name);
+                // }
+                var track = battleTracks[Random.Range(0, battleTracks.Count)];
+                while(AudioManager.Instance.currentBattleMusic != null && AudioManager.Instance.currentBattleMusic == track) {
+                    // Debug.Log("currentBattleMusic: " + AudioManager.Instance.currentBattleMusic.name);
+                    // Debug.Log("track: " + track.name);
+                    track = battleTracks[Random.Range(0, battleTracks.Count)];
+                    // Debug.Log("new track: " + track);
+                }
+                track.volume = 0;
+                track.Play();
+                StartCoroutine(FadeAudioSource.StartFade(track, 1, 0.8f));
+                AudioManager.Instance.currentBattleMusic = track;
+                // Debug.Log("currentBattleMusic: " + AudioManager.Instance.currentBattleMusic.name);
+            }
+        }
     }
 
     public IEnumerator FadeTracksInOut(float fadeOutTime, AudioSource fadeOut, AudioSource fadeIn) {

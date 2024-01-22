@@ -56,9 +56,13 @@ public class BattleManager : MonoBehaviour
     private int lastStandBonus = 0;
     private bool cardActionActing = false;
     public bool enemiesActing = false;
+    private MusicManager musicManager;
     // Start is called before the first frame update
     void Start()
     {
+        musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+        musicManager.PlaySong();
+
         if(MainManager.Instance.isBossBattle) {
             kingBotBossDialogue = Instantiate(kingBotStartingDialogue, mainCanvas.transform).GetComponent<KingBotBossDialogue>();
         }
@@ -111,6 +115,8 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator StartBossWinDialogue(BattleEnemyContainer thisEnemy) {
         GameObject go;
+        handManager.canvasGroup.blocksRaycasts = false;
+
         if(thisEnemy.battleEnemy.name == "KingBot") {
             go = Instantiate(kingBotWinDialogue, mainCanvas.transform);
             var winDialogue = go.GetComponent<KingBotBossWinDialogue>();
@@ -459,10 +465,12 @@ public class BattleManager : MonoBehaviour
                 case "BLIND_ALL":
                     foreach(var battleEnemy in battleEnemies) {
                         battleEnemy.blind += 1;
+                        battleEnemy.BlindAnimation();
                     }
                     break;
                 case "BLIND":
                     card.target.blind += 1;
+                    card.target.BlindAnimation();
                     break;
                 case "CLEAR_DEBUFF":
                     if(card.name == "Gorga Snax") {

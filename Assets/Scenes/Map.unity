@@ -12208,6 +12208,63 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6515507107473672884, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
   m_PrefabInstance: {fileID: 1046151756}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1356369540
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6247901808217205877, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: MusicManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -18410.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 369.5845
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 827474.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282257743105639406, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
 --- !u!1 &1356709720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6585795104174013944, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
@@ -14951,7 +15008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a18d9bb2b43774f9742674ec156c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingDeck: {fileID: 11400000, guid: 309795a15ffd6ff4abc93191cca30bb0, type: 2}
+  startingDeck: {fileID: 11400000, guid: 1ec88807c308e504fb8379ca0044a101, type: 2}
   cardDisplayCanvas: {fileID: 1168185042}
   isInitialized: 0
   cards: []
@@ -18025,7 +18082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 94481005515357776, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: isMiniBossTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 94481005515357776, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
       propertyPath: destinationsController
@@ -18999,3 +19056,4 @@ SceneRoots:
   - {fileID: 2335526819083118830}
   - {fileID: 1847361686}
   - {fileID: 5361924705578259887}
+  - {fileID: 1356369540}
