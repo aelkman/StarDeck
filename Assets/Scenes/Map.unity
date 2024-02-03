@@ -1563,6 +1563,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6515507107473672884, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
   m_PrefabInstance: {fileID: 143623876}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &149248295 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 9175485751305217939, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+  m_PrefabInstance: {fileID: 1356369540}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &151038229 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6515507107473672884, guid: 2e13829da0777854b8e97e246f6c1d94, type: 3}
@@ -12216,6 +12221,58 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1280060906390529920, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: Consciousness
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402785030327333953, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: Gunfingers
+      objectReference: {fileID: 0}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleTracks.Array.data[0]
+      value: 
+      objectReference: {fileID: 1356369541}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleTracks.Array.data[1]
+      value: 
+      objectReference: {fileID: 1411683657}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleTracks.Array.data[2]
+      value: 
+      objectReference: {fileID: 1356369543}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleTracks.Array.data[3]
+      value: 
+      objectReference: {fileID: 149248295}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleTracks.Array.data[4]
+      value: 
+      objectReference: {fileID: 1356369542}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleVolumes.Array.data[1]
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1406634261953602921, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: battleVolumes.Array.data[2]
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545451877592165800, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Volume
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4008978019958958189, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: The Nest
+      objectReference: {fileID: 0}
+    - target: {fileID: 4284578704363176317, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846526902248522631, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_Name
+      value: X
+      objectReference: {fileID: 0}
     - target: {fileID: 6247901808217205877, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
       propertyPath: m_Name
       value: MusicManager
@@ -12260,11 +12317,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9175485751305217939, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6247d1f12dd074e4684a97e00ff09064, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+--- !u!82 &1356369541 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8500352245460861389, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+  m_PrefabInstance: {fileID: 1356369540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1356369542 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6000251118994306399, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+  m_PrefabInstance: {fileID: 1356369540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1356369543 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5202019370357816948, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+  m_PrefabInstance: {fileID: 1356369540}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1356709720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6585795104174013944, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
@@ -12725,6 +12801,11 @@ GameObject:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5081303233041113927, guid: 0af556a182d874d4cbe8a9c0fbbcc332, type: 3}
   m_PrefabInstance: {fileID: 3887249259396133466}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1411683657 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2545451877592165800, guid: bf8a3605399d933499d62c7935cc171c, type: 3}
+  m_PrefabInstance: {fileID: 1356369540}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1415653930
 PrefabInstance:

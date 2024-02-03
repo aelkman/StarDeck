@@ -15,6 +15,8 @@ public class MusicManager : MonoBehaviour
     public AudioSource kingbotIntro; 
     public AudioSource kingbotWin;
     public List<AudioSource> battleTracks;
+    private int currentTrack = 0;
+    public List<float> battleVolumes = new List<float> { 0.8f, 0.6f, 0.8f, 0.8f, 0.8f };
 
     void Awake()
     {
@@ -40,17 +42,26 @@ public class MusicManager : MonoBehaviour
                 // if(AudioManager.Instance.currentBattleMusic != null) {
                 //     Debug.Log("last song:" + AudioManager.Instance.currentBattleMusic.name);
                 // }
-                var track = battleTracks[Random.Range(0, battleTracks.Count)];
-                while(AudioManager.Instance.currentBattleMusic != null && AudioManager.Instance.currentBattleMusic == track) {
-                    // Debug.Log("currentBattleMusic: " + AudioManager.Instance.currentBattleMusic.name);
-                    // Debug.Log("track: " + track.name);
-                    track = battleTracks[Random.Range(0, battleTracks.Count)];
-                    // Debug.Log("new track: " + track);
-                }
+
+                // remove random approach
+                // var track = battleTracks[Random.Range(0, battleTracks.Count)];
+                // while(AudioManager.Instance.currentBattleMusic != null && AudioManager.Instance.currentBattleMusic == track) {
+                //     // Debug.Log("currentBattleMusic: " + AudioManager.Instance.currentBattleMusic.name);
+                //     // Debug.Log("track: " + track.name);
+                //     track = battleTracks[Random.Range(0, battleTracks.Count)];
+                //     // Debug.Log("new track: " + track);
+                // }
+
+                var track = battleTracks[currentTrack];
                 track.volume = 0;
                 track.Play();
-                StartCoroutine(FadeAudioSource.StartFade(track, 1, 0.8f));
+                StartCoroutine(FadeAudioSource.StartFade(track, 1, battleVolumes[currentTrack]));
                 AudioManager.Instance.currentBattleMusic = track;
+                // loop through tracklist
+                currentTrack++;
+                if(currentTrack == battleTracks.Count) {
+                    currentTrack = 0;
+                }
                 // Debug.Log("currentBattleMusic: " + AudioManager.Instance.currentBattleMusic.name);
             }
         }

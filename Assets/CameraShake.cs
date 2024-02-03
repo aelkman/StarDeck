@@ -42,9 +42,15 @@ public class CameraShake : MonoBehaviour
         if (start) {
             start = false;
             // CameraShaker.Instance.cameraShakeInstances.Clear();
-            StartCoroutine(VignetteFlash(vignetteFlashTime));
-            StartCoroutine(ChromaticAbberation(vignetteFlashTime));
-            CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
+            if(Settings.Instance.showVignette) {
+                StartCoroutine(VignetteFlash(vignetteFlashTime));
+            }
+            if(Settings.Instance.showChromAber) {
+                StartCoroutine(ChromaticAbberation(vignetteFlashTime));
+            }
+            if(Settings.Instance.showScreenShake) {
+                CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
+            }
             // StartCoroutine(Shaking());
         }
     }

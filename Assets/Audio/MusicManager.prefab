@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4223922276904225199}
   - component: {fileID: 8500352245460861389}
   m_Layer: 0
-  m_Name: Battle1 (1)
+  m_Name: Consciousness
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5d721c33a84a8f14bb5116432eae2d77, type: 2}
   m_audioClip: {fileID: 8300000, guid: 707921b80f7333144a86d23c2e2af963, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 5106559617300066587}
   - component: {fileID: 2545451877592165800}
   m_Layer: 0
-  m_Name: Battle1 (3)
+  m_Name: Gunfingers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,9 +170,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5d721c33a84a8f14bb5116432eae2d77, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cd673b41946a7b14798268ce3ac60b87, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7bf07479cc24b542a0d227eea4a264d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 8201012160525267558}
   - component: {fileID: 6000251118994306399}
   m_Layer: 0
-  m_Name: Battle1
+  m_Name: The Nest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -554,9 +554,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5d721c33a84a8f14bb5116432eae2d77, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 2cf23ab8c3b2cec40bfa8eac7489e1ac, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bc58b4a17a400a34488a1a975f04a2da, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 4375440004088415122}
   - component: {fileID: 9175485751305217939}
   m_Layer: 0
-  m_Name: Battle1 (4)
+  m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -682,9 +682,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5d721c33a84a8f14bb5116432eae2d77, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 75f349ea698c16d46a97be31e0cff6d9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6247d1f12dd074e4684a97e00ff09064, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 431033209070998256}
   - component: {fileID: 5202019370357816948}
   m_Layer: 0
-  m_Name: Battle1 (2)
+  m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -812,7 +812,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5d721c33a84a8f14bb5116432eae2d77, type: 2}
   m_audioClip: {fileID: 8300000, guid: cd74e704800291a419c673cd899355ec, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1054,10 +1054,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8201012160525267558}
   - {fileID: 4223922276904225199}
   - {fileID: 431033209070998256}
   - {fileID: 5106559617300066587}
+  - {fileID: 8201012160525267558}
   - {fileID: 4375440004088415122}
   - {fileID: 6445983405024319299}
   - {fileID: 7519343330010734068}
@@ -1076,15 +1076,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281578af973340428e2a40b79dab79c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battle1: {fileID: 0}
-  battle2: {fileID: 0}
-  battle3: {fileID: 0}
   bossBattle: {fileID: 5427462617680901947}
   kingbotIntro: {fileID: 2604677503337686109}
   kingbotWin: {fileID: 2926781137566421720}
   battleTracks:
-  - {fileID: 6000251118994306399}
   - {fileID: 8500352245460861389}
-  - {fileID: 5202019370357816948}
   - {fileID: 2545451877592165800}
+  - {fileID: 5202019370357816948}
   - {fileID: 9175485751305217939}
+  - {fileID: 6000251118994306399}
