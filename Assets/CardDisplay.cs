@@ -61,14 +61,10 @@ public class CardDisplay : MonoBehaviour
         descriptionText.alignment = TextAlignmentOptions.Center;
         descriptionText.text = "";
 
-        if(card.flavorText != null && card.flavorText.Length > 1) {
-            descriptionText.text = "<i>" + card.flavorText + "</i>";
-            descriptionText.text += "<line-height=140%><br></line-height>";
-        }
-
         if(card.description.Length > 1) {
             descriptionText.text += card.description + "<br>";
         }
+
         descriptionText.text += DescriptionParser(card);
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
@@ -111,14 +107,10 @@ public class CardDisplay : MonoBehaviour
         descriptionText.alignment = TextAlignmentOptions.Center;
         descriptionText.text = "";
 
-        if(card.flavorText != null && card.flavorText.Length > 1) {
-            descriptionText.text = "<i>" + card.flavorText + "</i>";
-            descriptionText.text += "<line-height=140%><br></line-height>";
-        }
-
         if(card.description.Length > 1) {
             descriptionText.text += card.description + "<br>";
         }
+
         descriptionText.text += DescriptionParser(card);
         artworkImage.sprite = card.artwork;
         manaText.text = card.manaCost.ToString();
@@ -136,6 +128,7 @@ public class CardDisplay : MonoBehaviour
     private string DescriptionParser(Card card) {
         string descriptionAdditional = "";
         foreach(var item in card.actions) {
+            // var currentItem = 1;
             switch(item.Key) {
                 case "ATK":
                     if(item.Value != "DEF") {
@@ -147,10 +140,10 @@ public class CardDisplay : MonoBehaviour
                         // }
 
                         if (multi == "1") {
-                            descriptionAdditional += "Deal " + attack + " damage";
+                            descriptionAdditional += "Deal " + attack + " damage<br>";
                         }
                         else {
-                            descriptionAdditional = "Deal " + attack + " damage " + multi + " times";
+                            descriptionAdditional = "Deal " + attack + " damage " + multi + " times<br>";
                         }
 
                         if(card.isFinalBlow) {
@@ -172,52 +165,52 @@ public class CardDisplay : MonoBehaviour
                         throw new Exception("Invalid ATK_ALL attributes! Must be 2 ints comma separated");
                     }
                     if(attackAll[1] != 1) {
-                        descriptionAdditional += "Deal " + attackAll[0] + " damage  " + attackAll[1] + " times to ALL enemies";
+                        descriptionAdditional += "Deal " + attackAll[0] + " damage  " + attackAll[1] + " times to ALL enemies<br>";
                     }
                     else {
-                        descriptionAdditional += "Deal " + attackAll[0] + " damage to ALL enemies";
+                        descriptionAdditional += "Deal " + attackAll[0] + " damage to ALL enemies<br>";
                     }
                     break;
                 case "ATK_MOD":
-                    descriptionAdditional += "Gain +" + item.Value + " attack";
+                    descriptionAdditional += "Gain +" + item.Value + " attack<br>";
                     break;
                 case "BLIND_ALL":
-                    descriptionAdditional += "Blind ALL " + item.Value + " turn";
+                    descriptionAdditional += "Blind ALL " + item.Value + " turn<br>";
                     hoverText.text += "Blind - 50% chance to miss all attacks<br><br>";
                     break;
                 case "CLEAR_DEBUFF":
-                    descriptionAdditional += "Clear all debuffs";
+                    descriptionAdditional += "Clear all debuffs<br>";
                     break;
                 case "DEF":
                     if(item.Value == "2X") {
-                        descriptionAdditional += "Double your block";
+                        descriptionAdditional += "Double your block<br>";
                     }
                     else {
-                        descriptionAdditional += "Block " + item.Value + "";
+                        descriptionAdditional += "Block " + item.Value + "<br>";
                     }
                     break;
                 case "ICE_STACK":
-                    descriptionAdditional += "Apply " + item.Value + " ice stacks";
+                    descriptionAdditional += "Apply " + item.Value + " ice stacks<br>";
                     hoverText.text += "Ice Stacks - When a character gains 3 ice stacks, they are frozen for 1 turn<br><br>";
                     break;
                 case "STN":
-                    descriptionAdditional += "Stun " + item.Value + " turn";
+                    descriptionAdditional += "Stun " + item.Value + " turn<br>";
                     hoverText.text += "Stun - Target cannot act their current turn<br><br>";
                     break;
                 case "STN_ALL":
-                    descriptionAdditional += "Stun ALL " + item.Value + " turn";
+                    descriptionAdditional += "Stun ALL " + item.Value + " turn<br>";
                     break;  
                 case "VULN":
                     if(card.isTarget || card.actions.ContainsKey("COUNTER")) {
-                        descriptionAdditional += "Target vulnerable " + item.Value + " turn";
+                        descriptionAdditional += "Target vulnerable " + item.Value + " turn<br>";
                     }
                     else {
-                        descriptionAdditional += "Self vulnerable " + item.Value + " turn";
+                        descriptionAdditional += "Self vulnerable " + item.Value + " turn<br>";
                     }
                     hoverText.text += "Vulnerable - Take " + ((MainManager.Instance.vulnerableModifier - 1) * 100) + "% more damage<br><br>";
                     break;
                 case "RELOAD":
-                    descriptionAdditional += "Reload";
+                    descriptionAdditional += "Reload<br>";
                     hoverText.text += "Reload - Replenish your ammo to max capacity<br><br>";
                     break;
                 case "DRAW":
@@ -225,14 +218,14 @@ public class CardDisplay : MonoBehaviour
                     if(Int32.Parse(item.Value) > 1) {
                         cardText += "s";
                     }
-                    descriptionAdditional += "Draw " + item.Value + cardText;
+                    descriptionAdditional += "Draw " + item.Value + cardText + "<br>";
                     break;
                 case "SCRY":
-                    descriptionAdditional += "Foresight " + item.Value;
+                    descriptionAdditional += "Foresight " + item.Value + "<br>";
                     hoverText.text += "Foresight - Look at the next X cards in your deck, discard as many as you want<br><br>";
                     break;
                 case "EXPEL":
-                    descriptionAdditional += "Expel";
+                    descriptionAdditional += "Expel<br>";
                     hoverText.text += "Expel - When played, remove this card from deck for the rest of battle<br><br>";
                     break;
                 case "CARD_PREVIEW":
@@ -241,7 +234,7 @@ public class CardDisplay : MonoBehaviour
                     cardHoverDescription.cardMiniPreview.GetComponent<CardDisplay>().card = previewCard;
                     break;
                 case "COUNTER":
-                    descriptionAdditional += "Counter";
+                    descriptionAdditional += "Counter<br>";
                     hoverText.text += "Counter - Action text below Counter on this card will be played BEFORE next enemy attack<br><br>";
                     break;
                 case "DRAW_SPECIFIC":
@@ -251,30 +244,37 @@ public class CardDisplay : MonoBehaviour
                     Card drawName = Resources.Load<Card>(drawInfo[0]);
                     previewCard = drawName;
                     cardHoverDescription.cardMiniPreview.GetComponent<CardDisplay>().card = previewCard;
-                    descriptionAdditional += "When played, draw " + drawInfo[1] + " " + drawName.name;
+                    descriptionAdditional += "When played, draw " + drawInfo[1] + " " + drawName.name + "<br>";
                     break;
                 case "WEAKEN":
-                    descriptionAdditional += "Weaken target " + item.Value + " turn";
+                    descriptionAdditional += "Weaken target " + item.Value + " turn<br>";
                     hoverText.text += "Weaken - Deal " + (MainManager.Instance.weakenedModifier * 100) + "% less damage<br><br>";
                     break;
                 case "WEAKEN_ALL":
-                    descriptionAdditional += "Weaken ALL " + item.Value + " turn";
+                    descriptionAdditional += "Weaken ALL " + item.Value + " turn<br>";
                     break;
                 case "HEAL":
-                    descriptionAdditional += "Heal " + item.Value;
+                    descriptionAdditional += "Heal " + item.Value + "<br>";
                     break;
                 case "BLAST_MULT":
-                    descriptionAdditional += item.Value + "X damage on next Blaster attack";
+                    descriptionAdditional += item.Value + "X damage on next Blaster attack<br>";
                     break;
                 case "BLAST_ADD":
-                    descriptionAdditional += "Blaster attacks do +" + item.Value + " damage this turn";
+                    descriptionAdditional += "Blaster attacks do +" + item.Value + " damage this turn<br>";
                     break;
                 default:
                     break;
             }
-            if(item.Key != "POWER" && item.Key != "ATK_MOD_TEMP" && item.Key != "CAST") {
-                descriptionAdditional += "<br>";
-            }
+            // if(item.Key != "POWER" && item.Key != "ATK_MOD_TEMP" && item.Key != "CAST") {
+            //     descriptionAdditional += "<br>";
+            // }
+            // descriptionAdditional += "<br>";
+            // currentItem += 1;
+        }
+
+        if(card.flavorText != null && card.flavorText.Length > 1) {
+            descriptionAdditional += "<line-height=65%><br></line-height>";
+            descriptionAdditional += "<size=90%><i>" + card.flavorText + "</i></size>";
         }
 
         return descriptionAdditional;

@@ -32,13 +32,16 @@ public class MapAnimations : MonoBehaviour
     }
 
     private IEnumerator ShowIntroText() {
+        MapManager.Instance.destinationsClickable = false;
         yield return new WaitForSeconds(2.8f);
         if(introText != null) {
             introText.SetActive(true);
-            yield return new WaitUntil(() => introTypewriter.doneTyping);
+            // yield return new WaitUntil(() => introTypewriter.doneTyping);
             yield return new WaitUntil(() => clicked);
+            MapManager.Instance.destinationsClickable = true;
             if(introTextAnimator != null) {
                 introTextAnimator.SetTrigger("End");
+                MapManager.Instance.destinationsClickable = true;
             }
         }
     }
@@ -51,11 +54,11 @@ public class MapAnimations : MonoBehaviour
                 Destroy(mapTitle);
             }
         }
-        if(Input.GetMouseButtonDown(0)) {
+        if(Input.GetMouseButtonUp(0) && introTypewriter.doneTyping) {
             clicked = true;
         }
-        if(Input.GetMouseButtonUp(0)) {
-            clicked = false;
-        }
+        // if(Input.GetMouseButtonUp(0)) {
+        //     clicked = false;
+        // }
     }
 }
