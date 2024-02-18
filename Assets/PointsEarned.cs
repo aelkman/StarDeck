@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using TMPro;
 
 public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private bool mouse_over;
+    private bool skipFound = false;
     // public int coinsEarned;
     public TextMeshProUGUI coinsText;
     public TextMeshProUGUI pointsText;
+    public TextMeshProUGUI continueButtonText;
     public BattleManager battleManager;
     public BattleEnemyManager BEM;
     public GameObject cardsRewards;
@@ -21,6 +24,7 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public GameObject heartContainer;
     public CoinsEarned coinsEarned;
     public List<GameObject> rewards;
+    public HorizontalLayoutGroup rewardsGroup;
     private float noDamageMultiplier = 1.5f;
     private int enemyCount;
     private int miniBossCount;
@@ -88,6 +92,20 @@ public class PointsEarned : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     // Update is called once per frame
     void Update()
     {
+        foreach(Transform child in rewardsGroup.transform)
+        {
+            if(child.gameObject.activeSelf) {
+                continueButtonText.text = "Skip";
+                skipFound = true;
+                break;
+            }
+        }
+
+        if(skipFound == false) {
+            continueButtonText.text = "Continue";
+        }
+        skipFound = false;
+
         // if (mouse_over) {
         //     if (Input.GetMouseButtonUp(0)) {
         //         gameObject.SetActive(false);

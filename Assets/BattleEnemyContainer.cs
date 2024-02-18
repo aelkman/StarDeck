@@ -72,6 +72,40 @@ public class BattleEnemyContainer : BaseCharacterInfo
             type = "Blaster";
         }
         GameManager.Instance.weaponDamage[type] += damage;
+        // add steamworks stats
+        if(type == "Blaster") {
+            Steamworks.SteamUserStats.AddStat( "BLASTER_DAMAGE", damage );
+            Steamworks.SteamUserStats.StoreStats();
+
+            var blasterDmg = Steamworks.SteamUserStats.GetStatInt( "BLASTER_DAMAGE" );
+            if(blasterDmg >= 200 && blasterDmg < 500) {
+                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_NOVICE");
+            }
+            else if(blasterDmg >= 500 && blasterDmg < 1000) {
+                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_TRAINED");
+            }
+            else if(blasterDmg >= 1000) {
+                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_EXPERT");
+            }
+
+        }
+        else if(type == "Hammer") {
+            Steamworks.SteamUserStats.AddStat( "HAMMER_DAMAGE", damage );
+            Steamworks.SteamUserStats.StoreStats();
+
+            var hammerDmg = Steamworks.SteamUserStats.GetStatInt( "HAMMER_DAMAGE" );
+            if(hammerDmg >= 200 && hammerDmg < 500) {
+                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_NOVICE");
+            }
+            else if(hammerDmg >= 500 && hammerDmg < 1000) {
+                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_TRAINED");
+            }
+            else if(hammerDmg >= 1000) {
+                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_EXPERT");
+            }
+        }
+
+
         // Debug.Log(type + " damage: " + GameManager.Instance.weaponDamage[type]);
         cameraShake.StartShake();
         if (block >= damage) {
@@ -98,6 +132,9 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 characterHUD.GetComponent<CharacterHUD>().iceHUD.SetActive(false);
                 UnfreezeAnimation();
             }
+            if(battleEnemy.name == "Chest") {
+                Facepunch.Instance.TriggerAchievement("ACH_MIMIC");
+            }
             enemyAnimator.DeathAnimation();
             enemyPrefabInstance.GetComponent<BoxCollider2D>().enabled = false;
             if(enemyPrefabInstance.GetComponentInChildren<ShadowCaster2D>() != null) {
@@ -112,6 +149,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             }
             else {
                 battleManager.isBattleWon = true;
+                Facepunch.Instance.TriggerAchievement("ACH_BEAT_DEMO");
                 battleManager.RemoveEnemyActions(this);
                 this.nextAction.SetActive(false);
                 // this.characterHUD.SetActive(false);

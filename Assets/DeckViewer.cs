@@ -114,6 +114,7 @@ public class DeckViewer : MonoBehaviour
             }
             else {
                 AudioManager.Instance.PlayCoins();
+                Facepunch.Instance.TriggerAchievement("ACH_CARD_DESTROYER");
             }
             MainManager.Instance.coinCount -= price;
             removalUISelector.selectedCard.GetComponent<RemovalUIActions>().CardPlay();
@@ -141,6 +142,7 @@ public class DeckViewer : MonoBehaviour
 
     public void CloneButton() {
         if(MainManager.Instance.coinCount >= price) {
+            Facepunch.Instance.TriggerAchievement("ACH_CARD_CLONER");
             AudioManager.Instance.PlayCoins();
             MainManager.Instance.coinCount -= price;
             // removalUISelector.selectedCard.GetComponent<RemovalUIActions>().CardPlay();

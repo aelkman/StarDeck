@@ -130,12 +130,41 @@ public class BattleManager : MonoBehaviour
     }
 
     public void GameOver() {
+        Steamworks.SteamUserStats.AddStat( "BATTLE_LOSSES", 1 );
+        Steamworks.SteamUserStats.StoreStats();
+
+        var battleLosses = Steamworks.SteamUserStats.GetStatInt( "BATTLE_LOSSES" );
+        if(battleLosses == 1) {
+            Facepunch.Instance.TriggerAchievement("ACH_LOSE_1_BATTLE");
+        }
+        else if(battleLosses == 10) {
+            Facepunch.Instance.TriggerAchievement("ACH_LOSE_10_BATTLE");
+        }
+
         isGameOver = true;
         gameOver.Initiate();
     }
 
     public void BattleWin() {
         isBattleWon = true;
+        Steamworks.SteamUserStats.AddStat( "BATTLE_WINS", 1 );
+        Steamworks.SteamUserStats.StoreStats();
+
+        var battleWins = Steamworks.SteamUserStats.GetStatInt( "BATTLE_WINS" );
+        if(battleWins == 1) {
+            Facepunch.Instance.TriggerAchievement("ACH_WIN_1_BATTLE");
+        }
+        else if(battleWins == 5) {
+            Facepunch.Instance.TriggerAchievement("ACH_WIN_5_BATTLES");
+        }
+        else if(battleWins == 10) {
+            Facepunch.Instance.TriggerAchievement("ACH_WIN_10_BATTLES");
+        }
+        else if(battleWins == 20) {
+            Facepunch.Instance.TriggerAchievement("ACH_WIN_20_BATTLE");
+        }
+        
+        Debug.Log("battles won: " + battleWins);
         battleWon.Initiate();
 
     }
