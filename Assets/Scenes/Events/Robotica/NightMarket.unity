@@ -189,8 +189,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294963200
-  m_fontColor: {r: 0, g: 0.9412484, b: 1, a: 1}
+    rgba: 4294961152
+  m_fontColor: {r: 0, g: 0.9098039, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1869,6 +1869,17 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1481156168 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3369889925802844983, guid: bb2a3b32138af5546b7c4b777fe3cf7b, type: 3}
+  m_PrefabInstance: {fileID: 1481156164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481156166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a3589de340684459bc2b2084e2835f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1536713728
 GameObject:
   m_ObjectHideFlags: 0
@@ -2046,7 +2057,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Leave
+  m_text: Skip
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: eb1e8b171c124b8478e9ef1bd030e9d9, type: 2}
   m_sharedMaterial: {fileID: -3616781330659437640, guid: eb1e8b171c124b8478e9ef1bd030e9d9, type: 2}
@@ -2055,8 +2066,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294963968
-  m_fontColor: {r: 0, g: 0.95151806, b: 1, a: 1}
+    rgba: 4294961152
+  m_fontColor: {r: 0, g: 0.9098039, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2073,8 +2084,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2178,6 +2189,8 @@ MonoBehaviour:
   crossfade: {fileID: 1763398103}
   deckViewer: {fileID: 0}
   tradeCardViewer: {fileID: 1184381371}
+  leaveButton: {fileID: 1636065361}
+  cardSelector: {fileID: 1481156168}
 --- !u!1 &1698295435
 GameObject:
   m_ObjectHideFlags: 0
@@ -2340,7 +2353,7 @@ RectTransform:
   m_GameObject: {fileID: 1722862100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4939, y: 4.021414, z: 2.4939}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1636065360}
@@ -2349,7 +2362,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -393.2522}
-  m_SizeDelta: {x: 122.9234, y: 33.6068}
+  m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1722862102
 MonoBehaviour:
@@ -2386,7 +2399,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.9529412}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.7764706}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2442,7 +2455,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: a068f0a687baa214c928f2492651cdef, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2450,7 +2463,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2.13
 --- !u!222 &1722862105
 CanvasRenderer:
   m_ObjectHideFlags: 0

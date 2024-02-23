@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class NightMarket : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class NightMarket : MonoBehaviour
     public Animator crossfade;
     public DeckViewer deckViewer;
     public GameObject tradeCardViewer;
+    public TextMeshProUGUI leaveButton;
+    public CardUISelector cardSelector;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +23,9 @@ public class NightMarket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(cardSelector.addedCount > 0) {
+            leaveButton.text = "Leave";
+        }
     }
 
     public void Option1Click() {

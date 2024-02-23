@@ -16,6 +16,7 @@ public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public bool isIcon = false;
     public ArtifactViewer artifactViewer;
     public GameObject hoverText;
+    public TextMeshProUGUI leaveButtonText;
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +70,7 @@ public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private void OnMouseOver() {
         if(!isIcon) {
             if(Input.GetMouseButtonUp(0)) {
+                leaveButtonText.text = "Leave";
                 AudioManager.Instance.PlayCardRustling();
                 artifactViewer.AddArtifact(artifact);
                 MainManager.Instance.AddArtifact(artifact.codeName);

@@ -11,8 +11,14 @@ public class AmmoController : MonoBehaviour
     public bool userHasBlaster = false;
     // public Image fill;
     public Slider slider;
-    public TextMeshProUGUI tmp;
+    public TextMeshProUGUI text;
     public PlayerStats playerStats;
+    public GameObject mask;
+	public Vector3 maskOrigPos;
+	public GameObject batteryFill;
+	public Vector3 batteryOrigPos;
+	[Range(0.0f, 1.0f)]
+    public float fill;
     // public GameObject charge1;
     // public GameObject charge2;
     // public GameObject charge3;
@@ -29,18 +35,41 @@ public class AmmoController : MonoBehaviour
 
         charge = MainManager.Instance.maxCharges;
         maxCharge = MainManager.Instance.maxCharges;
-        tmp.text = charge + "/" + maxCharge;
-        slider.value = charge/maxCharge;
+        // text.text = charge + "/" + maxCharge;
+        // slider.value = charge/maxCharge;
+        maskOrigPos = new Vector3(0f, 150f, 0f);
+		Debug.Log("ammo mask orig: " + maskOrigPos);
+		batteryOrigPos = new Vector3(0f, -132.1f, 0f);
+		Debug.Log("ammo Battery orig: " + batteryOrigPos);
+		SetChargeNoText();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        charge = fill * 3;
+        SetCharge();
     }
 
     public bool IsAmmoFull() {
         return charge == maxCharge;
+    }
+
+    public void SetCharge() {
+		fill = charge / maxCharge;
+		Debug.Log("ammo fill: " + fill);
+		mask.transform.localPosition = new Vector3(maskOrigPos.x, maskOrigPos.y - (1 - fill) * 107.1f - 25, maskOrigPos.z);
+		batteryFill.transform.localPosition = new Vector3(batteryOrigPos.x, batteryOrigPos.y + ((1 - fill) * 107.1f + 25) * (2 - mask.transform.localScale.y), batteryOrigPos.z);
+		// fill.fillAmount = (float)mana/(float)maxMana;
+        text.text = charge + "/" + maxCharge;
+    }
+
+    public void SetChargeNoText() {
+		fill = charge / maxCharge;
+		Debug.Log("ammo fill: " + fill);
+		mask.transform.localPosition = new Vector3(maskOrigPos.x, maskOrigPos.y - (1 - fill) * 107.1f - 25, maskOrigPos.z);
+		batteryFill.transform.localPosition = new Vector3(batteryOrigPos.x, batteryOrigPos.y + ((1 - fill) * 107.1f + 25) * (2 - mask.transform.localScale.y), batteryOrigPos.z);
+		// fill.fillAmount = (float)mana/(float)maxMana;
     }
 
     public void ExpandSlots(int expandSize, bool withReload) {
@@ -48,14 +77,12 @@ public class AmmoController : MonoBehaviour
         if(withReload) {
             charge = maxCharge;
         }
-        slider.value = charge/maxCharge;
-        tmp.text = charge + "/" + maxCharge;
+        SetCharge();
     }
 
     public void FullCharge() {
         charge = maxCharge;
-        slider.value = charge/maxCharge;
-        tmp.text = charge + "/" + maxCharge;
+        SetCharge();
         // charge1.SetActive(true);
         // charge2.SetActive(true);
         // charge3.SetActive(true);
@@ -66,8 +93,7 @@ public class AmmoController : MonoBehaviour
         if(charge > maxCharge) {
             charge = maxCharge;
         }
-        slider.value = charge/maxCharge;
-        tmp.text = charge + "/" + maxCharge;
+        SetCharge();
     }
 
     public void UseCharge(int charge) {
@@ -80,27 +106,6 @@ public class AmmoController : MonoBehaviour
         else {
             throw new System.Exception("Invalid charge in UseCharge, charge started as " + this.charge);
         }
-        slider.value = this.charge/maxCharge;
-        tmp.text = this.charge + "/" + maxCharge;
-        // if(this.charge == 0) {
-        //     charge1.SetActive(false);
-        //     charge2.SetActive(false);
-        //     charge3.SetActive(false);
-        // }
-        // else if(this.charge == 1) {
-        //     charge1.SetActive(true);
-        //     charge2.SetActive(false);
-        //     charge3.SetActive(false);
-        // }
-        // else if(this.charge == 2) {
-        //     charge1.SetActive(true);
-        //     charge2.SetActive(true);
-        //     charge3.SetActive(false);
-        // }
-        // else if(this.charge == 3) {
-        //     charge1.SetActive(true);
-        //     charge2.SetActive(true);
-        //     charge3.SetActive(true);
-        // }
+        SetCharge();
     }
 }

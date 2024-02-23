@@ -25,6 +25,10 @@ public class Facepunch : MonoBehaviour
         try
         {
             Steamworks.SteamClient.Init( 2687800 );
+            // remove for prod
+            // Steamworks.SteamUserStats.ResetAll( true ); // true = wipe achivements too
+            // Steamworks.SteamUserStats.StoreStats();
+            // remove above for prod
             Steamworks.SteamUserStats.RequestCurrentStats();
             var killCount = Steamworks.SteamUserStats.GetStatInt( "BATTLE_WINS" );
             Debug.Log("battle wins: " + killCount);

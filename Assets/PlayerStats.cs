@@ -37,8 +37,6 @@ public class PlayerStats : BaseCharacterInfo
             }
         }
 
-        counterQueue = new QueueList<KeyValuePair<string, string>>();
-        counterTypes = new QueueList<string>();
         cameraShake = GameObject.Find("ShakeHolder").GetComponent<CameraShake>();
         RemoveWeapon("Blaster");
         RemoveWeapon("Hammer");

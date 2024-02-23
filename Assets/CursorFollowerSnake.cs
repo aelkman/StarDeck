@@ -12,7 +12,7 @@ public class CursorFollowerSnake : MonoBehaviour
     public float forceAmount = 2000;
     private Quaternion originalRotation;
     private Vector3 originalScale;
-    private Vector3 originalPosition;
+    public Vector3 originalPosition;
     private Vector3 raisedPosition;
     private Vector3 expandedScale;
     private int siblingIndexOriginal;
@@ -31,7 +31,7 @@ public class CursorFollowerSnake : MonoBehaviour
         expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
-        originalPosition = transform.localPosition;
+        // originalPosition = transform.localPosition;
         // Debug.Log("original rotation: " + originalRotation);
         // Debug.Log("originalScale: " + originalScale);
         siblingIndexOriginal = transform.GetSiblingIndex();
@@ -40,11 +40,39 @@ public class CursorFollowerSnake : MonoBehaviour
 
     void Update() {
         Vector3 screenToWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        // originalPosition = transform.TransformPoint(originalPosition);
+        originalPosition.z = Camera.main.nearClipPlane;
+        // Debug.Log("orig pos: " + originalPosition);
         Vector3 translatedWorldPosition = new Vector3(screenToWorld.x, screenToWorld.y, Camera.main.nearClipPlane);
+        // Debug.Log("mouse trans pos: " + translatedWorldPosition);
         transform.position = translatedWorldPosition;
-        float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f + 0.5f;
+        float calculation = (originalPosition.x - translatedWorldPosition.x)/1.78f;
         // // Debug.Log("calculation: " + calculation);
-        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
+        // Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(180f, 0f, (translatedWorldPosition.x+1.778f)/3.556f));
+        float angle = Mathf.Rad2Deg * Mathf.Atan((originalPosition.y - translatedWorldPosition.y) / (originalPosition.x - translatedWorldPosition.x));
+        if(angle < 0) {
+            angle = 180 + angle + 30 * Mathf.Lerp(0, 1, Mathf.Abs( originalPosition.x - translatedWorldPosition.x));
+            if(angle > 180) {
+                angle = 180;
+            }
+        }
+        else {
+            angle -= 30 * Mathf.Lerp(0, 1, Mathf.Abs( originalPosition.x - translatedWorldPosition.x));
+            if(angle < 0) {
+                angle = 0;
+            }
+        }
+
+        // math function that correlates between -1 and 1 based on distance from start
+        // angle = 1.2f * angle;
+
+        // float distance = Vector3.Distance(originalPosition, translatedWorldPosition);
+        // Debug.Log("distance: " + distance);
+        // angle = Mathf.Lerp(180, 0, Mathf.Lerp(-1, 1, distance/ 1.0f));
+
+        // Debug.Log(angle);
+        // angle += 20;
+        Vector3 currentAngle = new Vector3(0f, 0f, angle);
         transform.eulerAngles = currentAngle;
     }
     // private void OnMouseExit() {

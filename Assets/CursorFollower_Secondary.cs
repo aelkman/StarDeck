@@ -11,16 +11,17 @@ public class CursorFollower_Secondary : MonoBehaviour
     public float totTime = 10f;
     public float sizeMultiplier = 0.005f;
 
-    private float xRot;
-    private float yRot;
-    private float zRot;
-    private Quaternion originalRotation;
-    private Vector3 originalScale;
+    // private float xRot;
+    // private float yRot;
+    // private float zRot;
+    // private Quaternion originalRotation;
+    // private Vector3 originalScale;
+    public Vector3 actualOriginal;
     private Vector3 originalPosition;
-    private Vector3 originalWorldPosition;
-    private Vector3 raisedPosition;
-    private Vector3 expandedScale;
-    private int siblingIndexOriginal;
+    // private Vector3 originalWorldPosition;
+    // private Vector3 raisedPosition;
+    // private Vector3 expandedScale;
+    // private int siblingIndexOriginal;
     private bool isScaled = false;
 
     Coroutine start;
@@ -32,15 +33,15 @@ public class CursorFollower_Secondary : MonoBehaviour
         // // Debug.Log("index: " + transform.GetSiblingIndex());
         // hard coded solution for optimization, if the expandSize changes
         // this will need to be recalculated
-        expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
-        originalScale = transform.localScale;
-        originalRotation = transform.rotation;
+        // expandedScale = new Vector3(4.19f, 5.26f, 0.00f);
+        // originalScale = transform.localScale;
+        // originalRotation = transform.rotation;
         originalPosition = transform.localPosition;
-        originalWorldPosition = transform.position;
+        // originalWorldPosition = transform.position;
         // // Debug.Log("original postiion: " + originalPosition);
         // // Debug.Log("original rotation: " + originalRotation);
         // // Debug.Log("originalScale: " + originalScale);
-        siblingIndexOriginal = transform.GetSiblingIndex();
+        // siblingIndexOriginal = transform.GetSiblingIndex();
     }
 
     private float Sinerp(float t) {
@@ -76,6 +77,18 @@ public class CursorFollower_Secondary : MonoBehaviour
     {
         end -= start;
         return end * value * value * value + start;
+    }
+
+    public static float EaseInQuint(float start, float end, float value)
+    {
+        end -= start;
+        return end * value * value * value * value * value + start;
+    }
+
+    public static float EaseInExpo(float start, float end, float value)
+    {
+        end -= start;
+        return end * Mathf.Pow(2, 10 * (value - 1)) + start;
     }
 
     void Update() {
@@ -114,8 +127,32 @@ public class CursorFollower_Secondary : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();   
         mousePos.z=Camera.main.nearClipPlane;
         Vector3 Worldpos=Camera.main.ScreenToWorldPoint(mousePos);
-        // // Debug.Log(Worldpos);
-        Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(-180f, 0f, (Worldpos.x+1.778f)/3.556f));
+        // Debug.Log(Worldpos);
+        // Vector3 currentAngle = new Vector3(0f, 0f, Mathf.Lerp(180f, 0f, (Worldpos.x+1.778f)/3.556f));
+
+        float angle = Mathf.Rad2Deg * Mathf.Atan((actualOriginal.y - Worldpos.y) / (actualOriginal.x - Worldpos.x));
+        if(angle < 0) {
+            angle = 180 + angle;
+        }
+
+        float newAngle = Mathf.Lerp(90, angle, ((float)transform.GetSiblingIndex())/21f);
+        if(newAngle > 90) {
+            // newAngle = newAngle + 10 * Mathf.Pow(Mathf.Lerp(0, 1, Mathf.Abs( actualOriginal.x - Worldpos.x)), 3);
+            newAngle = newAngle + 100 * Mathf.Tan(Mathf.Lerp(0, 1, Mathf.Abs( actualOriginal.x - Worldpos.x))/4);
+            if(newAngle > 180) {
+                newAngle = 180;
+            }
+        }
+        else {
+            // newAngle -= 10 * Mathf.Pow(Mathf.Lerp(0, 1, Mathf.Abs( actualOriginal.x - Worldpos.x)), 3);
+            newAngle -= 100 * Mathf.Tan(Mathf.Lerp(0, 1, Mathf.Abs( actualOriginal.x - Worldpos.x))/4);
+            if(newAngle < 0) {
+                newAngle = 0;
+            }
+        }
+        // Debug.Log(angle);
+        Vector3 currentAngle = new Vector3(0f, 0f, newAngle);
+
         transform.eulerAngles = currentAngle;
     }
 

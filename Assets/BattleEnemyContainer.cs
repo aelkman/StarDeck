@@ -73,39 +73,6 @@ public class BattleEnemyContainer : BaseCharacterInfo
         }
         GameManager.Instance.weaponDamage[type] += damage;
         // add steamworks stats
-        if(type == "Blaster") {
-            Steamworks.SteamUserStats.AddStat( "BLASTER_DAMAGE", damage );
-            Steamworks.SteamUserStats.StoreStats();
-
-            var blasterDmg = Steamworks.SteamUserStats.GetStatInt( "BLASTER_DAMAGE" );
-            if(blasterDmg >= 200 && blasterDmg < 500) {
-                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_NOVICE");
-            }
-            else if(blasterDmg >= 500 && blasterDmg < 1000) {
-                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_TRAINED");
-            }
-            else if(blasterDmg >= 1000) {
-                Facepunch.Instance.TriggerAchievement("ACH_BLASTER_EXPERT");
-            }
-
-        }
-        else if(type == "Hammer") {
-            Steamworks.SteamUserStats.AddStat( "HAMMER_DAMAGE", damage );
-            Steamworks.SteamUserStats.StoreStats();
-
-            var hammerDmg = Steamworks.SteamUserStats.GetStatInt( "HAMMER_DAMAGE" );
-            if(hammerDmg >= 200 && hammerDmg < 500) {
-                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_NOVICE");
-            }
-            else if(hammerDmg >= 500 && hammerDmg < 1000) {
-                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_TRAINED");
-            }
-            else if(hammerDmg >= 1000) {
-                Facepunch.Instance.TriggerAchievement("ACH_HAMMER_EXPERT");
-            }
-        }
-
-
         // Debug.Log(type + " damage: " + GameManager.Instance.weaponDamage[type]);
         cameraShake.StartShake();
         if (block >= damage) {
@@ -128,10 +95,14 @@ public class BattleEnemyContainer : BaseCharacterInfo
         if (health <= 0) {
             // death animation here, disable the NextAction as well
             nextActionText.SetText(null);
-            if(frozenTurn) {
-                characterHUD.GetComponent<CharacterHUD>().iceHUD.SetActive(false);
-                UnfreezeAnimation();
-            }
+            // if(frozenTurn) {
+            //     characterHUD.GetComponent<CharacterHUD>().iceHUD.SetActive(false);
+            //     UnfreezeAnimation();
+            // }
+            // new ice approach for bug
+            characterHUD.GetComponent<CharacterHUD>().iceHUD.SetActive(false);
+            iceSystem.Clear();
+
             if(battleEnemy.name == "Chest") {
                 Facepunch.Instance.TriggerAchievement("ACH_MIMIC");
             }
@@ -167,6 +138,39 @@ public class BattleEnemyContainer : BaseCharacterInfo
                 StartCoroutine(enemyAnimator.TakeDamageAnimation(0f));
             }
             isDeadCallback(false);
+        }
+
+        if(type == "Blaster") {
+            Steamworks.SteamUserStats.AddStat( "BLASTER_DAMAGE", damage );
+            Steamworks.SteamUserStats.StoreStats();
+
+            // var blasterDmg = Steamworks.SteamUserStats.GetStatInt( "BLASTER_DAMAGE" );
+            // if(blasterDmg >= 200 && blasterDmg < 500) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_BLASTER_NOVICE");
+            // }
+            // else if(blasterDmg >= 500 && blasterDmg < 1000) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_BLASTER_TRAINED");
+            // }
+            // else if(blasterDmg >= 1000) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_BLASTER_EXPERT");
+            // }
+
+        }
+        else if(type == "Hammer") {
+            Steamworks.SteamUserStats.AddStat( "HAMMER_DAMAGE", damage );
+            Steamworks.SteamUserStats.StoreStats();
+            AddFrost(1, 0.0f, false);
+
+            // var hammerDmg = Steamworks.SteamUserStats.GetStatInt( "HAMMER_DAMAGE" );
+            // if(hammerDmg >= 200 && hammerDmg < 500) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_HAMMER_NOVICE");
+            // }
+            // else if(hammerDmg >= 500 && hammerDmg < 1000) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_HAMMER_TRAINED");
+            // }
+            // else if(hammerDmg >= 1000) {
+            //     Facepunch.Instance.TriggerAchievement("ACH_HAMMER_EXPERT");
+            // }
         }
     }
 

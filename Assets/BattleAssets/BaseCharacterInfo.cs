@@ -43,12 +43,19 @@ public class BaseCharacterInfo : MonoBehaviour
     public QueueList<KeyValuePair<string, string>> counterQueue;
     public QueueList<string> counterTypes;
     public bool iceActing = false;
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    void Awake() {
         counterQueue = new QueueList<KeyValuePair<string, string>>();
+        Debug.Log("counter queue set");
         counterTypes = new QueueList<string>();
     }
+    // Start is called before the first frame update
+    // void Start()
+    // {
+    //     counterQueue = new QueueList<KeyValuePair<string, string>>();
+    //     Debug.Log("counter queue set");
+    //     counterTypes = new QueueList<string>();
+    // }
 
     // Update is called once per frame
     void Update()
@@ -233,7 +240,7 @@ public class BaseCharacterInfo : MonoBehaviour
                     AudioManager.Instance.PlayFreeze();
                 }
                 iceStacks.SetStacks(frostStacks);
-                if(frostStacks == 3) {
+                if(frostStacks == 3 && !isDead) {
                     if(antiStunTurns == 0) {
                         // frostStacks = 0;
                         // frozenTurn = true;

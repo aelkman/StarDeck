@@ -54,9 +54,15 @@ public class MapAnimations : MonoBehaviour
                 Destroy(mapTitle);
             }
         }
-        if(Input.GetMouseButtonUp(0) && introTypewriter.doneTyping) {
+        if(introTypewriter != null) {
+            if(Input.GetMouseButtonUp(0) && introTypewriter.doneTyping) {
+                clicked = true;
+            }
+        }
+        else if(Input.GetMouseButtonUp(0)) {
             clicked = true;
         }
+
         // if(Input.GetMouseButtonUp(0)) {
         //     clicked = false;
         // }

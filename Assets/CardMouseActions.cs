@@ -338,6 +338,15 @@ public class CardMouseActions : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 cursorFollowerInstance.transform.SetSiblingIndex(9999);
                 cursorFollowerInstance.transform.localScale = new Vector3(1182.52f, 1182.52f, 1182.52f);
                 cursorFollowerInstance.transform.localPosition = transform.localPosition;
+                // Debug.Log("localpos: " + transform.localPosition);
+                Vector3 test = Camera.main.ScreenToWorldPoint(transform.localPosition);
+                Vector3 origPosCam = new Vector3(test.x, test.y, Camera.main.nearClipPlane);
+                Vector3 newOrig = transform.TransformPoint(origPosCam);
+                cursorFollowerInstance.GetComponent<CursorFollower>().cfs.originalPosition = newOrig;
+                foreach(CursorFollower_Secondary cfs in cursorFollowerInstance.GetComponentsInChildren<CursorFollower_Secondary>()) {
+                    cfs.actualOriginal = newOrig;
+                }
+                // Debug.Log("cfs origpos: " + cursorFollowerInstance.GetComponent<CursorFollower>().cfs.originalPosition);
                 followerCreated = true;
                 isFollowerPlaced = true;
             }
