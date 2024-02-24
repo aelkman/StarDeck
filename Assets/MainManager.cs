@@ -45,7 +45,10 @@ public class MainManager : MonoBehaviour, IDisposable
         foreach(var artifact in arr) {
             possibleArtifacts.Add(artifact.codeName);
         }
-
+        // testing, remove later!
+        // AddArtifact("EXTRA_CHARGE");
+        // Potion pot = Resources.Load<Potion>("Consumeables/Blaster/Clip Extender");
+        // EquipPotion(pot);
     }
 
     public void AddArtifact(string codeName){

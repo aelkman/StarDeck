@@ -22,6 +22,11 @@ public class AmmoController : MonoBehaviour
     // public GameObject charge1;
     // public GameObject charge2;
     // public GameObject charge3;
+    void Awake() {
+        charge = MainManager.Instance.maxCharges;
+        maxCharge = MainManager.Instance.maxCharges;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,23 +38,22 @@ public class AmmoController : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        charge = MainManager.Instance.maxCharges;
-        maxCharge = MainManager.Instance.maxCharges;
+
         // text.text = charge + "/" + maxCharge;
         // slider.value = charge/maxCharge;
         maskOrigPos = new Vector3(0f, 150f, 0f);
 		Debug.Log("ammo mask orig: " + maskOrigPos);
 		batteryOrigPos = new Vector3(0f, -132.1f, 0f);
 		Debug.Log("ammo Battery orig: " + batteryOrigPos);
-		SetChargeNoText();
+		SetCharge();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        charge = fill * 3;
-        SetCharge();
-    }
+    // void Update()
+    // {
+    //     charge = fill * 3;
+    //     SetCharge();
+    // }
 
     public bool IsAmmoFull() {
         return charge == maxCharge;
@@ -58,6 +62,7 @@ public class AmmoController : MonoBehaviour
     public void SetCharge() {
 		fill = charge / maxCharge;
 		Debug.Log("ammo fill: " + fill);
+        Debug.Log("charge: " + charge + ", maxCharge: " + maxCharge);
 		mask.transform.localPosition = new Vector3(maskOrigPos.x, maskOrigPos.y - (1 - fill) * 107.1f - 25, maskOrigPos.z);
 		batteryFill.transform.localPosition = new Vector3(batteryOrigPos.x, batteryOrigPos.y + ((1 - fill) * 107.1f + 25) * (2 - mask.transform.localScale.y), batteryOrigPos.z);
 		// fill.fillAmount = (float)mana/(float)maxMana;
@@ -67,6 +72,7 @@ public class AmmoController : MonoBehaviour
     public void SetChargeNoText() {
 		fill = charge / maxCharge;
 		Debug.Log("ammo fill: " + fill);
+        Debug.Log("charge: " + charge + ", maxCharge: " + maxCharge);
 		mask.transform.localPosition = new Vector3(maskOrigPos.x, maskOrigPos.y - (1 - fill) * 107.1f - 25, maskOrigPos.z);
 		batteryFill.transform.localPosition = new Vector3(batteryOrigPos.x, batteryOrigPos.y + ((1 - fill) * 107.1f + 25) * (2 - mask.transform.localScale.y), batteryOrigPos.z);
 		// fill.fillAmount = (float)mana/(float)maxMana;

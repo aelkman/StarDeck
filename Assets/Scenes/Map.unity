@@ -19123,6 +19123,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2646284356154497665, guid: bf31e643dfbaaaf438d6afa8143051fd, type: 3}
+      propertyPath: potions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646284356154497665, guid: bf31e643dfbaaaf438d6afa8143051fd, type: 3}
+      propertyPath: artifacts.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646284356154497665, guid: bf31e643dfbaaaf438d6afa8143051fd, type: 3}
+      propertyPath: potions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 41b08a54ce77f184bb77703e72853e22, type: 2}
+    - target: {fileID: 2646284356154497665, guid: bf31e643dfbaaaf438d6afa8143051fd, type: 3}
+      propertyPath: artifacts.Array.data[0]
+      value: EXTRA_CHARGE
+      objectReference: {fileID: 0}
     - target: {fileID: 2969355094059992062, guid: bf31e643dfbaaaf438d6afa8143051fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 820.46405
