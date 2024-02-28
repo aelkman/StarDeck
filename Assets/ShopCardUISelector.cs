@@ -11,14 +11,17 @@ public class ShopCardUISelector : CardUISelector
     private List<CardDisplay> instantiatedCards;
     public int purchaseLimit = 99;
     public bool limitReached = false;
+    public bool isTest = false;
 
     void Start() {
         instantiatedCards = new List<CardDisplay>();
-        if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
-            canvasGroup.alpha = 0.5f;
-            canvasGroup.blocksRaycasts = false;
+        if(!isTest) {
+            if(MainManager.Instance.artifacts.Contains("GOLDEN_TICKET")) {
+                canvasGroup.alpha = 0.5f;
+                canvasGroup.blocksRaycasts = false;
+            }
+            deck = GameObject.Find("Deck").GetComponent<Deck>();
         }
-        deck = GameObject.Find("Deck").GetComponent<Deck>();
         cards = Resources.LoadAll("Cards", typeof(Card));
         var cardsListFiltered = new List<Card>();
         if(!areSpecificCards) {

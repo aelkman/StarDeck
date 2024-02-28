@@ -68,6 +68,7 @@ public class TreeTraversal : MonoBehaviour
                         LineRenderer lr = newLine.GetComponent<LineRenderer>();
                         lr.SetPosition(0, transform.GetChild(parentIndex).localPosition);
                         lr.SetPosition(1, grandChild.localPosition);
+                        grandChild.GetComponent<MapNode>().childNodeLine.Add(transform.GetChild(parentIndex).GetComponent<MapNode>(), lr);
                         // nextLevel.GetComponent<TreeTraversal>().DFS(j);
                         // nextLevel.GetComponent<TreeTraversal>().DFS(Random.Range(0, nextLevel.transform.childCount));
                     }
@@ -208,5 +209,6 @@ public class TreeTraversal : MonoBehaviour
         lr.SetPosition(0, transform.GetChild(i).localPosition);
         Transform nextMapNode = grandChild;
         lr.SetPosition(1, nextMapNode.localPosition);
+        nextMapNode.GetComponent<MapNode>().childNodeLine.Add(transform.GetChild(i).GetComponent<MapNode>(), lr);
     }
 }

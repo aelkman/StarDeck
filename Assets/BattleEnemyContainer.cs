@@ -128,6 +128,7 @@ public class BattleEnemyContainer : BaseCharacterInfo
             }
 
             isDead = true;
+            iceSystem.gameObject.SetActive(false);
             isDeadCallback(true);
         }
         else {

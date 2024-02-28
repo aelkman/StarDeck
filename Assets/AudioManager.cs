@@ -25,6 +25,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource sword;
     public AudioSource blind;
     public AudioSource taunt;
+    public AudioSource mapHover;
     private void Awake()
     {
         // start of new code
@@ -125,5 +126,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayTaunt() {
         taunt.Play();
+    }
+
+    public void PlayMapHover() {
+        mapHover.Play();
     }
 }

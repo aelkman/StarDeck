@@ -51,7 +51,7 @@ public class PersistentHUD : MonoBehaviour
         // if in any other than map, change the camera settings to show map
         // else, we'll have to do something with the dice roller refactor (later)
         if(SceneManager.GetActiveScene().name != "Map") {
-
+            Debug.Log("Scene name: " + SceneManager.GetActiveScene());
             if(MapSingleton.Instance != null) {
                 mapSingleton = MapSingleton.Instance;
             }
@@ -74,6 +74,11 @@ public class PersistentHUD : MonoBehaviour
 
             // enable/disable the map
             if(mapOpen) {
+                if(SceneManager.GetActiveScene().name == "Battle") {
+                    HandManager handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
+                    handManager.canvasGroup.blocksRaycasts = false;
+                }
+
                 // eventMain is for events, and the Shop
                 if(eventMain != null) {
                     eventMain.GetComponent<Canvas>().targetDisplay = 1;
@@ -90,6 +95,10 @@ public class PersistentHUD : MonoBehaviour
                 mapSingleton.gameObject.SetActive(true);
             }
             else {
+                if(SceneManager.GetActiveScene().name == "Battle") {
+                    HandManager handManager = GameObject.Find("HandManager").GetComponent<HandManager>();
+                    handManager.canvasGroup.blocksRaycasts = true;
+                }
                 if(eventMain != null) {
                     eventMain.GetComponent<Canvas>().targetDisplay = 0;
                 }

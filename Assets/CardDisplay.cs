@@ -172,7 +172,8 @@ public class CardDisplay : MonoBehaviour
                     }
                     break;
                 case "ATK_MOD":
-                    descriptionAdditional += "Gain +" + item.Value + " attack<br>";
+                    string sign = Int32.Parse(item.Value) > 0 ? "+" : "";
+                    descriptionAdditional += "Gain " + sign + item.Value + " attack<br>";
                     break;
                 case "BLIND_ALL":
                     descriptionAdditional += "Blind ALL " + item.Value + " turn<br>";

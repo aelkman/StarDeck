@@ -7,7 +7,7 @@ using System.Linq;
 
 public class NextActionText : MonoBehaviour
 {
-    public TextMeshPro nextActionText;
+    public TextMeshProUGUI nextActionText;
     public Dictionary<string, string> actions;
     public Card card;
     public BattleEnemyContainer battleEnemy;
@@ -55,8 +55,9 @@ public class NextActionText : MonoBehaviour
                     description = randBlock[0] + "-" + randBlock[1] + " shield";
                 }
                 else if(entry.Key == "ATK_MOD") {
+                    string sign = Int32.Parse(entry.Value) > 0 ? "+" : "";
                     name = "Attack buff";
-                    description = entry.Value;
+                    description = sign + entry.Value;
                 }
                 else if(entry.Key == "REMOVE_DEBUFF") {
                     name = "Remove Debuffs";
@@ -70,15 +71,31 @@ public class NextActionText : MonoBehaviour
                     if(description != "") {
                         description += ", ";
                     }
-                    description += "+2 turns";
+                    description += "2 turns";
+                }
+                else if(entry.Key == "BLIND") {
+                    name = "Blind";
+                    bool isSingle = Int32.Parse(entry.Value) == 1 ? true : false;
+                    string turns = isSingle ? " turn" : " turns";
+                    description = entry.Value + turns;
+                }
+                else if(entry.Key == "TAUNT") {
+                    name = "Taunt";
+                    bool isSingle = Int32.Parse(entry.Value) == 1 ? true : false;
+                    string turns = isSingle ? " turn" : " turns";
+                    description = entry.Value + turns;
                 }
                 else if(entry.Key == "WEAKEN") {
                     name = "Weaken";
-                    description = "+" + entry.Value + " turns";
+                    bool isSingle = Int32.Parse(entry.Value) == 1 ? true : false;
+                    string turns = isSingle ? " turn" : " turns";
+                    description = entry.Value + turns;
                 }
                 else if(entry.Key == "VULN") {
                     name = "Mark vulnerable";
-                    description = "+" + entry.Value + " turns";
+                    bool isSingle = Int32.Parse(entry.Value) == 1 ? true : false;
+                    string turns = isSingle ? " turn" : " turns";
+                    description = entry.Value + turns;
                 }
                 else {
                     name = entry.Key;

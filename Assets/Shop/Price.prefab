@@ -23,9 +23,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156085000990999272}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33758694, y: 0.33758694, z: 0.14137396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5242212379191752793}
@@ -48,7 +48,6 @@ GameObject:
   - component: {fileID: 724380574308638152}
   - component: {fileID: 7398498825039225855}
   - component: {fileID: 4057847469639555902}
-  - component: {fileID: 7512975240592481510}
   m_Layer: 5
   m_Name: Cost Text
   m_TagString: Untagged
@@ -105,8 +104,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 99
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4124118783cf15a4d8af4071d3b49e55, type: 2}
-  m_sharedMaterial: {fileID: 7614298264482843473, guid: 4124118783cf15a4d8af4071d3b49e55, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: df324c2c11c333b47a2cd9c2e923fd37, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: fa0455bffb491f44c8b71aac90afa12d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -172,21 +171,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7512975240592481510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4078996498490869488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a86113352b640424f816ef84a1c9d56f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  price: 0
-  item: {fileID: 0}
-  tmp: {fileID: 4057847469639555902}
 --- !u!1 &7075792882793866600
 GameObject:
   m_ObjectHideFlags: 0

@@ -132,6 +132,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1647809467}
     m_Modifications:
     - target: {fileID: 2010477473836623395, guid: a5c8fbea1e2ab90408cb6e2ada25464b, type: 3}
+      propertyPath: isTest
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2010477473836623395, guid: a5c8fbea1e2ab90408cb6e2ada25464b, type: 3}
       propertyPath: purchaseLimit
       value: 1
       objectReference: {fileID: 0}
@@ -549,7 +553,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

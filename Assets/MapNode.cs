@@ -21,6 +21,11 @@ public class MapNode : MonoBehaviour
     public bool isBossTest = false;
     public bool isMiniBossTest = false;
     public bool isHealingNode = false;
+    public Dictionary<MapNode, LineRenderer> childNodeLine;
+
+    void Awake() {
+        childNodeLine = new Dictionary<MapNode, LineRenderer>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -151,12 +156,27 @@ public class MapNode : MonoBehaviour
         }
     }
 
+    private void OnMouseEnter() {
+        LineRenderer line;
+        if(childNodeLine.TryGetValue(MainManager.Instance.currentNode, out line)) {
+            AudioManager.Instance.PlayMapHover();
+            Color stardeckBlue = new Color(	0, 232, 255);
+            // line.SetColors(stardeckBlue, stardeckBlue);
+            line.SetWidth(12, 12);
+        }
+    }
+
     private void OnMouseOver() {
         if (Input.GetMouseButtonUp (0) && MapManager.Instance.destinationsClickable) {
             // Debug.Log("clicked node id: " + instanceId);
             mapManager.SetMovementSelection(this);
         }
-        
+        // foreach(var item in childNodeLine) {
+        //     Debug.Log("that node: " + item.Key.gameObject.GetInstanceID());
+        //     Debug.Log("this node: " + gameObject.GetInstanceID());
+        //     item.Value.gameObject.SetActive(false);
+        // }
+
         if (isGlowUp) {
             fade += Time.deltaTime * 2f;
         }
@@ -173,6 +193,11 @@ public class MapNode : MonoBehaviour
     }
 
     private void OnMouseExit() {
+        LineRenderer line;
+        if(childNodeLine.TryGetValue(MainManager.Instance.currentNode, out line)) {
+            // line.SetColors(Color.white, Color.white);
+            line.SetWidth(5, 5);
+        }
         // remove target from STM
         // STM.ClearTarget();
         // // Debug.Log("cleared target to SingleTargetManager!");

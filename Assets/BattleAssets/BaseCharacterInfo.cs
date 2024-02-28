@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class BaseCharacterInfo : MonoBehaviour
 {
@@ -226,6 +227,7 @@ public class BaseCharacterInfo : MonoBehaviour
     }
 
     public IEnumerator AddFrostTimed(int frost, float timeDelay, bool addAudio) {
+        
         if(!frozenTurn) {
             if(frostStacks + frost >= 3) {
                 frozenTurn = true;

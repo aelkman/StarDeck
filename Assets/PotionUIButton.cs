@@ -22,6 +22,7 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     // Start is called before the first frame update
     void Start()
     {
+        hoverTextGO.SetActive(false);
         uiAudio = GameObject.Find("UIAudio").GetComponent<UIAudio>();
         potionUI = GameObject.Find("PotionUI").GetComponent<PotionUI>();
     }
