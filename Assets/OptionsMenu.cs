@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
 {
     public static OptionsMenu Instance;
     public GameObject menu;
     public GameObject confirmLeave;
-    private bool menuActive = false;
+    public bool menuActive = false;
     private bool confirmLeaveBool = false;
     private bool backoutLeave = false;
     public TextMeshProUGUI confirmButtonText;
@@ -41,16 +42,27 @@ public class OptionsMenu : MonoBehaviour
             if(confirmLeave.activeSelf == true) {
                 backoutLeave = true;
             }
+            if(GameObject.Find("ButtonsRight")) {
+                // if(GameObject.Find("ButtonsRight").GetComponent<HUD_Icon_Buttons>().optionsActive) {
+                //     ToggleButton();
+                //     GameObject.Find("ButtonsRight").GetComponent<HUD_Icon_Buttons>().CloseSettings();
+                // }
+                // else {
+                ToggleButton();
+                // }
+                GameObject.Find("ButtonsRight").GetComponent<HUD_Icon_Buttons>().CloseSettings();
+            }
+            else {
+                ToggleButton();
+            }
             AudioManager.Instance.PlayButtonPress();
-            menuActive = !menuActive;
-            menu.SetActive(menuActive);
             // backoutLeave = false;
         }
     }
 
     public void BackButton() {
         AudioManager.Instance.PlayButtonPress();
-        SetActive(false);
+        SetMenuActive(false);
     }
 
     public void ConfirmLeave() {
@@ -102,7 +114,7 @@ public class OptionsMenu : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             confirmLeave.SetActive(false);
             confirmLeaveBool = false;
-            SetActive(false);
+            SetMenuActive(false);
             GameManager.Instance.RestartToScene("MainMenu", null);
         }
         else if(backoutLeave) {
@@ -126,7 +138,7 @@ public class OptionsMenu : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             confirmLeave.SetActive(false);
             confirmLeaveBool = false;
-            SetActive(false);
+            SetMenuActive(false);
             GameManager.Instance.RestartGame();
         }
         else if(backoutLeave) {
@@ -135,7 +147,7 @@ public class OptionsMenu : MonoBehaviour
         }
     }
 
-    private void SetActive(bool active) {
+    public void SetMenuActive(bool active) {
         menuActive = active;
         menu.SetActive(menuActive);
     }

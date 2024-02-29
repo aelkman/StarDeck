@@ -5,7 +5,6 @@ using UnityEngine;
 public class HUD_Icon_Buttons : MonoBehaviour
 {
     public bool settingsActive = false;
-    public bool optionsActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -20,13 +19,37 @@ public class HUD_Icon_Buttons : MonoBehaviour
 
     public void ClickSettingsIcon() {
         settingsActive = !settingsActive;
+        if(OptionsMenu.Instance.menuActive) {
+            OptionsMenu.Instance.ToggleButton();
+        }
         AudioManager.Instance.PlayButtonPress();
         Settings.Instance.settingsMenu.SetActive(settingsActive);
     }
 
     public void ClickOptionsIcon() {
-        optionsActive = !optionsActive;
+        if(settingsActive) {
+            settingsActive = !settingsActive;
+            Settings.Instance.settingsMenu.SetActive(settingsActive);
+        }
         AudioManager.Instance.PlayButtonPress();
         OptionsMenu.Instance.ToggleButton();
     }
+
+    public void CloseOptionsSettings() {
+        if(settingsActive) {
+            settingsActive = !settingsActive;
+            Settings.Instance.settingsMenu.SetActive(settingsActive);
+        }
+        if(OptionsMenu.Instance.menuActive) {
+            OptionsMenu.Instance.SetMenuActive(false);
+        }
+    }
+
+    public void CloseSettings() {
+        if(settingsActive) {
+            settingsActive = !settingsActive;
+            Settings.Instance.settingsMenu.SetActive(settingsActive);
+        }
+    }
+
 }

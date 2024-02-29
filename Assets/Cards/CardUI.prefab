@@ -1035,12 +1035,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4124118783cf15a4d8af4071d3b49e55, type: 2}
+    - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 57959225e8b664345a2d915c65ca8d1f, type: 2}
+    - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
       propertyPath: m_VerticalAlignment
       value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 3466129321112414459, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5553976031499929114, guid: 2ad87afbacb38d4468aef18e4f0e0956, type: 3}
       propertyPath: m_Name

@@ -21,6 +21,7 @@ public class DeckViewer : MonoBehaviour
     public TextMeshProUGUI cloneCost;
     public RemovalUISelector removalUISelector;
     public bool isRemovalEvent = false;
+    public HUD_Icon_Buttons hudIconButtons;
     int price = 0;
     // Start is called before the first frame update
     void Start()
@@ -76,7 +77,7 @@ public class DeckViewer : MonoBehaviour
         }
     }
 
-    private void ToggleActive() {
+    public void ToggleActive() {
         deckViewer.SetActive(!deckViewer.activeSelf);
         isRemoval = false;
     }
@@ -103,8 +104,13 @@ public class DeckViewer : MonoBehaviour
     }
 
     public void DeckIconClick() {
+        if(deckViewer.activeSelf && (OptionsMenu.Instance.menuActive || hudIconButtons.settingsActive)) {
+            // do nothing
+        }
+        else ToggleActive();
+        hudIconButtons.CloseOptionsSettings();
         AudioManager.Instance.PlayButtonPress();
-        ToggleActive();
+        // ToggleActive();
     }
 
     public IEnumerator RemovalButtonTimed() {

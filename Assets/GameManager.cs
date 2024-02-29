@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public bool demoComplete = false;
     public int currentSceneUID = 0;
     public bool cardHoverDetails = true;
+    public string lastSceneName;
     public Dictionary<string, int> weaponDamage = new Dictionary<string, int>();
 
     public static GameManager Instance 
@@ -86,7 +87,7 @@ public class GameManager : MonoBehaviour
         foreach( var tr in allTransforms)
         {
             if(tr.gameObject == audioManager || tr.gameObject == gameManager || tr.gameObject == settings
-                || tr.gameObject == options ) {
+                || tr.gameObject == options) {
                 // Debug.Log("found an important object! not destroying");
             }
             else {

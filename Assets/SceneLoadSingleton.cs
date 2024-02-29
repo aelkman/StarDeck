@@ -19,6 +19,8 @@ public class SceneLoadSingleton : MonoBehaviour
 
     void Awake()
     {
+        mapCanvas = GameObject.Find("Map Canvas");
+
         if (_instance != null && _instance != this) 
         { 
             Destroy(this.gameObject);
@@ -31,7 +33,7 @@ public class SceneLoadSingleton : MonoBehaviour
 
     public void Start()
     {
-        mapCanvas = GameObject.Find("Map Canvas");
+        
         // if (transition == null) {
         //     transition = GameObject.Find("Crossfade").GetComponent<Animator>();
         // }
@@ -47,19 +49,32 @@ public class SceneLoadSingleton : MonoBehaviour
         // Debug.Log("Start: SceneLoaded1");
     }
 
+    void OnDestroy() {
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
         // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Debug.Log("OnSceneLoaded: " + scene.name);  
-        
+        Debug.Log("lastScene: " + GameManager.Instance.lastSceneName);
+
         if (scene.name == "Map") {
             if(mapCanvas != null) {
+                Debug.Log("setting map canvas active!");
                 mapCanvas.SetActive(true);
+            }
+            if(GameManager.Instance.lastSceneName != "Weapons") {
+                GameObject.Find("Crossfade").GetComponent<Animator>().SetTrigger("FadeIn");
             }
             // cg.alpha = 1;
             // cg.interactable = true;
             // cg.blocksRaycasts = true;
         }
+
+        GameManager.Instance.lastSceneName = scene.name;
+
     }
 
     private void OnSceneUnloaded(Scene current)
@@ -86,10 +101,5 @@ public class SceneLoadSingleton : MonoBehaviour
 
     void Update()
     {
-    }
-
-    void OnDestroy()
-    {
-        // Debug.Log("OnDestroy");
     }
 }

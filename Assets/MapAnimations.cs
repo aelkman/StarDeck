@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapAnimations : MonoBehaviour
 {
     private static MapAnimations _instance;
     public GameObject introTextContainer;
     public GameObject introText;
+    public Image blackBG;
     public Animator introTextAnimator;
+    public Animator crossfadeAnimator;
+    public Animator slidingAnimator;
     public GameObject mapTitle;
     public TypewriterText introTypewriter;
     private bool clicked = false;
@@ -32,8 +36,15 @@ public class MapAnimations : MonoBehaviour
     }
 
     private IEnumerator ShowIntroText() {
+        blackBG.gameObject.SetActive(true);
         MapManager.Instance.destinationsClickable = false;
-        yield return new WaitForSeconds(2.8f);
+        yield return new WaitForSeconds(0.5f);
+        crossfadeAnimator.SetTrigger("FadeIn");
+        blackBG.gameObject.SetActive(false);
+        slidingAnimator.SetTrigger("StartSlide");
+        yield return new WaitForSeconds(1.8f);
+        introTextAnimator.SetTrigger("Start");
+        yield return new WaitForSeconds(1.0f);
         if(introText != null) {
             introText.SetActive(true);
             // yield return new WaitUntil(() => introTypewriter.doneTyping);

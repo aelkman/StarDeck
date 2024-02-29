@@ -50,13 +50,13 @@ public class PotionUI : MonoBehaviour
         // if(slot == 0) {
         GameObject newPotion = Instantiate(potionUIButtonPrefab, transform);
         // Vector3 potPos = newPotion.transform.localPosition;
-        newPotion.GetComponent<PotionUIButton>().SetPotion(potion);
+        newPotion.transform.GetChild(0).GetComponent<PotionUIButton>().SetPotion(potion);
         potionsInstances.Add(newPotion);
-        newPotion.GetComponent<PotionUIButton>().slot = potionsInstances.Count - 1;
+        newPotion.transform.GetChild(0).GetComponent<PotionUIButton>().slot = potionsInstances.Count - 1;
 
         for(int i = 0; i < potionSlots.Count; i++) {
             if(potionsInstances.Count - 1 <= i) {
-                newPotion.transform.localPosition = new Vector3(i * 105, 0, 0);
+                newPotion.transform.localPosition = new Vector3(i * 59.54f, 0, 0);
                 potionSlots[i].SetActive(false);
                 break;
             }
@@ -84,8 +84,8 @@ public class PotionUI : MonoBehaviour
         // potionsInstances.RemoveAll(s => s == null);
         for(int i = 0; i < potionSlots.Count; i++) {
             if(potionsInstances.Count > i){
-                potionsInstances[i].transform.localPosition = new Vector3(i * 105, 0, 0);
-                potionsInstances[i].GetComponent<PotionUIButton>().slot = i;
+                potionsInstances[i].transform.localPosition = new Vector3(i * 59.54f, 0, 0);
+                potionsInstances[i].transform.GetChild(0).GetComponent<PotionUIButton>().slot = i;
                 potionSlots[i].SetActive(false);
             }
             else {

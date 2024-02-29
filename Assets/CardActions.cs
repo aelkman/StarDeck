@@ -79,6 +79,7 @@ public class CardActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                             // add card play animation here
                             if (isShop) {
                                 if (((ShopCardUISelector)cardUISelector).AddToDeck(cardDisplay.card, itemCost.price)) {
+                                    itemCost.gameObject.SetActive(false);
                                     StartCoroutine(CardPlayAnimation(0.05f));
                                     isCardPlayed = true;
                                 }

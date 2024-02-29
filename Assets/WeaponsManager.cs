@@ -14,6 +14,9 @@ public class WeaponsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!AudioManager.Instance.vaporwaveSong1.isPlaying) {
+            AudioManager.Instance.PlayVaporwaveSong1();
+        }
         weaponWindow1.gameObject.SetActive(false);
         weaponWindow2.gameObject.SetActive(false);
     }

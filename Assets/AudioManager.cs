@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource blind;
     public AudioSource taunt;
     public AudioSource mapHover;
+    public AudioSource vaporwaveSong1;
     private void Awake()
     {
         // start of new code
@@ -130,5 +131,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMapHover() {
         mapHover.Play();
+    }
+
+    public void PlayVaporwaveSong1() {
+        vaporwaveSong1.volume = 0f;
+        vaporwaveSong1.Play();
+        StartCoroutine(FadeAudioSource.StartFade(vaporwaveSong1, 1, 1));
+    }
+
+    public void StopVaporwaveSong1() {
+        StartCoroutine(FadeAudioSource.StartFadeToStop(vaporwaveSong1, 1, 0));
     }
 }

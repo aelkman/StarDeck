@@ -11,6 +11,7 @@ public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     public Artifact artifact;
     public string artifactName;
+    public Image imageRenderer;
     public SpriteRenderer spriteRenderer;
     public TextMeshProUGUI flavorText;
     public bool isIcon = false;
@@ -62,8 +63,7 @@ public class ArtifactDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void SetValues() {
         artifactName = artifact.name;
-        Image image = gameObject.GetComponent<Image>();
-        image.sprite = artifact.artwork;
+        imageRenderer.sprite = artifact.artwork;
         // flavorText.text = artifactName + " - " + artifact.description;
     }
 

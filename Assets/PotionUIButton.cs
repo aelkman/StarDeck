@@ -8,7 +8,7 @@ using TMPro;
 public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // private Button button;
-    private Image image;
+    public Image image;
     public Potion potion;
     public GameObject hoverTextGO;
     public GameObject clickOptionsGO;
@@ -27,10 +27,10 @@ public class PotionUIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         potionUI = GameObject.Find("PotionUI").GetComponent<PotionUI>();
     }
 
-    void OnEnable() {
-        image = GetComponent<Image>();
-        // button = GetComponent<Button>();
-    }
+    // void OnEnable() {
+    //     image = GetComponent<Image>();
+    //     // button = GetComponent<Button>();
+    // }
 
     // Update is called once per frame
     void Update()

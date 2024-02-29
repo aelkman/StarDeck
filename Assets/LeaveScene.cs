@@ -24,6 +24,7 @@ public class LeaveScene : MonoBehaviour
     }
 
     IEnumerator LoadLevel(string sceneName) {
+        AudioManager.Instance.StopVaporwaveSong1();
         AudioManager.Instance.PlayButtonPress();
         transition.SetTrigger("Start");
 

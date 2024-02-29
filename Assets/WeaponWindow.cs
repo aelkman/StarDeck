@@ -16,6 +16,7 @@ public class WeaponWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance.lastSceneName = "Weapons";
     }
 
     // Update is called once per frame
