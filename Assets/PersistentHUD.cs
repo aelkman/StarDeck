@@ -15,6 +15,7 @@ public class PersistentHUD : MonoBehaviour
     private MapManager mapManager;
     private List<Light2D> lights;
     private GameObject eventMain;
+    private GameObject eventUI;
     public HUD_Icon_Buttons hudIconButtons;
     // private string lastScene = "";
     // private bool sameScene = false;
@@ -77,6 +78,11 @@ public class PersistentHUD : MonoBehaviour
                     eventMain = GameObject.Find("Main");
                 }
 
+                if(GameObject.Find("Main (1)") != null) {
+                    eventUI = GameObject.Find("Main (1)");
+                }                 
+
+
                 // enable/disable the map
                 if(mapOpen) {
                     if(SceneManager.GetActiveScene().name == "Battle") {
@@ -87,6 +93,9 @@ public class PersistentHUD : MonoBehaviour
                     // eventMain is for events, and the Shop
                     if(eventMain != null) {
                         eventMain.GetComponent<Canvas>().targetDisplay = 1;
+                    }
+                    if(eventUI != null) {
+                        eventUI.SetActive(false);
                     }
                     mapManager.destinationsClickable = false;
                     // remove lights if they exist
@@ -106,6 +115,9 @@ public class PersistentHUD : MonoBehaviour
                     }
                     if(eventMain != null) {
                         eventMain.GetComponent<Canvas>().targetDisplay = 0;
+                    }
+                    if(eventUI != null) {
+                        eventUI.SetActive(true);
                     }
                     mapManager.destinationsClickable = true;
                     if(lights != null) {

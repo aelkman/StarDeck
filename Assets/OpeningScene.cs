@@ -12,7 +12,7 @@ public class OpeningScene : MonoBehaviour
     public Animator textFadeAnimator;
     public Animator textFadeAnimator2;
     public Animator textFadeAnimator3;
-    public Animator videoAnimator;
+    public Animator crossfadeAnimator;
     public CanvasGroup videoCanvasGroup;
     public OpeningAudio openingAudio;
     public GameObject convo1;
@@ -48,13 +48,14 @@ public class OpeningScene : MonoBehaviour
         AudioManager.Instance.PlayVaporwaveSong1();
         cutscene1.Play();
         yield return new WaitUntil(() => cutscene1.isPlaying);
-        videoCanvasGroup.alpha = 0;
+        videoCanvasGroup.alpha = 0f;
+        crossfadeAnimator.SetTrigger("FadeIn");
         scene1started = true;
         yield return new WaitUntil(() => video1complete);
-        videoAnimator.SetTrigger("StartFade");
+        crossfadeAnimator.SetTrigger("Start");
         yield return new WaitForSeconds(1.0f);
         textHolder.SetActive(true);
-        videoCanvasGroup.alpha = 0f;      
+        // videoCanvasGroup.alpha = 0f;      
         cutscene1.gameObject.SetActive(false);
 
         // part 1
@@ -73,7 +74,7 @@ public class OpeningScene : MonoBehaviour
         textHolder.SetActive(false);
         scene2started = true;
         yield return new WaitUntil(() => video2complete);
-        videoAnimator.SetTrigger("StartFade");
+        crossfadeAnimator.SetTrigger("Start");
         yield return new WaitForSeconds(1.0f);
         textHolder.SetActive(true);
         videoCanvasGroup.alpha = 0f;      

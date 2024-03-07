@@ -115,6 +115,7 @@ public class OptionsMenu : MonoBehaviour
             confirmLeave.SetActive(false);
             confirmLeaveBool = false;
             SetMenuActive(false);
+            AudioManager.Instance.vaporwaveSong1.Stop();
             GameManager.Instance.RestartToScene("MainMenu", null);
         }
         else if(backoutLeave) {

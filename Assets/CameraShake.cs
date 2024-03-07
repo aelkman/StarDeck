@@ -22,6 +22,7 @@ public class CameraShake : MonoBehaviour
     public Volume ppVolume;
     private Vignette vignette;
     private ChromaticAberration chromaticAberration;
+    private Bloom bloom;
     public float vignetteFlashTime = 0.4f;
     public float vignetteMinIntensity = 0f;
     public float vignetteMaxIntensity = 0.48f;
@@ -34,6 +35,7 @@ public class CameraShake : MonoBehaviour
         // initialPos = transform.localPosition;
         ppVolume.profile.TryGet<Vignette>(out vignette);
         ppVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
+        ppVolume.profile.TryGet<Bloom>(out bloom);
     }
 
     // Update is called once per frame
@@ -52,6 +54,13 @@ public class CameraShake : MonoBehaviour
                 CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
             }
             // StartCoroutine(Shaking());
+        }
+
+        if(Settings.Instance.showBloom) {
+            bloom.active = true;
+        }
+        else {
+            bloom.active = false;
         }
     }
 

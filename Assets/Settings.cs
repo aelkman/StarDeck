@@ -17,11 +17,13 @@ public class Settings : MonoBehaviour
     public Toggle damageAnalyticsToggle;
     public Toggle screenShakeToggle;
     public Toggle vignetteToggle;
+    public Toggle bloomToggle;
     public Toggle chromeAberToggle;
     public Toggle fullScreenToggle;
     private bool showDamageAnalytics = false;
     public bool showScreenShake = true;
     public bool showVignette = true;
+    public bool showBloom = true;
     public bool showChromAber = true;
     private bool isFullScreen = true;
     public float defaultMusicVolume = 0.7f;
@@ -72,6 +74,10 @@ public class Settings : MonoBehaviour
         var vin = PlayerPrefs.GetInt("Vignette", 1) == 1 ? true : false;
         vignetteToggle.isOn = vin;
         showVignette = vin;
+
+        var bl = PlayerPrefs.GetInt("Bloom", 1) == 1 ? true : false;
+        bloomToggle.isOn = bl;
+        showBloom = bl;
 
         var ca = PlayerPrefs.GetInt("ChromAber", 1) == 1 ? true : false;
         chromeAberToggle.isOn = ca;
@@ -150,6 +156,17 @@ public class Settings : MonoBehaviour
         }
         AudioManager.Instance.PlayButtonPress();
         showVignette = !showVignette;
+    }
+
+    public void ToggleBloom() {
+        if(!showBloom) {
+            PlayerPrefs.SetInt("Bloom", 1);
+        }
+        else {
+            PlayerPrefs.SetInt("Bloom", 0);
+        }
+        AudioManager.Instance.PlayButtonPress();
+        showBloom = !showBloom;
     }
 
     public void ToggleChromaticAbberation() {

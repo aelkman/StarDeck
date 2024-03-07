@@ -1187,6 +1187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckViewer: {fileID: 6154329696483624486}
   discardLocation: {fileID: 4201767345621475181}
+  hudIconButtons: {fileID: 0}
 --- !u!114 &944146968222891621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,7 +1907,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsActive: 0
-  optionsActive: 0
 --- !u!1 &7968866913539016634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2952,6 +2952,7 @@ MonoBehaviour:
   cloneCost: {fileID: 8002284043097327047}
   removalUISelector: {fileID: 5943955679120874558}
   isRemovalEvent: 0
+  hudIconButtons: {fileID: 0}
 --- !u!1001 &3815597905206896914
 PrefabInstance:
   m_ObjectHideFlags: 0

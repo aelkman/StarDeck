@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DemoComplete : MonoBehaviour
 {
-    public GameObject links;
     public TypewriterText signature;
     public TypewriterText mainText;
     // Start is called before the first frame update
