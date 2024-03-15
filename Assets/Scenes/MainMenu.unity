@@ -2670,7 +2670,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -406, y: -298}
+  m_AnchoredPosition: {x: -406, y: -325}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419466844
@@ -3428,7 +3428,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: https://www.kickstarter.com/projects/572883522/star-deck
+          m_StringArgument: https://www.kickstarter.com/projects/psyched-studios/star-deck-a-one-of-a-kind-sci-fi-computer-card-game
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &599292092
@@ -5936,7 +5936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4214702442709934014, guid: 1ab81796a9f8c6e49b7ce6f5580f9ba6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 185
+      value: 166
       objectReference: {fileID: 0}
     - target: {fileID: 4214702442709934014, guid: 1ab81796a9f8c6e49b7ce6f5580f9ba6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8380,7 +8380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4705463182706378912, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 766.0695
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4705463182706378912, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8448,12 +8448,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7877791294972534324, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_text
-      value: "Congrats, and thank you for playing my demo! \n\nIf you enjoyed and
-        want to see a full game, I'll need your support! \n\nI'm working on this
-        project as a solo developer, and won't be able to finish without funding.
-        I started working on this demo in August 2023, and with your support I plan
-        to release a final game in mid 2025.\n\nPlease visit the link below to my
-        Kickstarter and share with friends!"
+      value: ", thank you for playing my demo! \n\nIf you enjoyed and want to see
+        a full game, I'll need your support! \n\nI'm working on this project as a
+        solo developer, and won't be able to finish without funding. I started working
+        on this demo in August 2023, and with your support I plan to release a final
+        game in mid 2025.\n\nPlease visit the link below to my Kickstarter and share
+        with friends!"
       objectReference: {fileID: 0}
     - target: {fileID: 7877791294972534324, guid: be87e546bfd1a3a4dbeb3751fbb8802d, type: 3}
       propertyPath: m_fontSize

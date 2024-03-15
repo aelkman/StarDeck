@@ -13,6 +13,7 @@ public class DemoComplete : MonoBehaviour
     }
 
     private IEnumerator Sequence() {
+        CreateUserNameWithText();
         yield return new WaitUntil(() => mainText.doneTyping);
         yield return new WaitForSeconds(1.5f);
         signature.gameObject.SetActive(true);
@@ -25,6 +26,12 @@ public class DemoComplete : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void CreateUserNameWithText() {
+        string nameString = "Congrats <u>" + Steamworks.SteamClient.Name + "</u>";
+        nameString += mainText.text.text;
+        mainText.text.text = nameString;
     }
 
     public void ExitClick() {
